@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Mobile.java,v 1.2 1999/08/14 06:34:12 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Mobile.java,v 1.3 2000/08/05 06:48:06 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -118,8 +118,9 @@ class Mobile extends Fighting
 
 		// Portage Level
 
-		this.portageLevel = 0; // Assume that this value will be determined
-		                       // after the object is instantiated.
+		this.portageLevel = MIN_PORTAGE_LEVEL; // Assume that this value will
+		                                       // be determined after the object
+		                                       // is instantiated.
 	}
 
 	// Protected access methods
@@ -139,11 +140,11 @@ class Mobile extends Fighting
 
 		// Display data stored in this class.
 
-		System.out.println("Movement\t: " + movement +
-		                   "\tPortage Level\t: " + portageLevel);
+		System.out.println("Movement                : " + movement +
+		                   "\tPortage Level   : " + portageLevel);
 
-		System.out.println("Portage Capacity: " + portageCapacity +
-		                   "\tPortage Value\t: " + portageValue);
+		System.out.println("Portage Capacity        : " + portageCapacity +
+		                   "\tPortage Value   : " + portageValue);
 	}
 
 	// Public access methods
