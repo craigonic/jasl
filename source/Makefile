@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.8 2003/01/01 22:30:40 craig Exp $
+# $Id: Makefile,v 1.9 2003/02/14 06:32:25 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -115,6 +115,12 @@ docs:
 javadocs:
 	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(JAVA_SRC_FILES) \
     $(COUNTERS_PACKAGE)/*.java
+
+
+# Create HTML documentation using doxygen.
+
+doxygen:
+	@$(DOXYGEN) $(DOXYGEN_DEF_FILE)
 
 # Create an executable jar archive of the Driver program. Execution of this
 # target will automatically remove any object files that exist in order to
