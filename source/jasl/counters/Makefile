@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.4 1999/08/21 06:16:54 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.5 1999/09/13 04:59:13 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -23,8 +23,9 @@ OPTIMIZE =
 
 SUPER_CLASSES    = Unit Fighting Mobile
 INFANTRY_CLASSES = Infantry Squad Leader
+UTILITY_CLASSES  = Dice
 
-ALL_CLASSES      = $(SUPER_CLASSES) $(INFANTRY_CLASSES)
+ALL_CLASSES      = $(SUPER_CLASSES) $(INFANTRY_CLASSES) $(UTILITY_CLASSES)
 
 # Define a parameter to build all of the individual class files and the test
 # program (driver).
@@ -51,3 +52,6 @@ Squad: Squad.java $(OUTPUT_PATH)/Infantry.class
 
 Leader: Leader.java $(OUTPUT_PATH)/Infantry.class
 	$(COMPILER) $(OPTIMIZE) $(CLASSPATH_CMD) $(OUTPUT_DIR_CMD) Leader.java
+
+Dice: Dice.java
+	$(COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD) Dice.java
