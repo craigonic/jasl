@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  August 1999                            #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.4 2000/08/05 07:34:12 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.5 2001/03/22 06:03:11 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -17,9 +17,11 @@ GCJ_COMPILER      = gcj
 HTLS              = htls -genpage -index
 JAVA2HTML         = java2html -doc
 
+COUNTERS_PACKAGE  = Counters
+
 CLASSPATH         = ../jasl
 OUTPUT_PATH       = $(CLASSPATH)
-OBJS_PATH         = $(CLASSPATH)/Counters
+OBJS_PATH         = $(CLASSPATH)/$(COUNTERS_PACKAGE)
 DOCS_PATH         = ../docs
 
 CLASSPATH_CMD     = -classpath $(CLASSPATH)
@@ -31,13 +33,16 @@ OUTPUT_DIR_CMD    = -d $(CLASSPATH)
 JAVA_OPTIONS      = $(JAVA_COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD)
 GCJ_OPTIONS       = $(GCJ_COMPILER) $(GCJ_CLASSPATH_CMD)
 
-DRIVER_CLASS      = Driver
+DRIVER_CLASS      = Driver.class
+DRIVER_EXEC       = ${DRIVER_CLASS:.class=}
 
 ALL_CLASSES       = $(DRIVER_CLASS)
 
-GCJ_SUPER_OBJS    = $(OBJS_PATH)/Unit.o $(OBJS_PATH)/Fighting.o $(OBJS_PATH)/Mobile.o
-GCJ_INF_OBJS      = $(OBJS_PATH)/Infantry.o $(OBJS_PATH)/Personnel.o $(OBJS_PATH)/Squad.o $(OBJS_PATH)/Leader.o
-GCJ_UTIL_OBJS     = $(OBJS_PATH)/Dice.o
+GCJ_OBJECT_FILES  = $(OBJS_PATH)/*.o
+
+JAVA_SRC_FILES    = ${DRIVER_CLASS:.class=.java}
+
+# Define system commands.
 
 MV                = /bin/mv
 
@@ -46,33 +51,58 @@ MV                = /bin/mv
 
 all: $(ALL_CLASSES)
 
+# Define a parameter to build both the java and native executable versions of
+# the test program. Remove the object files upon completion.
+
+build_all: build_gcj
+	@(make clean_obj)
+
+# Define parameters to build the .class files in the Counters subdirectory for
+# use with the java version of the driver OR the object files used to build the
+# native executable. With either parameter, all of the .class files in Counters
+# will be created and the java version of the driver program will be generated.
+
+build gcj_obj: $(DRIVER_CLASS)
+	@(cd $(COUNTERS_PACKAGE); make $@)
+
 # Define a parameter to build the java version of the driver program used to
 # test the classes defined in the Counters package.
 
-Driver: Driver.java
-	$(JAVA_OPTIONS) Driver.java
+$(DRIVER_CLASS): $(JAVA_SRC_FILES)
+	$(JAVA_OPTIONS) $(JAVA_SRC_FILES)
 
 # Define a parameter to build the native executable version of the test program
 # (Driver) using the gcj compiler.
 
-gcj: $(ALL_CLASSES).exe
+gcj: $(DRIVER_EXEC)
+
+# Define a parameter to build the complete native executable version of the
+# test program (Driver), including the supporting files in the Counters package,
+# using the gcj compiler
+
+build_gcj: gcj_obj gcj
 
 # Define a parameter to build the native executable version of the driver
 # program used to test the classes defined in the Counters package.
 
-Driver.exe: Driver.java
-	$(GCJ_OPTIONS) --main=$(DRIVER_CLASS) -o $(OUTPUT_PATH)/$(DRIVER_CLASS) Driver.java $(GCJ_SUPER_OBJS) $(GCJ_INF_OBJS) $(GCJ_UTIL_OBJS)
+$(DRIVER_EXEC): $(JAVA_SRC_FILES)
+	$(GCJ_OPTIONS) --main=$(DRIVER_EXEC) -o $(OUTPUT_PATH)/$(DRIVER_EXEC) $(JAVA_SRC_FILES) $(GCJ_OBJECT_FILES)
 
 # Define parameters to remove all of the existing program files from the output
 # directory or a specific subset.
 
-clean: clean.class clean.exe
+clean_all: clean_java clean_obj clean
 
-clean.class:
-	$(RM) $(OUTPUT_PATH)/$(DRIVER_CLASS).class
+clean_java clean_obj:
+	@(cd $(COUNTERS_PACKAGE); make $@)
 
-clean.exe:
+clean: clean_class clean_gcj
+
+clean_class:
 	$(RM) $(OUTPUT_PATH)/$(DRIVER_CLASS)
+
+clean_gcj:
+	$(RM) $(OUTPUT_PATH)/$(DRIVER_EXEC)
 
 # Define a parameter to create HTML versions of the source files. Each file is
 # converted using the java2html program, which generates an "image" of the file
@@ -80,7 +110,8 @@ clean.exe:
 # used to link the files together on an HTML page.
 
 docs:
-	@for i in $(ALL_CLASSES) ; do \
-		$(JAVA2HTML) -input $$i.java -output $(DOCS_PATH)/$$i.html -title "$$i program" ;\
+	@for i in $(JAVA_SRC_FILES) ; do \
+		$(JAVA2HTML) -input $$i -output $(DOCS_PATH)/$$i.html -title "$$i" ;\
 	done
+	@(cd $(COUNTERS_PACKAGE); make $@)
 	@$(HTLS) $(DOCS_PATH)

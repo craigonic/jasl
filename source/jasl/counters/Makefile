@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.8 2000/08/05 07:28:49 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.9 2001/03/22 06:07:08 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -18,9 +18,11 @@ GCJ_COMPILER      = gcj
 HTLS              = htls -genpage
 JAVA2HTML         = java2html -doc
 
+COUNTERS_PACKAGE  = Counters
+
 CLASSPATH         = ../../jasl
-OUTPUT_PATH       = $(CLASSPATH)/Counters
-DOCS_PATH         = ../../docs/Counters
+OUTPUT_PATH       = $(CLASSPATH)/$(COUNTERS_PACKAGE)
+DOCS_PATH         = ../../docs/$(COUNTERS_PACKAGE)
 
 CLASSPATH_CMD     = -classpath $(CLASSPATH)
 GCJ_CLASSPATH_CMD = --CLASSPATH=$(CLASSPATH)
@@ -31,100 +33,134 @@ OUTPUT_DIR_CMD    = -d $(CLASSPATH)
 JAVA_OPTIONS      = $(JAVA_COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD)
 GCJ_OPTIONS       = $(GCJ_COMPILER) -c
 
-SUPER_CLASSES     = Unit Fighting Mobile
-INF_CLASSES       = Infantry Personnel Squad Leader
-UTIL_CLASSES      = Dice
+# Define variables to represent the source, object, and class files in/of/for
+# the Counters package.
+
+UNIT_CLASS        = Unit.class
+UNIT_OBJ          = ${UNIT_CLASS:.class=.o}
+UNIT_SRC          = ${UNIT_CLASS:.class=.java}
+
+FIGHTING_CLASS    = Fighting.class
+FIGHTING_OBJ      = ${FIGHTING_CLASS:.class=.o}
+FIGHTING_SRC      = ${FIGHTING_CLASS:.class=.java}
+
+MOBILE_CLASS      = Mobile.class
+MOBILE_OBJ        = ${MOBILE_CLASS:.class=.o}
+MOBILE_SRC        = ${MOBILE_CLASS:.class=.java}
+
+INFANTRY_CLASS    = Infantry.class
+INFANTRY_OBJ      = ${INFANTRY_CLASS:.class=.o}
+INFANTRY_SRC      = ${INFANTRY_CLASS:.class=.java}
+
+PERSONNEL_CLASS   = Personnel.class
+PERSONNEL_OBJ     = ${PERSONNEL_CLASS:.class=.o}
+PERSONNEL_SRC     = ${PERSONNEL_CLASS:.class=.java}
+
+SQUAD_CLASS       = Squad.class
+SQUAD_OBJ         = ${SQUAD_CLASS:.class=.o}
+SQUAD_SRC         = ${SQUAD_CLASS:.class=.java}
+
+LEADER_CLASS      = Leader.class
+LEADER_OBJ        = ${LEADER_CLASS:.class=.o}
+LEADER_SRC        = ${LEADER_CLASS:.class=.java}
+
+DICE_CLASS        = Dice.class
+DICE_OBJ          = ${DICE_CLASS:.class=.o}
+DICE_SRC          = ${DICE_CLASS:.class=.java}
+
+SUPER_CLASSES     = $(UNIT_CLASS) $(FIGHTING_CLASS) $(MOBILE_CLASS)
+INF_CLASSES       = $(INFANTRY_CLASS) $(PERSONNEL_CLASS) $(SQUAD_CLASS) $(LEADER_CLASS)
+UTIL_CLASSES      = $(DICE_CLASS)
 
 ALL_CLASSES       = $(SUPER_CLASSES) $(INF_CLASSES) $(UTIL_CLASSES)
 
-GCJ_SUPER_OBJS    = Unit.o Fighting.o Mobile.o
-GCJ_INF_OBJS      = Infantry.o Personnel.o Squad.o Leader.o
-GCJ_UTIL_OBJS     = Dice.o
+GCJ_OBJECT_FILES  = ${ALL_CLASSES:.class=.o}
 
-GCJ_OBJECT_FILES  = $(GCJ_SUPER_OBJS) $(GCJ_INF_OBJS) $(GCJ_UTIL_OBJS)
+JAVA_SRC_FILES    = ${ALL_CLASSES:.class=.java}
+
+# Define system commands.
 
 MV                = /bin/mv
 
 # Define a parameter to build all of the individual class files. 
 
-all: $(ALL_CLASSES)
+all build: $(ALL_CLASSES)
 
 # Define parameters to compile the individual Java classes in the Counters
 # package.
 
-Unit: Unit.java
-	$(JAVA_OPTIONS) Unit.java
+$(UNIT_CLASS): $(UNIT_SRC)
+	$(JAVA_OPTIONS) $(UNIT_SRC)
 
-Fighting: Fighting.java $(OUTPUT_PATH)/Unit.class
-	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Fighting.java
+$(FIGHTING_CLASS): $(FIGHTING_SRC) $(OUTPUT_PATH)/$(UNIT_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(FIGHTING_SRC)
 
-Mobile: Mobile.java $(OUTPUT_PATH)/Fighting.class
-	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Mobile.java
+$(MOBILE_CLASS): $(MOBILE_SRC) $(OUTPUT_PATH)/$(FIGHTING_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(MOBILE_SRC)
 
-Infantry: Infantry.java $(OUTPUT_PATH)/Mobile.class
-	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Infantry.java
+$(INFANTRY_CLASS): $(INFANTRY_SRC) $(OUTPUT_PATH)/$(MOBILE_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(INFANTRY_SRC)
 
-Personnel: Personnel.java $(OUTPUT_PATH)/Infantry.class
-	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Personnel.java
+$(PERSONNEL_CLASS): $(PERSONNEL_SRC) $(OUTPUT_PATH)/$(INFANTRY_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(PERSONNEL_SRC)
 
-Squad: Squad.java $(OUTPUT_PATH)/Personnel.class
-	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Squad.java
+$(SQUAD_CLASS): $(SQUAD_SRC) $(OUTPUT_PATH)/$(PERSONNEL_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(SQUAD_SRC)
 
-Leader: Leader.java $(OUTPUT_PATH)/Infantry.class
-	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Leader.java
+$(LEADER_CLASS): $(LEADER_SRC) $(OUTPUT_PATH)/$(INFANTRY_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(LEADER_SRC)
 
-Dice: Dice.java
-	$(JAVA_OPTIONS) Dice.java
+$(DICE_CLASS): $(DICE_SRC)
+	$(JAVA_OPTIONS) $(DICE_SRC)
 
 # Define a parameter to build all of the individual object files. 
 
-gcj: $(GCJ_OBJECT_FILES)
+gcj gcj_obj: $(GCJ_OBJECT_FILES)
 
 # Define parameters to compile individual object files used to build a native
 # executable with the gcj compiler.
 
-Unit.o: Unit.java
-	$(GCJ_OPTIONS) Unit.java
-	$(MV) Unit.o $(OUTPUT_PATH)
+$(UNIT_OBJ): $(UNIT_SRC)
+	$(GCJ_OPTIONS) $(UNIT_SRC)
+	$(MV) $(UNIT_OBJ) $(OUTPUT_PATH)
 
-Fighting.o: Fighting.java $(OUTPUT_PATH)/Unit.o
-	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Fighting.java
-	$(MV) Fighting.o $(OUTPUT_PATH)
+$(FIGHTING_OBJ): $(FIGHTING_SRC) $(OUTPUT_PATH)/$(UNIT_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(FIGHTING_SRC)
+	$(MV) $(FIGHTING_OBJ) $(OUTPUT_PATH)
 
-Mobile.o: Mobile.java $(OUTPUT_PATH)/Fighting.o
-	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Mobile.java
-	$(MV) Mobile.o $(OUTPUT_PATH)
+$(MOBILE_OBJ): $(MOBILE_SRC) $(OUTPUT_PATH)/$(FIGHTING_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(MOBILE_SRC)
+	$(MV) $(MOBILE_OBJ) $(OUTPUT_PATH)
 
-Infantry.o: Infantry.java $(OUTPUT_PATH)/Mobile.o
-	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Infantry.java
-	$(MV) Infantry.o $(OUTPUT_PATH)
+$(INFANTRY_OBJ): $(INFANTRY_SRC) $(OUTPUT_PATH)/$(MOBILE_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(INFANTRY_SRC)
+	$(MV) $(INFANTRY_OBJ) $(OUTPUT_PATH)
 
-Personnel.o: Personnel.java $(OUTPUT_PATH)/Infantry.o
-	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Personnel.java
-	$(MV) Personnel.o $(OUTPUT_PATH)
+$(PERSONNEL_OBJ): $(PERSONNEL_SRC) $(OUTPUT_PATH)/$(INFANTRY_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(PERSONNEL_SRC)
+	$(MV) $(PERSONNEL_OBJ) $(OUTPUT_PATH)
 
-Squad.o: Squad.java $(OUTPUT_PATH)/Personnel.o
-	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Squad.java
-	$(MV) Squad.o $(OUTPUT_PATH)
+$(SQUAD_OBJ): $(SQUAD_SRC) $(OUTPUT_PATH)/$(PERSONNEL_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(SQUAD_SRC)
+	$(MV) $(SQUAD_OBJ) $(OUTPUT_PATH)
 
-Leader.o: Leader.java $(OUTPUT_PATH)/Infantry.o
-	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Leader.java
-	$(MV) Leader.o $(OUTPUT_PATH)
+$(LEADER_OBJ): $(LEADER_SRC) $(OUTPUT_PATH)/$(INFANTRY_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(LEADER_SRC)
+	$(MV) $(LEADER_OBJ) $(OUTPUT_PATH)
 
-Dice.o: Dice.java
-	$(GCJ_OPTIONS) Dice.java
-	$(MV) Dice.o $(OUTPUT_PATH)
+$(DICE_OBJ): $(DICE_SRC)
+	$(GCJ_OPTIONS) $(DICE_SRC)
+	$(MV) $(DICE_OBJ) $(OUTPUT_PATH)
 
 # Define parameters to remove all of the class and object files from the output
 # directory or a specific subset.
 
-clean:
-	$(RM) $(OUTPUT_PATH)/*.class $(RM) $(OUTPUT_PATH)/*.o
+clean: clean_java clean_obj
 
-clean.class:
+clean_java:
 	$(RM) $(OUTPUT_PATH)/*.class
 
-clean.o:
+clean_obj:
 	$(RM) $(OUTPUT_PATH)/*.o
 
 # Define a parameter to create HTML versions of the source files. Each file is
@@ -133,8 +169,7 @@ clean.o:
 # used to link the files together on an HTML page.
 
 docs:
-	@for i in $(ALL_CLASSES) ; do \
-		$(JAVA2HTML) -input $$i.java -output $(DOCS_PATH)/$$i.html -title "$$i class" ;\
+	@for i in $(JAVA_SRC_FILES) ; do \
+		$(JAVA2HTML) -input $$i -output $(DOCS_PATH)/$$i.html -title "$$i" ;\
 	done
 	@$(HTLS) $(DOCS_PATH)
-	@(cd ..;make docs)
