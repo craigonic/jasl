@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  August 1999                            #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.3 1999/12/29 04:23:07 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.4 2000/08/05 07:34:12 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -36,7 +36,7 @@ DRIVER_CLASS      = Driver
 ALL_CLASSES       = $(DRIVER_CLASS)
 
 GCJ_SUPER_OBJS    = $(OBJS_PATH)/Unit.o $(OBJS_PATH)/Fighting.o $(OBJS_PATH)/Mobile.o
-GCJ_INF_OBJS      = $(OBJS_PATH)/Infantry.o $(OBJS_PATH)/Squad.o $(OBJS_PATH)/Leader.o
+GCJ_INF_OBJS      = $(OBJS_PATH)/Infantry.o $(OBJS_PATH)/Personnel.o $(OBJS_PATH)/Squad.o $(OBJS_PATH)/Leader.o
 GCJ_UTIL_OBJS     = $(OBJS_PATH)/Dice.o
 
 MV                = /bin/mv
