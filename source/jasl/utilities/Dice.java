@@ -13,7 +13,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.3 2000/06/30 05:39:38 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.4 2001/12/08 07:28:53 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -23,7 +23,7 @@ package Counters;
 //              simulated result(s) of rolling one or two dice.               //
 // ************************************************************************** //
 
-public class Dice
+public final class Dice
 {
 	// Private symbolic constants
 
@@ -37,6 +37,11 @@ public class Dice
 	// This constant is used to initialize member and local variables.
 
 	private static final int INITIAL_VALUE = 0;
+
+	// This constant is used as part of the error messages (see below) that
+	// that are generated when an exception is thrown.
+
+	private static final String CLASS_NAME = "Dice";
 
 	// Private data members
 
@@ -61,14 +66,12 @@ public class Dice
 	// result during the simulated roll of the dice.
 
 	private static final String badResultError = 
-	    "Error: Dice(constructor) - Invalid result : ";
+		Unit.buildErrorMessage(CLASS_NAME,Counter.CONSTRUCTOR,
+		                       "Invalid result : ");
 
 	// Constructor
 
-	// Default constructor.
-
 	public Dice()
-		throws IllegalStateException
 	{
 		// Initialize the data members.
 
@@ -89,7 +92,7 @@ public class Dice
 
 	// Private methods
 
-	// rollEm - A function to roll each die, verify that a valid result occurs,
+	// rollEm - A method to roll each die, verify that a valid result occurs,
 	//          and copy the value to the appropriate member variable. If an
 	//          invalid result occurs, the method returns false, which causes
 	//          the constructor to throw an exception.
@@ -105,7 +108,7 @@ public class Dice
 
 		if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
 		{
-			return(false);
+			return (false);
 		}
 
 		// Copy the result to the whiteDieValue member variable.
@@ -125,7 +128,7 @@ public class Dice
 
 		if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
 		{
-			return(false);
+			return (false);
 		}
 
 		// Copy the result to the coloredDieValue member variable.
@@ -140,59 +143,173 @@ public class Dice
 		// Return true to indicate that all of the die rolls were completed
 		// successfully.
 
-		return(true);
+		return (true);
 	}
  
-	// rollIt - A function to roll a single die.
+	// rollIt - A method to roll a single die.
 
 	private int rollIt()
 	{
-		return((int)Math.ceil(Math.random()*MAX_ROLL));
+		return ((int)Math.ceil(Math.random()*MAX_ROLL));
 	}
 
 	// Public access methods
 
-	// getWhiteDieValue - A function to return the value of the whiteDieValue
+	// toString - A method to display the value of the private data members of
+	//            the current instance. The intent of this method is to provide
+	//            text-based verification output for development and debugging.
+
+	public String toString()
+	{
+		// Define local constants.
+
+		String METHOD_LABEL = CLASS_NAME + Counter.TO_STRING_LABEL;
+
+		String DICE_CLASS_HEADER_ONE = "Dice class instance values:\n";
+		String DICE_CLASS_HEADER_TWO = "---------------------------\n";
+
+		String WHITE_DIE_LABEL       = "White Die";
+		String COLORED_DIE_LABEL     = "Colored Die";
+		String COMBINED_RESULT_LABEL = "Combined Result";
+
+		int    LABEL_WIDTH           = 20;
+		int    VALUE_WIDTH           =  5;
+
+		// Create a buffer to store the string to be returned, initializing it
+		// with the values that define the header.
+
+		StringBuffer returnString = new StringBuffer(DICE_CLASS_HEADER_ONE + 
+		                                             DICE_CLASS_HEADER_TWO);
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		// White Die
+
+		try
+		{
+			returnString.append(Unit.formatTextString(WHITE_DIE_LABEL,
+			                                          LABEL_WIDTH,true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(Unit.formatTextString(Integer.toString(getWhiteDieValue()),VALUE_WIDTH,false,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Colored Die
+
+		try
+		{
+			returnString.append(Unit.formatTextString(COLORED_DIE_LABEL,
+			                                          LABEL_WIDTH,true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(Unit.formatTextString(Integer.toString(getColoredDieValue()),VALUE_WIDTH,false,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Combined Result
+
+		try
+		{
+			returnString.append(Unit.formatTextString(COMBINED_RESULT_LABEL,
+			                                          LABEL_WIDTH,true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(Unit.formatTextString(Integer.toString(getCombinedResult()),VALUE_WIDTH,false,true));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Return the completed string to calling program.
+
+		return (returnString.toString());
+	}
+
+	// getWhiteDieValue - A method to return the value of the whiteDieValue
 	//                    member variable to the calling program.
 
 	public int getWhiteDieValue()
 	{
-		return(whiteDieValue);
+		return (whiteDieValue);
 	}
 
-	// getColoredDieValue - A function to return the value of the
+	// getColoredDieValue - A method to return the value of the
 	//                      coloredDieValue member variable to the calling
 	//                      program.
 
 	public int getColoredDieValue()
 	{
-		return(coloredDieValue);
+		return (coloredDieValue);
 	}
 
-	// getCombinedResult - A function to return the value of the combinedResult
+	// getCombinedResult - A method to return the value of the combinedResult
 	//                     member variable to the calling program.
 
 	public int getCombinedResult()
 	{
-		return(combinedResult);
-	}
-
-	// showValues - A function to display the value of the private data members
-	//              of the current instance. The intent of this function is to
-	//              provide text-based verification output for development and
-	//              debugging.
-
-	public void showValues()
-	{
-		// Display header.
-
-		System.out.println("Dice instance values:");
-		System.out.println("---------------------");
-
-		// Display data stored in this class.
-
-		System.out.print("White Die : " + getWhiteDieValue());
-		System.out.print("\tColored Die : " + getColoredDieValue());
-		System.out.println("\tCombined Result : " + getCombinedResult());
+		return (combinedResult);
 	}
 }
