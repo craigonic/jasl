@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  August 1999                            #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.2 1999/09/23 04:59:55 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.3 1999/12/29 04:23:07 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -14,9 +14,13 @@
 JAVA_COMPILER     = javac
 GCJ_COMPILER      = gcj
 
+HTLS              = htls -genpage -index
+JAVA2HTML         = java2html -doc
+
 CLASSPATH         = ../jasl
 OUTPUT_PATH       = $(CLASSPATH)
 OBJS_PATH         = $(CLASSPATH)/Counters
+DOCS_PATH         = ../docs
 
 CLASSPATH_CMD     = -classpath $(CLASSPATH)
 GCJ_CLASSPATH_CMD = --CLASSPATH=$(CLASSPATH)
@@ -69,3 +73,14 @@ clean.class:
 
 clean.exe:
 	$(RM) $(OUTPUT_PATH)/$(DRIVER_CLASS)
+
+# Define a parameter to create HTML versions of the source files. Each file is
+# converted using the java2html program, which generates an "image" of the file
+# with syntax color coding. After the files are generated, the htls program is
+# used to link the files together on an HTML page.
+
+docs:
+	@for i in $(ALL_CLASSES) ; do \
+		$(JAVA2HTML) -input $$i.java -output $(DOCS_PATH)/$$i.html -title "$$i program" ;\
+	done
+	@$(HTLS) $(DOCS_PATH)
