@@ -9,23 +9,23 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Leader.java,v 1.5 2001/12/08 07:36:13 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Leader.java,v 1.6 2002/02/21 07:48:45 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// ************************************************************************** //
-// Leader class - This class is used to define the unique characteristics of  //
-//                leader "units". Instances of this class may be instantiated //
-//                directly.                                                   //
-// ************************************************************************** //
-
+/**
+ * This class is used to represent a Leader counter.
+ * @see <A HREF=../../docs/Counters/Leader.java.html>Source code</A>
+ * @author Craig R. Campbell
+ * @version 1.6
+ */
 public final class Leader extends Infantry
 {
 	// Private symbolic constants
 
 	// These constants are used in the constructor to pass the correct value
-	// of a Leader for each attribute. Other types of units may allow the 
+	// for a Leader for each attribute. Other types of units may allow the 
 	// calling program to set these values but they are the same for all
 	// Leaders.
 
@@ -54,13 +54,32 @@ public final class Leader extends Infantry
 
 	// Constructor
 
-	// This constructor is used to instantiate a Leader object.
-
+	/**
+	 * Construct a new <CODE>Leader</CODE>.
+	 * @param nationality the nationality of the Leader. Example -
+	 * <B><A HREF=Counter.html#BRITISH>BRITISH</A></B>
+	 * @param identity an identifier for the Leader. Example -
+	 * <B>"Sgt. Powell"</B>
+	 * @param unitType a more specific nationality, type, or capability
+	 * description for the Leader. Example -
+	 * <B><A HREF=Counter.html#CANADIAN>CANADIAN</A></B>
+	 * @param morale the morale level of the Leader in its unbroken state.
+	 * Example - <B>8</B>
+	 * @param brokenMorale the morale level of the Leader when it is broken.
+	 * Example - <B>9</B>
+	 * @param experienceLevelRating a value used for determining when a Leader
+	 * should be replaced with a lower quality Leader. Example - <B>4</B>
+	 * @param modifier the dice roll modifier (DRM) of the Leader.
+	 * Example - <B>-1</B>
+	 * @throws <CODE>NullPointerException</CODE> in the case of a null
+	 * <CODE>String</CODE> parameter.
+	 * @throws <CODE>IllegalArgumentException</CODE> in the case of an a zero
+	 * length <CODE>String</CODE> parameter or an invalid numeric value.
+	 */
 	public Leader(String nationality,String identity,String unitType,int morale,
-	              int brokenMorale,boolean canSelfRally,
-	              int experienceLevelRating,int modifier)
+	              int brokenMorale,int experienceLevelRating,int modifier)
 	{
-		// Pass the first 7 parameters to the superclass constructor. Note
+		// Pass the first 6 parameters to the superclass constructor. Note
 		// that several variables have been set with symbolic constants. These
 		// are defined at the beginning of this class and its superclasses.
 		// If any exceptions are thrown, assume that they will be caught and
@@ -68,8 +87,8 @@ public final class Leader extends Infantry
 
 		super(LEADER,nationality,identity,unitType,
 		      Integer.toString(MIN_FIREPOWER),MIN_RANGE,PORTAGE_VALUE,
-		      MOVEMENT_ALLOWANCE,PORTAGE_CAPACITY,morale,brokenMorale,
-		      canSelfRally,MIN_BPV,experienceLevelRating,DEFAULT_FLAG_VALUE);
+		      DEFAULT_FLAG_VALUE,MOVEMENT_ALLOWANCE,PORTAGE_CAPACITY,morale,
+		      brokenMorale,true,MIN_BPV,experienceLevelRating);
 
 		// Check the value of the remaining parameter and copy the value to
 		// the local copy of the variable if an exception is not found.
@@ -87,10 +106,16 @@ public final class Leader extends Infantry
 
 	// Public access methods
 
-	// toString - A method to display the value of the private data members of
-	//            the current instance. The intent of this method is to provide
-	//            text-based verification output for development and debugging.
-
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. All of the members, beginning with the top-level class
+	 * (<B><A HREF=Unit.html>Unit</A></B>) and continuing down the hierarchy to
+	 * this level, are appended to the returned string. Each value is preceded
+	 * by a label defined in the <B><A HREF=Counter.html>Counter</A></B>
+	 * interface. There are no more than two values, including labels, in each
+	 * line of output.
+	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
+	 */
 	public String toString()
 	{
 		// Define local constants.
@@ -144,9 +169,10 @@ public final class Leader extends Infantry
 		return (returnString.toString());
 	}
 
-	// getModifier - A method to return the value of the modifier member
-	//               variable to the calling program.
-
+	/**
+	 * Determine the dice roll modifier (DRM) of this Leader.
+	 * @return a <CODE>String</CODE> specifying the modifier value.
+	 */
 	public String getModifier()
 	{
 		return (Integer.toString(modifier));
