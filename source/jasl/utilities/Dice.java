@@ -1,7 +1,8 @@
 // ************************************************************************** //
 // Dice.java - This class is used to simulate the rolling of two standard     //
 //             dice. It is intended to support the classes within the         //
-//             Counters package and thus does not fall within the heirarchy   ////             of classes derived from Unit.                                  //
+//             Counters package and thus does not fall within the heirarchy   //
+//             of classes derived from Unit.                                  //
 //                                                                            //
 //             All of the calculations (die rolls) are performed              //
 //             automatically when an instance of the Dice class is            //
@@ -12,7 +13,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.2 1999/12/31 07:15:38 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.3 2000/06/30 05:39:38 craig Exp $
 // ************************************************************************** //
 
 package Counters;
