@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  August 1999                            #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.6 2001/06/08 05:17:22 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/Makefile,v 1.7 2002/02/21 06:01:55 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -28,10 +28,11 @@ CLASSPATH_CMD     = -classpath $(CLASSPATH)
 GCJ_CLASSPATH_CMD = --CLASSPATH=$(CLASSPATH)
 OUTPUT_DIR_CMD    = -d $(CLASSPATH)
 
-#OPTIMIZE          = -O
+JAVA_OPTIMIZE     = -O
+GCJ_OPTIMIZE      = -O3 -s -pipe
 
-JAVA_OPTIONS      = $(JAVA_COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD)
-GCJ_OPTIONS       = $(GCJ_COMPILER) $(GCJ_CLASSPATH_CMD)
+JAVA_OPTIONS      = $(JAVA_COMPILER) $(JAVA_OPTIMIZE) $(OUTPUT_DIR_CMD)
+GCJ_OPTIONS       = $(GCJ_COMPILER) $(GCJ_CLASSPATH_CMD) $(GCJ_OPTIMIZE)
 
 DRIVER_CLASS      = Driver.class
 DRIVER_EXEC       = ${DRIVER_CLASS:.class=}
