@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.7 1999/12/29 04:21:18 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.8 2000/08/05 07:28:49 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -32,13 +32,13 @@ JAVA_OPTIONS      = $(JAVA_COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD)
 GCJ_OPTIONS       = $(GCJ_COMPILER) -c
 
 SUPER_CLASSES     = Unit Fighting Mobile
-INF_CLASSES       = Infantry Squad Leader
+INF_CLASSES       = Infantry Personnel Squad Leader
 UTIL_CLASSES      = Dice
 
 ALL_CLASSES       = $(SUPER_CLASSES) $(INF_CLASSES) $(UTIL_CLASSES)
 
 GCJ_SUPER_OBJS    = Unit.o Fighting.o Mobile.o
-GCJ_INF_OBJS      = Infantry.o Squad.o Leader.o
+GCJ_INF_OBJS      = Infantry.o Personnel.o Squad.o Leader.o
 GCJ_UTIL_OBJS     = Dice.o
 
 GCJ_OBJECT_FILES  = $(GCJ_SUPER_OBJS) $(GCJ_INF_OBJS) $(GCJ_UTIL_OBJS)
@@ -64,7 +64,10 @@ Mobile: Mobile.java $(OUTPUT_PATH)/Fighting.class
 Infantry: Infantry.java $(OUTPUT_PATH)/Mobile.class
 	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Infantry.java
 
-Squad: Squad.java $(OUTPUT_PATH)/Infantry.class
+Personnel: Personnel.java $(OUTPUT_PATH)/Infantry.class
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Personnel.java
+
+Squad: Squad.java $(OUTPUT_PATH)/Personnel.class
 	$(JAVA_OPTIONS) $(CLASSPATH_CMD) Squad.java
 
 Leader: Leader.java $(OUTPUT_PATH)/Infantry.class
@@ -96,7 +99,11 @@ Infantry.o: Infantry.java $(OUTPUT_PATH)/Mobile.o
 	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Infantry.java
 	$(MV) Infantry.o $(OUTPUT_PATH)
 
-Squad.o: Squad.java $(OUTPUT_PATH)/Infantry.o
+Personnel.o: Personnel.java $(OUTPUT_PATH)/Infantry.o
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Personnel.java
+	$(MV) Personnel.o $(OUTPUT_PATH)
+
+Squad.o: Squad.java $(OUTPUT_PATH)/Personnel.o
 	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) Squad.java
 	$(MV) Squad.o $(OUTPUT_PATH)
 
