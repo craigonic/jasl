@@ -3,4 +3,72 @@
 <TITLE>Counters package</TITLE>
 </HEAD>
 <H1>Counters package</H1>
+<HR>
+Generation of all the files and documentation in the Counters package relies
+heavily on the 'make' program. It is not absolutely necessary, particularly for
+building the .class files, but it does simplify the process. For those who might
+question this approach, I want to assure you that I am aware of alternatives,
+such as <A HREF=http://jakarta.apache.org/ant/index.html>Ant</A>. For now, I am
+using the tools I am most familiar with.
 <P>
+The following conditions are assumed about the system used to process the files
+in this directory.
+<UL>
+<LI>The original directory structure for this system is in place. The top level
+directory is <B>jasl</B>, which is referred to as <B><I>ROOTDIR</I></B> in this
+document.
+<LI>Java SE SDK (1.2 or higher). I use the
+<A HREF=http://www.blackdown.org/java-linux.html>Blackdown port for Linux</A>,
+but the <A HREF=http://java.sun.com/j2se/>Sun</A> versions should also work.
+<LI><I>Optional. </I>
+<A HREF=http://www.fsf.org/software/make/make.html>make</A>.
+<LI><I>Optional. </I>
+<A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
+build a native executable version of this package.
+<LI><I>Optional. </I>
+<A HREF=http://www.gnu.org/software/src-highlite/>src-highlite</A>. This program
+is used to create HTML versions of the source files.
+<LI><I>Optional. </I><A HREF=http://www.perl.com/>Perl</A> and <TT>sed</TT>,
+which are used to build a linked hierarchy of the HTML versions of the source
+files.
+<LI><I>Optional. </I>A toolchain capable of building an executable with gcj for
+a non-iX86 architecture. I have used these source files and build structure,
+with only the minor change noted below for the <TT>gcj</TT> and <TT>gcj_obj</TT>
+targets, to cross-compile an executable and run it on my
+<A HREF=http://www.myzaurus.com/>Sharp Zaurus</A>.
+</UL>
+<P>
+The purpose of each target defined in the Makefile is listed below. The
+executable and object files are written to (and deleted from) the output
+directory - <B><I>ROOTDIR</I>/jasl/Counters</B>. Note that most of the targets
+are also used by the Makefile in the parent directory during recursive cleans
+and builds.
+<UL>
+<LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all the source
+files using <TT>javac</TT>, placing the .class files in the output directory.
+<LI><TT>gcj</TT> or <TT>gcj_obj</TT> - compiles all the source files using
+<TT>gcj</TT>, placing the .o files in the output directory. To specify an
+alternative gcj compiler, such as arm-linux-gcj, specify the execution of make
+as follows: <TT>make GCJ_COMPILER=arm-linux-gcj gcj</TT>
+<P>
+<LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
+bytecode file using <TT>javac</TT>, placing <TT>filename.class</TT> in the
+output directory.
+<LI><I>filename</I><TT>.o</TT> - compiles <TT>filename.java</TT> into an object
+file using <TT>gcj</TT>, placing <TT>filename.o</TT> in the output directory.
+<P>
+<LI><TT>clean_java</TT> - deletes all of the .class files in the output
+directory.
+<LI><TT>clean_obj</TT> - deletes all of the .o files in the output directory.
+<LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
+and <TT>clean_obj</TT> targets.
+<P>
+<LI><TT>docs</TT> - generates an HTML version of each source file, placing the
+output files in <B><I>ROOTDIR</I>/docs/source/Counters</B>. This file,
+<B><I>ROOTDIR</I>/docs/source/Counters/Counters.htm</B>, is also generated,
+and includes links to all of the HTML files.
+<LI><TT>javadocs</TT> - generates class documentation for this package using the
+<TT>javadoc</TT> program. The output files are placed in
+<B><A HREF=../../javadocs/index.html><I>ROOTDIR</I>/docs/javadocs</A></B>.
+</UL>
+<HR>
