@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Counter.java,v 1.2 2002/02/21 06:35:22 craig Exp $
+// $Id: Counter.java,v 1.3 2003/01/01 22:45:01 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -20,9 +20,9 @@ import java.util.*;
 /**
  * This interface is used to define public constants for the classes in the
  * Counters package.
- * @see <A HREF=../../docs/Counters/Counter.java.html>Source code</A>
+ * @see <A HREF=../../source/Counters/Counter.html>Source code</A>
  * @author Craig R. Campbell
- * @version 1.2
+ * @version 1.3
  */
 public interface Counter extends Serializable
 {
@@ -476,7 +476,7 @@ public interface Counter extends Serializable
 
 	/**
 	 * Provides a label indicating if an <A HREF=Infantry.html>Infantry</A>
-	 * unit has self rally capability : <B>Can Self Rally ?</B>
+	 * unit has self rally capability : <B>Can Self Rally ?
 	 */
 	public static final String CAN_SELF_RALLY_LABEL      = "Can Self Rally ?";
 
@@ -505,7 +505,7 @@ public interface Counter extends Serializable
 
 	/**
 	 * Provides a label indicating if an <A HREF=Infantry.html>Infantry</A>
-	 * unit has the maximum experience level rating : <B>Has Maximum ELR ?</B>
+	 * unit has the maximum experience level rating : <B>Has Maximum ELR ?
 	 */
 	public static final String HAS_MAXIMUM_ELR_LABEL     = "Has Maximum ELR ?";
 
@@ -523,13 +523,13 @@ public interface Counter extends Serializable
 
 	/**
 	 * Provides a label indicating if a <A HREF=Squad.html>Squad</A> has assault
-	 * fire capability : <B>Can Assault Fire ?</B>
+	 * fire capability : <B>Can Assault Fire ?
 	 */
 	public static final String CAN_ASSAULT_FIRE_LABEL    = "Can Assault Fire ?";
 
 	/**
 	 * Provides a label indicating if a unit has spray fire capability :
-	 * <B>Can Spray Fire ?</B>
+	 * <B>Can Spray Fire ?
 	 */
 	public static final String CAN_SPRAY_FIRE_LABEL      = "Can Spray Fire ?";
 
