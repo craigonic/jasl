@@ -32,8 +32,8 @@ the top level directory. This is necessary for make to work properly. Examples:
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
 build a native executable version of this package.
 <LI><I>Optional. </I>
-<A HREF=http://www.gnu.org/software/source-highlite/>source-highlite</A>. This
-program is used to create HTML versions of the source files.
+<A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A>.
+This program is used to create HTML versions of the source files.
 <LI><I>Optional. </I><A HREF=http://www.perl.com/>Perl</A> and <TT>sed</TT>,
 which are used to build a linked hierarchy of the HTML versions of the source
 files.
@@ -97,7 +97,7 @@ subdirectories of the output directory.
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
 <LI><TT>docs</TT> - generates an HTML version of each source file using
-<A HREF=http://www.gnu.org/software/source-highlite/>source-highlite</A>,
+<A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A>,
 placing the output files in <B><I>JASL_BASE</I>/docs/source</B>. This file,
 <B>source.html</B>, is also generated, and includes links to all of the HTML
 files in their respective subdirectories.
@@ -105,6 +105,9 @@ files in their respective subdirectories.
 <A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javadoc.html>javadoc</A>.
 The output files are placed in
 <B><A HREF=../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
+<LI><TT>doxygen</TT> - generates class documentation for this program using
+<A HREF=http://www.doxygen.org/>Doxygen</A>. The output files are placed in<B>
+<A HREF=../doxygen/html/index.html><I>JASL_BASE</I>/docs/doxygen/html</A></B>.
 <P>
 <LI><TT>jar</TT> - create an executable
 <A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/jar.html>jar</A>
