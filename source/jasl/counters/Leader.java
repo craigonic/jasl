@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Leader.java,v 1.2 1999/08/18 05:39:31 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Leader.java,v 1.3 2000/08/05 07:14:46 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -24,8 +24,8 @@ public class Leader extends Infantry
 {
 	// Private symbolic constants
 
-	// These constants are used to determine if the of the modifier parameter
-	// passed to the constructor is valid.
+	// These constants are used to determine if the value of the modifier
+	// parameter passed to the constructor is valid.
 
 	private static final int MIN_MODIFIER       = -3;
 	private static final int MAX_MODIFIER       =  3;
@@ -57,19 +57,21 @@ public class Leader extends Infantry
 
 	// This constructor is used to instantiate a Leader object.
 
-	public Leader(String nationality,String identity,int morale,
-	              int brokenMorale,boolean canSelfRally,int modifier)
+	public Leader(String nationality,String identity,String unitType,int morale,
+	              int brokenMorale,boolean canSelfRally,
+	              int experienceLevelRating,int modifier)
 		throws IllegalArgumentException
 	{
-		// Pass the first 5 parameters to the superclass constructor. Note
+		// Pass the first 7 parameters to the superclass constructor. Note
 		// that several variables have been set with symbolic constants. These
 		// are defined at the beginning of this class and its superclasses.
 		// If any exceptions are thrown, assume that they will be caught and
 		// handled by the program creating the object.
 
-		super(LEADER,nationality,identity,LEADER,MIN_FIREPOWER,MIN_RANGE,
+		super(LEADER,nationality,identity,unitType,MIN_FIREPOWER,MIN_RANGE,
 		      MOVEMENT_ALLOWANCE,PORTAGE_CAPACITY,PORTAGE_VALUE,morale,
-		      brokenMorale,canSelfRally,MIN_BPV);
+		      brokenMorale,canSelfRally,MIN_BPV,experienceLevelRating,
+		      DEFAULT_RESULT);
 
 		// Check the value of the remaining parameter and copy the value to
 		// the local copy of the variable if an exception is not found.
@@ -99,7 +101,7 @@ public class Leader extends Infantry
 
 		// Display data stored in this class.
 
-		System.out.println("Modifier\t: " + modifier);
+		System.out.println("Modifier                : " + modifier);
 	}
 
 	// getModifier - A function to return the value of the modifier member
