@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.1 2003/01/01 22:17:05 craig Exp $
+# $Id: jasl.make,v 1.2 2003/02/14 06:29:00 craig Exp $
 ################################################################################
 
 ## Directory definitions.
@@ -51,6 +51,12 @@ JAVADOC_OPTIONS   = -version -author -package -nodeprecatedlist -use \
 JAVADOC_TITLE     = -windowtitle "jASL Programming Documentation"
 JAVADOC_CMD_LIST  = $(JAVADOCS_PATH) $(JAVADOCS_LINK) $(JAVADOC_OPTIONS) \
                     $(JAVADOC_TITLE)
+
+# Doxygen.
+
+DOXYGEN          = doxygen
+DOXYGEN_DEF_FILE = $(UTIL_PATH)/doxygen.jasl
+
 ## Packages.
 
 COUNTERS_PACKAGE  = Counters
