@@ -8,7 +8,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/Driver.java,v 1.3 1999/09/14 05:43:04 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/Driver.java,v 1.4 2000/08/05 07:36:29 craig Exp $
 // ************************************************************************** //
 
 import Counters.*;
@@ -19,7 +19,8 @@ public class Driver
 	{
 		// Create an instance of a German Leader.
 
-		Leader germanLeader = new Leader("German","Lt. Fellbaum",9,9,true,-1);
+		Leader germanLeader = new Leader("German","Lt. Fellbaum","Leader",9,9,
+		                                 true,4,-1);
 
 		// Display all of the entered values for this instance using the 
 		// showValues() method.
@@ -31,8 +32,8 @@ public class Driver
 
 		// Create an instance of a Russian Squad.
 
-		Squad russianSquad = new Squad("Russian","A",4,4,7,7,false,7,
-		                               Squad.FIRST_LINE);
+		Squad russianSquad = new Squad(Unit.RUSSIAN,"A",Unit.GUARDS,6,2,4,8,8,
+		                               false,12,4,false,Unit.ELITE,true,true,0);
 
 		// Display all of the entered values for this instance using the 
 		// showValues() method.
@@ -41,21 +42,27 @@ public class Driver
 		System.out.println("Squad.showValues() output:");
 		System.out.println();
 		russianSquad.showValues();
+		System.out.println();
 
 		// Create an array of Unit objects. These will be used to reference a
 		// Leader instance and several Squad instances. These class types are
 		// derived from Unit.
 
-		System.out.println("Building Unit array with a Leader & 3 Squads:");
+		System.out.println("Building Unit array with a Leader & 3 Squads");
+		System.out.println();
 
 		Unit[] UnitList = new Unit[4];
 
-		UnitList[0] = new Leader("American","Sgt. Slaughter",9,9,true,-1);
-		UnitList[1] = new Squad("American","X",6,6,6,6,false,7,Squad.FIRST_LINE);
-		UnitList[2] = new Squad("American","Y",6,6,6,6,false,7,Squad.FIRST_LINE);
-		UnitList[3] = new Squad("American","Z",6,6,6,6,false,7,Squad.FIRST_LINE);
+		UnitList[0] = new Leader("American","Sgt. Slaughter","Ranger",9,9,true,
+		                         4,-1);
+		UnitList[1] = new Squad("American","X","Squad",6,6,4,6,6,false,11,4,
+		                        false,Unit.FIRST_LINE,true,false,3);
+		UnitList[2] = new Squad("American","Y","Squad",6,6,4,6,6,false,11,4,
+		                        false,Unit.FIRST_LINE,true,false,3);
+		UnitList[3] = new Squad("American","Z","Squad",6,6,4,6,6,false,11,4,
+		                        false,Unit.FIRST_LINE,true,false,3);
 
-		System.out.println("Displaying Unit array with a Leader & 3 Squads:");
+		System.out.println("Displaying Unit array with a Leader & 3 Squads");
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -74,35 +81,35 @@ public class Driver
 
 		// Create an instance of a German Squad (that throws some exceptions).
 
+		// NULL Nationality
+
 		System.out.println();
 		System.out.println("Testing Exception handling during Squad creation:");
 		System.out.println();
 		System.out.println("Null nationality parameter:");
 		System.out.println();
 
-		// NULL Nationality
-
 		try
 		{
-			Squad germanSquad = new Squad(null,"5",4,6,7,7,false,7,Squad.
-			                              FIRST_LINE);
+			Squad germanSquad = new Squad(null,"5","Squad",4,6,4,7,7,false,10,3,
+			                              false,Unit.FIRST_LINE,false,true,1);
 		}
 
 		catch (NullPointerException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Blank Nationality
 
 		System.out.println();
 		System.out.println("Zero-length nationality parameter:");
 		System.out.println();
 
-		// Blank Nationality
-
 		try
 		{
-			Squad germanSquad = new Squad("","5",4,6,7,7,false,7,Squad.
-			                              FIRST_LINE);
+			Squad germanSquad = new Squad("","5","Squad",4,6,4,7,7,false,10,3,
+			                              false,Unit.FIRST_LINE,false,true,1);
 		}
 
 		catch (IllegalArgumentException e)
@@ -110,16 +117,35 @@ public class Driver
 			System.out.println("Caught: " + e);
 		}
 
+		// Invalid Nationality
+
+		System.out.println();
+		System.out.println("Invalid nationality parameter:");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad("Mexican","5","Squad",4,6,4,7,7,false,
+			                              10,3,false,Unit.FIRST_LINE,false,true,
+			                              1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Null Identity
+
 		System.out.println();
 		System.out.println("Null identity parameter:");
 		System.out.println();
 
-		// Null Identity
-
 		try
 		{
-			Squad germanSquad = new Squad("German",null,4,6,7,7,false,7,
-			                              Squad.ELITE);
+			Squad germanSquad = new Squad(Unit.GERMAN,null,"Squad",4,6,4,7,7,
+			                              false,10,3,false,Unit.FIRST_LINE,
+			                              false,true,1);
 		}
 
 		catch (NullPointerException e)
@@ -127,152 +153,286 @@ public class Driver
 			System.out.println("Caught: " + e);
 		}
 
+		// Blank Identity
+
 		System.out.println();
 		System.out.println("Zero-length identity parameter:");
 		System.out.println();
 
-		// Blank Identity
-
 		try
 		{
-			Squad germanSquad = new Squad("German","",4,6,7,7,false,7,
-			                              Squad.FIRST_LINE);
+			Squad germanSquad = new Squad(Unit.GERMAN,"","Squad",4,6,4,7,7,
+			                              false,10,3,false,Unit.FIRST_LINE,
+			                              false,true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Null unitType
+
+		System.out.println();
+		System.out.println("Null unitType parameter:");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"5",null,4,6,4,7,7,false,
+			                              10,3,false,Unit.FIRST_LINE,false,true,
+			                              1);
+		}
+
+		catch (NullPointerException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Blank unitType
+
+		System.out.println();
+		System.out.println("Zero-length unitType parameter:");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","",4,6,4,7,7,false,10,
+			                              3,false,Unit.FIRST_LINE,false,true,1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid nationality and unitType
+
+		System.out.println();
+		System.out.println("Invalid nationality and unitType parameters:");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.BRITISH,"5","SS",4,6,4,7,7,false,
+			                              10,3,false,Unit.FIRST_LINE,false,true,
+			                              1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid description and unitType
+
+		System.out.println();
+		System.out.println("Invalid description and unitType parameters:");
+		System.out.println();
+
+		try
+		{
+			Squad commissarSquad = new Squad(Unit.RUSSIAN,"5",Unit.COMMISSAR,4,
+			                                 6,4,7,7,false,10,3,false,
+			                                 Unit.GREEN,false,true,1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid Firepower
 
 		System.out.println();
 		System.out.println("Invalid (less than 0) firepower parameter:");
 		System.out.println();
 
-		// Invalid Firepower
-
 		try
 		{
-			Squad germanSquad = new Squad("German","5",-1,6,7,7,false,7,
-			                              Squad.SECOND_LINE);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",-1,6,4,7,7,
+			                              false,10,3,false,Unit.FIRST_LINE,
+			                              false,true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Invalid Range
 
 		System.out.println();
 		System.out.println("Invalid (less than 0) normal range parameter:");
 		System.out.println();
 
-		// Invalid Range
-
 		try
 		{
-			Squad germanSquad = new Squad("German","5",4,-255,7,7,false,7,
-			                              Squad.GREEN);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,-255,4,7,7,
+			                              false,10,3,false,Unit.FIRST_LINE,
+			                              false,true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Invalid movement
+
+		System.out.println();
+		System.out.println("Invalid (less than 0) movement parameter:");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,-4,7,7,
+			                              false,10,3,false,Unit.ELITE,false,
+			                              true,1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid Morale (Minimum)
 
 		System.out.println();
 		System.out.println("Invalid (less than 0) morale parameter:");
 		System.out.println();
 
-		// Invalid Morale (Minimum)
-
 		try
 		{
-			Squad germanSquad = new Squad("German","5",4,6,-1,7,false,7,
-			                              Squad.GREEN);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,-1,7,
+			                              false,10,3,false,Unit.GREEN,false,
+			                              true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Invalid Morale (Maximum)
 
 		System.out.println();
 		System.out.println("Invalid (greater than maximum) morale parameter:");
 		System.out.println();
 
-		// Invalid Morale (Maximum)
-
 		try
 		{
-			Squad germanSquad = new Squad("German","5",4,6,11,7,false,7,
-			                              Squad.GREEN);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,11,7,
+			                              false,10,3,false,Unit.GREEN,false,
+			                              true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Invalid Broken Morale (Minimum)
 
 		System.out.println();
 		System.out.println("Invalid (less than 0) broken morale parameter:");
 		System.out.println();
 
-		// Invalid Broken Morale (Minimum)
-
 		try
 		{
-			Squad germanSquad = new Squad("German","5",4,6,7,-7,false,7,
-			                              Squad.GREEN);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,-7,
+			                              false,10,3,false,Unit.GREEN,false,
+			                              true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Invalid Broken Morale (Maximum)
 
 		System.out.println();
 		System.out.println("Invalid (greater than maximum) broken morale " + 
 		                   "parameter:");
 		System.out.println();
 
-		// Invalid Broken Morale (Maximum)
-
 		try
 		{
-			Squad germanSquad = new Squad("German","5",4,6,7,17,false,7,
-			                              Squad.GREEN);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,17,
+			                              false,10,3,false,Unit.GREEN,false,
+			                              true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
-
-		System.out.println();
-		System.out.println("Invalid (less than zero) basic point value (BPV):");
-		System.out.println();
 
 		// Invalid Basic Point Value (BPV)
 
+		System.out.println();
+		System.out.println("Invalid (less than zero) Basic Point Value (BPV):");
+		System.out.println();
+
 		try
 		{
-			Squad germanSquad = new Squad("German","5",4,6,7,7,true,-1,
-			                              Squad.GREEN);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,7,
+			                              true,-1,3,false,Unit.GREEN,false,
+			                              true,1);
 		}
 
 		catch (IllegalArgumentException e)
 		{
 			System.out.println("Caught: " + e);
 		}
+
+		// Invalid Experience Level Rating (Minimum)
+
+		System.out.println();
+		System.out.println("Invalid (less than zero) Experience Level Rating (ELR):");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,7,
+			                              true,10,-1,false,Unit.GREEN,false,
+			                              true,1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid Experience Level Rating (Maximum)
+
+		System.out.println();
+		System.out.println("Invalid (greater than maximum) Experience Level Rating (ELR):");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,7,
+			                              true,10,6,false,Unit.SECOND_LINE,
+			                              false,true,1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Null Classification
 
 		System.out.println();
 		System.out.println("Null classification parameter:");
 		System.out.println();
 
-		// Null Classification
-
 		try
 		{
-			Squad germanSquad = new Squad("German","A",4,6,7,7,false,7,null);
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,7,
+			                              true,10,3,false,null,false,true,1);
 		}
 
 		catch (NullPointerException e)
@@ -280,15 +440,16 @@ public class Driver
 			System.out.println("Caught: " + e);
 		}
 
+		// Blank Classification
+
 		System.out.println();
 		System.out.println("Zero-length classification parameter:");
 		System.out.println();
 
-		// Blank Classification
-
 		try
 		{
-			Squad germanSquad = new Squad("German","SS",4,6,7,7,false,7,"");
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","SS",4,6,4,7,7,
+			                              true,10,3,false,"",false,true,1);
 		}
 
 		catch (IllegalArgumentException e)
@@ -296,15 +457,53 @@ public class Driver
 			System.out.println("Caught: " + e);
 		}
 
+		// Invalid Classification
+
 		System.out.println();
 		System.out.println("Invalid classification parameter:");
 		System.out.println();
 
-		// Invalid Classification
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"4A","SS",4,6,4,7,7,
+			                              false,10,3,false,"Bozos",false,
+			                              true,1);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid Smoke Placement Exponent (Minimum)
+
+		System.out.println();
+		System.out.println("Invalid (less than zero) Smoke Placement Exponent:");
+		System.out.println();
 
 		try
 		{
-			Squad germanSquad = new Squad("German","4A",4,6,7,7,false,7,"REMF");
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,7,
+			                              true,10,3,false,Unit.SECOND_LINE,
+			                              false,true,-4);
+		}
+
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Caught: " + e);
+		}
+
+		// Invalid Smoke Placement Exponent (Maximum)
+
+		System.out.println();
+		System.out.println("Invalid (greater than maximum) Smoke Placement Exponent:");
+		System.out.println();
+
+		try
+		{
+			Squad germanSquad = new Squad(Unit.GERMAN,"5","Squad",4,6,4,7,7,
+			                              true,10,3,false,Unit.SECOND_LINE,
+			                              false,true,4);
 		}
 
 		catch (IllegalArgumentException e)
@@ -327,7 +526,8 @@ public class Driver
 
 		try
 		{
-			Leader Grandpa = new Leader("Canadian","Sgt. Powell",10,10,true,-4);
+			Leader Grandpa = new Leader(Unit.BRITISH,"Sgt. Powell",
+			                            Unit.CANADIAN,10,10,true,5,-4);
 		}
 
 		catch (IllegalArgumentException e)
@@ -343,7 +543,8 @@ public class Driver
 
 		try
 		{
-			Leader Grandpa = new Leader("Canadian","Sgt. Powell",10,10,true,4);
+			Leader Grandpa = new Leader(Unit.BRITISH,"Sgt. Powell",
+			                            Unit.CANADIAN,10,10,true,5,4);
 		}
 
 		catch (IllegalArgumentException e)
@@ -351,11 +552,11 @@ public class Driver
 			System.out.println("Caught: " + e);
 		}
 
+		// Test the Dice class.
+
 		System.out.println();
 		System.out.println("Testing the execution of the Dice class:");
 		System.out.println();
-
-		// Test the Dice class.
 
 		Dice theDice;
 
