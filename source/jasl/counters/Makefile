@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.10 2001/06/08 05:15:55 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.11 2001/12/11 06:15:46 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -35,6 +35,10 @@ GCJ_OPTIONS       = $(GCJ_COMPILER) -c
 
 # Define variables to represent the source, object, and class files in/of/for
 # the Counters package.
+
+COUNTER_CLASS     = Counter.class
+COUNTER_OBJ       = ${COUNTER_CLASS:.class=.o}
+COUNTER_SRC       = ${COUNTER_CLASS:.class=.java}
 
 UNIT_CLASS        = Unit.class
 UNIT_OBJ          = ${UNIT_CLASS:.class=.o}
@@ -68,11 +72,12 @@ DICE_CLASS        = Dice.class
 DICE_OBJ          = ${DICE_CLASS:.class=.o}
 DICE_SRC          = ${DICE_CLASS:.class=.java}
 
+INTERFACE         = $(COUNTER_CLASS)
 SUPER_CLASSES     = $(UNIT_CLASS) $(FIGHTING_CLASS) $(MOBILE_CLASS)
 INF_CLASSES       = $(INFANTRY_CLASS) $(PERSONNEL_CLASS) $(SQUAD_CLASS) $(LEADER_CLASS)
 UTIL_CLASSES      = $(DICE_CLASS)
 
-ALL_CLASSES       = $(SUPER_CLASSES) $(INF_CLASSES) $(UTIL_CLASSES)
+ALL_CLASSES       = $(INTERFACE) $(SUPER_CLASSES) $(INF_CLASSES) $(UTIL_CLASSES)
 
 GCJ_OBJECT_FILES  = ${ALL_CLASSES:.class=.o}
 
@@ -89,8 +94,11 @@ all build: $(ALL_CLASSES)
 # Define parameters to compile the individual Java classes in the Counters
 # package.
 
-$(UNIT_CLASS): $(UNIT_SRC)
-	$(JAVA_OPTIONS) $(UNIT_SRC)
+$(COUNTER_CLASS): $(COUNTER_SRC)
+	$(JAVA_OPTIONS) $(COUNTER_SRC)
+
+$(UNIT_CLASS): $(UNIT_SRC) $(OUTPUT_PATH)/$(COUNTER_CLASS)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(UNIT_SRC)
 
 $(FIGHTING_CLASS): $(FIGHTING_SRC) $(OUTPUT_PATH)/$(UNIT_CLASS)
 	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(FIGHTING_SRC)
@@ -111,7 +119,7 @@ $(LEADER_CLASS): $(LEADER_SRC) $(OUTPUT_PATH)/$(INFANTRY_CLASS)
 	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(LEADER_SRC)
 
 $(DICE_CLASS): $(DICE_SRC)
-	$(JAVA_OPTIONS) $(DICE_SRC)
+	$(JAVA_OPTIONS) $(CLASSPATH_CMD) $(DICE_SRC)
 
 # Define a parameter to build all of the individual object files. 
 
@@ -120,8 +128,12 @@ gcj gcj_obj: $(GCJ_OBJECT_FILES)
 # Define parameters to compile individual object files used to build a native
 # executable with the gcj compiler.
 
-$(UNIT_OBJ): $(UNIT_SRC)
-	$(GCJ_OPTIONS) $(UNIT_SRC)
+$(COUNTER_OBJ): $(COUNTER_SRC)
+	$(GCJ_OPTIONS) $(COUNTER_SRC)
+	$(MV) $(COUNTER_OBJ) $(OUTPUT_PATH)
+
+$(UNIT_OBJ): $(UNIT_SRC) $(OUTPUT_PATH)/$(COUNTER_OBJ)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(UNIT_SRC)
 	$(MV) $(UNIT_OBJ) $(OUTPUT_PATH)
 
 $(FIGHTING_OBJ): $(FIGHTING_SRC) $(OUTPUT_PATH)/$(UNIT_OBJ)
@@ -149,7 +161,7 @@ $(LEADER_OBJ): $(LEADER_SRC) $(OUTPUT_PATH)/$(INFANTRY_OBJ)
 	$(MV) $(LEADER_OBJ) $(OUTPUT_PATH)
 
 $(DICE_OBJ): $(DICE_SRC)
-	$(GCJ_OPTIONS) $(DICE_SRC)
+	$(GCJ_OPTIONS) $(GCJ_CLASSPATH_CMD) $(DICE_SRC)
 	$(MV) $(DICE_OBJ) $(OUTPUT_PATH)
 
 # Define parameters to remove all of the class and object files from the output
