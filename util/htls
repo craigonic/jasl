@@ -34,7 +34,7 @@
 #
 # Modified by : Craig Campbell  -  December 2002
 #
-# $Id: htls,v 1.1 2002/12/31 19:32:13 craig Exp $
+# $Id: htls,v 1.2 2003/01/01 00:17:16 craig Exp $
 #
 
 # Set application name for messages and to exclude the program file from the
@@ -178,12 +178,12 @@ sub Main
 	}
 
 	# If the -index option was specified, direct the index information to a 
-	# file in the specified directory named index.htm. This file will be
+	# file in the specified directory named index.html. This file will be
 	# excluded from the index.
 
 	if ($index)
 	{
-		$index_file = "$path/index.htm";
+		$index_file = "$path/index.html";
 
 		open(INDEXPAGE,"> $index_file") || die "$AppName : Error - Can't open $index_file for write.\n";
 
@@ -227,9 +227,9 @@ sub head
     
 	# Initialize HTML file variable names.
 
-	$dir_page    = "$title/$dirname.htm";
-	$home_page   = "$title/home.htm";
-	$header_page = "$title/header.htm";
+	$dir_page    = "$title/$dirname.html";
+	$home_page   = "$title/home.html";
+	$header_page = "$title/header.html";
 
 	$got_title = 0;
 
@@ -239,7 +239,7 @@ sub head
 
 		print INDEXPAGE "<html>\n<head>\n<title>";
 
-		# If a <directory name>.htm file exists in the specified directory,
+		# If a <directory name>.html file exists in the specified directory,
 		# attempt to retrieve the title. If the title is found, append "Index"
 		# to it and print, setting the $got_title flag.
 
@@ -257,9 +257,9 @@ sub head
 				$dir_page =~ s|.*/||;
 
 				# Verify that the title does not match the directory name.
-				# If it does, we assume that the <dirname>.htm file, which is
+				# If it does, we assume that the <dirname>.html file, which is
 				# generated automatically, does not contain the contents of a
-				# header.htm file. In this case, the title is displayed as
+				# header.html file. In this case, the title is displayed as
 				# "Index of <dirname>" instead of "$title Index".
 
 				if ($title eq $dirname)
@@ -276,7 +276,7 @@ sub head
 			}
 		}
 
-		# If a home.htm file exists in the specified directory, attempt to 
+		# If a home.html file exists in the specified directory, attempt to 
 		# retrieve the title. If the title is found, append "Index" to it
 		# and print, setting the $got_title flag.
 
@@ -298,7 +298,7 @@ sub head
 			}
 		}
 
-		# If a header.htm file exists in the specified directory, attempt to 
+		# If a header.html file exists in the specified directory, attempt to 
 		# retrieve the title. If the title is found, append "Index" to it
 		# and print, setting the $got_title flag.
 
@@ -320,7 +320,7 @@ sub head
 			}
 		}
 
-		# If neither home.htm or header.htm exists in the specified directory,
+		# If neither home.html or header.html exists in the specified directory,
 		# strip the path from the directory and display "Index of <dirname>".
 
 		if (!($got_title))
@@ -414,9 +414,9 @@ sub htls
 		# Check the filename to see if it matches the following list of 
 		# excluded files and directories.
 
-		if (($entry =~ /^\.+$/) || ($entry =~ /^header\.htm[l]?$/) ||
-			($entry eq $AppName) || ($entry =~ /^RCS$/) || 
-			($entry eq "$dirname.htm") || ($entry eq "index.htm"))
+		if (($entry =~ /^\.+$/) || ($entry eq "header.html") ||
+			($entry eq $AppName) || ($entry eq "RCS") || 
+			($entry eq "$dirname.html") || ($entry eq "index.html"))
 		{
 			next;
 		}
@@ -506,7 +506,7 @@ sub htls
 		$title = $path;
 
 		# If the -fp option was not specified, set the title to either the
-		# title from $path/header.htm or the directory name.
+		# title from $path/header.html or the directory name.
 
 		if (!($fp))
 		{
@@ -517,13 +517,13 @@ sub htls
 			$title = $relative_path;
 			$title =~ s|.*/||;
 
-			# Create variables for the header.htm and <dirname>.htm files
+			# Create variables for the header.html and <dirname>.html files
 			# in this directory that may or may not exist.
 
-			$header_file = "$path/header.htm";
-			$html_page   = "$path/$title.htm";
+			$header_file = "$path/header.html";
+			$html_page   = "$path/$title.html";
 
-			# Check for the existence of a header.htm file in this directory.
+			# Check for the existence of a header.html file in this directory.
 			# If it exists, attempt to extract the title from it to use for the
 			# directory link or label (depending on the existence of the
 			# -d option).
@@ -547,9 +547,9 @@ sub htls
 			print INDEXPAGE "\n" if ($htgrep);
 		}
 
-		# If an HTML file with the name of this directory and an htm extension
-		# (i.e. dirname.htm), create a link to it using the title from
-		# header.htm unless the -fp option was specified.
+		# If an HTML file with the name of this directory and an html extension
+		# (i.e. dirname.html), create a link to it using the title from
+		# header.html unless the -fp option was specified.
 
 		elsif ((-f $html_page) && (!($fp)))
 		{
@@ -648,7 +648,7 @@ sub GenerateHTMLPages
 		{
 			next if $entry eq '.';
 			next if $entry eq '..';
-			next if $entry eq 'header.htm';
+			next if $entry eq 'header.html';
 			$files++;
 		}
 
@@ -701,13 +701,13 @@ sub GenerateHTMLPages
 	else { return; } # ?!
 
 	# Extract the name of this directory and create an HTML file using the name
-	# with a .htm extension.
+	# with a .html extension.
 
 	$dirname = $dir;
 	$dirname =~ s|.*/||;
 
 	# When the $subdir variable is set this function retrieves information 
-	# the directory specified and writes the results to the .htm file in the
+	# the directory specified and writes the results to the .html file in the
 	# parent directory.
 
 	if ($subdir)
@@ -721,9 +721,9 @@ sub GenerateHTMLPages
 		# copied to $parent_dir. The path in the $parent_dir variable is then
 		# removed, leaving $parent_dir equal to the parent directory name.
 		# This value is then appended to $output_file (which contains the full
-		# path of the parent directory) with a .htm extension. The array created
-		# above is used to build the $subdir_path variable. This value is later
-		# used in the creation of hyperlinks on the page in the parent 
+		# path of the parent directory) with a .html extension. The array
+		# created above is used to build the $subdir_path variable. This value
+		# is later used in the creation of hyperlinks on the page in the parent 
 		# directory. An example follows each of the following code statements:
 
 		$tmp_subdir_path = $dir;
@@ -751,7 +751,7 @@ sub GenerateHTMLPages
 
 		$parent_dir =~ s|.*/||;
 
-		$output_file .= "/$parent_dir.htm";
+		$output_file .= "/$parent_dir.html";
 
 		# Reset the counter.
 
@@ -775,7 +775,7 @@ sub GenerateHTMLPages
 			$lvl_counter++;
 		}
 
-		# Verify that the .htm file for this parent directory of the the
+		# Verify that the .html file for this parent directory of the the
 		# directory specified exists. If it does not, return to the calling
 		# subroutine.
 
@@ -796,20 +796,20 @@ sub GenerateHTMLPages
 	}
 
 	# If the $subdir variable is not set, set the variables for the output and
-	# header.htm files and create the output file. If a header.htm file exists
+	# header.html files and create the output file. If a header.html file exists
 	# copy its contents to the new output file, otherwise create a simple
 	# HTML header.
 
 	else
 	{
-		$output_file = "$pre$dirname.htm";
-		$header_file = "$dir/header.htm";
+		$output_file = "$pre$dirname.html";
+		$header_file = "$dir/header.html";
 
-		# Create the output file for this directory (<dirname>.htm).
+		# Create the output file for this directory (<dirname>.html).
 
 		&OpenHTMLFile($output_file,"c");
 
-		# If the header.htm file exists in this directory, open and copy the
+		# If the header.html file exists in this directory, open and copy the
 		# contents to the file opened above for this directory.
 
 		if (-f $header_file)
@@ -824,7 +824,7 @@ sub GenerateHTMLPages
 			close(HEADER);
 		}
 
-		# If header.htm does not exist in this directory, start a simple
+		# If header.html does not exist in this directory, start a simple
 		# HTML file.
 
 		else
@@ -870,9 +870,9 @@ sub GenerateHTMLPages
 		# Check the filename to see if it matches the following list of 
 		# excluded files and directories.
 
-		if (($entry =~ /^\.+$/) || ($entry =~ /^header\.htm[l]?$/) ||
-			($entry eq $AppName) || ($entry =~ /^RCS$/) || 
-			($entry eq "$dirname.htm") || ($entry eq "index.htm"))
+		if (($entry =~ /^\.+$/) || ($entry eq "header.html") ||
+			($entry eq $AppName) || ($entry eq "RCS") || 
+			($entry eq "$dirname.html") || ($entry eq "index.html"))
 		{
 			next;
 		}
@@ -998,16 +998,16 @@ sub GenerateHTMLPages
 
 		$title = $relative_path;
 
-		# Create variables for the header.htm and <dirname>.htm files
+		# Create variables for the header.html and <dirname>.html files
 		# in this directory that may or may not exist.
 
-		$header_file = "$path/header.htm";
-		$html_page   = "$path/$title.htm";
+		$header_file = "$path/header.html";
+		$html_page   = "$path/$title.html";
 
 		# Check to see that the subdirectory is not empty and contains files
-		# other than "header.htm". If the subdirectory contains only header.htm
-		# the title will be used for the page entry but it will not be an
-		# active link.
+		# other than "header.html". If the subdirectory contains only
+		# header.html the title will be used for the page entry but it will not
+		# be an active link.
 
 		$empty = 0;
 
@@ -1020,10 +1020,10 @@ sub GenerateHTMLPages
 
 		undef(@test_list);
 
-		# Check for the existence of a header.htm file in this directory.
+		# Check for the existence of a header.html file in this directory.
 		# If it exists, attempt to extract the title from it to use for the
 		# directory link or label (depending on the existence of the
-		# header.htm or $title.htm files in the $path directory). If it is not
+		# header.html or $title.html files in the $path directory). If it is not
 		# found or does not exist, use the directory name ($relative_path).
 
 		&OpenHTMLFile($output_file,"a");
@@ -1058,15 +1058,15 @@ sub GenerateHTMLPages
 				}
 			}
 
-			# Strip the path from the <dirname>.htm variable to that a 
+			# Strip the path from the <dirname>.html variable to that a 
 			# relative link can be created.
 
 		    $html_page =~ s|.*/||;
 
 			# Create the link to the directory. If the $empty variable is set
-			# the subdirectory contains header.htm only. If the $subdir variable
-			# is set the program will add the subdirectory name to the link
-			# so that it works properly. Otherwise, the link uses only the
+			# the subdirectory contains header.html only. If the $subdir
+			# variable is set the program will add the subdirectory name to the
+			# link so that it works properly. Otherwise, the link uses only the
 			# directory name and the HTML page for that directory and adds a
 			# bookmark at the beginning to simplify navigation on long
 			# pages. All links are relative.
@@ -1186,7 +1186,7 @@ sub GenerateHTMLPages
 
 		# Otherwise display the directory name only. A bookmark is added for
 		# links when the $subdir variable is not set to allow the user to
-		# have a list of categories at the top of the header.htm file. This
+		# have a list of categories at the top of the header.html file. This
 		# allows the browser to jump to that section (useful on very long 
 		# pages).
 
@@ -1281,7 +1281,7 @@ sub GenerateHTMLPages
 
 ################################################################################
 # title - a subroutine to extract and return the title of a document. This works
-#         only for .htm[l] and .txt files. For .txt files, a line beginning with
+#         only for .html and .txt files. For .txt files, a line beginning with
 #         TITLE is expected. Returns the filename passed to it if no match is
 #         found.
 ################################################################################
@@ -1657,7 +1657,7 @@ sub OpenHTMLFile
 
 ################################################################################
 # DisplaySelectedSections - a subroutine display selected sections of the file
-#                           passed to this subroutine in the <dirname>.htm file
+#                           passed to this subroutine in the <dirname>.html file
 #                           that is being created.
 ################################################################################
 
