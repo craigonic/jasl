@@ -8,26 +8,28 @@
 //                                                                            //
 // Written By : Craig R. Campbell  -  December 1998                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Squad.java,v 1.6 2001/12/09 06:53:08 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Squad.java,v 1.7 2002/02/21 07:53:20 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// ************************************************************************** //
-// Squad class - This class is used to define the unique characteristics of   //
-//               squad "units". Instances of this class may be instantiated   //
-//               directly.                                                    //
-// ************************************************************************** //
-
+/**
+ * This class is used to represent a Squad counter.
+ * @see <A HREF=../../docs/Counters/Squad.java.html>Source code</A>
+ * @author Craig R. Campbell
+ * @version 1.7
+ */
 public final class Squad extends Personnel
 {
+	// Public symbolic constants
+
+	/** Minimum valid smoke placement exponent value : <B>0</B> */
+	public static final int MIN_SMOKE_EXPONENT = 0;
+
+	/** Maximum valid smoke placement exponent value : <B>3</B> */
+	public static final int MAX_SMOKE_EXPONENT = 3;
+
 	// Private symbolic constants
-
-	// These constants are used to determine if the value of the 
-	// smokePlacementExponent parameter passed to the constructor is valid.
-
-	private static final int MIN_SMOKE_EXPONENT = 0;
-	private static final int MAX_SMOKE_EXPONENT = 3;
 
 	// This constant is used as part of the error messages (see below) that
 	// that are generated when an exception is thrown.
@@ -37,16 +39,10 @@ public final class Squad extends Personnel
 	// Private data members
 
 	// This flag variable indicates whether or not the Squad that this object
-	// represents is capable of assault fire. This is indicated on the physical
-	// counter by an underscored firepower value.
+	// represents is capable of assault fire and movement. This is indicated
+	// on the physical counter by an underscored firepower value.
 
-	private boolean canAssaultFire;
-
-	// This flag variable indicates whether or not the Squad that this object
-	// represents is capable of spraying fire. This is indicated on the physical
-	// counter by an underscored range value.
-
-	private boolean canSprayFire;
+	private boolean assaultFireCapable;
 
 	// This variable is used to indicate if the Squad that this object
 	// represents is capable of placing smoke grenades and the chance of
@@ -62,14 +58,51 @@ public final class Squad extends Personnel
 
 	// Constructor
 
-	// This constructor is used to instantiate a Squad object.
-
+	/**
+	 * Construct a new <CODE>Squad</CODE>.
+	 * @param basicPointValue the point "value" of the Squad for the purpose of
+	 * determining battlefield integrity and for design your own (DYO)
+	 * scenarios. Example - <B>15</B>
+	 * @param nationality the nationality of the Squad. Example - 
+	 * <B><A HREF=Counter.html#GERMAN>GERMAN</A></B>
+	 * @param identity an identifier for the Squad. Example - <B>"A1"</B>
+	 * @param unitType a more specific nationality, type, or capability
+	 * description for the Squad. Example -
+	 * <B><A HREF=Counter.html#SS>SS</A></B>
+	 * @param firepower the inherent firepower of the Squad. Example -
+	 * <B>"6"</B>
+	 * @param normalRange the maximum range that the Squad's inherent firepower
+	 * can be used at full strength. Example - <B>5</B>
+	 * @param sprayFireCapable indicates if the Squad can engage targets in
+	 * multiple locations in a single fire action. Example - <B>true</B>
+	 * @param morale the morale level of the Squad in its unbroken state.
+	 * Example - <B>8</B>
+	 * @param brokenMorale the morale level of the Squad when it is broken.
+	 * Example - <B>9</B>
+	 * @param selfRallyCapable indicates if the Squad can rally without the
+	 * presence of a <A HREF=Leader.html>Leader</A>. Example - <B>false</B>
+	 * @param experienceLevelRating a value used for determining when a
+	 * Squad should be replaced with a lower quality Squad or Half Squad(s).
+	 * Example - <B>5</B>
+	 * @param hasMaximumELR indicates if the Squad inherently has the maximum
+	 * experience level rating. Example - <B>true</B>
+	 * @param classification the quality of the Squad. Example - 
+	 * <B><A HREF=Counter.html#FIRST_LINE>FIRST_LINE</A></B>
+	 * @param assaultFireCapable indicates if the Squad can use assault fire and
+	 * movement. Example - <B>false</B>
+	 * @param smokePlacementExponent  a value used to indicate the inherent
+	 * smoke generation ability of the Squad. Example - <B>2</B>
+	 * @throws <CODE>NullPointerException</CODE> in the case of a null
+	 * <CODE>String</CODE> parameter.
+	 * @throws <CODE>IllegalArgumentException</CODE> in the case of an a zero
+	 * length <CODE>String</CODE> parameter or an invalid numeric value.
+	 */
 	public Squad(String nationality,String identity,String unitType,
-	             String firepower,int normalRange,int movement,int morale,
-	             int brokenMorale,boolean canSelfRally,int basicPointValue,
-	             int experienceLevelRating,boolean hasMaxELR,
-	             String classification,boolean canAssaultFire,
-	             boolean canSprayFire,int smokePlacementExponent)
+	             String firepower,int normalRange,boolean sprayFireCapable,
+	             int morale,int brokenMorale,boolean selfRallyCapable,
+	             int basicPointValue,int experienceLevelRating,
+	             boolean hasMaximumELR,String classification,
+	             boolean assaultFireCapable,int smokePlacementExponent)
 	{
 		// Pass the first 13 parameters to the superclass constructor. Note
 		// that one or more variables has been set with symbolic constants.
@@ -78,8 +111,9 @@ public final class Squad extends Personnel
 		// caught and handled by the program creating the object.
 
 		super(SQUAD,nationality,identity,unitType,firepower,normalRange,
-		      movement,morale,brokenMorale,canSelfRally,basicPointValue,
-		      experienceLevelRating,hasMaxELR,classification);
+		      sprayFireCapable,morale,brokenMorale,selfRallyCapable,
+		      basicPointValue,experienceLevelRating,hasMaximumELR,
+		      classification);
 
 		// Check the value of each remaining parameter and copy the value to
 		// the local copy of the corresponding variable if an exception is not
@@ -87,11 +121,7 @@ public final class Squad extends Personnel
 
 		// Assault Fire Capability
 
-		this.canAssaultFire = canAssaultFire;
-
-		// Spray Fire Capability
-
-		this.canSprayFire = canSprayFire;
+		this.assaultFireCapable = assaultFireCapable;
 
 		// Smoke Placement Capability
 
@@ -107,10 +137,16 @@ public final class Squad extends Personnel
 
 	// Public access methods
 
-	// toString - A method to display the value of the private data members of
-	//            the current instance. The intent of this method is to provide
-	//            text-based verification output for development and debugging.
-
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. All of the members, beginning with the top-level class
+	 * (<B><A HREF=Unit.html>Unit</A></B>) and continuing down the hierarchy to
+	 * this level, are appended to the returned string. Each value is preceded
+	 * by a label defined in the <B><A HREF=Counter.html>Counter</A></B>
+	 * interface. There are no more than two values, including labels, in each
+	 * line of output.
+	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
+	 */
 	public String toString()
 	{
 		// Define local constants.
@@ -146,45 +182,9 @@ public final class Squad extends Personnel
 
 		try
 		{
-			returnString.append(formatTextString((canAssaultFire) ? YES : NO,
+			returnString.append(formatTextString(canAssaultFire() ? YES : NO,
 			                                     SECOND_COLUMN_VALUE_WIDTH,
 			                                     false,false));
-		}
-
-		catch (NullPointerException exception)
-		{
-			System.err.println(METHOD_LABEL + exception);
-		}
-
-		catch (IllegalArgumentException exception)
-		{
-			System.err.println(METHOD_LABEL + exception);
-		}
-
-		// Spray Fire Capability
-
-		try
-		{
-			returnString.append(formatTextString(CAN_SPRAY_FIRE_LABEL,
-			                                     THIRD_COLUMN_LABEL_WIDTH,
-			                                     true,false));
-		}
-
-		catch (NullPointerException exception)
-		{
-			System.err.println(METHOD_LABEL + exception);
-		}
-
-		catch (IllegalArgumentException exception)
-		{
-			System.err.println(METHOD_LABEL + exception);
-		}
-
-		try
-		{
-			returnString.append(formatTextString((canSprayFire) ? YES : NO,
-			                                     FOURTH_COLUMN_VALUE_WIDTH,
-			                                     false,true));
 		}
 
 		catch (NullPointerException exception)
@@ -202,7 +202,7 @@ public final class Squad extends Personnel
 		try
 		{
 			returnString.append(formatTextString(SMOKE_PLACEMENT_EXP_LABEL,
-			                                     FIRST_COLUMN_LABEL_WIDTH,
+			                                     THIRD_COLUMN_LABEL_WIDTH,
 			                                     true,false));
 		}
 
@@ -218,8 +218,8 @@ public final class Squad extends Personnel
 
 		try
 		{
-			returnString.append(formatTextString(getSmokePlacementExponent(),
-			                                     SECOND_COLUMN_VALUE_WIDTH,
+			returnString.append(formatTextString(getSPE(),
+			                                     FOURTH_COLUMN_VALUE_WIDTH,
 			                                     false,true));
 		}
 
@@ -238,11 +238,24 @@ public final class Squad extends Personnel
 		return (returnString.toString());
 	}
 
-	// getSmokePlacementExponent - A method to return the value of the
-	//                             smokePlacementExponent member variable to the
-	//                             calling program.
+	/**
+	 * Determine if this Squad has assault fire and movement capabilities. This
+	 * is indicated on the physical counter by an underscored firepower value.
+	 * @return a <CODE>boolean</CODE> indicating if a Squad has this capability.
+	 */
+	public boolean canAssaultFire()
+	{
+		return (assaultFireCapable);
+	}
 
-	public String getSmokePlacementExponent()
+	/**
+	 * Determine the smoke placement capability of this Squad. This is
+	 * indicated on the physical counter as a superscript on the firepower
+	 * value.
+	 * @return a <CODE>String</CODE> specifying the Smoke Placement Exponent
+	 * value.
+	 */
+	public String getSPE()
 	{
 		return (Integer.toString(smokePlacementExponent));
 	}
