@@ -8,7 +8,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Unit.java,v 1.2 1999/07/10 06:29:51 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Unit.java,v 1.3 1999/08/14 05:27:05 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -20,6 +20,16 @@ package Counters;
 
 abstract public class Unit
 {
+	// Protected symbolic constants
+
+	// These constants are available to all subclasses and are used to name
+	// public classes of the Counters hierarchy that may be directly 
+	// instantiated. These values end up getting sent to this class to become
+	// the value of "description".
+
+	protected static final String SQUAD  = "Squad";
+	protected static final String LEADER = "Leader";
+
 	// Private data members
 
 	// This variable contains a descriptive name for the derived object of this
@@ -70,28 +80,6 @@ abstract public class Unit
 		this.description = description;
 	}
 
-	// Public symbolic constants 
-
-	// These constants are used to define the minimum values for some of the
-	// key attributes for all of the fighting units defined by the public
-	// subclasses of Unit. They are defined as public to allow their values to
-	// be accessed without creating an object. A possible application might be
-	// in building a menu to create "Unit" objects.
-
-	public static final int MIN_FIREPOWER = 0;
-	public static final int MIN_MOVEMENT  = 0;
-	public static final int MIN_RANGE     = 0;
-
-	// Protected symbolic constants
-
-	// These constants are available to all subclasses and are used to name
-	// public classes of the Counters hierarchy that may be directly 
-	// instantiated. These values end up getting sent to this class to become
-	// the value of "description".
-
-	protected static final String SQUAD  = "Squad";
-	protected static final String LEADER = "Leader";
-
 	// Protected access methods
 
 	// showValues - A function to display the value of the private data members
@@ -125,36 +113,34 @@ abstract public class Unit
 	}
 
 	// The following abstract methods are defined in the subclasses of Unit.
-	// This is necessary in order to allow different types of instances derived
+	// This is necessary in order to allow different public class types derived
 	// from Unit to be stored and accessed as the generic Unit type. It is also
-	// necessary in order to access the public access methods without casting to
-	// a specific instance type.
+	// necessary in order to access the public access methods of the entire 
+	// hierarchy without casting to a specific class type.
 
 	// Fighting.java
 
-	abstract public String getNationality();
+	abstract public String  getNationality();
+	abstract public String  getIdentity();
+	abstract public String  getUnitType();
+	abstract public int     getFirepower();
+	abstract public int     getNormalRange();
 
 	// Mobile.java
 
-	abstract public int getMovement();
+	abstract public int     getMovement();
 
 	// Infantry.java
 
-	abstract public String getStatus();
+	abstract public String  getStatus();
 	abstract public boolean rally(boolean isLeaderPresent,int modifier);
 	abstract public boolean moraleCheck(int modifier);
 
-	// Personnel.java
-
- 	abstract public int getFirepower();
- 	abstract public int getNormalRange();
-
 	// Squad.java
 
-	abstract public String getClassification();
+	abstract public String  getClassification();
 	
 	// Leader.java
 
-	abstract public int getModifier();
-	abstract public String getName();
+	abstract public int     getModifier();
 }
