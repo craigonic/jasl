@@ -3,4 +3,112 @@
 <TITLE>jASL Source Browser</TITLE>
 </HEAD>
 <H1>jASL Source Browser</H1>
+<HR>
+Generation of all the files and documentation for the jASL program relies
+heavily on the 'make' program. It is not absolutely necessary, particularly for
+building the .class files, but it does simplify the process. Another alternative
+for build automation is
+<A HREF=http://jakarta.apache.org/ant/index.html>Ant</A>. Its implementation for
+this program is left as an exercise.
 <P>
+The following conditions are assumed about the system used to process the files
+in this directory.
+<UL>
+<LI>The original directory structure for this system is in place. The top level
+directory is <B>jasl</B>, which is referred to as <B><I>JASL_BASE</I></B> in
+this document.
+<LI>Java SE SDK (1.2 or higher). I use the
+<A HREF=http://www.blackdown.org/java-linux.html>Blackdown port for Linux</A>,
+but the <A HREF=http://java.sun.com/j2se/>Sun</A> versions should also work.
+<LI><I>Optional. </I>An environment variable named JASL_BASE, which is set to
+the top level directory. This is necessary for make to work properly. Examples:
+<UL>
+<TT>setenv JASL_BASE /home/craig/java/jasl</TT><BR>
+<TT>JASL_BASE=/home/craig/java/jasl ; export JASL_BASE</TT>
+</UL>
+<LI><I>Optional. </I>
+<A HREF=http://www.fsf.org/software/make/make.html>make</A>.
+<LI><I>Optional. </I>
+<A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
+build a native executable version of this package.
+<LI><I>Optional. </I>
+<A HREF=http://www.gnu.org/software/source-highlite/>source-highlite</A>. This
+program is used to create HTML versions of the source files.
+<LI><I>Optional. </I><A HREF=http://www.perl.com/>Perl</A> and <TT>sed</TT>,
+which are used to build a linked hierarchy of the HTML versions of the source
+files.
+<LI><I>Optional. </I>A <A HREF=../BuildARMToolChainNotes.html>toolchain</A>
+capable of building an executable with <A HREF=http://gcc.gnu.org/java/>GCJ</A> 
+for a non-iX86 architecture. I have used these source files and build structure,
+with only the minor change noted below for the <TT>gcj</TT> and <TT>gcj_obj</TT>
+targets, to cross-compile an executable and run it on my
+<A HREF=http://www.myzaurus.com/>Sharp Zaurus</A>. To specify an alternative gcj
+compiler, such as arm-linux-gcj, specify the execution of make as follows:
+<TT>make GCJ_COMPILER=arm-linux-gcj <I>[gcj related target]</I></TT>
+</UL>
+<P>
+The purpose of each target defined in the Makefile is listed below. The
+executable and object files are written to (and deleted from) the output
+directory - <B><I>JASL_BASE</I>/jasl</B>.
+<UL>
+<LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all the source
+files using
+<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javac.html>javac</A>,
+placing the .class files in the output directory.
+The .class files in each subdirectory are also generated. This is done
+implicitly with <I>none</I> and <TT>all</TT> and explicitly with <TT>build</TT>.
+<P>
+<LI><TT>gcj</TT> - executes the actions defined for the <TT>gcj_obj</TT> target
+and then builds a native executable using
+<A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing the file in the
+output directory.
+<LI><TT>gcj_obj</TT> - compiles all of the source files in each subdirectory
+using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing the object
+(.o) files in the matching subdirectory of the output directory. The .class
+files for each source file are also generated and placed in the appropriate
+location as a result of the execution of this target.
+<P>
+<LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
+bytecode file using
+<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javac.html>javac</A>,
+placing <TT>filename.class</TT> in the output directory.
+<P>
+<LI><TT>build_gcj</TT> - executes the actions defined for the <TT>gcj</TT>
+target. Upon completion, the <TT>clean_obj</TT>, <TT>clean_class</TT>, and
+<TT>clean_java</TT> targets are executed, removing all of the intermediate
+files created by the build.
+<LI><TT>build_all</TT> - executes the actions defined for the <TT>gcj</TT> and
+<TT>jar</TT> targets.
+<P>
+<LI><TT>clean_class</TT> - deletes the main .class program file in the output
+directory.
+<LI><TT>clean_gcj</TT> - deletes the native executable in the output directory.
+<LI><TT>clean_jar</TT> - deletes the jar archive in the output directory.
+<P>
+<LI><TT>clean</TT> - executes the actions defined for the <TT>clean_class</TT>,
+<TT>clean_gcj</TT>, and <TT>clean_jar</TT> targets.
+<P>
+<LI><TT>clean_java</TT> - deletes all of the .class files in the subdirectories 
+of the output directory.
+<LI><TT>clean_obj</TT> - deletes all of the object (.o) files in the
+subdirectories of the output directory.
+<P>
+<LI><TT>clean_all</TT> - executes the actions defined for the
+<TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
+<P>
+<LI><TT>docs</TT> - generates an HTML version of each source file, placing the
+output files in <B><I>JASL_BASE</I>/docs/source</B>. This file,
+<B><I>JASL_BASE</I>/docs/source/source.htm</B>, is also generated, and includes
+links to all of the HTML files in their respective subdirectories.
+<LI><TT>javadocs</TT> - generates class documentation for this program using
+<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javadoc.html>javadoc</A>.
+The output files are placed in
+<B><A HREF=../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
+<P>
+<LI><TT>jar</TT> - create an executable
+<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/jar.html>jar</A>
+archive of the jASL program. This target will delete the object (.o) files in
+the subdirectories of the output directory to prevent them from being included
+in the archive.
+</UL>
+<HR>
