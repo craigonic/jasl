@@ -9,20 +9,20 @@
 //                                                                            //
 // Written By     : Craig R. Campbell  -  December 1998                       //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Personnel.java,v 1.5 2001/12/09 06:49:27 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Personnel.java,v 1.6 2002/02/21 07:39:24 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// ************************************************************************** //
-// Personnel class - This class is used to define the characteristics of all  //
-//                   infantry "units" other than leaders, those that          //
-//                   represent more than one combat soldier. The exception to //
-//                   this definition is the Hero class. Instances of this     //
-//                   class may not be instantiated directly. It is strictly a //
-//                   parent class.                                            //
-// ************************************************************************** //
-
+/**
+ * This class is used to define the characteristics which are common to all
+ * infantry units that represent more than one combat soldier. In the board
+ * game, these units are referred to as multi-man counters (MMC). This class is
+ * strictly a superclass and cannot be instantiated directly.
+ * @see <A HREF=../../docs/Counters/Personnel.java.html>Source code</A>
+ * @author Craig R. Campbell
+ * @version 1.6
+ */
 class Personnel extends Infantry
 {
 	// Private symbolic constants
@@ -30,8 +30,10 @@ class Personnel extends Infantry
 	// These constants are used in the constructor to pass the correct value
 	// of a Personnel unit (multi-man counter) for each attribute. Other types
 	// of Units may allow the calling program to set these values but they are
-	// the same for all MMCs.
+	// the same for all MMCs. The movement allowance is reduced by one if the
+	// unit is inexperienced.
 
+	private static final int MOVEMENT_ALLOWANCE = 4;
 	private static final int PORTAGE_CAPACITY   = 3;
 	private static final int PORTAGE_VALUE      = 10;
 
@@ -41,6 +43,13 @@ class Personnel extends Infantry
 	private static final String CLASS_NAME = "Personnel";
 
 	// Private data members
+
+	// This variable is used to indicate that the unit that this object
+	// represents is automatically given the maximum ELR. This flag affects how
+	// the unit is replaced/reduced. It is indicated on the physical counter by
+	// an underscored morale value.
+
+	private boolean hasMaximumELR;
 
 	// The purpose of the classification variable is to describe the experience
 	// level of the object that it represents. It applies only to multi-man
@@ -68,9 +77,9 @@ class Personnel extends Infantry
 
 	protected Personnel(String description,String nationality,String identity,
 	                    String unitType,String firepower,int normalRange,
-	                    int movement,int morale,int brokenMorale,
-	                    boolean canSelfRally,int basicPointValue,
-	                    int experienceLevelRating,boolean hasMaxELR,
+	                    boolean sprayFireCapable,int morale,int brokenMorale,
+	                    boolean selfRallyCapable,int basicPointValue,
+	                    int experienceLevelRating,boolean hasMaximumELR,
 	                    String classification)
 	{
 		// Pass the first 13 parameters to the superclass constructor. Note
@@ -80,12 +89,19 @@ class Personnel extends Infantry
 		// caught and handled by the program creating the object.
 
 		super(description,nationality,identity,unitType,firepower,normalRange,
-		      PORTAGE_VALUE,movement,PORTAGE_CAPACITY,morale,brokenMorale,
-		      canSelfRally,basicPointValue,experienceLevelRating,hasMaxELR);
+		      PORTAGE_VALUE,sprayFireCapable,MOVEMENT_ALLOWANCE,
+		      PORTAGE_CAPACITY,morale,brokenMorale,selfRallyCapable,
+		      basicPointValue,experienceLevelRating);
 
 		// Check the value of the remaining parameter and copy the value to
 		// the local copy of the corresponding variable if an exception is not
 		// found.
+
+		// Maximum ELR flag
+
+		this.hasMaximumELR = hasMaximumELR;
+
+		// Classification
 
 		if (classification == null)
 		{
@@ -116,12 +132,16 @@ class Personnel extends Infantry
 
 	// Public access methods
 
-	// toString - A method to display the value of the private data members of
-	//            the current instance. The intent of this method is to provide
-	//            text-based verification output for development and debugging.
-	//            Each subclass includes a method with the same name and
-	//            purpose.
-
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. All of the members, beginning with the top-level class
+	 * (<B><A HREF=Unit.html>Unit</A></B>) and continuing down the hierarchy to
+	 * this level, are appended to the returned string. Each value is preceded
+	 * by a label defined in the <B><A HREF=Counter.html>Counter</A></B>
+	 * interface. There are no more than two values, including labels, in each
+	 * line of output.
+	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
+	 */
 	public String toString()
 	{
 		// Define local constants.
@@ -136,9 +156,11 @@ class Personnel extends Infantry
 		// Add the information describing the data stored in this class
 		// instance.
 
+		// Maximum ELR flag
+
 		try
 		{
-			returnString.append(formatTextString(CLASSIFICATION_LABEL,
+			returnString.append(formatTextString(HAS_MAXIMUM_ELR_LABEL,
 			                                     FIRST_COLUMN_LABEL_WIDTH,
 			                                     true,false));
 		}
@@ -155,8 +177,44 @@ class Personnel extends Infantry
 
 		try
 		{
-			returnString.append(formatTextString(getClassification(),
+			returnString.append(formatTextString(hasMaxELR() ? YES : NO,
 			                                     SECOND_COLUMN_VALUE_WIDTH,
+			                                     false,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Classification
+
+		try
+		{
+			returnString.append(formatTextString(CLASSIFICATION_LABEL,
+			                                     THIRD_COLUMN_LABEL_WIDTH,
+			                                     true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(formatTextString(getClassification(),
+			                                     FOURTH_COLUMN_VALUE_WIDTH,
 			                                     false,true));
 		}
 
@@ -175,9 +233,30 @@ class Personnel extends Infantry
 		return (returnString.toString());
 	}
 
-	// getClassification - A method to return the value of the classification
-	//                     member variable to the calling program.
+	/**
+	 * Determine if this MMC inherently has the maximum experience level
+	 * rating. This is used to determine how a unit is replaced. It is indicated
+	 * on the physical counter by an underscored morale value.
+	 * @return a <CODE>boolean</CODE> indicating if an MMC has this attribute.
+	 */
+	public boolean hasMaxELR()
+	{
+		return (hasMaximumELR);
+	}
 
+	/**
+	 * Determine the classification of this unit. This is indicated on the front
+	 * of the physical counter by an alphanumeric character in the upper right
+	 * corner. The recognized values are listed below.
+	 * @return a <CODE>String</CODE> specifying the classification.
+	 * @see Counter#CLASSIFICATIONS
+	 * @see Counter#CLASSIFICATIONS_VECTOR
+	 * @see Counter#ELITE
+	 * @see Counter#FIRST_LINE
+	 * @see Counter#SECOND_LINE
+	 * @see Counter#GREEN
+	 * @see Counter#CONSCRIPT
+	 */
 	public String getClassification()
 	{
 		return (classification);
