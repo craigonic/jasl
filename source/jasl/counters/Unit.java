@@ -8,16 +8,17 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Unit.java,v 1.6 2001/12/08 06:45:34 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Unit.java,v 1.7 2002/02/21 06:40:38 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// ************************************************************************** //
-// Unit class - This is the top-level class of the Counters package. All      //
-//              the classes in this Package are derived from Unit.            //
-// ************************************************************************** //
-
+/**
+ * This class is used to define the basic components of a counter.
+ * @see <A HREF=../../docs/Counters/Unit.java.html>Source code</A>
+ * @author Craig R. Campbell
+ * @version 1.7
+ */
 public abstract class Unit implements Counter
 {
 	// Protected symbolic constants
@@ -26,9 +27,58 @@ public abstract class Unit implements Counter
 	// the default return values / settings for the public methods defined in
 	// this class (see comment below) or in its subclasses.
 
+	/** Default integer value for initialization and return purposes :
+	 *  <B>0</B>
+	 */
 	protected static final int     DEFAULT_INT_VALUE    = 0;
+
+	/** Default flag value for initialization and return purposes : 
+	 *<B>false</B>
+	 */
 	protected static final boolean DEFAULT_FLAG_VALUE   = false;
+
+	/** Default string value for initialization and return purposes :
+	 *  <B>Unknown</B>
+	 */
 	protected static final String  DEFAULT_STRING_VALUE = "Unknown";
+
+	/**
+	 * The width of the first column of output from the toString() method in
+	 * this class and it's subclasses : <B>20</B>.
+	 * @see #formatTextString
+	 * @see #toString
+	 */
+	protected static final int FIRST_COLUMN_LABEL_WIDTH  = 20;
+
+	/**
+	 * The width of the second column of output from the toString() method in
+	 * this class and it's subclasses : <B>17</B>.
+	 * @see #formatTextString
+	 * @see #toString
+	 */
+	protected static final int SECOND_COLUMN_VALUE_WIDTH = 17;
+
+	/**
+	 * The width of the third column of output from the toString() method in
+	 * this class and it's subclasses : <B>26</B>.
+	 * @see #formatTextString
+	 * @see #toString
+	 */
+	protected static final int THIRD_COLUMN_LABEL_WIDTH  = 26;
+
+	/**
+	 * The width of the fourth column of output from the toString() method in
+	 * this class and it's subclasses : <B>17</B>.
+	 * @see #formatTextString
+	 * @see #toString
+	 */
+	protected static final int FOURTH_COLUMN_VALUE_WIDTH = 17;
+
+	/**
+	 * Indicates that the unit's current status is <B>Normal</B>
+	 * @see #getStatus
+	 */
+	protected static final String NORMAL   = "Normal";
 
 	// Private symbolic constants
 
@@ -56,9 +106,15 @@ public abstract class Unit implements Counter
 
 	// Constructors
 
-	// Default constructor. This is used to create arrays of this data type
-	// which can be used to reference groups of objects derived from Unit.
+	// Default constructor.
 
+	/**
+	 * Construct a new <CODE>Unit</CODE>. This is an "empty" object and is
+	 * intended for use primarily as a reference to one of the derived public
+	 * object types.  
+	 * @see Leader
+	 * @see Squad
+	 */
 	public Unit() {}
 
 	// This constructor is used during the instantiation of classes derived
@@ -99,9 +155,19 @@ public abstract class Unit implements Counter
 
 	// Public static methods
 
-	// buildErrorMessage - A method to create the error messages included with
-	//                     exceptions thrown by classes in this package.
-
+	/**
+	 * Build a descriptive error message to help pinpoint the location where an
+	 * exception occurred.
+	 * @param className the name of the class where the error occurred. Example
+	 * - "Unit"
+	 * @param methodName the name of the method where the error occurred.
+	 * Example - "constructor"
+	 * @param message the message describing the error. Example - "Null
+	 * parameter received."
+	 * @return a <CODE>String</CODE> containing the location in the code where
+	 * the error occurred and a descriptive message. Example -
+	 * <CODE>Unit(constructor) - Null parameter received.</CODE>
+	 */
 	public static final String buildErrorMessage(String className,
 	                                             String methodName,
 	                                             String message)
@@ -140,12 +206,28 @@ public abstract class Unit implements Counter
 		return (errorString.toString());
 	}
 
-	// formatTextString - A method to create a formatted version of the input
-	//                    string by appending spaces as necessary to make the
-	//                    length equal to the specified value. If the string is
-	//                    a label, the second to last character will be set to a
-	//                    ":". The last character will always be set to a SPACE.
-
+	/**
+	 * Create a formatted version of an input string by appending spaces as
+	 * necessary to make the length equal to a specific value. This function is
+	 * used primarily to create the tabular output for the toString() method.
+	 * The last character in the returned string will always be set to a SPACE.
+	 * @param inputString the string to be formatted. Example - "Description"
+	 * @param columnWidth the width of the returned string. Example - 15
+	 * @param isALabel indicates if the string will be used as a label. If this
+	 * flag is set, the second to last character in the returned string will be
+	 * set to a ":".
+	 * @param addNewLine indicates if a newline (CR-LF) should be added to the
+	 * returned string.
+	 * @return a <CODE>String</CODE> formatted to meet the specified parameters.
+	 * Example - <CODE>Description  : </CODE>
+	 * @throws <CODE>NullPointerException</CODE> in the case of a null input
+	 * string
+	 * @throws <CODE>IllegalArgumentException</CODE> in the case of a zero
+	 * length input string
+	 * @throws <CODE>IllegalArgumentException</CODE> in the case of a column
+	 * width that is less than 2
+	 * @see #toString
+	 */
 	public static final String formatTextString(String inputString,
 	                                            int columnWidth,
 	                                            boolean isALabel,
@@ -233,28 +315,24 @@ public abstract class Unit implements Counter
 
 	// Public access methods
 
-	// toString - A method to display the value of the private data members of
-	//            the current instance. The intent of this method is to provide
-	//            text-based verification output for development and debugging.
-	//            Each subclass includes a method with the same name and
-	//            purpose. Since this is the top-level of the hierarchy, this
-	//            version also includes a header.
-
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. Each value is preceded by a label defined in the
+	 * Counter interface. There are no more than two values, including labels,
+	 * in each line of output.
+	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
+	 */
 	public String toString()
 	{
 		// Define local constants.
 
 		String METHOD_LABEL = CLASS_NAME + TO_STRING_LABEL;
 
-		String COUNTER_PKG_HEADER_ONE = "Counter package instance values:\n";
-		String COUNTER_PKG_HEADER_TWO = "--------------------------------\n";
-
 		// Create a buffer to store the string to be returned, initializing it
 		// with the values that define the header (since this is the top level
 		// of the class hierarchy).
 
-		StringBuffer returnString = new StringBuffer(COUNTER_PKG_HEADER_ONE + 
-		                                             COUNTER_PKG_HEADER_TWO);
+		StringBuffer returnString = new StringBuffer();
 
 		// Add the information describing the data stored in this class
 		// instance.
@@ -298,9 +376,18 @@ public abstract class Unit implements Counter
 		return (returnString.toString());
 	}
 
-	// getDescription - A method to return the value of the description member
-	//                  variable to the calling program.
-
+	/**
+	 * Determine the description of this unit. This is the name of the public
+	 * derived subclass that was specified to create this object. The recognized
+	 * values are listed below.
+	 * @return a <CODE>String</CODE> specifying the unit description.
+	 * @see Counter#DESCRIPTIONS
+	 * @see Counter#DESCRIPTIONS_VECTOR
+	 * @see Counter#CREW
+	 * @see Counter#HALF_SQUAD
+	 * @see Counter#LEADER
+	 * @see Counter#SQUAD
+	 */
 	public String getDescription()
 	{
 		return (description);
@@ -314,17 +401,79 @@ public abstract class Unit implements Counter
 
 	// Fighting.java
 
-	abstract public String  getNationality();
-	abstract public String  getIdentity();
-	abstract public String  getUnitType();
-	abstract public String  getFirepower();
-	abstract public String  getNormalRange();
-	abstract public String  getStatus();
+	/**
+	 * Determine the identity of this unit.
+	 * @return a <CODE>String</CODE> specifying the unit's identity.
+	 * @see Fighting#getIdentity
+	 */
+	abstract public String getIdentity();
 
+	/**
+	 * Determine the type of this unit.
+	 * @return a <CODE>String</CODE> specifying a more precise description of
+	 * the unit type.
+	 * @see Fighting#getUnitType
+	 */
+	abstract public String getUnitType();
+
+	/**
+	 * Determine the firepower of this unit.
+	 * @return a <CODE>String</CODE> specifying the unit's firepower.
+	 * @see Fighting#getFirepower
+	 */
+	abstract public String getFirepower();
+
+	/**
+	 * Determine the maximum range that this unit may fire its weapon(s) at full
+	 * effect.
+	 * @return a <CODE>String</CODE> specifying the normal range of the unit's
+	 * weapon(s).
+	 * @see Fighting#getNormalRange
+	 */
+	abstract public String getNormalRange();
+
+	/**
+	 * Determine the current status of this unit.
+	 * @return a comma delimited <CODE>String</CODE> describing the unit status.
+	 * @see Fighting#getStatus
+	 * @see Infantry#getStatus
+	 */
+	abstract public String getStatus();
+
+	/**
+	 * Attempt to restore this unit's status to
+	 * <A HREF=Unit.html#NORMAL>NORMAL</A>.
+	 * @param isLeaderPresent indicates if a 
+	 * <B><A HREF=Leader.html>Leader</A></B> is present, which may determine if
+	 * a restoration attempt can be made or not.
+	 * @param modifier the applicable dice roll modifier for the attempt. This
+	 * includes leadership DRM as well as other factors.
+	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is 
+	 * changed as a result of calling this method.
+	 * @see Fighting#restore
+	 * @see Infantry#restore
+	 */
 	abstract public boolean restore(boolean isLeaderPresent,int modifier);
+
+	/**
+	 * Perform a morale or task check on this unit.
+	 * @param modifier the applicable dice roll modifier for the check. This
+	 * includes leadership DRM as well as other factors.
+	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is 
+	 * changed as a result of calling this method.
+	 * @see Fighting#check
+	 * @see Infantry#check
+	 */
 	abstract public boolean check(int modifier);
 
 	// Mobile.java
 
-	abstract public String  getMovement();
+	/**
+	 * Determine the number of movement factors or points available to this
+	 * unit before it begins to move.
+	 * @return a <CODE>String</CODE> specifying the movement capability in
+	 * factors or points.
+	 * @see Mobile#getMovement
+	 */
+	abstract public String getMovement();
 }
