@@ -7,12 +7,13 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.11 2001/12/11 06:15:46 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.12 2002/02/21 05:59:00 craig Exp $
 ################################################################################
 
 # Define variables.
 
 JAVA_COMPILER     = javac
+JAVADOC_COMPILER  = javadoc
 GCJ_COMPILER      = gcj
 
 HTLS              = htls -genpage
@@ -28,10 +29,17 @@ CLASSPATH_CMD     = -classpath $(CLASSPATH)
 GCJ_CLASSPATH_CMD = --CLASSPATH=$(CLASSPATH)
 OUTPUT_DIR_CMD    = -d $(CLASSPATH)
 
-#OPTIMIZE          = -O
+JAVA_OPTIMIZE     = -O
+GCJ_OPTIMIZE      = -O3 -s -pipe
 
-JAVA_OPTIONS      = $(JAVA_COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD)
-GCJ_OPTIONS       = $(GCJ_COMPILER) -c
+JAVA_OPTIONS      = $(JAVA_COMPILER) $(JAVA_OPTIMIZE) $(OUTPUT_DIR_CMD)
+GCJ_OPTIONS       = $(GCJ_COMPILER) -c $(GCJ_OPTIMIZE)
+
+JAVADOCS_PATH     = -d ../../javadocs
+JAVADOCS_LINK     = -link http://java.sun.com/j2se/1.3/docs/api
+JAVADOC_OPTIONS   = -version -author -package -nodeprecatedlist -use
+JAVADOC_TITLE     = -windowtitle "jASL Counters Package Class Documentation"
+JAVADOC_CMD_LIST  = $(JAVADOCS_PATH) $(JAVADOCS_LINK) $(JAVADOC_OPTIONS) $(JAVADOC_TITLE)
 
 # Define variables to represent the source, object, and class files in/of/for
 # the Counters package.
@@ -185,3 +193,8 @@ docs:
 		$(JAVA2HTML) --input $$i --output $(DOCS_PATH)/$$i.html --title "$$i" ;\
 	done
 	@$(HTLS) $(DOCS_PATH)
+
+# Define a parameter to create HTML documentation using javadoc.
+
+javadocs:
+	@$(JAVADOC_COMPILER) $(JAVA_SRC_FILES) $(JAVADOC_CMD_LIST)
