@@ -34,7 +34,7 @@
 #
 # Modified by : Craig Campbell  -  December 2002
 #
-# $Id: htls,v 1.2 2003/01/01 00:17:16 craig Exp $
+# $Id: htls,v 1.3 2003/01/01 22:13:31 craig Exp $
 #
 
 # Set application name for messages and to exclude the program file from the
@@ -63,23 +63,10 @@ if ($h)
 	exit;
 }
 
-# Initialize the variable used to store a list of the sections in each file that
-# the program should display on the pages that are created by this program. 
-
-$sections_to_display = "";
-
 # Initialize the variable used to store the number of levels beneath each 
 # subdirectory to display data for, including the top level. 
 
 $levels_to_display   = 2;
-
-# Create a list variable used to hold different versions of $sections_to_display
-# This list is basically a stack. Before a new value is loaded into the
-# $sections_to_display variable, the old one is pushed onto this list. When
-# processing is complete for that directory, the old value is restored (popped)
-# from this list.
-
-@section_display_lists = ();
 
 # Create a list variable used to hold different versions of $levels_to_display
 # This list is basically a stack. Before a new value is loaded into the
@@ -214,7 +201,7 @@ sub Main
 sub head 
 {
 	local($title) = @_;
-	local($dir_page,$home_page,$header_page,$got_title,$dirname);
+	local($dir_page,$header_page,$got_title,$dirname);
 
 	# Retrieve the directory name from the full path value
 	# passed to this subroutine. This is used to build a 
@@ -228,7 +215,6 @@ sub head
 	# Initialize HTML file variable names.
 
 	$dir_page    = "$title/$dirname.html";
-	$home_page   = "$title/home.html";
 	$header_page = "$title/header.html";
 
 	$got_title = 0;
@@ -276,28 +262,6 @@ sub head
 			}
 		}
 
-		# If a home.html file exists in the specified directory, attempt to 
-		# retrieve the title. If the title is found, append "Index" to it
-		# and print, setting the $got_title flag.
-
-		elsif (-f $home_page)
-		{
-			$title = &title($home_page);
-
-			if ($title ne $home_page)
-			{
-				$got_title++;
-
-				# Remove the full path from the $home_page variable
-				# and use it to create a relative link.
-
-				$home_page =~ s|.*/||;
-
-				print INDEXPAGE "$title Index</title>\n</head>",
-				"<body>\n<h1><A HREF=$home_page>$title</A> Index</h1>\n";
-			}
-		}
-
 		# If a header.html file exists in the specified directory, attempt to 
 		# retrieve the title. If the title is found, append "Index" to it
 		# and print, setting the $got_title flag.
@@ -320,8 +284,8 @@ sub head
 			}
 		}
 
-		# If neither home.html or header.html exists in the specified directory,
-		# strip the path from the directory and display "Index of <dirname>".
+		# If header.html does not exist in the specified directory, strip the
+		# path from the directory and display "Index of <dirname>".
 
 		if (!($got_title))
 		{
@@ -437,9 +401,9 @@ sub htls
 
 		elsif (-f $path) 
 		{
-			# Don't process this file if it is not a text or HTML file.
+			# Don't process this file if it is not an HTML file.
 
-			next if ($path !~ /\.[Tt][Xx][Tt]$/) && ($path !~ /\.[Hh][Tt][Mm][Ll]?$/);
+			next if ($path !~ /\.[Hh][Tt][Mm][Ll]$/);
 
 			# Don't process this file if the -ht option was specified and it
 			# is not an HTML file.
@@ -602,8 +566,8 @@ sub GenerateHTMLPages
 {
 	local($dir,$subdir) = @_;
 	local($pre, $path, $entry, $relative_path, $header_file, @dirs, @list);
-	local($dirname,$output_file,$html_page,$title,$files,$overview,$sections);
-	local($subdir_path,$parent_dir,$key_name,$section_display_flag);
+	local($dirname,$output_file,$html_page,$title,$files,$overview);
+	local($subdir_path,$parent_dir,$key_name);
 	local(@test_list,$empty,$levels,$levels_key,$level_display_flag);
 	local($lvl_counter,$tmp_subdir_path,@subdir_list,$dir_last_link);
 
@@ -659,43 +623,6 @@ sub GenerateHTMLPages
 
 		if ($dir =~ /^\.$/) { $pre = ""; }
 		else { $pre = "$dir/"; }
-
-		# Initialize the variables used to hold the value returned by the
-		# call to RetrieveConfigData ($sections) and the flag variable used to
-		# indicate that the sections to display list for this directory and
-		# its subdirectories has been updated ($section_display_flag).
-
-		$sections = 0;
-		$section_display_flag = 0;
-
-		# Specify the key name related to the sections to be retrieved.
-
-		$key_name = "Display Fields";
-
-		# Call RetrieveConfigData to check for a <dirname>.cfg file in this 
-		# directory and return the settings for this directory if they
-		# have been specified.
-
-		$sections = &RetrieveConfigData($dir,$key_name);
-
-		if ($sections != -1)
-		{
-			# Save the previous settings for sections to display.
-
-			push(@section_display_lists,$sections_to_display);
-
-			# Copy the value retrieved above to the global variable
-			# $sections_to_display to allow it to be used in subdirectories
-			# that may not have a <dirname>.cfg file.
-
-			$sections_to_display = $sections;
-
-			# Set a flag to indicate that the value of $sections_to_display
-			# has been changed. This is used to restore the previous setting
-			# when this instance of this subroutine has finished.
-
-			$section_display_flag++;
-		}
 	}
 
 	else { return; } # ?!
@@ -901,9 +828,9 @@ sub GenerateHTMLPages
 
 		elsif (-f $path) 
 		{
-			# Don't process this file if it is not a text or HTML file.
+			# Don't process this file if it is not an HTML file.
 
-			next if ($path !~ /\.[Tt][Xx][Tt]$/) && ($path !~ /\.[Hh][Tt][Mm][Ll]?$/);
+			next if ($path !~ /\.[Hh][Tt][Mm][Ll]$/);
 
 			# Extract the title from the file.
 
@@ -932,11 +859,6 @@ sub GenerateHTMLPages
 			{
 				print HTMLPAGE "<LI><A HREF=$entry>$title</A>\n";
 			}
-
-			# Display any information retrieved for sections specified
-			# in the <dirname>.cfg for the current directory.
-
-			&DisplaySelectedSections($path);
 
 			# If this is the second level of the directory display, close
 			# indented section to keep the columns correct.
@@ -1268,21 +1190,11 @@ sub GenerateHTMLPages
 	{
 		&WriteHTMLFooter($output_file);
 	}
-
-	# If the $section_display_flag variable is set, indicating that the value of
-	# $sections_to_display was changed by the presence of a <dirname>.cfg file
-	# in this directory, restore the previous setting.
-
-	if ($section_display_flag)
-	{
-		$sections_to_display = pop(@section_display_lists);
-	}
 }
 
 ################################################################################
 # title - a subroutine to extract and return the title of a document. This works
-#         only for .html and .txt files. For .txt files, a line beginning with
-#         TITLE is expected. Returns the filename passed to it if no match is
+#         only for .html files. Returns the filename passed to it if no match is
 #         found.
 ################################################################################
 
@@ -1301,7 +1213,7 @@ sub title
 	{
 		# HTML files.
 
-		if ($file =~ /\.[Hh][Tt][Mm][Ll]?$/)
+		if ($file =~ /\.[Hh][Tt][Mm][Ll]$/)
 		{
 			# Change the paragraph separator to "<".
 
@@ -1310,16 +1222,6 @@ sub title
 			while (<FILE>) 
 			{
 				/^TITLE>\s*([^<]*)</i && ($title = $1) && last;
-			}
-		}
-
-		# Text files.
-
-		elsif ($file =~ /\.[Tt][Xx][Tt]$/)
-		{
-			while (<FILE>) 
-			{
-				/^TITLE[:]*\s*(.*)/i && ($title = $1) && last;
 			}
 		}
 
@@ -1338,230 +1240,6 @@ sub title
 	$title =~ s/\s+/ /g; # Replace multiple spaces with single spaces.
 
 	return $title;
-}
-
-################################################################################
-# GetSectionText - a subroutine to extract and return the text within the 
-#                  specified section of the file to the calling program. Returns
-#                  the filename if the section is not found or if the file 
-#                  cannot be opened.
-################################################################################
-
-sub GetSectionText
-{
-	local($file,$section) = @_;
-	local($info,$getlines,$heading,$tmp_info);
-
-	open(FILE,$file) || return;
-
-	# Initialize flag variable. This flag is used to indicate whether or not
-	# the data in the current section should be retrieved.
-
-	$getlines = 0;
-
-	# HTML files.
-
-	if ($file =~ /\.[Hh][Tt][Mm][Ll]?$/)
-	{
-		# Translate the section name to lower case.
-
-		$section =~ tr/a-z/A-Z/;
-
-		# Change the paragraph separator to "<".
-
-		local($/) = "<";
-
-		# Read the file until a line with the tag <A NAME = "<section name>"
-		# is found. When a match is found, check the section name extracted
-		# from the line against the one passed to this subroutine. If a match
-		# is found, check to see if a section with the same label has been
-		# previously processed. If it has, print the stored data and reset the
-		# variable. Set the flag ($getlines) and continue. Check the lines that
-		# follow for another occurrence of the tag above. If the line does not
-		# contain this tag, extract the text between any tags that may exist in
-		# the current line and append the data to $info. If the line does
-		# match, print the data, unset the storage and the flag and continue.
-
-		while (<FILE>) 
-		{
-			if (/^A NAME\s*=\s*"(.*)">([^<]*)/i)
-			{
-				$heading = $1;
-				$heading =~ tr/a-z/A-Z/;
-
-				if ($heading eq $section)
-				{
-					if ($getlines)
-					{
-						$info =~ s/^<BR>//;	# Remove leading <BR> HTML tag.
-
-						&PrintSectionText($section,$info);
-
-						undef($info);
-					}
-
-					$getlines++;
-
-					$tmp_info = $2;
-					$tmp_info =~ s/^\n/<BR>/;	# Replace the first newline
-												# character with an HTML
-												# newline.
-					$tmp_info =~ s/\n/ /g;		# Replace additional newline
-												# characters with a space.
-					$info = $tmp_info;
-				}
-
-				else
-				{
-					if (length($info) && $getlines)
-					{
-						$info =~ s/^<BR>//;	# Remove leading <BR> HTML tag.
-
-						&PrintSectionText($section,$info);
-
-						undef($info);
-					}
-
-					$getlines = 0;
-				}
-			}
-
-			elsif ($getlines)
-			{
-				if (/\/?\w+>([^<]*)</)
-				{
-					$tmp_info = $1;
-					$tmp_info =~ s/^\n/<BR>/;	# Replace the first newline
-												# character with an HTML
-												# newline.
-					$tmp_info =~ s/\n/ /g;		# Replace additional newline
-												# characters with a space.
-					$info .= " " . $tmp_info;
-				}
-			}
-		}
-
-		# Print any data that may have been stored but not printed when the
-		# file processing was completed.
-
-		if (length($info) && $getlines)
-		{
-			$info =~ s/^<BR>//;	# Remove leading <BR> HTML tag.
-
-			&PrintSectionText($section,$info);
-
-			undef($info);
-		}
-	}
-
-	# Text files.
-
-	elsif ($file =~ /\.[Tt][Xx][Tt]$/)
-	{
-		# Read the file until a line with an all capitalized entry up to the :
-		# is found. When a match is found, check the section name extracted
-		# from the line against the one passed to this subroutine. If a match
-		# is found, check to see if a section with the same label has been
-		# previously processed. If it has, print the stored data and reset the
-		# variable. Set the flag ($getlines) and continue. Check the lines that
-		# follow for another occurrence of a capitalized entry followed by a :.
-		# If the line does not match this criteria, read the text from
-		# the current line and append the data to $info. If the line does
-		# match, print the data, unset the storage and the flag and continue.
-
-		while (<FILE>) 
-		{
-			if (/^([ .A-Z]+):\s*(.*)/)
-			{
-				if ($1 eq $section)
-				{
-					if ($getlines)
-					{
-						$info =~ s/\n/<BR>/g;	# Replace newline characters 
-												# with an HTML newline.
-
-						&PrintSectionText($section,$info);
-
-						undef($info);
-					}
-
-					$info = $2;
-					$info =~ s/^\n$//;
-					$getlines++;
-
-					if (length($info))
-					{
-						$info .= "<BR>";
-					}
-				}
-
-				else
-				{
-					if (length($info) && $getlines)
-					{
-						$info =~ s/\n/<BR>/g;	# Replace newline characters 
-												# with an HTML newline.
-
-						&PrintSectionText($section,$info);
-
-						undef($info);
-					}
-
-					$getlines = 0;
-				}
-			}
-
-			elsif ($getlines)
-			{
-				s/^\n$//;	# Remove single carriage returns (UNIX)
-				s/^\r\n$//;	# Remove single carriage returns (DOS)
-				$info .= " " . $_;
-			}
-		}
-
-		# Print any data that may have been stored but not printed when the
-		# file processing was completed.
-
-		if (length($info) && $getlines)
-		{
-			$info =~ s/\n/<BR>/g;	# Replace newline characters with an
-									# HTML newline.
-
-			&PrintSectionText($section,$info);
-
-			undef($info);
-		}
-	}
-
-	close(FILE);
-}
-
-################################################################################
-# PrintSectionText - a subroutine to remove extra characters from the data 
-#                    copied from the desired section of the file and display
-#                    it in HTML format.
-################################################################################
-
-sub PrintSectionText
-{
-	local($section,$info) = @_;
-
-	# Remove unwanted characters from the data in $info.
-
-	$info =~ s/\s*$//;	# Remove trailing spaces.
-	$info =~ s/^\n//;	# Remove leading newline characters.
-	$info =~ s/\s+/ /g;	# Replace multiple spaces with single spaces.
-
-	# Add additional HTML carriage returns for consistent spacing for HTML and
-	# text data. Remove any extras that are inadvertently added.
-
-	$info =~ s/\s*<BR>$/<BR><BR>/;
-	$info =~ s/<BR>\s*<BR>\s*<BR>$/<BR><BR>/;
-
-	# Display the section data retrieved.
-
-	print HTMLPAGE "    <UL><B>$section:</B>\n";
-	print HTMLPAGE "         <UL>$info</UL></UL>\n";
 }
 
 ################################################################################
@@ -1652,32 +1330,6 @@ sub OpenHTMLFile
 	else
 	{
 		die "$AppName : Error - Invalid file open method. Must be \"c\" or \"a\"\n";
-	}
-}
-
-################################################################################
-# DisplaySelectedSections - a subroutine display selected sections of the file
-#                           passed to this subroutine in the <dirname>.html file
-#                           that is being created.
-################################################################################
-
-sub DisplaySelectedSections
-{
-	local($path) = @_;
-	local(@sections,$section,$contents);
-
-	# Place the contents of the global variable $sections_to_display in a
-	# list.
-
-	@sections = split(/,/,$sections_to_display);
-
-	# Retrieve and display the contents of each section of this file specified 
-	# in the <dirname>.cfg file for this directory or one of its parent
-	# directories.
-
-	foreach $section (@sections)
-	{
-		&GetSectionText($path,$section);
 	}
 }
 
