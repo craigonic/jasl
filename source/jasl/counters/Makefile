@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.9 2001/03/22 06:07:08 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.10 2001/06/08 05:15:55 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -16,7 +16,7 @@ JAVA_COMPILER     = javac
 GCJ_COMPILER      = gcj
 
 HTLS              = htls -genpage
-JAVA2HTML         = java2html -doc
+JAVA2HTML         = java2html --doc --tab=4
 
 COUNTERS_PACKAGE  = Counters
 
@@ -170,6 +170,6 @@ clean_obj:
 
 docs:
 	@for i in $(JAVA_SRC_FILES) ; do \
-		$(JAVA2HTML) -input $$i -output $(DOCS_PATH)/$$i.html -title "$$i" ;\
+		$(JAVA2HTML) --input $$i --output $(DOCS_PATH)/$$i.html --title "$$i" ;\
 	done
 	@$(HTLS) $(DOCS_PATH)
