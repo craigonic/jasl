@@ -12,12 +12,15 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.1 1999/09/13 05:36:40 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.2 1999/12/31 07:15:38 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// The following imports are necessary for the randomization function.
+// ************************************************************************** //
+// Dice class - A utility class used by other classes to provide the          //
+//              simulated result(s) of rolling one or two dice.               //
+// ************************************************************************** //
 
 public class Dice
 {
@@ -148,25 +151,6 @@ public class Dice
 
 	// Public access methods
 
-	// showValues - A function to display the value of the private data members
-	//              of the current instance. The intent of this function is to
-	//              provide text-based verification output for development and
-	//              debugging.
-
-	public void showValues()
-	{
-		// Display header.
-
-		System.out.println("Dice instance values:");
-		System.out.println("---------------------");
-
-		// Display data stored in this class.
-
-		System.out.print("White Die : " + getWhiteDieValue());
-		System.out.print("\tColored Die : " + getColoredDieValue());
-		System.out.println("\tCombined Result : " + getCombinedResult());
-	}
-
 	// getWhiteDieValue - A function to return the value of the whiteDieValue
 	//                    member variable to the calling program.
 
@@ -190,5 +174,24 @@ public class Dice
 	public int getCombinedResult()
 	{
 		return(combinedResult);
+	}
+
+	// showValues - A function to display the value of the private data members
+	//              of the current instance. The intent of this function is to
+	//              provide text-based verification output for development and
+	//              debugging.
+
+	public void showValues()
+	{
+		// Display header.
+
+		System.out.println("Dice instance values:");
+		System.out.println("---------------------");
+
+		// Display data stored in this class.
+
+		System.out.print("White Die : " + getWhiteDieValue());
+		System.out.print("\tColored Die : " + getColoredDieValue());
+		System.out.println("\tCombined Result : " + getCombinedResult());
 	}
 }
