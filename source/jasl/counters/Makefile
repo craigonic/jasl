@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.2 1999/07/10 06:05:09 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.3 1999/08/09 05:43:16 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -22,7 +22,7 @@ OUTPUT_DIR_CMD   = -d $(CLASSPATH)
 OPTIMIZE =
 
 SUPER_CLASSES    = Unit Fighting Mobile
-INFANTRY_CLASSES = Infantry Personnel Squad Leader
+INFANTRY_CLASSES = Infantry Squad Leader
 DRIVER_CLASS     = Driver
 
 ALL_CLASSES      = $(SUPER_CLASSES) $(INFANTRY_CLASSES) $(DRIVER_CLASS)
@@ -53,10 +53,7 @@ Mobile: Mobile.java $(OUTPUT_PATH)/Fighting.class
 Infantry: Infantry.java $(OUTPUT_PATH)/Mobile.class
 	$(COMPILER) $(OPTIMIZE) $(CLASSPATH_CMD) $(OUTPUT_DIR_CMD) Infantry.java
 
-Personnel: Personnel.java $(OUTPUT_PATH)/Infantry.class
-	$(COMPILER) $(OPTIMIZE) $(CLASSPATH_CMD) $(OUTPUT_DIR_CMD) Personnel.java
-
-Squad: Squad.java $(OUTPUT_PATH)/Personnel.class
+Squad: Squad.java $(OUTPUT_PATH)/Infantry.class
 	$(COMPILER) $(OPTIMIZE) $(CLASSPATH_CMD) $(OUTPUT_DIR_CMD) Squad.java
 
 Leader: Leader.java $(OUTPUT_PATH)/Infantry.class
