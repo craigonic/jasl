@@ -13,16 +13,18 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.4 2001/12/08 07:28:53 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.5 2002/02/21 06:10:58 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// ************************************************************************** //
-// Dice class - A utility class used by other classes to provide the          //
-//              simulated result(s) of rolling one or two dice.               //
-// ************************************************************************** //
-
+/**
+ * This is a utility class used to provide the simulated result(s) of rolling
+ * one or two six sided dice.
+ * @see <A HREF=../../docs/Counters/Dice.java.html>Source code</A>
+ * @author Craig R. Campbell
+ * @version 1.5
+ */
 public final class Dice
 {
 	// Private symbolic constants
@@ -71,6 +73,12 @@ public final class Dice
 
 	// Constructor
 
+	/**
+	 * Construct a new <CODE>Dice</CODE> instance. When the object is created,
+	 * both dice are "rolled" automatically.
+	 * @throws <CODE>IllegalStateException</CODE> in the case of an invalid
+	 * result on one or both of the dice
+	 */
 	public Dice()
 	{
 		// Initialize the data members.
@@ -155,18 +163,16 @@ public final class Dice
 
 	// Public access methods
 
-	// toString - A method to display the value of the private data members of
-	//            the current instance. The intent of this method is to provide
-	//            text-based verification output for development and debugging.
-
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. Each value is preceded by a label.
+	 * @return a <CODE>String</CODE>.
+	 */
 	public String toString()
 	{
 		// Define local constants.
 
 		String METHOD_LABEL = CLASS_NAME + Counter.TO_STRING_LABEL;
-
-		String DICE_CLASS_HEADER_ONE = "Dice class instance values:\n";
-		String DICE_CLASS_HEADER_TWO = "---------------------------\n";
 
 		String WHITE_DIE_LABEL       = "White Die";
 		String COLORED_DIE_LABEL     = "Colored Die";
@@ -178,8 +184,7 @@ public final class Dice
 		// Create a buffer to store the string to be returned, initializing it
 		// with the values that define the header.
 
-		StringBuffer returnString = new StringBuffer(DICE_CLASS_HEADER_ONE + 
-		                                             DICE_CLASS_HEADER_TWO);
+		StringBuffer returnString = new StringBuffer();
 
 		// Add the information describing the data stored in this class
 		// instance.
@@ -288,26 +293,29 @@ public final class Dice
 		return (returnString.toString());
 	}
 
-	// getWhiteDieValue - A method to return the value of the whiteDieValue
-	//                    member variable to the calling program.
-
+	/**
+	 * Determine the result of rolling the white die.
+	 * @return an <CODE>int</CODE> specifying the white die value.
+	 */
 	public int getWhiteDieValue()
 	{
 		return (whiteDieValue);
 	}
 
-	// getColoredDieValue - A method to return the value of the
-	//                      coloredDieValue member variable to the calling
-	//                      program.
-
+	/**
+	 * Determine the result of rolling the colored die.
+	 * @return an <CODE>int</CODE> specifying the colored die value.
+	 */
 	public int getColoredDieValue()
 	{
 		return (coloredDieValue);
 	}
 
-	// getCombinedResult - A method to return the value of the combinedResult
-	//                     member variable to the calling program.
-
+	/**
+	 * Determine the result of combining the values of the two dice.
+	 * @return an <CODE>int</CODE> specifying the sum of the white and colored
+	 * die values.
+	 */
 	public int getCombinedResult()
 	{
 		return (combinedResult);
