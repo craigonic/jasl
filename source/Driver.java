@@ -8,7 +8,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/Driver.java,v 1.1 1999/06/23 04:54:59 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/Driver.java,v 1.2 1999/08/14 04:59:06 craig Exp $
 // ************************************************************************** //
 
 import Counters.*;
@@ -19,7 +19,7 @@ public class Driver
 	{
 		// Create an instance of a German Leader.
 
-		Leader germanLeader = new Leader("German",6,9,9,true,-1,"Lt. Fellbaum");
+		Leader germanLeader = new Leader("German","Lt. Fellbaum",9,9,true,-1);
 
 		// Display all of the entered values for this instance using the 
 		// showValues() method.
@@ -29,7 +29,7 @@ public class Driver
 
 		// Create an instance of a Russian Squad.
 
-		Squad russianSquad = new Squad("Russian",4,7,7,false,4,4,10,'1');
+		Squad russianSquad = new Squad("Russian","A",4,4,7,7,false,7,"1st Line");
 
 		// Display all of the entered values for this instance using the 
 		// showValues() method.
@@ -44,7 +44,7 @@ public class Driver
 		// Unit[] UnitList = new Unit[4];
 		Unit aUnit;
 
-		aUnit = new Leader("American",6,9,9,true,-1,"Sgt. Slaughter");
+		aUnit = new Leader("American","Sgt. Slaughter",9,9,true,-1);
 
 		System.out.println();
 		System.out.println(aUnit.getDescription());
