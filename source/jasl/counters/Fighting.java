@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Fighting.java,v 1.3 1999/08/14 06:07:07 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Fighting.java,v 1.4 2000/08/05 06:36:02 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -120,6 +120,32 @@ class Fighting extends Unit
 			throw new IllegalArgumentException(badArgumentError);
 		}
 
+		// The foundMatch variable is used to indicate if an entry matching the
+		// nationality parameter was found in the list of valid
+		// nationalities (NATIONALITIES). foundMatch is a static variable
+		// defined in the Unit class.
+
+		foundMatch = false;
+
+		// Check the nationality parameter against the valid entries list.
+
+		for (int i = 0; i < NATIONALITIES_LIST_SIZE; i++)
+		{
+			if (nationality.equals(NATIONALITIES[i]))
+			{
+				foundMatch = true;
+				break;
+			}
+		}
+
+		// Throw an exception if a match was not found.
+
+		if (! foundMatch)
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   nationality);
+		}
+
 		this.nationality = nationality;
 
 		// Identity
@@ -146,6 +172,47 @@ class Fighting extends Unit
 		if (unitType.length() == 0)
 		{
 			throw new IllegalArgumentException(badArgumentError);
+		}
+
+		if ((unitType.equals(PARATROOPS)) && (!(nationality.equals(AMERICAN))))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                  nationality + " and " + unitType);
+		}
+
+		if (((unitType.equals(AIRBORNE))    || (unitType.equals(ANZAC))       ||
+		     (unitType.equals(CANADIAN))    || (unitType.equals(FREE_FRENCH)) ||
+		     (unitType.equals(FREE_POLISH)) || (unitType.equals(GUARDSMEN))   ||
+		     (unitType.equals(GURKHA)))     && (!(nationality.equals(BRITISH))))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                  nationality + " and " + unitType);
+		}
+
+		if ((unitType.equals(SISSI)) && (!(nationality.equals(FINNISH))))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                  nationality + " and " + unitType);
+		}
+
+		if (((unitType.equals(SS)) || (unitType.equals(ENGINEERS))) &&
+		    (!(nationality.equals(GERMAN))))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                  nationality + " and " + unitType);
+		}
+
+		if (((unitType.equals(COMMISSAR)) || (unitType.equals(GUARDS))) &&
+		    (!(nationality.equals(RUSSIAN))))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                  nationality + " and " + unitType);
+		}
+
+		if ((unitType.equals(COMMISSAR)) && (!(description.equals(LEADER))))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                  description + " and " + unitType);
 		}
 
 		this.unitType = unitType;
@@ -188,13 +255,13 @@ class Fighting extends Unit
 
 		// Display data stored in this class.
 
-		System.out.println("Nationality\t: " + nationality);
+		System.out.println("Nationality             : " + nationality);
 
-		System.out.println("Identity\t: " + identity + "\tUnit Type\t: "
-		                   + unitType);
+		System.out.println("Identity                : " + identity +
+		                   "\tUnit Type       : " + unitType);
 
-		System.out.println("Normal Range\t: " + normalRange + "\tFirepower\t: "
-		                   + firepower);
+		System.out.println("Normal Range            : " + normalRange +
+		                   "\tFirepower       : " + firepower);
 	}
 
 	// Public access methods
@@ -260,17 +327,17 @@ class Fighting extends Unit
 
 	public String getStatus()
 	{
-		return(DEFAULT_STATUS);
+		return (DEFAULT_STATUS);
 	}
 
 	public boolean rally(boolean isLeaderPresent,int modifier)
 	{
-		return(DEFAULT_RESULT);
+		return (DEFAULT_RESULT);
 	}
 
 	public boolean moraleCheck(int modifier)
 	{
-		return(DEFAULT_RESULT);
+		return (DEFAULT_RESULT);
 	}
 
 	// Squad.java
