@@ -8,7 +8,7 @@
 //                                                                            //
 // Written By : Craig R. Campbell  -  December 1998                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Squad.java,v 1.2 1999/08/18 05:26:50 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Squad.java,v 1.3 1999/08/21 06:20:01 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -24,13 +24,28 @@ public class Squad extends Infantry
 	// Private symbolic constants
 
 	// These constants are used to determine if the value of the classification
-	// parameter passed to the constructor is valid.
+	// parameter passed to the constructor is valid. They are given public
+	// attributes to allow external programs to access them when specifying
+	// the classification parameter in the creation of Squad objects.
 
-	private static final String ELITE           = "Elite";
-	private static final String FIRST_LINE      = "1st Line";
-	private static final String SECOND_LINE     = "2nd Line";
-	private static final String GREEN           = "Green";
-	private static final String CONSCRIPT       = "Conscript";
+	public static final String ELITE           = "Elite";
+	public static final String FIRST_LINE      = "1st Line";
+	public static final String SECOND_LINE     = "2nd Line";
+	public static final String GREEN           = "Green";
+	public static final String CONSCRIPT       = "Conscript";
+
+	// This static array is used in the constructor to verify the classification
+	// parameter passed to it when a Squad object is instantiated. It is 
+	// publicly accessible, potentially allowing it to be used in creating a
+	// menu.
+
+	public static final String[] CLASSIFICATIONS = { ELITE, FIRST_LINE,
+	                                                 SECOND_LINE, GREEN,
+	                                                 CONSCRIPT };
+
+	// This variable stores the number of elements in the CLASSIFICATIONS array.
+
+	private static final int CLASSIFICATIONS_LIST_SIZE = 5;
 
 	// These constants are used in the constructor to pass the correct value
 	// of a Squad for each attribute. Other types of units may allow the 
@@ -96,11 +111,26 @@ public class Squad extends Infantry
 			throw new IllegalArgumentException(badArgumentError);
 		}
 
-		if (!(classification.equals(ELITE) ||
-			  classification.equals(FIRST_LINE) ||
-		      classification.equals(SECOND_LINE) ||
-		      classification.equals(GREEN) ||
-		      classification.equals(CONSCRIPT)))
+		// The foundMatch variable is used to indicate if an entry matching the
+		// classification parameter was found in the list of valid
+		// classifications (CLASSIFICATIONS).
+
+		boolean foundMatch = false;
+
+		// Check the classification parameter against the valid entries list.
+
+		for (int i = 0; i < CLASSIFICATIONS_LIST_SIZE; i++)
+		{
+			if (classification.equals(CLASSIFICATIONS[i]))
+			{
+				foundMatch = true;
+				break;
+			}
+		}
+
+		// Throw an exception if a match was not found.
+
+		if (! foundMatch)
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
 			                                   classification);
