@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.3 1999/08/09 05:43:16 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.4 1999/08/21 06:16:54 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -23,20 +23,13 @@ OPTIMIZE =
 
 SUPER_CLASSES    = Unit Fighting Mobile
 INFANTRY_CLASSES = Infantry Squad Leader
-DRIVER_CLASS     = Driver
 
-ALL_CLASSES      = $(SUPER_CLASSES) $(INFANTRY_CLASSES) $(DRIVER_CLASS)
+ALL_CLASSES      = $(SUPER_CLASSES) $(INFANTRY_CLASSES)
 
 # Define a parameter to build all of the individual class files and the test
 # program (driver).
 
 all: $(ALL_CLASSES)
-
-# Define a parameter to build the driver program used to test the classes
-# defined in the Counters package.
-
-Driver: ../Driver.java
-	$(COMPILER) $(OPTIMIZE) $(OUTPUT_DIR_CMD) ../Driver.java
 
 # Define parameters to compile the individual Java classes in the Counters
 # package.
