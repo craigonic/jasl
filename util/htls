@@ -1,0 +1,2144 @@
+#!/usr/bin/perl -s
+#
+# htls - generate HTML directory pages and an HTML index of one or more
+#        directories.
+#
+# This program is designed to generate a hierarchical listing of a specific
+# directory and its sub-directories and files (-index option). It can also be
+# used to generate a page in each subdirectory containing links to the files 
+# and subdirectories within that directory (-genpage option). If one or more 
+# directories are not specified on the command line, the current working 
+# directory is used.
+#
+# The "-s" option to perl above provides simple switch parsing for options
+# specified on the command line after the program name but before any filename 
+# arguments. Any switches found are removed from @ARGV and a corresponding
+# variable is set in the program. For example, if the -h option is specified on
+# on the command line, a $h variable is set in the program itself. For a 
+# complete list of standard program options, run the program with the -h option.
+#
+# 	-debug :   Generates an output file in /tmp named <application name>.debug
+#	           that contains path information for the files and directories
+#	           processed by this application.
+#
+#	-genpage : Generates an HTML page in each subdirectory with links to the
+#	           files and subdirectories within each directory. This allows 
+#	           the user to create a web of documents without having to
+#	           manually maintain all of the pages.
+#
+#	-index   : Generates an HTML index file for the entire directory structure.
+#
+# This script is a modified version of the htls script written by Oscar
+# Nierstrasz 9/9/94. The original version (htls) and other useful scripts
+# can be be found at: http://iamwww.unibe.ch/~scg/Src/
+#
+# Modified by : Craig Campbell  -  December 2002
+#
+# $Id: htls,v 1.1 2002/12/31 19:32:13 craig Exp $
+#
+
+# Set application name for messages and to exclude the program file from the
+# directory listing.
+ 
+($AppName) = $0 =~ m%/?([^/]+)$%;
+
+# Display the usage message and exit if the -h option is specified.
+
+if ($h) 
+{
+	print "\n\tUsage: $AppName <options> [<directories>]\n\n",
+		"\tThe following options affect the index page only:\n\n",
+		"\t-ht\t(HTml) only list HTML files\n",
+		"\t-d\t(Directories) generate directory links too\n",
+		"\t-r\t(Reverse) reverse directory listing\n",
+		"\t-nt\t(NoTitle) suppress title and heading\n",
+		"\t-htgrep\t(HTGREP) generate searchable output for htgrep\n",
+		"\t-fp\t(FullPath) list full path for HTML files instead of title\n\n",
+		"\tThe following options affect HTML page generation only:\n\n",
+		"\t-genpage (GeneratePage) generate an HTML page in each directory\n",
+		"\t\t\t\twith links to the files in that directory\n",
+		"\t\t\t\tits subdirectories\n",
+		"\t-index\t (Index) generate a page containing a index of the entire\n",
+		"\t\t\t directory structure\n\n";
+	exit;
+}
+
+# Initialize the variable used to store a list of the sections in each file that
+# the program should display on the pages that are created by this program. 
+
+$sections_to_display = "";
+
+# Initialize the variable used to store the number of levels beneath each 
+# subdirectory to display data for, including the top level. 
+
+$levels_to_display   = 2;
+
+# Create a list variable used to hold different versions of $sections_to_display
+# This list is basically a stack. Before a new value is loaded into the
+# $sections_to_display variable, the old one is pushed onto this list. When
+# processing is complete for that directory, the old value is restored (popped)
+# from this list.
+
+@section_display_lists = ();
+
+# Create a list variable used to hold different versions of $levels_to_display
+# This list is basically a stack. Before a new value is loaded into the
+# $levels_to_display variable, the old one is pushed onto this list. When
+# processing is complete for that directory, the old value is restored (popped)
+# from this list.
+
+@level_display_lists   = (); 
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+# Open a file in /tmp to direct the debug output to if the -debug option 
+# is specified.
+
+if ($debug)
+{
+	open(DEBUGGER,"> /tmp/$AppName.debug") || die "$AppName : Error - Can't open /tmp/$AppName.debug\n";
+}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+# Process each of the directories specified on the command line.
+
+if ($#ARGV >= $[) 
+{
+	foreach $arg (@ARGV) 
+	{
+		# Remove any shell metacharacters found in the input.
+		# (List courtesy of http://www.cerf.net/~paulp/cgi-security/safe-cgi.txt)
+
+		$arg =~ s/([;<>\*\|`&\$!#\(\)\[\]\{\}:'"])//g;
+
+		# Remove any newline characters from the input.
+ 
+		$arg =~ tr/\n//d;
+
+		# The original path and the length of it are preserved to allow the
+		# creation of relative links.
+
+		$root_path   = $arg;
+		$root_length = length($arg);
+
+		# Do the dirty work.
+
+		&Main($arg);
+	}
+}
+
+# If no file or directory is specified, use the current working directory.
+
+else 
+{
+	# Retrieve the current working directory for processing.
+	# The full path up to the directory name is removed.
+
+	$title = `pwd`;
+	chop $title;
+
+	# The original path and the length of it are preserved to allow the
+	# creation of relative links.
+
+	$root_path   = $title;
+	$root_length = length($title);
+
+	# Do the dirty work.
+
+	&Main($title);
+}
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+# Close the debug data file if it is open.
+
+if ($debug)
+{
+	close(DEBUGGER);
+}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+################################################################################
+# Main - a subroutine call the subroutines to generate either the HTML pages for
+#        each subdirectory or the index of the entire structure or both.
+################################################################################
+
+sub Main
+{
+	local($path) = @_;
+	local($index_file);
+
+	# Generate the pages if the -genpage option has been specified.
+
+	if ($genpage)
+	{
+		&GenerateHTMLPages($path);
+	}
+
+	# If the -index option was specified, direct the index information to a 
+	# file in the specified directory named index.htm. This file will be
+	# excluded from the index.
+
+	if ($index)
+	{
+		$index_file = "$path/index.htm";
+
+		open(INDEXPAGE,"> $index_file") || die "$AppName : Error - Can't open $index_file for write.\n";
+
+		# Generate the title of the page using the current working directory.
+
+		&head($path);
+
+		# Generate the index.
+
+		&htls($path);
+
+		# Close the index output FILEHANDLE.
+
+		close(INDEXPAGE);
+
+		# Write the footer at the bottom of the page containing the name of the
+		# user running this program and the date the page was created.
+
+		&WriteHTMLFooter($index_file);
+	}
+}
+
+################################################################################
+# head - a subroutine to output the document title using the path value passed
+#        to it unless the -nt option was specified on the command line.
+################################################################################
+
+sub head 
+{
+	local($title) = @_;
+	local($dir_page,$home_page,$header_page,$got_title,$dirname);
+
+	# Retrieve the directory name from the full path value
+	# passed to this subroutine. This is used to build a 
+	# variable used to determine if a page was automatically
+	# created for this directory by the GenerateHTMLPages
+	# subroutine.
+
+	$dirname = $title;
+	$dirname =~ s|.*/||;
+    
+	# Initialize HTML file variable names.
+
+	$dir_page    = "$title/$dirname.htm";
+	$home_page   = "$title/home.htm";
+	$header_page = "$title/header.htm";
+
+	$got_title = 0;
+
+	unless ($nt) 
+	{
+		# Print the leading tags of the HTML file.
+
+		print INDEXPAGE "<html>\n<head>\n<title>";
+
+		# If a <directory name>.htm file exists in the specified directory,
+		# attempt to retrieve the title. If the title is found, append "Index"
+		# to it and print, setting the $got_title flag.
+
+		if (-f $dir_page)
+		{
+			$title = &title($dir_page);
+
+			if ($title ne $dir_page)
+			{
+				$got_title++;
+
+				# Remove the full path from the $dir_page variable
+				# and use it to create a relative link.
+
+				$dir_page =~ s|.*/||;
+
+				# Verify that the title does not match the directory name.
+				# If it does, we assume that the <dirname>.htm file, which is
+				# generated automatically, does not contain the contents of a
+				# header.htm file. In this case, the title is displayed as
+				# "Index of <dirname>" instead of "$title Index".
+
+				if ($title eq $dirname)
+				{
+					print INDEXPAGE "Index of $title</title>\n</head>",
+					"<body>\n<h1>Index of <A HREF=$dir_page>$title</A></h1>\n";
+				}
+
+				else
+				{
+					print INDEXPAGE "$title Index</title>\n</head>",
+					"<body>\n<h1><A HREF=$dir_page>$title</A> Index</h1>\n";
+				}
+			}
+		}
+
+		# If a home.htm file exists in the specified directory, attempt to 
+		# retrieve the title. If the title is found, append "Index" to it
+		# and print, setting the $got_title flag.
+
+		elsif (-f $home_page)
+		{
+			$title = &title($home_page);
+
+			if ($title ne $home_page)
+			{
+				$got_title++;
+
+				# Remove the full path from the $home_page variable
+				# and use it to create a relative link.
+
+				$home_page =~ s|.*/||;
+
+				print INDEXPAGE "$title Index</title>\n</head>",
+				"<body>\n<h1><A HREF=$home_page>$title</A> Index</h1>\n";
+			}
+		}
+
+		# If a header.htm file exists in the specified directory, attempt to 
+		# retrieve the title. If the title is found, append "Index" to it
+		# and print, setting the $got_title flag.
+
+		elsif (-f $header_page)
+		{
+			$title = &title($header_page);
+
+			if ($title ne $header_page)
+			{
+				$got_title++;
+
+				# Remove the full path from the $dir_page variable
+				# and use it to create a relative link.
+
+				$dir_page =~ s|.*/||;
+
+				print INDEXPAGE "$title Index</title>\n</head>",
+				"<body>\n<h1><A HREF=$dir_page>$title</A> Index</h1>\n";
+			}
+		}
+
+		# If neither home.htm or header.htm exists in the specified directory,
+		# strip the path from the directory and display "Index of <dirname>".
+
+		if (!($got_title))
+		{
+			$title =~ s|.*/||;
+
+			print INDEXPAGE "Index of $title</title>\n</head>",
+			"<body>\n<h1>Index of $title</h1>\n";
+		}
+	}
+}
+
+################################################################################
+# htls - a subroutine that recursively descends into the specified directory and
+#        builds a hypertext index of the files and directories within. 
+################################################################################
+
+sub htls 
+{
+	local($dir) = @_;
+	local($pre, $indent);
+	local($path, $entry, $relative_path, $header_file, @dirs, @list);
+	local($dirname,$html_page);
+
+	# Check to see if the $dir variable is a symbolic link.
+
+	if ((-l $dir) && ($nt))
+	{ 
+		return;
+	}
+
+	# Check to see if the $dir variable is a regular file and store the name in
+	# the list array.
+
+	elsif (-f $dir) 
+	{
+		@list = ($dir);
+		$pre = "";
+	}
+
+	# Check to see if the $dir variable is a directory.
+
+	elsif (-d $dir) 
+	{
+		# Read the contents of the directory and store the names in the list
+		# array. 
+
+		@list = &ProcessDirectory($dir);
+
+		if ($dir =~ /^\.$/) { $pre = ""; }
+		else { $pre = "$dir/"; }
+	}
+
+	else { return; } # ?!
+
+	# Extract the file or directory name from the path and store in
+	# $dirname.
+
+	$dirname = $dir;
+	$dirname =~ s|.*/||;
+
+	# Set up the size of the leading space for the line.
+
+	unless ($htgrep) 
+	{
+		$indent = $pre;
+		$indent =~ s|[^/]||g;
+		$indent =~ s|/|  |g;
+	}
+
+	# Print the leading space.
+
+	print INDEXPAGE "${indent}<UL>\n" unless ($htgrep);
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+	if ($debug)
+	{
+		print DEBUGGER "<htls> DIR    -> $dir\n";
+		print DEBUGGER "<htls> PRE    -> $pre\n";
+
+		print DEBUGGER "\n<htls> Processing files and creating directory list.\n\n";
+	}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	# Process each entry in the @list array.
+
+	foreach $entry (@list) 
+	{
+		# Check the filename to see if it matches the following list of 
+		# excluded files and directories.
+
+		if (($entry =~ /^\.+$/) || ($entry =~ /^header\.htm[l]?$/) ||
+			($entry eq $AppName) || ($entry =~ /^RCS$/) || 
+			($entry eq "$dirname.htm") || ($entry eq "index.htm"))
+		{
+			next;
+		}
+
+		# Add the full directory path to this entry.
+
+		$path = "$pre$entry";
+		$path =~ s/\/\//\//g; # replace double // with single /
+
+		# Add directories to the @dirs array.
+
+		if (-d $path) 
+		{
+			push(@dirs,$path);
+		}
+
+		# Regular file processing.
+
+		elsif (-f $path) 
+		{
+			# Don't process this file if it is not a text or HTML file.
+
+			next if ($path !~ /\.[Tt][Xx][Tt]$/) && ($path !~ /\.[Hh][Tt][Mm][Ll]?$/);
+
+			# Don't process this file if the -ht option was specified and it
+			# is not an HTML file.
+
+			next if ($ht) && ($path !~ /\.[Hh][Tt][Mm][Ll]?$/);
+
+			# Extract the title from the file.
+
+			$title = &title($path);
+
+			# Create a relative link by removing the top level section from
+			# the path. One is added to the length to remove the trailing "/".
+
+			$path = substr($path,$root_length + 1);
+
+			# Display the link.
+
+			print INDEXPAGE "${indent}<LI><A HREF=$path>$title</A>";
+
+			print INDEXPAGE "\n";
+			print INDEXPAGE "\n" if ($htgrep);
+		}
+
+		# else ?!
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+		if ($debug)
+		{
+			print DEBUGGER "<htls> ENTRY -> $entry\n";
+			print DEBUGGER "<htls> PATH  -> $path\n";
+		}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	}
+
+	# Reverse the order of the directories if the -r option was specified.
+
+	if ($r) { @dirs = reverse(@dirs); }
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+	if ($debug)
+	{
+		print DEBUGGER "\n<htls> Processing directory list.\n\n";
+	}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	# Process the directories in the @dirs array.
+
+	foreach $path (@dirs) 
+	{
+		# Create a relative path variable that is used if the -d option, which
+		# allows directory links, has been specified.
+
+		$relative_path = $path;
+		$relative_path = substr($relative_path,$root_length + 1);
+
+		# Set the title to the value of $path (default). This is usually used
+		# only if the -fp (full path) option has been specified.
+
+		$title = $path;
+
+		# If the -fp option was not specified, set the title to either the
+		# title from $path/header.htm or the directory name.
+
+		if (!($fp))
+		{
+			# Set the title using the relative path name created above in the 
+			# event that no title is found and remove all characters except the
+			# directory name. 
+
+			$title = $relative_path;
+			$title =~ s|.*/||;
+
+			# Create variables for the header.htm and <dirname>.htm files
+			# in this directory that may or may not exist.
+
+			$header_file = "$path/header.htm";
+			$html_page   = "$path/$title.htm";
+
+			# Check for the existence of a header.htm file in this directory.
+			# If it exists, attempt to extract the title from it to use for the
+			# directory link or label (depending on the existence of the
+			# -d option).
+
+			if (-f $header_file)
+			{
+				$title = &title($header_file);
+
+				if ($title eq $header_file)
+				{
+					$title = $relative_path;
+				}
+			}
+		}
+
+		# If the -d option was specified, create a link to the directory,
+
+		if ($d) 
+		{
+			print INDEXPAGE "${indent}<LI><A HREF=$relative_path><B>$title</B></A>\n";
+			print INDEXPAGE "\n" if ($htgrep);
+		}
+
+		# If an HTML file with the name of this directory and an htm extension
+		# (i.e. dirname.htm), create a link to it using the title from
+		# header.htm unless the -fp option was specified.
+
+		elsif ((-f $html_page) && (!($fp)))
+		{
+			$html_page =~ s|.*/||;
+
+			print INDEXPAGE "${indent}<LI><A HREF=$relative_path/$html_page><B>$title</B></A>\n";
+			print INDEXPAGE "\n" if ($htgrep);
+		}
+
+		# Otherwise display the directory name only.
+
+		else 
+		{
+			print INDEXPAGE "${indent}<LI><B>$title</B>" unless ($htgrep);
+			print INDEXPAGE "\n" unless($htgrep);
+		}
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+		if ($debug)
+		{
+			print DEBUGGER "<htls> FULL PATH     -> $path\n";
+			print DEBUGGER "<htls> RELATIVE PATH -> $relative_path\n";
+			print DEBUGGER "<htls> HEADER FILE   -> $header_file\n";
+			print DEBUGGER "<htls> TITLE         -> $title\n";
+		}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+		# Process the contents of the directory.
+
+		&htls("$path");
+	}
+
+	print INDEXPAGE "${indent}</UL>\n" unless ($htgrep);
+}
+
+################################################################################
+# GenerateHTMLPages - a subroutine to create a web page with links to the files 
+#                     and directories in the directory specified. If the $subdir
+#                     variable is set (specified in calling line and not equal
+#                     to zero), the subroutine will process only the files and
+#                     directories in the specified directory and will not
+#                     descend into any subdirectories that may exist. This
+#                     allows an HTML page to display two levels of files on each
+#                     page to help simplify navigation.
+################################################################################
+
+sub GenerateHTMLPages
+{
+	local($dir,$subdir) = @_;
+	local($pre, $path, $entry, $relative_path, $header_file, @dirs, @list);
+	local($dirname,$output_file,$html_page,$title,$files,$overview,$sections);
+	local($subdir_path,$parent_dir,$key_name,$section_display_flag);
+	local(@test_list,$empty,$levels,$levels_key,$level_display_flag);
+	local($lvl_counter,$tmp_subdir_path,@subdir_list,$dir_last_link);
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+	if ($debug)
+	{
+		if ($subdir)
+		{
+			print DEBUGGER "<GenerateHTMLPages> Adding subdirectory entries - $dir\n";
+		}
+
+		else
+		{
+			print DEBUGGER "<GenerateHTMLPages> Building page for directory - $dir\n";
+		}
+			print DEBUGGER "<GenerateHTMLPages> Directory Level - $subdir  Levels To Display - $levels_to_display\n\n";
+	}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	# Check to see if the $dir variable is a symbolic link or a regular file.
+	# If so, return to the calling function.
+
+	if ((-l $dir) || (-f $dir))
+	{ 
+		return;
+	}
+
+	# Verify that the $dir variable refers to a directory.
+
+	elsif (-d $dir) 
+	{
+		@list = &ProcessDirectory($dir);
+
+		# Verify that the directory contains additional files and/or
+		# directories. If not, return to the calling program.
+
+		$files = 0;
+
+		foreach $entry (@list)
+		{
+			next if $entry eq '.';
+			next if $entry eq '..';
+			next if $entry eq 'header.htm';
+			$files++;
+		}
+
+		if (! $files)
+		{
+			return;
+		}
+
+		if ($dir =~ /^\.$/) { $pre = ""; }
+		else { $pre = "$dir/"; }
+
+		# Initialize the variables used to hold the value returned by the
+		# call to RetrieveConfigData ($sections) and the flag variable used to
+		# indicate that the sections to display list for this directory and
+		# its subdirectories has been updated ($section_display_flag).
+
+		$sections = 0;
+		$section_display_flag = 0;
+
+		# Specify the key name related to the sections to be retrieved.
+
+		$key_name = "Display Fields";
+
+		# Call RetrieveConfigData to check for a <dirname>.cfg file in this 
+		# directory and return the settings for this directory if they
+		# have been specified.
+
+		$sections = &RetrieveConfigData($dir,$key_name);
+
+		if ($sections != -1)
+		{
+			# Save the previous settings for sections to display.
+
+			push(@section_display_lists,$sections_to_display);
+
+			# Copy the value retrieved above to the global variable
+			# $sections_to_display to allow it to be used in subdirectories
+			# that may not have a <dirname>.cfg file.
+
+			$sections_to_display = $sections;
+
+			# Set a flag to indicate that the value of $sections_to_display
+			# has been changed. This is used to restore the previous setting
+			# when this instance of this subroutine has finished.
+
+			$section_display_flag++;
+		}
+	}
+
+	else { return; } # ?!
+
+	# Extract the name of this directory and create an HTML file using the name
+	# with a .htm extension.
+
+	$dirname = $dir;
+	$dirname =~ s|.*/||;
+
+	# When the $subdir variable is set this function retrieves information 
+	# the directory specified and writes the results to the .htm file in the
+	# parent directory.
+
+	if ($subdir)
+	{
+		# $tmp_subdir_path is used initially to store a copy of the path passed
+		# to this subroutine. The full path of the parent directory for the page
+		# that is currently being created is set by removing a directory name
+		# from the end of the path for each level to be displayed. Each name is
+		# saved in an array which is later used to create the correct relative
+		# links. When this process is complete the $output_file variable is 
+		# copied to $parent_dir. The path in the $parent_dir variable is then
+		# removed, leaving $parent_dir equal to the parent directory name.
+		# This value is then appended to $output_file (which contains the full
+		# path of the parent directory) with a .htm extension. The array created
+		# above is used to build the $subdir_path variable. This value is later
+		# used in the creation of hyperlinks on the page in the parent 
+		# directory. An example follows each of the following code statements:
+
+		$tmp_subdir_path = $dir;
+
+		$lvl_counter = 0;
+
+		while ($lvl_counter < $subdir)
+		{
+			($output_file) = $tmp_subdir_path =~ m%(.*)/[^/]+$%;
+
+			$tmp_subdir_path =~ s|.*/||;
+
+			# Save each directory name.
+
+			push(@subdir_list,$tmp_subdir_path);
+
+			# Reset the $tmp_subdir_path for the next level.
+
+			$tmp_subdir_path = $output_file;
+
+			$lvl_counter++;
+		}
+
+		$parent_dir = $output_file;
+
+		$parent_dir =~ s|.*/||;
+
+		$output_file .= "/$parent_dir.htm";
+
+		# Reset the counter.
+
+		$lvl_counter = 0;
+
+		while ($lvl_counter < $subdir)
+		{
+			# If there is more than 1 level being displayed, add a '/'
+			# between each directory name to rebuild the relative path.
+
+			if ($lvl_counter > 0)
+			{
+				$subdir_path .= "/" . pop(@subdir_list);
+			}
+
+			else
+			{
+				$subdir_path = pop(@subdir_list);
+			}
+
+			$lvl_counter++;
+		}
+
+		# Verify that the .htm file for this parent directory of the the
+		# directory specified exists. If it does not, return to the calling
+		# subroutine.
+
+		if (!(-f $output_file)) 
+		{
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+			if ($debug)
+			{
+				print DEBUGGER "<GenerateHTMLPages> Subdirectory processing - could not open $output_file\n";
+			}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+			return;
+		}
+	}
+
+	# If the $subdir variable is not set, set the variables for the output and
+	# header.htm files and create the output file. If a header.htm file exists
+	# copy its contents to the new output file, otherwise create a simple
+	# HTML header.
+
+	else
+	{
+		$output_file = "$pre$dirname.htm";
+		$header_file = "$dir/header.htm";
+
+		# Create the output file for this directory (<dirname>.htm).
+
+		&OpenHTMLFile($output_file,"c");
+
+		# If the header.htm file exists in this directory, open and copy the
+		# contents to the file opened above for this directory.
+
+		if (-f $header_file)
+		{
+			open(HEADER,"/usr/bin/cat $header_file |") || die "$AppName : Error - Can't open $header_file for read.\n";
+
+			while (<HEADER>)
+			{
+				print HTMLPAGE $_;
+			}
+
+			close(HEADER);
+		}
+
+		# If header.htm does not exist in this directory, start a simple
+		# HTML file.
+
+		else
+		{
+			print HTMLPAGE "<HTML>\n<TITLE>$dirname</TITLE>\n<BODY>\n";
+		}
+
+		# Add a tag to indent all of the hyperlinks. This is necessary to fix
+		# a "feature" in HTML. Indented lines added after an unindented line 
+		# will automatically have a blank line added above them. This fix was
+		# added to provide consistent appearance between the output of the 
+		# -genpage and -index options.
+
+		print HTMLPAGE "<UL>\n";
+	}
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+	if ($debug)
+	{
+		print DEBUGGER "<GenerateHTMLPages> PRE         -> $pre\n";
+		print DEBUGGER "<GenerateHTMLPages> DIRNAME     -> $dirname\n";
+		print DEBUGGER "<GenerateHTMLPages> HEADER FILE -> $header_file\n";
+		print DEBUGGER "<GenerateHTMLPages> OUTPUT FILE -> $output_file\n";
+
+		if ($subdir)
+		{
+			print DEBUGGER "\n<GenerateHTMLPages> Processing files and creating subdirectory list.\n\n";
+		}
+
+		else
+		{
+			print DEBUGGER "\n<GenerateHTMLPages> Processing files and creating directory list.\n\n";
+		}
+	}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	# Process each entry in the @list array.
+
+	foreach $entry (@list) 
+	{
+		# Check the filename to see if it matches the following list of 
+		# excluded files and directories.
+
+		if (($entry =~ /^\.+$/) || ($entry =~ /^header\.htm[l]?$/) ||
+			($entry eq $AppName) || ($entry =~ /^RCS$/) || 
+			($entry eq "$dirname.htm") || ($entry eq "index.htm"))
+		{
+			next;
+		}
+
+		# Add the full directory path to this entry.
+
+		$path = "$pre$entry";
+		$path =~ s/\/\//\//g; # replace double // with single /
+
+		# Add directories to the @dirs array.
+
+		if (-d $path) 
+		{
+			# If the $subdir variable is not set, the program calls this 
+			# function recursively to descend to the next directory level.
+
+			if (! $subdir)
+			{
+				&GenerateHTMLPages($path);
+			}
+
+			push(@dirs, $path);
+		}
+
+		# Regular file processing.
+
+		elsif (-f $path) 
+		{
+			# Don't process this file if it is not a text or HTML file.
+
+			next if ($path !~ /\.[Tt][Xx][Tt]$/) && ($path !~ /\.[Hh][Tt][Mm][Ll]?$/);
+
+			# Extract the title from the file.
+
+			$title = &title($path);
+
+			# Create a relative link by removing the top level section from
+			# the path. One is added to the length to remove the trailing "/".
+
+			# Open the output file.
+
+			&OpenHTMLFile($output_file,"a");
+
+			# Display the link to the file. If the $subdir variable is set
+			# the program will indent the output and add the subdirectory
+			# name to the link so that it works properly. Otherwise, the
+			# link uses only the filename. All links are relative to the
+			# directory containing $output_file.
+
+			if ($subdir)
+			{
+				print HTMLPAGE "<UL>\n";
+				print HTMLPAGE "<LI><A HREF=$subdir_path/$entry>$title</A>\n";
+			}
+
+			else
+			{
+				print HTMLPAGE "<LI><A HREF=$entry>$title</A>\n";
+			}
+
+			# Display any information retrieved for sections specified
+			# in the <dirname>.cfg for the current directory.
+
+			&DisplaySelectedSections($path);
+
+			# If this is the second level of the directory display, close
+			# indented section to keep the columns correct.
+
+			if ($subdir)
+			{
+				print HTMLPAGE "</UL>\n";
+			}
+		}
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+		if ($debug)
+		{
+			print DEBUGGER "<GenerateHTMLPages> ENTRY -> $entry\n";
+			print DEBUGGER "<GenerateHTMLPages> PATH  -> $path\n";
+			print DEBUGGER "<GenerateHTMLPages> TITLE -> $title\n";
+		}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	}
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+	if ($debug)
+	{
+		if ($subdir)
+		{
+			print DEBUGGER "\n<GenerateHTMLPages> Processing subdirectory list.\n\n";
+		}
+
+		else
+		{
+			print DEBUGGER "\n<GenerateHTMLPages> Processing directory list.\n\n";
+		}
+	}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	# Initialize the flag variable used to indicate if the last label displayed
+	# on the current page was an HTML link. This is used to determine if an
+	# additional </UL> tag is needed to keep the columns correct on the page.
+
+	$dir_last_link = 0;
+
+	# Process the directories in the @dirs array.
+
+	foreach $path (@dirs) 
+	{
+		# Create a relative path variable that is used if the -d option, which
+		# allows directory links, has been specified.
+
+		$relative_path = $path;
+		$relative_path =~ s|.*/||;
+
+		# Set the title using the relative path name in the 
+		# event that no title is found. (default) 
+
+		$title = $relative_path;
+
+		# Create variables for the header.htm and <dirname>.htm files
+		# in this directory that may or may not exist.
+
+		$header_file = "$path/header.htm";
+		$html_page   = "$path/$title.htm";
+
+		# Check to see that the subdirectory is not empty and contains files
+		# other than "header.htm". If the subdirectory contains only header.htm
+		# the title will be used for the page entry but it will not be an
+		# active link.
+
+		$empty = 0;
+
+		@test_list = &ProcessDirectory($path);
+
+		if ((-f $header_file) && ($#test_list == 2)) 
+		{
+			$empty++;
+		}
+
+		undef(@test_list);
+
+		# Check for the existence of a header.htm file in this directory.
+		# If it exists, attempt to extract the title from it to use for the
+		# directory link or label (depending on the existence of the
+		# header.htm or $title.htm files in the $path directory). If it is not
+		# found or does not exist, use the directory name ($relative_path).
+
+		&OpenHTMLFile($output_file,"a");
+
+		# If the $subdir variable is set, increase the indent on the page
+		# to imply that the directories displayed are subdirectories.
+
+		if ($subdir)
+		{
+			print HTMLPAGE "<UL>\n";
+		}
+
+		if ((-f $header_file) || (-f $html_page))
+		{
+			if (-f $header_file)
+			{
+				$title = &title($header_file);
+
+				if ($title eq $header_file)
+				{
+					$title = $relative_path;
+				}
+			}
+
+			elsif (-f $html_page)
+			{
+				$title = &title($html_page);
+
+				if ($title eq $html_page)
+				{
+					$title = $relative_path;
+				}
+			}
+
+			# Strip the path from the <dirname>.htm variable to that a 
+			# relative link can be created.
+
+		    $html_page =~ s|.*/||;
+
+			# Create the link to the directory. If the $empty variable is set
+			# the subdirectory contains header.htm only. If the $subdir variable
+			# is set the program will add the subdirectory name to the link
+			# so that it works properly. Otherwise, the link uses only the
+			# directory name and the HTML page for that directory and adds a
+			# bookmark at the beginning to simplify navigation on long
+			# pages. All links are relative.
+
+			if ($empty) 
+			{
+				if ($subdir)
+				{
+					print HTMLPAGE "<LI><B>$title</B>\n";
+				}
+
+				else
+				{
+					print HTMLPAGE "<LI><A NAME=$relative_path></A><B>$title</B>\n";
+				}
+			}
+
+			elsif ($subdir)
+			{
+				print HTMLPAGE "<LI><A HREF=$subdir_path/$relative_path/$html_page><B>$title</B></A>\n";
+				$dir_last_link = 1;
+			}
+
+			else
+			{
+				print HTMLPAGE "<LI><A NAME=$relative_path></A><A HREF=$relative_path/$html_page><B>$title</B></A>\n";
+			}
+
+			# Descend into this directory to display direct links to the 
+			# files and directories in it if the $subdir variable is not
+			# set.
+
+			$level_display_flag = 0;
+
+			if (! $subdir)
+			{
+				$levels_key = "Display Levels";
+
+				$levels = &RetrieveConfigData($dir,$levels_key);
+
+				if (($levels =~ /\s*\d+/) && ($levels > 0))
+				{
+					# Save the previous setting for levels to display.
+ 
+					push(@level_display_lists,$levels_to_display);
+ 
+					# Copy the value retrieved above to the global variable
+					# $levels_to_display to allow it to be used in 
+					# subdirectories that may not have a <dirname>.cfg file.
+ 
+					$levels_to_display = $levels;
+ 
+					# Set a flag to indicate that the value of $levels_to_display
+					# has been changed. This is used to restore the previous 
+					# setting when this instance of this subroutine has finished.
+ 
+					$level_display_flag++;
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+					if ($debug)
+					{
+						print DEBUGGER " FLAG set for $dir to $levels\n\n";
+					}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+				}
+
+				if ($levels_to_display > 1)
+				{
+					&GenerateHTMLPages($path,1);
+				}
+			}
+
+			else
+			{
+				$subdir++;
+
+				if ($subdir < $levels_to_display)
+				{
+					&GenerateHTMLPages($path,$subdir);
+				}
+
+				$subdir--;
+			}
+
+			# Reopen the output file.
+
+			&OpenHTMLFile($output_file,"a");
+
+			if ($level_display_flag)
+			{
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+				if ($debug)
+				{
+					print DEBUGGER "Restoring level for $dir - Before : $levels_to_display\n";
+				}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+				$levels_to_display = pop(@level_display_lists);
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+				if ($debug)
+				{
+					print DEBUGGER "Restoring level for $dir - After : $levels_to_display\n";
+				}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+			}
+		}
+
+		# Otherwise display the directory name only. A bookmark is added for
+		# links when the $subdir variable is not set to allow the user to
+		# have a list of categories at the top of the header.htm file. This
+		# allows the browser to jump to that section (useful on very long 
+		# pages).
+
+		else 
+		{
+			if ($subdir)
+			{
+				print HTMLPAGE "<LI><B>$title</B>\n";
+				$dir_last_link = 0;
+			}
+
+			else
+			{
+				print HTMLPAGE "<LI><A NAME=$relative_path></A><B>$title</B>\n";
+			}
+		}
+
+		# If this is an additional level of the directory display and the last
+		# item displayed was not a hyperlink, close the indented section for 
+		# the current subdirectory or file to keep the columns correct.
+
+		if ($subdir)
+		{
+			if ((! $dir_last_link) || ($subdir == ($levels_to_display - 1)))
+			{
+				print HTMLPAGE "</UL>\n";
+			}
+		}
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+		if ($debug)
+		{
+			print DEBUGGER "\nLinks Written to file. Subdirectory level: $subdir\n";
+			print DEBUGGER "<GenerateHTMLPages> FULL PATH     -> $path\n";
+			print DEBUGGER "<GenerateHTMLPages> RELATIVE PATH -> $relative_path\n";
+			print DEBUGGER "<GenerateHTMLPages> TITLE         -> $title\n";
+			print DEBUGGER "<GenerateHTMLPages> HEADER FILE   -> $header_file\n";
+			print DEBUGGER "<GenerateHTMLPages> HTML PAGE     -> $html_page\n";
+		}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	}
+
+	# If the current subdirectory level is greater than 1, close the indented
+	# section to keep the columns correct for the parent directory display.
+
+	if ($subdir > 1)
+	{
+		print HTMLPAGE "</UL>\n";
+	}
+
+	# Close the filehandle for the current output file.
+
+	close(HTMLPAGE);
+
+  #######|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|DEBUG-BEGIN|########
+
+	if ($debug)
+	{
+		if ($subdir)
+		{
+			print DEBUGGER "\n<GenerateHTMLPages> Subdirectory processing complete for $dir\n";
+		}
+
+		else
+		{
+			print DEBUGGER "\n<GenerateHTMLPages> Directory processing complete for $dir\n";
+		}
+	}
+
+  #######|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|DEBUG-END|########
+
+	# Create the document owner information and display at the bottom of the
+	# page.
+
+	if (! $subdir)
+	{
+		&WriteHTMLFooter($output_file);
+	}
+
+	# If the $section_display_flag variable is set, indicating that the value of
+	# $sections_to_display was changed by the presence of a <dirname>.cfg file
+	# in this directory, restore the previous setting.
+
+	if ($section_display_flag)
+	{
+		$sections_to_display = pop(@section_display_lists);
+	}
+}
+
+################################################################################
+# title - a subroutine to extract and return the title of a document. This works
+#         only for .htm[l] and .txt files. For .txt files, a line beginning with
+#         TITLE is expected. Returns the filename passed to it if no match is
+#         found.
+################################################################################
+
+sub title 
+{
+	local($file) = @_;
+	local($title);
+
+	open(FILE,$file) || return "UNREADABLE";
+
+	$title = $file; # default, in case no title found
+
+	# Check for a title in the file only if the -fp option was NOT specified.
+
+	if (!($fp))
+	{
+		# HTML files.
+
+		if ($file =~ /\.[Hh][Tt][Mm][Ll]?$/)
+		{
+			# Change the paragraph separator to "<".
+
+			local($/) = "<";
+
+			while (<FILE>) 
+			{
+				/^TITLE>\s*([^<]*)</i && ($title = $1) && last;
+			}
+		}
+
+		# Text files.
+
+		elsif ($file =~ /\.[Tt][Xx][Tt]$/)
+		{
+			while (<FILE>) 
+			{
+				/^TITLE[:]*\s*(.*)/i && ($title = $1) && last;
+			}
+		}
+
+		# Other files.
+
+		else
+		{
+			return $file;
+		}
+	}
+
+	close(FILE);
+
+	$title =~ s/\s*$//;	 # Remove trailing spaces.
+	$title =~ s/\n/ /g;	 # Replace newline characters with a space.
+	$title =~ s/\s+/ /g; # Replace multiple spaces with single spaces.
+
+	return $title;
+}
+
+################################################################################
+# GetSectionText - a subroutine to extract and return the text within the 
+#                  specified section of the file to the calling program. Returns
+#                  the filename if the section is not found or if the file 
+#                  cannot be opened.
+################################################################################
+
+sub GetSectionText
+{
+	local($file,$section) = @_;
+	local($info,$getlines,$heading,$tmp_info);
+
+	open(FILE,$file) || return;
+
+	# Initialize flag variable. This flag is used to indicate whether or not
+	# the data in the current section should be retrieved.
+
+	$getlines = 0;
+
+	# HTML files.
+
+	if ($file =~ /\.[Hh][Tt][Mm][Ll]?$/)
+	{
+		# Translate the section name to lower case.
+
+		$section =~ tr/a-z/A-Z/;
+
+		# Change the paragraph separator to "<".
+
+		local($/) = "<";
+
+		# Read the file until a line with the tag <A NAME = "<section name>"
+		# is found. When a match is found, check the section name extracted
+		# from the line against the one passed to this subroutine. If a match
+		# is found, check to see if a section with the same label has been
+		# previously processed. If it has, print the stored data and reset the
+		# variable. Set the flag ($getlines) and continue. Check the lines that
+		# follow for another occurrence of the tag above. If the line does not
+		# contain this tag, extract the text between any tags that may exist in
+		# the current line and append the data to $info. If the line does
+		# match, print the data, unset the storage and the flag and continue.
+
+		while (<FILE>) 
+		{
+			if (/^A NAME\s*=\s*"(.*)">([^<]*)/i)
+			{
+				$heading = $1;
+				$heading =~ tr/a-z/A-Z/;
+
+				if ($heading eq $section)
+				{
+					if ($getlines)
+					{
+						$info =~ s/^<BR>//;	# Remove leading <BR> HTML tag.
+
+						&PrintSectionText($section,$info);
+
+						undef($info);
+					}
+
+					$getlines++;
+
+					$tmp_info = $2;
+					$tmp_info =~ s/^\n/<BR>/;	# Replace the first newline
+												# character with an HTML
+												# newline.
+					$tmp_info =~ s/\n/ /g;		# Replace additional newline
+												# characters with a space.
+					$info = $tmp_info;
+				}
+
+				else
+				{
+					if (length($info) && $getlines)
+					{
+						$info =~ s/^<BR>//;	# Remove leading <BR> HTML tag.
+
+						&PrintSectionText($section,$info);
+
+						undef($info);
+					}
+
+					$getlines = 0;
+				}
+			}
+
+			elsif ($getlines)
+			{
+				if (/\/?\w+>([^<]*)</)
+				{
+					$tmp_info = $1;
+					$tmp_info =~ s/^\n/<BR>/;	# Replace the first newline
+												# character with an HTML
+												# newline.
+					$tmp_info =~ s/\n/ /g;		# Replace additional newline
+												# characters with a space.
+					$info .= " " . $tmp_info;
+				}
+			}
+		}
+
+		# Print any data that may have been stored but not printed when the
+		# file processing was completed.
+
+		if (length($info) && $getlines)
+		{
+			$info =~ s/^<BR>//;	# Remove leading <BR> HTML tag.
+
+			&PrintSectionText($section,$info);
+
+			undef($info);
+		}
+	}
+
+	# Text files.
+
+	elsif ($file =~ /\.[Tt][Xx][Tt]$/)
+	{
+		# Read the file until a line with an all capitalized entry up to the :
+		# is found. When a match is found, check the section name extracted
+		# from the line against the one passed to this subroutine. If a match
+		# is found, check to see if a section with the same label has been
+		# previously processed. If it has, print the stored data and reset the
+		# variable. Set the flag ($getlines) and continue. Check the lines that
+		# follow for another occurrence of a capitalized entry followed by a :.
+		# If the line does not match this criteria, read the text from
+		# the current line and append the data to $info. If the line does
+		# match, print the data, unset the storage and the flag and continue.
+
+		while (<FILE>) 
+		{
+			if (/^([ .A-Z]+):\s*(.*)/)
+			{
+				if ($1 eq $section)
+				{
+					if ($getlines)
+					{
+						$info =~ s/\n/<BR>/g;	# Replace newline characters 
+												# with an HTML newline.
+
+						&PrintSectionText($section,$info);
+
+						undef($info);
+					}
+
+					$info = $2;
+					$info =~ s/^\n$//;
+					$getlines++;
+
+					if (length($info))
+					{
+						$info .= "<BR>";
+					}
+				}
+
+				else
+				{
+					if (length($info) && $getlines)
+					{
+						$info =~ s/\n/<BR>/g;	# Replace newline characters 
+												# with an HTML newline.
+
+						&PrintSectionText($section,$info);
+
+						undef($info);
+					}
+
+					$getlines = 0;
+				}
+			}
+
+			elsif ($getlines)
+			{
+				s/^\n$//;	# Remove single carriage returns (UNIX)
+				s/^\r\n$//;	# Remove single carriage returns (DOS)
+				$info .= " " . $_;
+			}
+		}
+
+		# Print any data that may have been stored but not printed when the
+		# file processing was completed.
+
+		if (length($info) && $getlines)
+		{
+			$info =~ s/\n/<BR>/g;	# Replace newline characters with an
+									# HTML newline.
+
+			&PrintSectionText($section,$info);
+
+			undef($info);
+		}
+	}
+
+	close(FILE);
+}
+
+################################################################################
+# PrintSectionText - a subroutine to remove extra characters from the data 
+#                    copied from the desired section of the file and display
+#                    it in HTML format.
+################################################################################
+
+sub PrintSectionText
+{
+	local($section,$info) = @_;
+
+	# Remove unwanted characters from the data in $info.
+
+	$info =~ s/\s*$//;	# Remove trailing spaces.
+	$info =~ s/^\n//;	# Remove leading newline characters.
+	$info =~ s/\s+/ /g;	# Replace multiple spaces with single spaces.
+
+	# Add additional HTML carriage returns for consistent spacing for HTML and
+	# text data. Remove any extras that are inadvertently added.
+
+	$info =~ s/\s*<BR>$/<BR><BR>/;
+	$info =~ s/<BR>\s*<BR>\s*<BR>$/<BR><BR>/;
+
+	# Display the section data retrieved.
+
+	print HTMLPAGE "    <UL><B>$section:</B>\n";
+	print HTMLPAGE "         <UL>$info</UL></UL>\n";
+}
+
+################################################################################
+# WriteHTMLFooter - a subroutine to create a standard trailer for all web pages.
+#                   The name of the person running the program and the date that
+#                   the program was run are also included.
+################################################################################
+
+sub WriteHTMLFooter
+{
+    local($filename) = @_;
+    local($today);
+
+    # Append the output to the file specified.
+
+    open(HTMLOUT,">> $filename") || die "$AppName : Error - Can't append to $file.\n";
+
+    # Retrieve the current date (format "April 30, 1996").
+
+    $today = `/bin/date '+%B %e, %Y'`;
+    chop $today;
+
+    # If the date was successfully retrieved, build the trailer.
+
+    if ($today)
+    {
+        # Add a tag to un-indent all of the hyperlinks generated by htls. This 
+        # is necessary to fix a "feature" in HTML. Indented lines added after an
+        # unindented line will automatically have a blank line added above them.
+        # This fix was added to provide consistent appearance between the output
+        # of the -genpage and -index options. The matching <UL> tag is added in
+        # program_lib.pl.
+
+        print HTMLOUT "</UL>\n";
+
+        # Display a Horizontal Rule.
+
+        print HTMLOUT "<HR>\n";
+        print HTMLOUT "<ADDRESS>\n";
+
+        # Display the contact information for the person running the program.
+
+        print HTMLOUT "Page Maintained by ";
+        print HTMLOUT "<A HREF = \"mailto:crc\@eskimo.com\">";
+        print HTMLOUT "Craig Campbell</A>.";
+
+        # Display the date.
+
+        print HTMLOUT " Created: $today.\n";
+        print HTMLOUT "</ADDRESS>\n";
+    }
+
+    print HTMLOUT "</BODY>\n</HTML>\n\n";
+
+    close(HTMLOUT);
+}
+
+################################################################################
+# OpenHTMLFile - a subroutine to create a new file or open an existing file.
+#                This is necessary for the recursive calls to GenerateHTMLPages
+#                to work correctly in creating the output files. It is intended
+#                be called before any series of print statements that use the
+#                HTMLPAGE handle.
+################################################################################
+
+sub OpenHTMLFile
+{
+	local($file,$method) = @_;
+
+	# Close any existing filehandles with this name that may be open.
+
+	close(HTMLPAGE);
+
+	# Create a new file.
+
+	if ($method eq 'c')
+	{
+		open(HTMLPAGE,"> $file") || die "$AppName : Error - Can't create $file for write.\n";
+	}
+
+	# Append to an existing file.
+
+	elsif ($method eq 'a')
+	{
+		open(HTMLPAGE,">> $file") || die "$AppName : Error - Can't append to $file.\n";
+	}
+
+	else
+	{
+		die "$AppName : Error - Invalid file open method. Must be \"c\" or \"a\"\n";
+	}
+}
+
+################################################################################
+# DisplaySelectedSections - a subroutine display selected sections of the file
+#                           passed to this subroutine in the <dirname>.htm file
+#                           that is being created.
+################################################################################
+
+sub DisplaySelectedSections
+{
+	local($path) = @_;
+	local(@sections,$section,$contents);
+
+	# Place the contents of the global variable $sections_to_display in a
+	# list.
+
+	@sections = split(/,/,$sections_to_display);
+
+	# Retrieve and display the contents of each section of this file specified 
+	# in the <dirname>.cfg file for this directory or one of its parent
+	# directories.
+
+	foreach $section (@sections)
+	{
+		&GetSectionText($path,$section);
+	}
+}
+
+################################################################################
+# ProcessDirectory - a subroutine to manipulate the list of files and 
+#                    subdirectories for directory being processed using
+#                    parameters found in the <dirname>.cfg file.
+################################################################################
+
+sub ProcessDirectory
+{
+	local($dir) = @_;
+	local(@raw_list,@cooked_list,@excluded_files,$file,$name,$excluded);
+
+	@raw_list = ();		# original file list (from readdir() call).
+	@cooked_list = ();	# modified list returned to the calling program.
+
+	$excluded_key = "Exclude";
+
+	# Read the contents of the directory and store the names in the list
+	# array. 
+
+	if (opendir(DIR,$dir)) 
+	{
+		@raw_list = sort(readdir(DIR));
+		closedir(DIR);
+
+		# Retrieve a list of the files/directories to be excluded.
+
+ 		@excluded_files = split(/,/,&RetrieveConfigData($dir,$excluded_key));
+
+		# Read each name in the file list for this directory and compare it to
+		# each of the names in the excluded files list. If it does not match any
+		# of the excluded filenames, put the name in the new list @cooked_list.
+		# This list can be returned to the calling program or used for further
+		# processing.
+
+		foreach $file (@raw_list)
+		{
+			$excluded = 0;	# flag variable to indicate if a file is to be 
+							# excluded from the list or not.
+
+ 			foreach $name (@excluded_files)
+ 			{
+				if ($file eq $name)
+				{
+					$excluded++;
+				}
+	 		}
+
+			if (!($excluded))
+			{
+				push(@cooked_list,$file);
+			}
+		}
+
+	 	@cooked_list = &SortList($dir,@cooked_list);
+	}
+
+	else
+	{
+		print "$dir unreadable\n";
+	}
+
+	return(@cooked_list);
+}
+
+################################################################################
+# RetrieveConfigData - a subroutine to read the <dirname>.cfg file in the 
+#                      directory passed in the first parameter and return a list
+#                      containing the information found in the line containing
+#                      a string matching the second parameter.
+################################################################################
+
+sub RetrieveConfigData
+{
+	local($dirpath,$key) = @_;
+	local($dirname,$cfg_file,$values);
+
+	# Initialize the return value.
+
+	$values = -1;
+
+	# Extract the directory name from the full path.
+
+	$dirname = $dirpath;
+	$dirname =~ s|.*/||;
+
+	# Initialize the variable pointing to the configuration file for the 
+	# directory passed to this subroutine.
+
+	$cfg_file = "$dirpath/$dirname.cfg";
+
+	# Translate the value of the key passed to this subroutine to lower case to
+	# simplify matching.
+
+	$key =~ tr/A-Z/a-z/;
+
+	# Check for the existence of the configuration file and open it if it 
+	# exists for reading.
+
+	if (-f $cfg_file)
+	{
+		open(CFGFILE,"/usr/bin/cat $cfg_file |") || die "$AppName : Error - Can't open $cfg_file for read.\n";
+
+		# Read in each line of the file and check if the field preceding the 
+		# ":" matches the key passed to this function. If it does, copy the
+		# contents of the entry after the ":" to $values.
+
+		while (<CFGFILE>)
+		{
+			chop;
+			split(/:/);
+
+			# Translate the value of the key retrieved to lower case to 
+			# simplify matching.
+
+			@_[0] =~ tr/A-Z/a-z/;
+
+			if (@_[0] eq $key)
+			{
+				$values = @_[1];
+
+				# Remove any trailing whitespace characters. This is intended
+				# primarily to allow DOS files to be read correctly.
+
+				$values =~ s/\s$//;
+			}
+		}
+
+		close(CFGFILE);
+	}
+
+	# Return the results to the calling program.
+
+	return($values);
+}
+
+################################################################################
+# SortList - a subroutine used to the sort elements of a list of filenames based
+#            on the settings in the current <dirname.cfg> file.
+################################################################################
+
+sub SortList
+{
+	local($dir,@in_list) = @_;
+	local(@out_list,@type_list,$arbitrary_list,$cfg_data,$sort_key);
+	local($types,$list,$reverse);
+
+	# Initialize array order flag.
+
+	$reverse = 0;
+
+	# Initialize the lists used by this subroutine.
+
+	# @out_list - holds the values in their correct order for return to the
+	#             calling routine.
+	# @type_list- holds the sorting type(s) specified in the <dirname>.cfg file.
+
+	@out_list       = ();
+	@type_list      = ();
+
+	# Set the key for the call to RetrieveConfigData.
+
+	$sort_key = "Sort";
+
+	$cfg_data = &RetrieveConfigData($dir,$sort_key);
+
+	# If no data is recovered, return the original file list to the calling
+	# routine.
+
+	if ($cfg_data == -1)
+	{
+		return(@in_list);
+	}
+
+	# If one of the sorting types specified is "Arbitrary", the users list of
+	# file and directory names is separated from the sort types by a ";" and
+	# placed in the variable $arbitrary_list.
+
+	if ($cfg_data =~ /.*arbitrary.*;.+/i)
+	{
+		($types,$arbitrary_list) = split(/;/,$cfg_data);
+
+		@type_list = split(/,/,$types);
+
+		# Remove any extra spaces that may have been added by the user in the
+		# configuration file.
+
+		$arbitrary_list =~ s/\s//g;
+	}
+
+	else
+	{
+		$cfg_data =~ s/;//g;
+
+		@type_list = split(/,/,$cfg_data);
+	}
+
+	# Call the specific subroutine for each of the sorting types specified in
+	# the configuration file. After each subroutine returns, the returned list
+	# replaces the original so that it may be used if multiple sorting types
+	# have been specified.
+
+	foreach $type (@type_list)
+	{
+		# Translate the sort type specified to lower case and remove 
+		# any extra white space.
+
+		$type =~ tr/A-Z/a-z/;
+		$type =~ s/\s//g;
+
+		if ($type eq "numeric")
+		{
+			@out_list = sort Numerically @in_list;
+			@in_list = @out_list;
+		}
+
+		elsif ($type eq "alpha")
+		{
+			@out_list = sort Alphabetically @in_list;
+			@in_list = @out_list;
+		}
+
+		elsif ($type eq "date")
+		{
+			@out_list = &SortByDate($dir,@in_list);
+			@in_list = @out_list;
+		}
+
+		elsif ($type eq "arbitrary")
+		{
+			@out_list = &SortArbitrarily($dir,$arbitrary_list,@in_list);
+			@in_list = @out_list;
+		}
+
+		elsif ($type eq "reverse")
+		{
+			$reverse++;
+		}
+
+		else
+		{
+			@out_list = @in_list;
+		}
+	}
+
+	# If the $reverse flag variable is set, reverse the order of the elements in
+	# the list.
+
+	if ($reverse)
+	{
+		@out_list = reverse(@out_list);
+	}
+
+	return(@out_list);
+}
+
+################################################################################
+# SortByDate - a subroutine used to sort a list of filenames by the modification
+#              date. By default they are sorted in descending order.
+################################################################################
+
+sub SortByDate
+{
+	local($dir,@in_list) = @_;
+	local(@out_list,@file_info,@time_list,@sorted_time_list);
+	local($full_path,$check_flag,$file,%file_list);
+
+	# Initialize local lists.
+
+	@out_list         = ();
+	@time_list        = ();
+	@sorted_time_list = ();
+
+	# Process each filename in the list.
+
+	foreach $file (@in_list)
+	{
+		# Reset the flag for each file.
+
+		$check_flag = 1;
+
+		# Create a variable to store the full path of the file and use a call 
+		# to the stat() function to retrieve file information.
+
+		$full_path = "$dir/$file";
+
+		@file_info = stat($full_path);
+
+		# For each file, check for the existence of files with an identical
+		# timestamp. If a file with the same timestamp has already been 
+		# added to the file_list associative array, increment the timestamp
+		# value and check the time again. This is done to avoid having files
+		# removed from the list due to duplicate timestamps. The times are 
+		# stored in a separate list for later sorting.
+
+		while ($check_flag)
+		{
+			if ($file_list{$file_info[9]})
+			{
+				$file_info[9]++;
+			}
+
+			else
+			{
+				$file_list{$file_info[9]} = $file;
+				push(@time_list,$file_info[9]);
+				$check_flag = 0;
+			}
+		}
+	}
+
+	# Sort the timestamp list.
+
+	@sorted_time_list = sort Numerically @time_list;
+
+	# Reverse the order of the sorted list so that the list generated below
+	# (using push) is sorted in descending order.
+
+	@sorted_time_list = reverse(@sorted_time_list);
+
+	# Using the sorted list of timestamps, generate the filename list and 
+	# return it to the calling routine.
+
+	foreach $time (@sorted_time_list)
+	{
+		push(@out_list,$file_list{$time});
+	}
+
+	return(@out_list);
+}
+
+################################################################################
+# SortArbitrarily - a subroutine used to put a list in the order specified by 
+#                   the user in the <dirname.cfg> file. The existence of each
+#                   file or directory in the list is verified and any names in 
+#                   the input list that do not match the users list are added to
+#                   the end of the list that is returned by this subroutine.
+#
+# $dir       - the full path of the directory containing the files and 
+#              directories listed in @in_list.
+#
+# $user_list - list of filenames specified by the user in a 
+#              <dirname>.cfg file. The purpose of this is to
+#              give the user control of the exact order in
+#              which files and directories should appear on
+#              the HTML page that is generated by this program.
+#
+# @in_list   - list of filenames generated by this program.
+#
+################################################################################
+
+sub SortArbitrarily
+{
+	local($dir,$user_list,@in_list) = @_;
+	local(@return_list,@arbitrary_list,$arbitrary_name,$in_name);
+	local($match,$full_path);
+
+	# Initialize the array that is returned to the calling program.
+
+	@return_list = ();
+
+	# Place the elements of the $user_list variable into a list.
+
+	@arbitrary_list = split(/,/,$user_list);
+
+	# Check each name in @arbitrary_list against the names in @in_list. If the 
+	# name exists in both lists and is a valid file or directory add the name to
+	# @return_list.
+
+	foreach $arbitrary_name (@arbitrary_list)
+	{
+		# Reset the flag variable used to indicate that a match was found.
+
+		$match = 0;
+
+		# Create a variable containing the full path of the file or directory.
+		# If the name is not valid, it will not be added to the list.
+
+		$full_path = "$dir/$arbitrary_name";
+
+		# Verify that the file or directory exists. If it does, verify that
+		# it matches one of the names in @in_list. If a match is found, add the
+		# name to @return_list.
+
+		if ((-d $full_path) || (-f $full_path))
+		{
+			foreach $in_name (@in_list)
+			{
+				if ($in_name eq $arbitrary_name)
+				{
+					$match++;
+				}
+			}
+
+			if ($match)
+			{
+				push(@return_list,$arbitrary_name);
+			}
+		}
+	}
+
+	# Check each name in @in_list against the names in @arbitrary_list. If the 
+	# name does not exist in @arbitrary_list and is a valid file or directory
+	# add the name to @return_list.
+
+	foreach $in_name (@in_list)
+	{
+		# Reset the flag variable used to indicate that a match was found.
+
+		$match = 0;
+
+		# Create a variable containing the full path of the file or directory.
+		# If the name is not valid, it will not be added to the list.
+
+		$full_path = "$dir/$in_name";
+
+		# Verify that the file or directory exists. If it does, verify that
+		# it matches one of the names in @in_list. If a match is found, add the
+		# name to @return_list.
+
+		if ((-d $full_path) || (-f $full_path))
+		{
+			foreach $arbitrary_name (@arbitrary_list)
+			{
+				if ($in_name eq $arbitrary_name)
+				{
+					$match++;
+				}
+			}
+
+			if (!($match))
+			{
+				push(@return_list,$in_name);
+			}
+		}
+	}
+
+	return(@return_list);
+}
+
+################################################################################
+# Numerically - a subroutine used by the sort command to sort elements of a list
+#               in numerical order. This is a modified version of the very 
+#               short subroutine found on pg. 183 of the Programming perl book.
+################################################################################
+
+sub Numerically 
+{
+	$a <=> $b;
+}
+
+################################################################################
+# Alphabetically - a subroutine used by the sort command to sort elements of a 
+#                  list in alphabetical order . This is a modified version of 
+#                  the very short subroutine found on pg. 183 of the Programming
+#                  perl book.
+################################################################################
+
+sub Alphabetically
+{
+	$a cmp $b;
+}
