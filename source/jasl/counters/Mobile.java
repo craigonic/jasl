@@ -9,28 +9,27 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Mobile.java,v 1.5 2001/12/08 07:20:16 craig Exp $
+// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Mobile.java,v 1.6 2002/02/21 06:55:01 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
-// ************************************************************************** //
-// Mobile class - This class is used to distinguish between fighting units    //
-//                that have the ability to move on their own (ie. squads,     //
-//                leaders, tanks, etc) and those that are carried or towed    //
-//                (ie. machine guns, artillery pieces, etc). Instances of     //
-//                this class may not be instantiated directly. It is strictly //
-//                a parent class.                                             //
-// ************************************************************************** //
-
+/**
+ * This class is used to define the characteristics of units that have the
+ * ability to move on their own. This class is strictly a superclass and cannot
+ * be instantiated directly.
+ * @see <A HREF=../../docs/Counters/Mobile.java.html>Source code</A>
+ * @author Craig R. Campbell
+ * @version 1.6
+ */
 class Mobile extends Fighting
 {
 	// Public symbolic constants
 
-	// These constants are used to verify that the values passed to the 
-	// constructor that are related to portage are valid.
-
+	/** Minimum valid portage capacity value : <B>0</B> */
 	public static final int MIN_PORTAGE_CAPACITY = 0;
+
+	/** Minimum valid portage level value : <B>0</B>    */
 	public static final int MIN_PORTAGE_LEVEL    = 0;
 
 	// Private symbolic constants
@@ -72,14 +71,15 @@ class Mobile extends Fighting
 
 	protected Mobile(String description,String nationality,String identity,
 	                 String unitType,String firepower,int normalRange,
-	                 int portageValue,int movement,int portageCapacity)
+	                 int portageValue,boolean sprayFireCapable,int movement,
+	                 int portageCapacity)
 	{
-		// Pass the first 7 parameters to the superclass constructor. If any
+		// Pass the first 8 parameters to the superclass constructor. If any
 		// exceptions are thrown, assume that they will be caught and handled by
 		// the program creating the object.
 
 		super(description,nationality,identity,unitType,firepower,normalRange,
-		      portageValue);
+		      portageValue,sprayFireCapable);
 
 		// Check the value of each remaining parameter and copy the value to
 		// the local copy of the corresponding variable if an exception is not
@@ -113,12 +113,16 @@ class Mobile extends Fighting
 
 	// Public access methods
 
-	// toString - A method to display the value of the private data members of
-	//            the current instance. The intent of this method is to provide
-	//            text-based verification output for development and debugging.
-	//            Each subclass includes a method with the same name and
-	//            purpose.
-
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. All of the members, beginning with the top-level class
+	 * (<B><A HREF=Unit.html>Unit</A></B>) and continuing down the hierarchy to
+	 * this level, are appended to the returned string. Each value is preceded
+	 * by a label defined in the <B><A HREF=Counter.html>Counter</A></B>
+	 * interface. There are no more than two values, including labels, in each
+	 * line of output.
+	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
+	 */
 	public String toString()
 	{
 		// Define local constants.
@@ -246,25 +250,34 @@ class Mobile extends Fighting
 		return (returnString.toString());
 	}
 
-	// getMovement - A method to return the value of the movement member
-	//               variable to the calling program.
-
+	/**
+	 * Determine the number of movement factors or points available to this
+	 * unit before it begins to move. This value may be affected by the current
+	 * portage level of the unit.
+	 * @return a <CODE>String</CODE> specifying the movement capability in
+	 * factors or points.
+	 */
 	public String getMovement()
 	{
 		return (Integer.toString(movement));
 	}
 
-	// getPortageCapacity - A method to return the value of the portageCapacity
-	//                      member variable to the calling program.
-
+	/**
+	 * Determine the maximum number of portage points (PP) of personnel and/or
+	 * equipment that this unit can carry without affecting the movement factors
+	 * or points available to it.
+	 * @return a <CODE>String</CODE> specifying the portage capacity.
+	 */
 	public String getPortageCapacity()
 	{
 		return (Integer.toString(portageCapacity));
 	}
 
-	// getPortageLevel - A method to return the value of the portageLevel member
-	//                   variable to the calling program.
-
+	/**
+	 * Determine the number of portage points (PP) of personnel and/or equipment
+	 * that this unit is currently carrying.
+	 * @return a <CODE>String</CODE> specifying the current portage level.
+	 */
 	public String getPortageLevel()
 	{
 		return (Integer.toString(portageLevel));
