@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By    : Craig R. Campbell  -  June 1999                              #
 #                                                                              #
-# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.6 1999/09/23 05:05:56 craig Exp $
+# $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Makefile,v 1.7 1999/12/29 04:21:18 craig Exp $
 ################################################################################
 
 # Define variables.
@@ -15,8 +15,12 @@
 JAVA_COMPILER     = javac
 GCJ_COMPILER      = gcj
 
+HTLS              = htls -genpage
+JAVA2HTML         = java2html -doc
+
 CLASSPATH         = ../../jasl
 OUTPUT_PATH       = $(CLASSPATH)/Counters
+DOCS_PATH         = ../../docs/Counters
 
 CLASSPATH_CMD     = -classpath $(CLASSPATH)
 GCJ_CLASSPATH_CMD = --CLASSPATH=$(CLASSPATH)
@@ -115,3 +119,15 @@ clean.class:
 
 clean.o:
 	$(RM) $(OUTPUT_PATH)/*.o
+
+# Define a parameter to create HTML versions of the source files. Each file is
+# converted using the java2html program, which generates an "image" of the file
+# with syntax color coding. After the files are generated, the htls program is
+# used to link the files together on an HTML page.
+
+docs:
+	@for i in $(ALL_CLASSES) ; do \
+		$(JAVA2HTML) -input $$i.java -output $(DOCS_PATH)/$$i.html -title "$$i class" ;\
+	done
+	@$(HTLS) $(DOCS_PATH)
+	@(cd ..;make docs)
