@@ -9,16 +9,16 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Leader.java,v 1.6 2002/02/21 07:48:45 craig Exp $
+// $Id: Leader.java,v 1.7 2003/01/04 06:53:52 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
 /**
  * This class is used to represent a Leader counter.
- * @see <A HREF=../../docs/Counters/Leader.java.html>Source code</A>
+ * @see <A HREF=../../source/Counters/Leader.html>Source code</A>
  * @author Craig R. Campbell
- * @version 1.6
+ * @version 1.7
  */
 public final class Leader extends Infantry
 {

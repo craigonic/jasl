@@ -13,7 +13,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/utilities/Dice.java,v 1.5 2002/02/21 06:10:58 craig Exp $
+// $Id: Dice.java,v 1.6 2003/01/04 06:53:52 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -21,9 +21,9 @@ package Counters;
 /**
  * This is a utility class used to provide the simulated result(s) of rolling
  * one or two six sided dice.
- * @see <A HREF=../../docs/Counters/Dice.java.html>Source code</A>
+ * @see <A HREF=../../source/Counters/Dice.html>Source code</A>
  * @author Craig R. Campbell
- * @version 1.5
+ * @version 1.6
  */
 public final class Dice
 {

@@ -8,16 +8,16 @@
 //                                                                            //
 // Written By : Craig R. Campbell  -  December 1998                           //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Squad.java,v 1.7 2002/02/21 07:53:20 craig Exp $
+// $Id: Squad.java,v 1.8 2003/01/04 06:53:52 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
 /**
  * This class is used to represent a Squad counter.
- * @see <A HREF=../../docs/Counters/Squad.java.html>Source code</A>
+ * @see <A HREF=../../source/Counters/Squad.html>Source code</A>
  * @author Craig R. Campbell
- * @version 1.7
+ * @version 1.8
  */
 public final class Squad extends Personnel
 {

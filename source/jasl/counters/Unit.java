@@ -8,16 +8,16 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Unit.java,v 1.7 2002/02/21 06:40:38 craig Exp $
+// $Id: Unit.java,v 1.8 2003/01/04 06:53:52 craig Exp $
 // ************************************************************************** //
 
 package Counters;
 
 /**
  * This class is used to define the basic components of a counter.
- * @see <A HREF=../../docs/Counters/Unit.java.html>Source code</A>
+ * @see <A HREF=../../source/Counters/Unit.html>Source code</A>
  * @author Craig R. Campbell
- * @version 1.7
+ * @version 1.8
  */
 public abstract class Unit implements Counter
 {

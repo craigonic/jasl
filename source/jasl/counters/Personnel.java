@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By     : Craig R. Campbell  -  December 1998                       //
 //                                                                            //
-// $Header: /tmp/java/jasl.cvs/jasl/source/jasl/counters/Personnel.java,v 1.6 2002/02/21 07:39:24 craig Exp $
+// $Id: Personnel.java,v 1.7 2003/01/04 06:53:52 craig Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -19,9 +19,9 @@ package Counters;
  * infantry units that represent more than one combat soldier. In the board
  * game, these units are referred to as multi-man counters (MMC). This class is
  * strictly a superclass and cannot be instantiated directly.
- * @see <A HREF=../../docs/Counters/Personnel.java.html>Source code</A>
+ * @see <A HREF=../../source/Counters/Personnel.html>Source code</A>
  * @author Craig R. Campbell
- * @version 1.6
+ * @version 1.7
  */
 class Personnel extends Infantry
 {
