@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.9 2003/02/14 06:32:25 craig Exp $
+# $Id: Makefile,v 1.10 2006/10/18 18:40:58 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -114,13 +114,23 @@ docs:
 
 javadocs:
 	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(JAVA_SRC_FILES) \
-    $(COUNTERS_PACKAGE)/*.java
+	$(COUNTERS_PACKAGE)/*.java
 
+# Create HTML documentation using gjdoc.
+
+gjdoc:
+	@$(GJDOC) $(JAVADOC_CMD_LIST) $(JAVA_SRC_FILES) \
+	$(COUNTERS_PACKAGE)/*.java
 
 # Create HTML documentation using doxygen.
 
 doxygen:
 	@$(DOXYGEN) $(DOXYGEN_DEF_FILE)
+
+# Create all the forms of documentation, except gjdoc, which places its output
+# in the same directory as javadoc.
+
+all_docs: docs javadocs doxygen
 
 # Create an executable jar archive of the Driver program. Execution of this
 # target will automatically remove any object files that exist in order to
