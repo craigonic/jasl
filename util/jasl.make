@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.2 2003/02/14 06:29:00 craig Exp $
+# $Id: jasl.make,v 1.3 2006/10/18 22:50:57 campbell Exp $
 ################################################################################
 
 ## Directory definitions.
@@ -38,19 +38,23 @@ GCJ_COMPILE_CMD   = $(GCJ_BUILD_CMD) -c
 
 SRC_DOCS_PATH     = $(DOCS_PATH)/source
 HTLS              = $(UTIL_PATH)/htls -genpage -index
-JAVA2HTML         = java2html --doc --tab=4
-SED_CONV_CMD      = /usr/bin/sed -f $(UTIL_PATH)/htmlconv
+JAVA2HTML         = source-highlight --src-lang=java --doc --tab=4 --ctags=''
+SED_CONV_CMD      = sed -f $(UTIL_PATH)/htmlconv
 
 # Javadoc.
 
 JAVADOC_COMPILER  = javadoc
 JAVADOCS_PATH     = -d $(DOCS_PATH)/javadocs
-# JAVADOCS_LINK     = -link http://java.sun.com/j2se/1.4.1/docs/api
+JAVADOCS_LINK     = -link http://java.sun.com/j2se/1.4.2/docs/api
 JAVADOC_OPTIONS   = -version -author -package -nodeprecatedlist -use \
                     -breakiterator
 JAVADOC_TITLE     = -windowtitle "jASL Programming Documentation"
 JAVADOC_CMD_LIST  = $(JAVADOCS_PATH) $(JAVADOCS_LINK) $(JAVADOC_OPTIONS) \
                     $(JAVADOC_TITLE)
+
+# gjdoc.
+
+GJDOC             = gjdoc
 
 # Doxygen.
 
