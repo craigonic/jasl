@@ -34,7 +34,7 @@
 #
 # Modified by : Craig Campbell  -  December 2002
 #
-# $Id: htls,v 1.3 2003/01/01 22:13:31 craig Exp $
+# $Id: htls,v 1.4 2006/10/18 23:32:09 campbell Exp $
 #
 
 # Set application name for messages and to exclude the program file from the
@@ -741,7 +741,7 @@ sub GenerateHTMLPages
 
 		if (-f $header_file)
 		{
-			open(HEADER,"/usr/bin/cat $header_file |") || die "$AppName : Error - Can't open $header_file for read.\n";
+			open(HEADER,"cat $header_file |") || die "$AppName : Error - Can't open $header_file for read.\n";
 
 			while (<HEADER>)
 			{
@@ -1433,7 +1433,7 @@ sub RetrieveConfigData
 
 	if (-f $cfg_file)
 	{
-		open(CFGFILE,"/usr/bin/cat $cfg_file |") || die "$AppName : Error - Can't open $cfg_file for read.\n";
+		open(CFGFILE,"cat $cfg_file |") || die "$AppName : Error - Can't open $cfg_file for read.\n";
 
 		# Read in each line of the file and check if the field preceding the 
 		# ":" matches the key passed to this function. If it does, copy the
