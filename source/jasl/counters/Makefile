@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.13 2003/01/01 22:36:31 craig Exp $
+# $Id: Makefile,v 1.14 2006/10/18 21:50:19 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -160,18 +160,12 @@ clean_obj:
 	$(RM) $(OUTPUT_PATH)/*.o
 
 # Create HTML versions of the source files. Each file is converted using the
-# java2html program, which generates an "image" of the file with syntax color
-# coding. After the files are generated, the htls program is used to link the
-# files together on an HTML page.
+# source-highlight program, which generates an "image" of the file with syntax
+# color coding. After the files are generated, the htls program is used to link
+# the files together on an HTML page.
 
 docs:
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(COUNTERS_PACKAGE)/$$i.html ;\
 	done
 	@$(HTLS) $(SRC_DOCS_PATH)/$(COUNTERS_PACKAGE)
-
-# Create HTML documentation using javadoc. NOTE: This will build the
-# documentation for this package only.
-
-javadocs:
-	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(JAVA_SRC_FILES)
