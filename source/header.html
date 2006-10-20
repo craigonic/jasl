@@ -5,38 +5,46 @@
 <H1>jASL Source Browser</H1>
 <HR>
 Generation of all the files and documentation for the jASL program relies
-heavily on the 'make' program. It is not absolutely necessary, particularly for
-building the .class files, but it does simplify the process. Another alternative
-for build automation is
-<A HREF=http://jakarta.apache.org/ant/index.html>Ant</A>. Its implementation for
-this program is left as an exercise.
+heavily on the '<TT><A HREF=http://directory.fsf.org/GNU/make.html>make</A></TT>'
+program. It is not absolutely necessary, particularly for building the .class
+files, but it does simplify the process. An alternative program for build
+automation is <A HREF=http://jakarta.apache.org/ant/index.html>Ant</A>. Its
+implementation for this program is left as an exercise.
 <P>
 The following conditions are assumed about the system used to process the files
-in this directory.
+in this directory and its sub-directories:
 <UL>
-<LI>The original directory structure for this system is in place. The top level
-directory is <B>jasl</B>, which is referred to as <B><I>JASL_BASE</I></B> in
-this document.
+<LI>The original directory structure for this system is in place.
+<A NAME="JASL_BASE"></A>The top level directory is <B>jasl</B>, which is
+referred to as <B><I>JASL_BASE</I></B> in this document.
 <LI>Java SE SDK (1.2 or higher). I use the
 <A HREF=http://www.blackdown.org/java-linux.html>Blackdown port for Linux</A>,
 but the <A HREF=http://java.sun.com/j2se/>Sun</A> versions should also work.
-<LI><I>Optional. </I>An environment variable named JASL_BASE, which is set to
-the top level directory. This is necessary for make to work properly. Examples:
+<LI><I>Optional. </I>
+<TT><A HREF=http://directory.fsf.org/GNU/make.html>make</A></TT>.
+<LI><I>Optional. </I>An environment variable named <B><I>JASL_BASE</I></B>,
+which is set to the top level directory. This is necessary for
+<TT><A HREF=http://directory.fsf.org/GNU/make.html>make</A></TT> to work
+properly. Examples:
 <UL>
 <TT>setenv JASL_BASE /home/craig/java/jasl</TT><BR>
-<TT>JASL_BASE=/home/craig/java/jasl ; export JASL_BASE</TT>
+<TT>export JASL_BASE=/home/craig/java/jasl</TT>
 </UL>
-<LI><I>Optional. </I>
-<A HREF=http://www.fsf.org/software/make/make.html>make</A>.
 <LI><I>Optional. </I>
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
 build a native executable version of this package.
 <LI><I>Optional. </I>
-<A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A>.
+<TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>.
 This program is used to create HTML versions of the source files.
-<LI><I>Optional. </I><A HREF=http://www.perl.com/>Perl</A> and <TT>sed</TT>,
-which are used to build a linked hierarchy of the HTML versions of the source
-files.
+<LI><I>Optional. </I><TT><A HREF=http://www.perl.org/>perl</A></TT> and
+<TT><A HREF=http://directory.fsf.org/GNU/sed.html>sed</A></TT>, which are used
+to build a linked hierarchy of the HTML versions of the source files.
+<LI><I>Optional. </I>
+<TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>. This program
+is an alternative to
+<TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javadoc.html>javadoc</A></TT>.
+Note that the same parameters and output directory will be used for both
+programs.
 <LI><I>Optional. </I>A <A HREF=../BuildARMToolChainNotes.html>toolchain</A>
 capable of building an executable with <A HREF=http://gcc.gnu.org/java/>GCJ</A> 
 for a non-iX86 architecture. I have used these source files and build structure,
@@ -44,7 +52,9 @@ with only the minor change noted below for the <TT>gcj</TT> and <TT>gcj_obj</TT>
 targets, to cross-compile an executable and run it on my
 <A HREF=http://www.myzaurus.com/>Sharp Zaurus</A>. To specify an alternative gcj
 compiler, such as arm-linux-gcj, specify the execution of make as follows:
+<UL>
 <TT>make GCJ_COMPILER=arm-linux-gcj <I>[gcj related target]</I></TT>
+</UL>
 </UL>
 <P>
 The purpose of each target defined in the Makefile is listed below. The
@@ -53,7 +63,7 @@ directory - <B><I>JASL_BASE</I>/jasl</B>.
 <UL>
 <LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all the source
 files using
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javac.html>javac</A>,
+<TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javac.html>javac</A></TT>,
 placing the .class files in the output directory.
 The .class files in each subdirectory are also generated. This is done
 implicitly with <I>none</I> and <TT>all</TT> and explicitly with <TT>build</TT>.
@@ -70,7 +80,7 @@ location as a result of the execution of this target.
 <P>
 <LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
 bytecode file using
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javac.html>javac</A>,
+<TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javac.html>javac</A></TT>,
 placing <TT>filename.class</TT> in the output directory.
 <P>
 <LI><TT>build_gcj</TT> - executes the actions defined for the <TT>gcj</TT>
@@ -97,22 +107,33 @@ subdirectories of the output directory.
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
 <LI><TT>docs</TT> - generates an HTML version of each source file using
-<A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A>,
-placing the output files in <B><I>JASL_BASE</I>/docs/source</B>. This file,
+<TT><A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A></TT>,
+placing the output files in <B><A HREF=index.html><I>JASL_BASE</I>/docs/source</A></B>. This file,
 <B>source.html</B>, is also generated, and includes links to all of the HTML
 files in their respective subdirectories.
 <LI><TT>javadocs</TT> - generates class documentation for this program using
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javadoc.html>javadoc</A>.
+<TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javadoc.html>javadoc</A></TT>.
+The output files are placed in
+<B><A HREF=../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
+<LI><TT>gjdoc</TT> - generates class documentation for this program using
+<TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>.
 The output files are placed in
 <B><A HREF=../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
 <LI><TT>doxygen</TT> - generates class documentation for this program using
-<A HREF=http://www.doxygen.org/>Doxygen</A>. The output files are placed in<B>
+<TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>. The output files are
+placed in<B>
 <A HREF=../doxygen/html/index.html><I>JASL_BASE</I>/docs/doxygen/html</A></B>.
 <P>
+<LI><TT>all_docs</TT> - executes the actions defined for the
+<TT>docs</TT>, <TT>javadocs</TT>, and <TT>doxygen</TT> targets.
+<P>
 <LI><TT>jar</TT> - create an executable
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/jar.html>jar</A>
+<TT>
+<A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/jar.html>jar</A>
+</TT>
 archive of the jASL program. This target will delete the object (.o) files in
-the subdirectories of the output directory to prevent them from being included
-in the archive.
+the subdirectories of the output directory (see <TT>clean_obj</TT>) to prevent
+them from being included in the archive.
 </UL>
 <HR>
+<A HREF="http://vim.sourceforge.net/"><img src="vim.png" align="right" BORDER=0></A>
