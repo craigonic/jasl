@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.10 2006/10/18 18:40:58 campbell Exp $
+# $Id: Makefile,v 1.11 2006/10/20 22:10:52 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -113,18 +113,21 @@ docs:
 # Create HTML documentation using javadoc.
 
 javadocs:
-	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(JAVA_SRC_FILES) \
+	@$(RM) -r $(DOCS_PATH)/javadocs
+	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) \
 	$(COUNTERS_PACKAGE)/*.java
 
 # Create HTML documentation using gjdoc.
 
 gjdoc:
-	@$(GJDOC) $(JAVADOC_CMD_LIST) $(JAVA_SRC_FILES) \
+	@$(RM) -r $(DOCS_PATH)/javadocs
+	@$(GJDOC) $(JAVADOC_CMD_LIST) \
 	$(COUNTERS_PACKAGE)/*.java
 
 # Create HTML documentation using doxygen.
 
 doxygen:
+	@$(RM) -r $(DOCS_PATH)/doxygen
 	@$(DOXYGEN) $(DOXYGEN_DEF_FILE)
 
 # Create all the forms of documentation, except gjdoc, which places its output
