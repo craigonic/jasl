@@ -4,58 +4,16 @@
 </HEAD>
 <H1>Counters package</H1>
 <HR>
-Generation of all the files and documentation in the Counters package relies
-heavily on the 'make' program. It is not absolutely necessary, particularly for
-building the .class files, but it does simplify the process. Another alternative
-for build automation is
-<A HREF=http://jakarta.apache.org/ant/index.html>Ant</A>. Its implementation for
-this package is left as an exercise.
-<P>
-The following conditions are assumed about the system used to process the files
-in this directory.
-<UL>
-<LI>The original directory structure for this system is in place. The top level
-directory is <B>jasl</B>, which is referred to as <B><I>JASL_BASE</I></B> in
-this document.
-<LI>Java SE SDK (1.2 or higher). I use the
-<A HREF=http://www.blackdown.org/java-linux.html>Blackdown port for Linux</A>,
-but the <A HREF=http://java.sun.com/j2se/>Sun</A> versions should also work.
-<LI><I>Optional. </I>An environment variable named JASL_BASE, which is set to
-the top level directory. This is necessary for make to work properly. Examples:
-<UL>
-<TT>setenv JASL_BASE /home/craig/java/jasl</TT><BR>
-<TT>JASL_BASE=/home/craig/java/jasl ; export JASL_BASE</TT>
-</UL>
-<LI><I>Optional. </I>
-<A HREF=http://www.fsf.org/software/make/make.html>make</A>.
-<LI><I>Optional. </I>
-<A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
-build a native executable version of this package.
-<LI><I>Optional. </I>
-<A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A>.
-This program is used to create HTML versions of the source files.
-<LI><I>Optional. </I><A HREF=http://www.perl.com/>Perl</A> and <TT>sed</TT>,
-which are used to build a linked hierarchy of the HTML versions of the source
-files.
-<LI><I>Optional. </I>A <A HREF=../../BuildARMToolChainNotes.html>toolchain</A>
-capable of building an executable with <A HREF=http://gcc.gnu.org/java/>GCJ</A> 
-for a non-iX86 architecture. I have used these source files and build structure,
-with only the minor change noted below for the <TT>gcj</TT> and <TT>gcj_obj</TT>
-targets, to cross-compile an executable and run it on my
-<A HREF=http://www.myzaurus.com/>Sharp Zaurus</A>. To specify an alternative gcj
-compiler, such as arm-linux-gcj, specify the execution of make as follows:
-<TT>make GCJ_COMPILER=arm-linux-gcj <I>[gcj related target]</I></TT>
-</UL>
-<P>
-The purpose of each target defined in the Makefile is listed below. The
-executable and object files are written to (and deleted from) the output
-directory - <B><I>JASL_BASE</I>/jasl/Counters</B>. Note that most of the targets
-are also used by the Makefile in the parent directory during recursive cleans
-and builds.
+The purpose of each target defined in the Makefile for this directory is listed
+below. The executable and object files are written to (and deleted from) the
+output directory -
+<B><I><A HREF="../source.html#JASL_BASE">JASL_BASE</A></I>/jasl/Counters</B>.
+Note that most of the targets are also used by the Makefile in the parent
+directory during recursive cleans and builds.
 <UL>
 <LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all the source
 files using
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javac.html>javac</A>,
+<TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javac.html>javac</A></TT>,
 placing the .class files in the output directory.
 <LI><TT>gcj</TT> or <TT>gcj_obj</TT> - compiles all the source files using
 <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing the object (.o)
@@ -67,7 +25,7 @@ these targets.
 <P>
 <LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
 bytecode file using
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javac.html>javac</A>,
+<TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javac.html>javac</A></TT>,
 placing <TT>filename.class</TT> in the output directory.
 <LI><I>filename</I><TT>.o</TT> - compiles <TT>filename.java</TT> into an object
 file using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing
@@ -81,13 +39,13 @@ directory.
 and <TT>clean_obj</TT> targets.
 <P>
 <LI><TT>docs</TT> - generates an HTML version of each source file using
-<A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A>,
-placing the output files in <B><I>JASL_BASE</I>/docs/source/Counters</B>. This
-file, <B>Counters.html</B>, is also generated, and includes links to all of the
-HTML files.
-<LI><TT>javadocs</TT> - generates class documentation for this package using
-<A HREF=http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javadoc.html>javadoc</A>.
-The output files are placed in
-<B><A HREF=../../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
+<TT>
+<A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A>
+</TT>,
+placing the output files in
+<B><A HREF=index.html><I>JASL_BASE</I>/docs/source/Counters</A></B>. This file,
+<B>Counters.html</B>, is also generated, and includes links to all of the HTML
+files.
 </UL>
 <HR>
+<A HREF="http://vim.sourceforge.net/"><img src="../vim.png" align="right" BORDER=0></A>
