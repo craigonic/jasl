@@ -33,6 +33,7 @@ properly. Examples:
 <LI><I>Optional. </I>
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
 build a native executable version of this package.
+<LI><I>Optional. </I><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT>.
 <LI><I>Optional. </I>
 <TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>.
 This program is used to create HTML versions of the source files.
@@ -106,8 +107,13 @@ subdirectories of the output directory.
 <LI><TT>clean_all</TT> - executes the actions defined for the
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
+<LI><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT> - creates a file
+(<B>tags</B>) in the source directory that indexes many of the language objects.
+This is useful for navigating the code from text editors, such as
+<A HREF="http://vim.sourceforge.net/">Vim</A>, that support it.
+<P>
 <LI><TT>docs</TT> - generates an HTML version of each source file using
-<TT><A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html>source-highlight</A></TT>,
+<TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>,
 placing the output files in <B><A HREF=index.html><I>JASL_BASE</I>/docs/source</A></B>. This file,
 <B>source.html</B>, is also generated, and includes links to all of the HTML
 files in their respective subdirectories.
@@ -115,7 +121,7 @@ files in their respective subdirectories.
 <TT><A HREF=http://java.sun.com/j2se/1.4.2/docs/tooldocs/solaris/javadoc.html>javadoc</A></TT>.
 The output files are placed in
 <B><A HREF=../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
-<LI><TT>gjdoc</TT> - generates class documentation for this program using
+<LI><TT>gjdocs</TT> - generates class documentation for this program using
 <TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>.
 The output files are placed in
 <B><A HREF=../javadocs/index.html><I>JASL_BASE</I>/docs/javadocs</A></B>.
