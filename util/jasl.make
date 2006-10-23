@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.3 2006/10/18 22:50:57 campbell Exp $
+# $Id: jasl.make,v 1.4 2006/10/23 22:27:21 campbell Exp $
 ################################################################################
 
 ## Directory definitions.
@@ -64,6 +64,8 @@ DOXYGEN_DEF_FILE = $(UTIL_PATH)/doxygen.jasl
 ## Packages.
 
 COUNTERS_PACKAGE  = Counters
+
+ALL_PACKAGES      = $(COUNTERS_PACKAGE)
 
 ## System commands.
 
