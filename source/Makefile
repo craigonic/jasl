@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.11 2006/10/20 22:10:52 campbell Exp $
+# $Id: Makefile,v 1.12 2006/10/23 22:21:22 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -98,6 +98,12 @@ clean_gcj:
 clean_jar:
 	$(RM) $(CLASSPATH)/$(DRIVER_JAR)
 
+# Create an index of all of the language objects in the source code. This is
+# used to enable and simplify source code navigation from most text editors.
+
+ctags:
+	@ctags --file-tags=yes -R --excmd=number $(ALL_PACKAGES)
+
 # Create HTML versions of the source files. Each file is converted using the
 # java2html program, which generates an "image" of the file with syntax color
 # coding. After the files are generated, the htls program is used to link the
@@ -119,7 +125,7 @@ javadocs:
 
 # Create HTML documentation using gjdoc.
 
-gjdoc:
+gjdocs:
 	@$(RM) -r $(DOCS_PATH)/javadocs
 	@$(GJDOC) $(JAVADOC_CMD_LIST) \
 	$(COUNTERS_PACKAGE)/*.java
@@ -140,4 +146,4 @@ all_docs: docs javadocs doxygen
 # prevent them from being included in the jar archive file.
 
 jar: clean_obj $(DRIVER_CLASS)
-	@(cd $(CLASSPATH); jar cmf $(SRC_PATH)/$(DRIVER_MANIFEST) $(DRIVER_JAR) $(DRIVER_CLASS) $(COUNTERS_PACKAGE))
+	@(cd $(CLASSPATH); jar cmf $(SRC_PATH)/$(DRIVER_MANIFEST) $(DRIVER_JAR) $(DRIVER_CLASS) $(ALL_PACKAGES))
