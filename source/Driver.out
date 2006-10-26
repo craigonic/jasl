@@ -1,0 +1,203 @@
+Thu Oct 26 14:11:00 PDT 2006
+
+Leader.toString() output:
+
+Description       : Leader           
+Nationality       : German           Unit Type               : Leader           
+Identity          : Lt. Fellbaum     
+Firepower         : 0                Can Spray Fire ?        : No               
+Normal Range      : 0                Portage Value           : 0                
+Status            : Normal                                                      
+Movement          : 6                
+Portage Capacity  : 1                Portage Level           : 0                
+Morale            : 9                Broken Morale           : 9                
+Can Self Rally ?  : Yes              
+Basic Point Value : 0                Experience Level Rating : 4                
+Modifier          : -1               
+
+Squad.toString() output:
+
+Description       : Squad            
+Nationality       : Russian          Unit Type               : Guards           
+Identity          : A                
+Firepower         : 6                Can Spray Fire ?        : Yes              
+Normal Range      : 2                Portage Value           : 10               
+Status            : Normal                                                      
+Movement          : 4                
+Portage Capacity  : 3                Portage Level           : 0                
+Morale            : 8                Broken Morale           : 8                
+Can Self Rally ?  : No               
+Basic Point Value : 12               Experience Level Rating : 4                
+Has Maximum ELR ? : No               Classification          : Elite            
+Can Assault Fire ?: Yes              Smoke Placement Exponent: 0                
+
+Building Unit array with a Leader & 3 Squads
+
+Displaying Unit array with a Leader & 3 Squads
+
+UnitList[0]:
+
+Leader
+Sgt. Slaughter
+Ranger
+6
+Normal
+
+UnitList[1]:
+
+Squad
+X
+Squad
+4
+Normal
+
+UnitList[2]:
+
+Squad
+Y
+Squad
+4
+Normal
+
+UnitList[3]:
+
+Squad
+Z
+Squad
+4
+Normal
+
+Testing Exception handling during Squad creation:
+
+Null nationality parameter:
+
+Caught: java.lang.NullPointerException: Fighting(constructor) - Null parameter received.
+
+Zero-length nationality parameter:
+
+Caught: java.lang.IllegalArgumentException: Fighting(constructor) - Invalid parameter received (zero length).
+
+Invalid nationality parameter:
+
+Caught: java.lang.IllegalArgumentException: Fighting(constructor) - Invalid parameter(s) received : Mexican
+
+Null identity parameter:
+
+Caught: java.lang.NullPointerException: Fighting(setIdentity) - Null parameter received.
+
+Zero-length identity parameter:
+
+Caught: java.lang.IllegalArgumentException: Fighting(setIdentity) - Invalid parameter received (zero length).
+
+Null unitType parameter:
+
+Caught: java.lang.NullPointerException: Fighting(constructor) - Null parameter received.
+
+Zero-length unitType parameter:
+
+Caught: java.lang.IllegalArgumentException: Fighting(constructor) - Invalid parameter received (zero length).
+
+Invalid nationality and unitType parameters:
+
+Caught: java.lang.IllegalArgumentException: Fighting(constructor) - Invalid parameter(s) received : British and SS
+
+Invalid description and unitType parameters:
+
+Caught: java.lang.IllegalArgumentException: Fighting(constructor) - Invalid parameter(s) received : Squad and Commissar
+
+Invalid (less than 0) firepower parameter:
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+
+Invalid infantry firepower parameter:
+
+Caught: java.lang.NumberFormatException: Infantry(constructor) - Invalid parameter(s) received : 88L
+
+Invalid (less than 0) normal range parameter:
+
+Caught: java.lang.IllegalArgumentException: Fighting(constructor) - Invalid parameter(s) received : -255
+
+Invalid (less than 0) morale parameter:
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+
+Invalid (greater than maximum) morale parameter:
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 11
+
+Invalid (less than 0) broken morale parameter:
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -7
+
+Invalid (greater than maximum) broken morale parameter:
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 17
+
+Invalid (less than zero) Basic Point Value (BPV):
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+
+Invalid (less than zero) Experience Level Rating (ELR):
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+
+Invalid (greater than maximum) Experience Level Rating (ELR):
+
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 6
+
+Null classification parameter:
+
+Caught: java.lang.NullPointerException: Personnel(constructor) - Null parameter received.
+
+Zero-length classification parameter:
+
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid parameter received (zero length).
+
+Invalid classification parameter:
+
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid parameter(s) received : Bozos
+
+Invalid (less than zero) Smoke Placement Exponent:
+
+Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid parameter(s) received : -4
+
+Invalid (greater than maximum) Smoke Placement Exponent:
+
+Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid parameter(s) received : 4
+
+Testing Exception handling during Leader creation:
+
+Invalid (less than minimum) modifier parameter:
+
+Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : -4
+
+Invalid (greater than maximum) modifier parameter:
+
+Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : 4
+
+Testing the execution of the Dice class:
+
+White Die         : 4    Colored Die       : 4    Combined Result   : 8    
+
+White Die         : 3    Colored Die       : 2    Combined Result   : 5    
+
+White Die         : 3    Colored Die       : 4    Combined Result   : 7    
+
+White Die         : 5    Colored Die       : 2    Combined Result   : 7    
+
+White Die         : 6    Colored Die       : 2    Combined Result   : 8    
+
+White Die         : 2    Colored Die       : 2    Combined Result   : 4    
+
+White Die         : 2    Colored Die       : 6    Combined Result   : 8    
+
+White Die         : 6    Colored Die       : 1    Combined Result   : 7    
+
+White Die         : 6    Colored Die       : 1    Combined Result   : 7    
+
+White Die         : 1    Colored Die       : 1    Combined Result   : 2    
+
+White Die         : 2    Colored Die       : 5    Combined Result   : 7    
+
+White Die         : 6    Colored Die       : 4    Combined Result   : 10   
+
