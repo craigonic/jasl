@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.12 2006/10/23 22:21:22 campbell Exp $
+# $Id: Makefile,v 1.13 2006/10/30 23:24:07 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -15,6 +15,7 @@ include $(JASL_BASE)/util/jasl.make
 
 # Directory specific build variables.
 
+COUNTERS_SRC_FILES = $(COUNTERS_PACKAGE)/*.java
 COUNTERS_OBJ_FILES = $(CLASSPATH)/$(COUNTERS_PACKAGE)/*.o
 
 # Define variables to represent the source, object, and class files in/of/for
@@ -22,8 +23,10 @@ COUNTERS_OBJ_FILES = $(CLASSPATH)/$(COUNTERS_PACKAGE)/*.o
 
 DRIVER_CLASS       = Driver.class
 DRIVER_EXEC        = ${DRIVER_CLASS:.class=}
-DRIVER_MANIFEST    = ${DRIVER_CLASS:.class=.mf}
 DRIVER_JAR         = ${DRIVER_CLASS:.class=.jar}
+DRIVER_MANIFEST    = ${DRIVER_CLASS:.class=.mf}
+DRIVER_OUT         = ${DRIVER_CLASS:.class=.out}
+DRIVER_TEST        = ${DRIVER_CLASS:.class=.test}
 
 ALL_CLASSES        = $(DRIVER_CLASS)
 
@@ -64,7 +67,7 @@ build_gcj: gcj clean_obj clean_class clean_java
 # in $(CLASSPATH)/$(COUNTERS_PACKAGE)).
 
 gcj_obj:
-	@(cd $(COUNTERS_PACKAGE); make $@)
+	@(cd $(COUNTERS_PACKAGE); $(MAKE) $@)
 
 # Build the native executable version of the test program (Driver) using the gcj
 # compiler. Note that use of this parameter requires that all of the .java files
@@ -85,7 +88,7 @@ $(DRIVER_EXEC):
 clean_all: clean_java clean_obj clean
 
 clean_java clean_obj:
-	@(cd $(COUNTERS_PACKAGE); make $@)
+	@(cd $(COUNTERS_PACKAGE); $(MAKE) $@)
 
 clean: clean_class clean_gcj clean_jar
 
@@ -98,42 +101,59 @@ clean_gcj:
 clean_jar:
 	$(RM) $(CLASSPATH)/$(DRIVER_JAR)
 
+# Run the driver program in its various forms and compare the output to the
+# previously saved result (Driver.out).
+
+TEST_EXEC = $(JAVA_RUN_CMD) $(DRIVER_EXEC)
+
+run_test:
+	@$(DATE) > $(DRIVER_TEST)
+	@(cd $(CLASSPATH); $(TEST_EXEC) >> $(SRC_PATH)/$(DRIVER_TEST))
+	@-$(DIFF) $(DRIVER_OUT) $(DRIVER_TEST)
+	@$(RM) $(DRIVER_TEST)
+
+test: $(CLASSPATH)/$(DRIVER_CLASS) run_test
+
+test_gcj: TEST_EXEC = $(DRIVER_EXEC)
+test_gcj: $(CLASSPATH)/$(DRIVER_EXEC) run_test
+
+test_jar: TEST_EXEC = $(JAR_RUN_CMD) $(DRIVER_JAR)
+test_jar: $(CLASSPATH)/$(DRIVER_JAR) run_test
+
 # Create an index of all of the language objects in the source code. This is
 # used to enable and simplify source code navigation from most text editors.
 
 ctags:
-	@ctags --file-tags=yes -R --excmd=number $(ALL_PACKAGES)
+	@$(CTAGS_BUILD_CMD) $(ALL_PACKAGES)
 
 # Create HTML versions of the source files. Each file is converted using the
-# java2html program, which generates an "image" of the file with syntax color
-# coding. After the files are generated, the htls program is used to link the
-# files together on an HTML page.
+# source-highlight program, which generates an "image" of the file with syntax
+# color coding. After the files are generated, the htls program is used to link
+# the files together on an HTML page.
 
 docs:
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$$i.html ;\
 	done
-	@(cd $(COUNTERS_PACKAGE); make $@)
+	@(cd $(COUNTERS_PACKAGE); $(MAKE) $@)
 	@$(HTLS) $(SRC_DOCS_PATH)
 
 # Create HTML documentation using javadoc.
 
 javadocs:
-	@$(RM) -r $(DOCS_PATH)/javadocs
-	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) \
-	$(COUNTERS_PACKAGE)/*.java
+	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
+	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES)
 
 # Create HTML documentation using gjdoc.
 
 gjdocs:
-	@$(RM) -r $(DOCS_PATH)/javadocs
-	@$(GJDOC) $(JAVADOC_CMD_LIST) \
-	$(COUNTERS_PACKAGE)/*.java
+	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
+	@$(GJDOC) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES)
 
 # Create HTML documentation using doxygen.
 
 doxygen:
-	@$(RM) -r $(DOCS_PATH)/doxygen
+	@$(RM_RECURSIVE) $(DOXYGEN_DOC_PATH)
 	@$(DOXYGEN) $(DOXYGEN_DEF_FILE)
 
 # Create all the forms of documentation, except gjdoc, which places its output
@@ -146,4 +166,4 @@ all_docs: docs javadocs doxygen
 # prevent them from being included in the jar archive file.
 
 jar: clean_obj $(DRIVER_CLASS)
-	@(cd $(CLASSPATH); jar cmf $(SRC_PATH)/$(DRIVER_MANIFEST) $(DRIVER_JAR) $(DRIVER_CLASS) $(ALL_PACKAGES))
+	@(cd $(CLASSPATH); $(JAR_BUILD_CMD) $(SRC_PATH)/$(DRIVER_MANIFEST) $(DRIVER_JAR) $(DRIVER_CLASS) $(ALL_PACKAGES))
