@@ -107,6 +107,14 @@ subdirectories of the output directory.
 <LI><TT>clean_all</TT> - executes the actions defined for the
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
+<I>The </I><TT>test</TT><I> targets execute the specified output format and
+compare the result, using
+</I><TT><A HREF=http://directory.fsf.org/GNU/diffutils.html>diff</A></TT><I>, to
+a saved file.</I>
+<LI><TT>test</TT> - the java bytecode.
+<LI><TT>test_gcj</TT> - the native executable.
+<LI><TT>test_jar</TT> - the jar archive.
+<P>
 <LI><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT> - creates a file
 (<B>tags</B>) in the source directory that indexes many of the language objects.
 This is useful for navigating the code from text editors, such as
