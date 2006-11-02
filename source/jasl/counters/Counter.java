@@ -4,12 +4,13 @@
 //                objects used to represent the virtual playing pieces in     //
 //                jASL.                                                       //
 //                                                                            //
-//                NOTE: This program is based on Advanced Squad Leader, a     //
-//                product of The Avalon Hill Game Company.                    //
+//                NOTE: This program is based on Advanced Squad Leader, which //
+//                was created by The Avalon Hill Game Company, and lives      //
+//                on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.                               //
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Id: Counter.java,v 1.4 2006/10/26 18:20:02 campbell Exp $
+// $Id: Counter.java,v 1.5 2006/11/02 19:19:36 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -22,7 +23,7 @@ import java.util.*;
  * Counters package.
  * @see <A HREF="../../source/Counters/Counter.html">Source code</A>
  * @author Craig R. Campbell
- * @version 1.4
+ * @version 1.5
  */
 
 public interface Counter extends Serializable
