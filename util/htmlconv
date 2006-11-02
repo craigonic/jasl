@@ -1,3 +1,4 @@
+s/&lt;\(A HREF="http:\/\/www\.multimanpublishing\.com\/ASL\/asl\.php"\)&gt;\(MultimanPublishing\.com\)&lt;\/A&gt;/<\1>\2<\/A>/
 s/&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1\2<\/A>/
 s/&lt;A.*NAME.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A NAME=\1\2<\/A>/
 s/&lt;\(CODE\)&gt;\(.*\)&lt;\(\/CODE\)&gt;/<\1>\2<\3>/
