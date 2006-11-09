@@ -1,5 +1,15 @@
 s/&lt;\(A HREF="http:\/\/www\.multimanpublishing\.com\/ASL\/asl\.php"\)&gt;\(MultimanPublishing\.com\)&lt;\/A&gt;/<\1>\2<\/A>/
 s/&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1\2<\/A>/
+s/&lt;A HREF=\(".*"\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1>\2<\/A>/
 s/&lt;A.*NAME.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A NAME=\1\2<\/A>/
 s/&lt;\(CODE\)&gt;\(.*\)&lt;\(\/CODE\)&gt;/<\1>\2<\3>/
 s/&lt;\(B\)&gt;\(.*\)&lt;\(\/B\)&gt;/<\1>\2<\3>/
+s/@version/Version/
+s/@author/Author/
+s/@throws\(<.*> <.*"#\)9A1900">\([A-Z]\)/Throws\1000000">\2/
+s/@param\(<\/font><i><font color="#9A1900"> \)\([a-z][A-Za-z]*\) \([a-z]\)/Parameter\1<font color="#000000">\2<\/font> - \3/
+s/@return/Returns/
+s/@see\(<.*> \)\([A-Z][a-z].*\)#\([A-Z][A-Z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html#_\3_">\2.\3<\/A>\4/
+s/@see\(<.*> \)\([A-Z][a-z].*\)#\([a-z][a-z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html">\2.\3()<\/A>\4/
+s/@see\(<.*> \)#\([a-z][a-z].*\)</See Also\1<font color="#000000">\2()<\/font></
+s/@see\(<.*> \)\(.*\)</See Also\1<font color="#000000">\2<\/font></
