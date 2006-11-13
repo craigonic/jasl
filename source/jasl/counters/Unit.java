@@ -9,16 +9,17 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Id: Unit.java,v 1.9 2006/11/02 19:36:18 campbell Exp $
+// $Id: Unit.java,v 1.10 2006/11/13 21:21:16 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
 
 /**
  * This class is used to define the basic components of a counter.
- * @see <A HREF="../../source/Counters/Unit.html">Source code</A>
+ *
+ * @version 1.10
  * @author Craig R. Campbell
- * @version 1.9
+ * @see <A HREF="../../source/Counters/Unit.html">Source code</A>
  */
 
 public abstract class Unit implements Counter
@@ -42,8 +43,7 @@ public abstract class Unit implements Counter
     protected static final boolean DEFAULT_FLAG_VALUE   = false;
 
     /**
-     * Default string value for initialization and return purposes :
-     * <B>Unknown</B>
+     * Default string value for initialization and return purposes : <B>Unknown</B>
      */
 
     protected static final String  DEFAULT_STRING_VALUE = "Unknown";
@@ -51,6 +51,7 @@ public abstract class Unit implements Counter
     /**
      * The width of the first column of output from the toString() method in
      * this class and it's subclasses : <B>20</B>.
+     *
      * @see #formatTextString
      * @see #toString
      */
@@ -60,6 +61,7 @@ public abstract class Unit implements Counter
     /**
      * The width of the second column of output from the toString() method in
      * this class and it's subclasses : <B>17</B>.
+     *
      * @see #formatTextString
      * @see #toString
      */
@@ -69,6 +71,7 @@ public abstract class Unit implements Counter
     /**
      * The width of the third column of output from the toString() method in
      * this class and it's subclasses : <B>26</B>.
+     *
      * @see #formatTextString
      * @see #toString
      */
@@ -78,6 +81,7 @@ public abstract class Unit implements Counter
     /**
      * The width of the fourth column of output from the toString() method in
      * this class and it's subclasses : <B>17</B>.
+     *
      * @see #formatTextString
      * @see #toString
      */
@@ -86,6 +90,7 @@ public abstract class Unit implements Counter
 
     /** <A NAME="_NORMAL_"></A>
      * Indicates that the unit's current status is <B>Normal</B>
+     *
      * @see #getStatus
      */
 
@@ -99,7 +104,7 @@ public abstract class Unit implements Counter
 
     // This variable contains a descriptive name for the derived object of this
     // class. It is typically set to the name of the child class being
-    // instantiated (ie. "Squad").
+    // instantiated (ie. <A HREF="Squad.html">"Squad"</A>).
 
     private String description;
 
@@ -120,9 +125,9 @@ public abstract class Unit implements Counter
     // Default constructor.
 
     /**
-     * Construct a new <CODE>Unit</CODE>. This is an "empty" object and is
-     * intended for use primarily as a reference to one of the derived public
-     * object types.
+     * Construct a new <CODE>Unit</CODE>. This is an "empty" object and is intended for use
+     * primarily as a reference to one of the derived public object types.
+     *
      * @see Leader
      * @see Squad
      */
@@ -170,15 +175,17 @@ public abstract class Unit implements Counter
     /**
      * Build a descriptive error message to help pinpoint the location where an
      * exception occurred.
+     *
      * @param className the name of the class where the error occurred.
      * Example - "Unit"
      * @param methodName the name of the method where the error occurred.
      * Example - "constructor"
-     * @param message the message describing the error. Example - "Null
-     * parameter received."
-     * @return a <CODE>String</CODE> containing the location in the code where
-     * the error occurred and a descriptive message. Example -
-     * <CODE>Unit(constructor) - Null parameter received.</CODE>
+     * @param message the message describing the error.
+     * Example - "Null parameter received."
+     *
+     * @return a <CODE>String</CODE> containing the location in the code where the error
+     * occurred and a descriptive message.
+     * Example - <CODE>Unit(constructor) - Null parameter received.</CODE>
      */
 
     public static final String buildErrorMessage(String className,
@@ -223,22 +230,26 @@ public abstract class Unit implements Counter
      * Create a formatted version of an input string by appending spaces as
      * necessary to make the length equal to a specific value. This function is
      * used primarily to create the tabular output for the toString() method.
-     * The last character in the returned string will always be set to a SPACE.
-     * @param inputString the string to be formatted. Example - "Description"
-     * @param columnWidth the width of the returned string. Example - 15
-     * @param isALabel indicates if the string will be used as a label. If this
-     * flag is set, the second to last character in the returned string will be
-     * set to a ":".
-     * @param addNewLine indicates if a newline (CR-LF) should be added to the
-     * returned string.
+     * The last character in the returned string will always be a space.
+     *
+     * @param inputString the string to be formatted.
+     * Example - "Description"
+     * @param columnWidth the width of the returned string.
+     * Example - 15
+     * @param isALabel indicates if the string will be used as a label. If
+     * this flag is set, the second to last character in the returned string
+     * will be set to a ":".
+     * @param addNewLine indicates if a newline (CR-LF) should be added to
+     * the returned string.
+     *
      * @return a <CODE>String</CODE> formatted to meet the specified parameters.
      * Example - <CODE>Description  : </CODE>
-     * @throws <CODE>NullPointerException</CODE> in the case of a null input
-     * string
-     * @throws <CODE>IllegalArgumentException</CODE> in the case of a zero
-     * length input string
-     * @throws <CODE>IllegalArgumentException</CODE> in the case of a column
-     * width that is less than 2
+     *
+     * @throws NullPointerException in the case of a null input string
+     * @throws IllegalArgumentException in the case of a zero length input string
+     * @throws IllegalArgumentException in the case of a column width that is
+     * less than 2
+     *
      * @see #toString
      */
 
@@ -332,8 +343,9 @@ public abstract class Unit implements Counter
     /**
      * Display the value of each of the private data members that describe the
      * current instance. Each value is preceded by a label defined in the
-     * Counter interface. There are no more than two values, including labels,
+     * <A HREF="Counter.html">Counter</A> interface. There are no more than two values, including labels,
      * in each line of output.
+     *
      * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
      */
 
@@ -395,7 +407,9 @@ public abstract class Unit implements Counter
      * Determine the description of this unit. This is the name of the public
      * derived subclass that was specified to create this object. The recognized
      * values are listed below.
+     *
      * @return a <CODE>String</CODE> specifying the unit description.
+     *
      * @see Counter#DESCRIPTIONS
      * @see Counter#DESCRIPTIONS_VECTOR
      * @see Counter#CREW
@@ -419,7 +433,9 @@ public abstract class Unit implements Counter
 
     /**
      * Determine the identity of this unit.
+     *
      * @return a <CODE>String</CODE> specifying the unit's identity.
+     *
      * @see Fighting#getIdentity
      */
 
@@ -427,8 +443,9 @@ public abstract class Unit implements Counter
 
     /**
      * Determine the type of this unit.
-     * @return a <CODE>String</CODE> specifying a more precise description of
-     * the unit type.
+     *
+     * @return a <CODE>String</CODE> specifying a more precise description of the unit type.
+     *
      * @see Fighting#getUnitType
      */
 
@@ -436,7 +453,9 @@ public abstract class Unit implements Counter
 
     /**
      * Determine the firepower of this unit.
+     *
      * @return a <CODE>String</CODE> specifying the unit's firepower.
+     *
      * @see Fighting#getFirepower
      */
 
@@ -445,8 +464,9 @@ public abstract class Unit implements Counter
     /**
      * Determine the maximum range that this unit may fire its weapon(s) at full
      * effect.
-     * @return a <CODE>String</CODE> specifying the normal range of the unit's
-     * weapon(s).
+     *
+     * @return a <CODE>String</CODE> specifying the normal range of the unit's weapon(s).
+     *
      * @see Fighting#getNormalRange
      */
 
@@ -454,7 +474,9 @@ public abstract class Unit implements Counter
 
     /**
      * Determine the current status of this unit.
+     *
      * @return a comma delimited <CODE>String</CODE> describing the unit status.
+     *
      * @see Fighting#getStatus
      * @see Infantry#getStatus
      */
@@ -463,13 +485,15 @@ public abstract class Unit implements Counter
 
     /**
      * Attempt to restore this unit's status to <A HREF="#_NORMAL_">NORMAL</A>.
-     * @param isLeaderPresent indicates if a
-     * <B><A HREF="Leader.html">Leader</A></B> is present, which may determine
-     * if a restoration attempt can be made or not.
-     * @param modifier the applicable dice roll modifier for the attempt. This
-     * includes leadership DRM as well as other factors.
-     * @return a <CODE>boolean</CODE> indicating if the status of a unit is
-     * changed as a result of calling this method.
+     *
+     * @param isLeaderPresent indicates if a <B><A HREF="Leader.html">Leader</A></B> is present, which may
+     * determine if a restoration attempt can be made or not.
+     * @param modifier the applicable dice roll modifier for the attempt.
+     * This includes leadership DRM as well as other factors.
+     *
+     * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
+     * result of calling this method.
+     *
      * @see Fighting#restore
      * @see Infantry#restore
      */
@@ -478,10 +502,13 @@ public abstract class Unit implements Counter
 
     /**
      * Perform a morale or task check on this unit.
-     * @param modifier the applicable dice roll modifier for the check. This
-     * includes leadership DRM as well as other factors.
-     * @return a <CODE>boolean</CODE> indicating if the status of a unit is
-     * changed as a result of calling this method.
+     *
+     * @param modifier the applicable dice roll modifier for the check.
+     * This includes leadership DRM as well as other factors.
+     *
+     * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
+     * result of calling this method.
+     *
      * @see Fighting#check
      * @see Infantry#check
      */
@@ -493,8 +520,9 @@ public abstract class Unit implements Counter
     /**
      * Determine the number of movement factors or points available to this
      * unit before it begins to move.
-     * @return a <CODE>String</CODE> specifying the movement capability in
-     * factors or points.
+     *
+     * @return a <CODE>String</CODE> specifying the movement capability in factors or points.
+     *
      * @see Mobile#getMovement
      */
 
