@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Fighting.java,v 1.9 2006/11/10 00:23:11 campbell Exp $
+// $Id: Fighting.java,v 1.10 2006/11/13 22:47:25 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -20,7 +20,7 @@ package Counters;
  * (movement, firing, etc). This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.9
+ * @version 1.10
  * @author Craig R. Campbell
  * @see <A HREF="../../source/Counters/Fighting.html">Source code</A>
  */
@@ -790,8 +790,8 @@ abstract class Fighting extends Unit
      *
      * @param newIdentity the new identity.
      *
-     * @throws <CODE>NullPointerException</CODE> in the case of a null identity
-     * @throws <CODE>IllegalArgumentException</CODE> in the case of a zero length identity
+     * @throws NullPointerException in the case of a null identity
+     * @throws IllegalArgumentException in the case of a zero length identity
      */
 
     public void setIdentity(String newIdentity)
