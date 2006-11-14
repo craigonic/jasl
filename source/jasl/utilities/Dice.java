@@ -13,7 +13,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Id: Dice.java,v 1.7 2006/11/01 21:06:21 campbell Exp $
+// $Id: Dice.java,v 1.8 2006/11/14 00:32:28 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -21,9 +21,10 @@ package Counters;
 /**
  * This is a utility class used to provide the simulated result(s) of rolling
  * one or two six sided dice.
- * @see <A HREF="../../source/Counters/Dice.html">Source code</A>
+ *
+ * @version 1.8
  * @author Craig R. Campbell
- * @version 1.7
+ * @see <A HREF="../../source/Counters/Dice.html">Source code</A>
  */
 
 public final class Dice
@@ -32,7 +33,7 @@ public final class Dice
 
     // These constants are used to define the minimum and maximum possible
     // result values for a single die. The MAX_ROLL constant is also used in the
-    // rollIt method to set the maximum random value.
+    // rollIt() method to set the maximum random value.
 
     private static final int MIN_ROLL = 1;
     private static final int MAX_ROLL = 6;
@@ -75,10 +76,11 @@ public final class Dice
     // Constructor
 
     /**
-     * Construct a new <CODE>Dice</CODE> instance. When the object is created,
-     * both dice are "rolled" automatically.
-     * @throws <CODE>IllegalStateException</CODE> in the case of an invalid
-     * result on one or both of the dice
+     * Construct a new <CODE>Dice</CODE> instance. When the object is created, both dice are
+     * "rolled" automatically.
+     *
+     * @throws IllegalStateException in the case of an invalid result on one or
+     * both of the dice
      */
 
     public Dice()
@@ -168,6 +170,7 @@ public final class Dice
     /**
      * Display the value of each of the private data members that describe the
      * current instance. Each value is preceded by a label.
+     *
      * @return a <CODE>String</CODE>.
      */
 
@@ -301,6 +304,7 @@ public final class Dice
 
     /**
      * Determine the result of rolling the white die.
+     *
      * @return an <CODE>int</CODE> specifying the white die value.
      */
 
@@ -311,6 +315,7 @@ public final class Dice
 
     /**
      * Determine the result of rolling the colored die.
+     *
      * @return an <CODE>int</CODE> specifying the colored die value.
      */
 
@@ -321,8 +326,8 @@ public final class Dice
 
     /**
      * Determine the result of combining the values of the two dice.
-     * @return an <CODE>int</CODE> specifying the sum of the white and colored
-     * die values.
+     *
+     * @return an <CODE>int</CODE> specifying the sum of the white and colored die values.
      */
 
     public int getCombinedResult()
