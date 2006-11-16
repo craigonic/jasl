@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Id: Counter.java,v 1.5 2006/11/02 19:19:36 campbell Exp $
+// $Id: Counter.java,v 1.6 2006/11/16 22:45:10 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -21,9 +21,10 @@ import java.util.*;
 /**
  * This interface is used to define public constants for the classes in the
  * Counters package.
- * @see <A HREF="../../source/Counters/Counter.html">Source code</A>
+ *
+ * @version 1.6
  * @author Craig R. Campbell
- * @version 1.5
+ * @see <A HREF="../../source/Counters/Counter.html">Source code</A>
  */
 
 public interface Counter extends Serializable
@@ -37,126 +38,127 @@ public interface Counter extends Serializable
     // the counter types that may be directly instantiated using classes in the
     // Counters hierarchy.
 
-    /**
-     * Indicates that the counter type of a unit is <B>Crew</B>
+    /** <A NAME="_CREW_"></A>
+     * Indicates that the counter type of a unit is <B>Crew</B>.
      */
 
     public static final String CREW        = "Crew";
 
-    /**
-     * Indicates that the counter type of a unit is
-     * <B>Half Squad</B>
+    /** <A NAME="_HALF_SQUAD_"></A>
+     * Indicates that the counter type of a unit is <B>Half Squad</B>.
      */
 
     public static final String HALF_SQUAD  = "Half Squad";
 
-    /**
-     * Indicates that the counter type of a unit is
-     * <B><A HREF="Leader.html">Leader</A></B>
+    /** <A NAME="_LEADER_"></A>
+     * Indicates that the counter type of a unit is <B><A HREF="Leader.html">Leader</A></B>.
      */
 
     public static final String LEADER      = "Leader";
 
-    /**
-     * Indicates that the counter type of a unit is
-     * <B><A HREF="Squad.html">Squad</A></B>
+    /** <A NAME="_SQUAD_"></A>
+     * Indicates that the counter type of a unit is <B><A HREF="Squad.html">Squad</A></B>.
      */
 
     public static final String SQUAD       = "Squad";
 
     // This static array is used in the constructor to verify the description
-    // parameter passed to it when an object derived from Unit is instantiated.
+    // parameter passed to it when an object derived from <A HREF="Unit.html">Unit</A> is instantiated.
     // The description parameter is generally specified as a constant in each
-    // of the public classes derived from Unit. The list and the check of the
+    // of the public classes derived from <A HREF="Unit.html">Unit</A>. The list and the check of the
     // variable in the constructor are included for consistency.
 
     /** <A NAME="_DESCRIPTIONS_"></A>
      * A list of the supported counter types. Each entry is directly associated
      * with a public class derived from <A HREF="Unit.html">Unit</A>.
+     *
      * @see Unit#getDescription
      */
 
     public static final String[] DESCRIPTIONS = { CREW, HALF_SQUAD, LEADER,
                                                   SQUAD };
+
     /** <A NAME="_DESCRIPTIONS_VECTOR_"></A>
      * An alternative method of accessing the list of supported counter types.
+     *
      * @see Unit#getDescription
      */
 
     public static final Vector DESCRIPTIONS_VECTOR = new Vector(Arrays.asList(DESCRIPTIONS));
 
     // Recognized nationality values. The nationality variable (see
-    // Fighting.java) best describes the army that the Unit belongs to, not
-    // necessarily the true nationality of the soldiers in that Unit.
+    // <A HREF="Fighting.html">Fighting</A>.java) best describes the army that the <A HREF="Unit.html">Unit</A> belongs to, not
+    // necessarily the true nationality of the soldiers in that <A HREF="Unit.html">Unit</A>.
 
-    /**
-     * Indicates that a unit's nationality is <B>Allied Minor</B>
+    /** <A NAME="_ALLIED_MINOR_"></A>
+     * Indicates that a unit's nationality is <B>Allied Minor</B>.
      */
 
     public static final String ALLIED_MINOR = "Allied Minor";
 
     /** <A NAME="_AMERICAN_"></A>
-     * Indicates that a unit's nationality is <B>American</B>
+     * Indicates that a unit's nationality is <B>American</B>.
      */
 
     public static final String AMERICAN     = "American";
 
-    /**
-     * Indicates that a unit's nationality is <B>Axis Minor</B>
+    /** <A NAME="_AXIS_MINOR_"></A>
+     * Indicates that a unit's nationality is <B>Axis Minor</B>.
      */
 
     public static final String AXIS_MINOR   = "Axis Minor";
 
     /** <A NAME="_BRITISH_"></A>
-     * Indicates that a unit's nationality is <B>British</B>
+     * Indicates that a unit's nationality is <B>British</B>.
      */
 
     public static final String BRITISH      = "British";
 
     /** <A NAME="_FINNISH_"></A>
-     * Indicates that a unit's nationality is <B>Finnish</B>
+     * Indicates that a unit's nationality is <B>Finnish</B>.
      */
 
     public static final String FINNISH      = "Finnish";
 
-    /**
-     * Indicates that a unit's nationality is <B>French</B>
+    /** <A NAME="_FRENCH_"></A>
+     * Indicates that a unit's nationality is <B>French</B>.
      */
 
     public static final String FRENCH       = "French";
 
     /** <A NAME="_GERMAN_"></A>
-     * Indicates that a unit's nationality is <B>German</B>
+     * Indicates that a unit's nationality is <B>German</B>.
      */
 
     public static final String GERMAN       = "German";
 
-    /**
-     * Indicates that a unit's nationality is <B>Italian</B>
+    /** <A NAME="_ITALIAN_"></A>
+     * Indicates that a unit's nationality is <B>Italian</B>.
      */
 
     public static final String ITALIAN      = "Italian";
 
-    /**
-     * Indicates that a unit's nationality is <B>Japanese</B>
+    /** <A NAME="_JAPANESE_"></A>
+     * Indicates that a unit's nationality is <B>Japanese</B>.
      */
 
     public static final String JAPANESE     = "Japanese";
 
-    /**
-     * Indicates that a unit's nationality is <B>Partisan</B>
+    /** <A NAME="_PARTISAN_"></A>
+     * Indicates that a unit's nationality is <B>Partisan</B>.
      */
 
     public static final String PARTISAN     = "Partisan";
 
     /** <A NAME="_RUSSIAN_"></A>
-     * Indicates that a unit's nationality is <B>Russian</B>
+     * Indicates that a unit's nationality is <B>Russian</B>.
      */
 
     public static final String RUSSIAN      = "Russian";
 
     /** <A NAME="_NATIONALITIES_"></A>
      * A list of the recognized unit nationalities.
+     *
      * @see Fighting#getNationality
      */
 
@@ -169,9 +171,9 @@ public interface Counter extends Serializable
     /** <A NAME="_NATIONALITIES_VECTOR_"></A>
      * An alternative method of accessing the list of recognized unit
      * nationalities. This object is used to verify that the nationality
-     * parameter specified for an object of a public class derived from
-     * <A HREF="Unit.html">Unit</A> matches one of the values found in the
-     * <A HREF="#_NATIONALITIES_">NATIONALITIES</A> array.
+     * parameter specified for an object of a public class derived from <A HREF="Unit.html">Unit</A>
+     * matches one of the values found in the <A HREF="#_NATIONALITIES_">NATIONALITIES</A> array.
+     *
      * @see Fighting#getNationality
      */
 
@@ -180,120 +182,108 @@ public interface Counter extends Serializable
     // Recognized unitType values. These are used to identify specific types and
     // more specific nationalities for infantry units. The unitType variable can
     // also be used by the calling program to indicate other names or attributes
-    // for the Unit it is applied to.
+    // for the <A HREF="Unit.html">Unit</A> it is applied to.
 
-    /**
+    /** <A NAME="_PARATROOPS_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Paratroops</B>. If this value is specified as the unitType parameter
-     * for an object, the nationality parameter must be
-     * <A HREF="#_AMERICAN_">AMERICAN</A>.
+     * <B>Paratroops</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_AMERICAN_">AMERICAN</A>.
      */
 
     public static final String PARATROOPS   = "Paratroops";
 
-    /**
+    /** <A NAME="_AIRBORNE_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Airborne</B>. If this value is specified as the unitType parameter for
-     * an object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * <B>Airborne</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String AIRBORNE     = "Airborne";
 
-    /**
+    /** <A NAME="_ANZAC_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
      * <B>ANZAC</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String ANZAC        = "ANZAC";
 
-    /**
+    /** <A NAME="_CANADIAN_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Canadian</B>. If this value is specified as the unitType parameter for
-     * an object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * <B>Canadian</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String CANADIAN     = "Canadian";
 
-    /**
+    /** <A NAME="_FREE_FRENCH_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Free French</B>. If this value is specified as the unitType parameter
-     * for an object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * <B>Free French</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String FREE_FRENCH  = "Free French";
 
-    /**
+    /** <A NAME="_FREE_POLISH_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Free Polish</B>. If this value is specified as the unitType parameter
-     * for an object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * <B>Free Polish</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String FREE_POLISH  = "Free Polish";
 
-    /**
+    /** <A NAME="_GUARDSMEN_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Guardsmen</B>. If this value is specified as the unitType parameter
-     * for an object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * <B>Guardsmen</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String GUARDSMEN    = "Guardsmen";
 
-    /**
+    /** <A NAME="_GURKHA_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Gurkha</B>. If this value is specified as the unitType parameter for
-     * an object, the nationality parameter must be
-     * <A HREF="#_BRITISH_">BRITISH</A>.
+     * <B>Gurkha</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
      */
 
     public static final String GURKHA       = "Gurkha";
 
-    /**
+    /** <A NAME="_SISSI_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
      * <B>Sissi</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be
-     * <A HREF="#_FINNISH_">FINNISH</A>.
+     * object, the nationality parameter must be <A HREF="#_FINNISH_">FINNISH</A>.
      */
 
     public static final String SISSI        = "Sissi";
 
-    /**
+    /** <A NAME="_SS_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>SS</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_GERMAN_">GERMAN</A>.
+     * <B>SS</B>. If this value is specified as the unitType parameter for an object,
+     * the nationality parameter must be <A HREF="#_GERMAN_">GERMAN</A>.
      */
 
     public static final String SS           = "SS";
 
-    /**
+    /** <A NAME="_ENGINEERS_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Engineers</B>. If this value is specified as the unitType parameter
-     * for an object, the nationality parameter must be
-     * <A HREF="#_GERMAN_">GERMAN</A>.
+     * <B>Engineers</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_GERMAN_">GERMAN</A>.
      */
 
     public static final String ENGINEERS    = "Engineers";
 
-    /**
+    /** <A NAME="_COMMISSAR_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Commissar</B>. This value may only be specified as the unitType
-     * parameter for a <A HREF="Leader.html">Leader</A> object. The nationality
-     * parameter must be <A HREF="#_RUSSIAN_">RUSSIAN</A>.
+     * <B>Commissar</B>. This value may only be specified as the unitType parameter for
+     * a <A HREF="Leader.html">Leader</A> object. The nationality parameter must be <A HREF="#_RUSSIAN_">RUSSIAN</A>.
      */
 
     public static final String COMMISSAR    = "Commissar";
 
-    /**
+    /** <A NAME="_GUARDS_"></A>
      * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Guards</B>. If this value is specified as the unitType parameter for
-     * an object, the nationality parameter must be
-     * <A HREF="#_RUSSIAN_">RUSSIAN</A>.
+     * <B>Guards</B>. If this value is specified as the unitType parameter for an
+     * object, the nationality parameter must be <A HREF="#_RUSSIAN_">RUSSIAN</A>.
      */
 
     public static final String GUARDS       = "Guards";
@@ -305,6 +295,7 @@ public interface Counter extends Serializable
      * it will be checked against the nationality and/or description parameters.
      * For example, attempting to create a French SS Squad will result in an
      * exception.
+     *
      * @see Fighting#getUnitType
      */
 
@@ -317,10 +308,10 @@ public interface Counter extends Serializable
     /** <A NAME="_UNIT_TYPES_VECTOR_"></A>
      * An alternative method of accessing the list of the recognized unit types.
      * This object is used to verify that the unitType parameter specified for
-     * an object of a public class derived from <A HREF="Unit.html">Unit</A>, if
-     * it matches one of the of the values found in the
-     * <A HREF="#_UNIT_TYPES_">UNIT_TYPES</A> array, does not conflict with the
+     * an object of a public class derived from <A HREF="Unit.html">Unit</A>, if it matches one of the
+     * of the values found in the <A HREF="#_UNIT_TYPES_">UNIT_TYPES</A> array, does not conflict with the
      * nationality and/or description parameters.
+     *
      * @see Fighting#getUnitType
      */
 
@@ -329,86 +320,80 @@ public interface Counter extends Serializable
     // These constants are used to determine if the value of the classification
     // parameter passed to the constructor is valid. They are given public
     // attributes to allow external programs to access them when specifying
-    // the classification parameter in the creation of Personnel objects.
+    // the classification parameter in the creation of <A HREF="Personnel.html">Personnel</A> objects.
 
-    /**
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's
-     * classification is <B>Elite</B>
+    /** <A NAME="_ELITE_"></A>
+     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Elite</B>.
      */
 
     public static final String ELITE           = "Elite";
 
-    /**
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's
-     * classification is <B>1st Line</B>
+    /** <A NAME="_FIRST_LINE_"></A>
+     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>1st Line</B>.
      */
 
     public static final String FIRST_LINE      = "1st Line";
 
-    /**
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's
-     * classification is <B>2nd Line</B>
+    /** <A NAME="_SECOND_LINE_"></A>
+     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>2nd Line</B>.
      */
 
     public static final String SECOND_LINE     = "2nd Line";
 
-    /**
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's
-     * classification is <B>Green</B>
+    /** <A NAME="_GREEN_"></A>
+     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Green</B>.
      */
 
     public static final String GREEN           = "Green";
 
-    /**
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's
-     * classification is <B>Conscript</B>
+    /** <A NAME="_CONSCRIPT_"></A>
+     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Conscript</B>.
      */
 
     public static final String CONSCRIPT       = "Conscript";
 
     /** <A NAME="_CLASSIFICATIONS_"></A>
      * A list of the supported classifications.
+     *
      * @see Personnel#getClassification
      */
 
     public static final String[] CLASSIFICATIONS = { ELITE, FIRST_LINE,
                                                      SECOND_LINE, GREEN,
                                                      CONSCRIPT };
+
     /** <A NAME="_CLASSIFICATIONS_VECTOR_"></A>
      * An alternative method of accessing the list of recognized unit
      * classifications. This object is used to verify that the classification
-     * parameter specified for an object of a public class derived from
-     * <A HREF="Unit.html">Unit</A> matches one of the values found in the
-     * <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array.
+     * parameter specified for an object of a public class derived from <A HREF="Unit.html">Unit</A>
+     * matches one of the values found in the <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array.
+     *
      * @see Personnel#getClassification
      */
 
     public static final Vector CLASSIFICATIONS_VECTOR = new Vector(Arrays.asList(CLASSIFICATIONS));
 
     /**
-     * The number of elements in the <A HREF="#_DESCRIPTIONS_">DESCRIPTIONS</A>
-     * array and <A HREF="#_DESCRIPTIONS_VECTOR_">DESCRIPTIONS_VECTOR</A>.
+     * The number of elements in the <A HREF="#_DESCRIPTIONS_">DESCRIPTIONS</A> array and <A HREF="#_DESCRIPTIONS_VECTOR_">DESCRIPTIONS_VECTOR</A>.
      */
 
     public static final int DESCRIPTIONS_LIST_SIZE    = DESCRIPTIONS.length;
 
     /**
-     * The number of elements in the <A HREF="#_NATIONALITIES_">NATIONALITIES</A>
-     * array and <A HREF="#_NATIONALITIES_VECTOR_">NATIONALITIES_VECTOR</A>.
+     * The number of elements in the <A HREF="#_NATIONALITIES_">NATIONALITIES</A> array and
+     * <A HREF="#_NATIONALITIES_VECTOR_">NATIONALITIES_VECTOR</A>.
      */
 
     public static final int NATIONALITIES_LIST_SIZE   = NATIONALITIES.length;
 
     /**
-     * The number of elements in the <A HREF="#_UNIT_TYPES_">UNIT_TYPES</A>
-     * array and <A HREF="#_UNIT_TYPES_VECTOR_">UNIT_TYPES_VECTOR</A>.
+     * The number of elements in the <A HREF="#_UNIT_TYPES_">UNIT_TYPES</A> array and <A HREF="#_UNIT_TYPES_VECTOR_">UNIT_TYPES_VECTOR</A>.
      */
 
     public static final int UNIT_TYPES_LIST_SIZE      = UNIT_TYPES.length;
 
     /**
-     * The number of elements in the
-     * <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array and
+     * The number of elements in the <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array and
      * <A HREF="#_CLASSIFICATIONS_VECTOR_">CLASSIFICATIONS_VECTOR</A>.
      */
 
@@ -423,8 +408,8 @@ public interface Counter extends Serializable
 
     /**
      * Indicates that a message originated in the constructor of a specific
-     * class : <B>constructor</B>. This is provided primarily for building error
-     * messages for exceptions.
+     * class : <B>constructor</B>
+     *
      * @see Unit#buildErrorMessage
      */
 
@@ -432,12 +417,12 @@ public interface Counter extends Serializable
 
     // This is a separator used in messages associated with illegal argument
     // exceptions where there is a conflict between two distinct values (see
-    // checking of unitType in the Fighting constructor for an example).
+    // checking of unitType in the <A HREF="Fighting.html">Fighting</A> constructor for an example).
 
     /**
      * Separates multiple invalid parameters in error messages for exceptions :
-     * <B> and </B>. This is provided primarily for building error messages for
-     * exceptions.
+     * <B> and </B>
+     *
      * @see Unit#buildErrorMessage
      */
 
@@ -447,8 +432,8 @@ public interface Counter extends Serializable
 
     /**
      * Indicates that a null parameter was received by a constructor or method :
-     * <B>Null parameter received</B>. This is provided primarily for building
-     * error messages for exceptions.
+     * <B>Null parameter received.</B>
+     *
      * @see Unit#buildErrorMessage
      */
 
@@ -457,8 +442,9 @@ public interface Counter extends Serializable
 
     /**
      * Indicates that a zero length parameter was received by a constructor or
-     * method : <B>Invalid parameter received (zero length)</B>. This is
-     * provided primarily for building error messages for exceptions.
+     * method :
+     * <B>Invalid parameter received (zero length).</B>
+     *
      * @see Unit#buildErrorMessage
      */
 
@@ -467,8 +453,9 @@ public interface Counter extends Serializable
 
     /**
      * Indicates that one or more invalid parameters was received by a
-     * constructor or method : <B>Invalid parameter(s) received : </B>. This is
-     * provided primarily for building error messages for exceptions.
+     * constructor or method :
+     * <B>Invalid parameter(s) received : </B>
+     *
      * @see Unit#buildErrorMessage
      */
 
@@ -541,8 +528,8 @@ public interface Counter extends Serializable
     public static final String PORTAGE_VALUE_LABEL       = "Portage Value";
 
     /**
-     * Provides a label indicating if an <A HREF="Infantry.html">Infantry</A>
-     * unit has self rally capability : <B>Can Self Rally ?</B>
+     * Provides a label indicating if an <A HREF="Infantry.html">Infantry</A> unit has self rally
+     * capability : <B>Can Self Rally ?</B>
      */
 
     public static final String CAN_SELF_RALLY_LABEL      = "Can Self Rally ?";
@@ -554,50 +541,48 @@ public interface Counter extends Serializable
     public static final String STATUS_LABEL              = "Status";
 
     /**
-     * Provides a label for a unit's basic point value :
-     * <B>Basic Point Value</B>
+     * Provides a label for a unit's basic point value : <B>Basic Point Value</B>
      */
 
     public static final String BPV_LABEL                 = "Basic Point Value";
 
     /**
-     * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's normal
-     * morale value : <B>Morale</B>
+     * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's normal morale value : <B>Morale</B>
      */
 
     public static final String MORALE_LABEL              = "Morale";
 
     /**
-     * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's broken
-     * morale value : <B>Broken Morale</B>
+     * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's broken morale value :
+     * <B>Broken Morale</B>
      */
 
     public static final String BROKEN_MORALE_LABEL       = "Broken Morale";
 
     /**
-     * Provides a label indicating if an <A HREF="Infantry.html">Infantry</A>
-     * unit has the maximum experience level rating : <B>Has Maximum ELR ?</B>
+     * Provides a label indicating if an <A HREF="Infantry.html">Infantry</A> unit has the maximum
+     * experience level rating : <B>Has Maximum ELR ?</B>
      */
 
     public static final String HAS_MAXIMUM_ELR_LABEL     = "Has Maximum ELR ?";
 
     /**
-     * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's
-     * experience level rating : <B>Experience Level Rating</B>
+     * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's experience level rating :
+     * <B>Experience Level Rating</B>
      */
 
     public static final String ELR_LABEL                 = "Experience Level Rating";
 
     /**
-     * Provides a label for a <A HREF="Personnel.html">Personnel</A> (MMC) unit's
-     * classification : <B>Classification</B>
+     * Provides a label for a <A HREF="Personnel.html">Personnel</A> (MMC) unit's classification :
+     * <B>Classification</B>
      */
 
     public static final String CLASSIFICATION_LABEL      = "Classification";
 
     /**
-     * Provides a label indicating if a <A HREF="Squad.html">Squad</A> has
-     * assault fire capability : <B>Can Assault Fire ?</B>
+     * Provides a label indicating if a <A HREF="Squad.html">Squad</A> has assault fire capability :
+     * <B>Can Assault Fire ?</B>
      */
 
     public static final String CAN_ASSAULT_FIRE_LABEL    = "Can Assault Fire ?";
@@ -610,43 +595,46 @@ public interface Counter extends Serializable
     public static final String CAN_SPRAY_FIRE_LABEL      = "Can Spray Fire ?";
 
     /**
-     * Provides a label for a <A HREF="Squad.html">Squad</A>'s smoke placement
-     * capability : <B>Smoke Placement Exponent</B>
+     * Provides a label for a <A HREF="Squad.html">Squad</A>'s smoke placement capability :
+     * <B>Smoke Placement Exponent</B>
      */
 
     public static final String SMOKE_PLACEMENT_EXP_LABEL = "Smoke Placement Exponent";
 
     /**
-     * Provides a label for a <A HREF="Leader.html">Leader</A>'s modifier value :
-     * <B>Modifier</B>
+     * Provides a label for a <A HREF="Leader.html">Leader</A>'s modifier value : <B>Modifier</B>
      */
 
     public static final String MODIFIER_LABEL            = "Modifier";
 
     /**
-     * Indicates the current value of a boolean data member : <B>Yes</B>. This
-     * is provided primarily for use in the toString() method.
+     * A label used in the toString() method to build exception messages :
+     * <B>(toString) - </B>
+     * It is appended to the class name in each toString() method definition.
+     *
+     * @see Unit#buildErrorMessage
+     */
+
+    public static final String TO_STRING_LABEL = "(toString) - ";
+
+    // The following strings are provided primarily for use in the toString()
+    // method.
+
+    /**
+     * Indicates the current value of a boolean data member : <B>Yes</B>
+     *
      * @see #toString
      */
 
     public static final String YES = "Yes";
 
     /**
-     * Indicates the current value of a boolean data member : <B>No</B>. This is
-     * provided primarily for use in the toString() method.
+     * Indicates the current value of a boolean data member : <B>No</B>
+     *
      * @see #toString
      */
 
     public static final String NO  = "No";
-
-    /**
-     * A label used in the toString() method to build exception messages :
-     * <B>(toString) - </B>. It is appended to the class name in each toString()
-     * method definition.
-     * @see Unit#buildErrorMessage
-     */
-
-    public static final String TO_STRING_LABEL = "(toString) - ";
 
     // Access methods
 
@@ -655,8 +643,8 @@ public interface Counter extends Serializable
      * instance of a class that implements this interface. Each value should be
      * preceded by a label defined in this interface. There should be no more
      * than two values, including labels, in each line of output.
-     * @return a tabular <CODE>String</CODE>, 80 characters wide, with one or
-     * more lines.
+     *
+     * @return a tabular <CODE>String</CODE>, 80 characters wide, with one or more lines.
      */
 
     public abstract String toString();
