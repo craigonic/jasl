@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Id: Unit.java,v 1.10 2006/11/13 21:21:16 campbell Exp $
+// $Id: Unit.java,v 1.11 2006/11/17 23:38:17 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -30,19 +30,19 @@ public abstract class Unit implements Counter
     // the default return values / settings for the public methods defined in
     // this class (see comment below) or in its subclasses.
 
-    /**
+    /** <A NAME="_DEFAULT_INT_VALUE_"></A>
      * Default integer value for initialization and return purposes : <B>0</B>
      */
 
     protected static final int     DEFAULT_INT_VALUE    = 0;
 
-    /**
+    /** <A NAME="_DEFAULT_FLAG_VALUE_"></A>
      * Default flag value for initialization and return purposes : <B>false</B>
      */
 
     protected static final boolean DEFAULT_FLAG_VALUE   = false;
 
-    /**
+    /** <A NAME="_DEFAULT_STRING_VALUE_"></A>
      * Default string value for initialization and return purposes : <B>Unknown</B>
      */
 
