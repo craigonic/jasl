@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.13 2006/10/30 23:24:07 campbell Exp $
+# $Id: Makefile,v 1.14 2006/11/24 05:02:21 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -114,7 +114,7 @@ run_test:
 
 test: $(CLASSPATH)/$(DRIVER_CLASS) run_test
 
-test_gcj: TEST_EXEC = $(DRIVER_EXEC)
+test_gcj: TEST_EXEC = ./$(DRIVER_EXEC)
 test_gcj: $(CLASSPATH)/$(DRIVER_EXEC) run_test
 
 test_jar: TEST_EXEC = $(JAR_RUN_CMD) $(DRIVER_JAR)
