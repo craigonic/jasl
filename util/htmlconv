@@ -1,4 +1,5 @@
 s/&lt;\(A HREF="http:\/\/www\.multimanpublishing\.com\/ASL\/asl\.php"\)&gt;\(MultimanPublishing\.com\)&lt;\/A&gt;/<\1>\2<\/A>/
+s/&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;\(.*\)&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;\(.*\)&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1\2<\/A>\3<A HREF=\4\5<\/A>\6<A HREF=\7\8<\/A>/
 s/&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;\(.*\)&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1\2<\/A>\3<A HREF=\4\5<\/A>/
 s/&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1\2<\/A>/
 s/&lt;A HREF=\(".*"\)&gt;\(.*\)&lt;\/A&gt;\(.*\)&lt;A HREF=\(".*"\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1>\2<\/A>\3<A HREF=\4>\5<\/A>/
@@ -13,6 +14,7 @@ s/@param\(<\/font><i><font color="#9A1900"> \)\([a-z][A-Za-z]*\) \([a-z]\)/Param
 s/@return/Returns/
 s/@see\(<.*> \)\([A-Z][a-z].*\)#\([A-Z][A-Z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html#_\3_">\2.\3<\/A>\4/
 s/@see\(<.*> \)\([A-Z][a-z].*\)#\([a-z][a-z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html">\2<\/A>.\3()\4/
+s/@see\(<.*> \)#\([A-Z][A-Z].*\)<\/font></See Also\1<A HREF="#_\2_">\2<\/A><\/font></
 s/@see\(<.*> \)#\([a-z][a-z].*\)</See Also\1<font color="#000000">\2()<\/font></
 s/@see\(<.*> \)\([A-Z][a-z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html">\2<\/A>\3/
 s/@see\(<.*> \)\(.*\)</See Also\1<font color="#000000">\2<\/font></
