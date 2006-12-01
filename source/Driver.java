@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Driver.java,v 1.8 2006/11/27 23:44:06 campbell Exp $
+// $Id: Driver.java,v 1.9 2006/12/01 17:34:52 campbell Exp $
 // ************************************************************************** //
 
 import Counters.*;
@@ -35,7 +35,7 @@ public class Driver
 
         Squad russianSquad = new Squad(Counter.RUSSIAN,"A",Counter.GUARDS,"6",2,
                                        true,8,8,false,12,4,false,
-                                       Counter.ELITE,true,0);
+                                       Classification.ELITE,true,0);
 
         // Display all of the entered values for this instance using the
         // toString() method.
@@ -57,11 +57,11 @@ public class Driver
 
         UnitList[0] = new Leader("American","Sgt. Slaughter","Ranger",9,9,4,-1);
         UnitList[1] = new Squad("American","X","Squad","6",6,false,6,6,false,
-                                11,4,false,Counter.FIRST_LINE,true,3);
+                                11,4,false,Classification.FIRST_LINE,true,3);
         UnitList[2] = new Squad("American","Y","Squad","6",6,false,6,6,false,
-                                11,4,false,Counter.FIRST_LINE,true,3);
+                                11,4,false,Classification.FIRST_LINE,true,3);
         UnitList[3] = new Squad("American","Z","Squad","6",6,false,6,6,false,
-                                11,4,false,Counter.FIRST_LINE,true,3);
+                                11,4,false,Classification.FIRST_LINE,true,3);
 
         System.out.println("Displaying Unit array with a Leader & 3 Squads");
 
@@ -90,8 +90,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad(null,"5","Squad","4",6,true,7,7,
-                                          false,10,3,false,Counter.FIRST_LINE,
-                                          false,1);
+                                          false,10,3,false,
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (NullPointerException e)
@@ -108,8 +108,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad("","5","Squad","4",6,false,7,7,
-                                          false,10,3,false,Counter.FIRST_LINE,
-                                          false,1);
+                                          false,10,3,false,
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -126,8 +126,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad("Mexican","5","Squad","4",6,true,7,
-                                          7,false,10,3,false,Counter.FIRST_LINE,
-                                          false,1);
+                                          7,false,10,3,false,
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -145,7 +145,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,null,"Squad","4",6,
                                           false,7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (NullPointerException e)
@@ -163,7 +163,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"","Squad","4",6,true,
                                           7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -181,7 +181,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5",null,"4",6,false,
                                           7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (NullPointerException e)
@@ -198,8 +198,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","","4",6,true,7,
-                                          7,false,10,3,false,Counter.FIRST_LINE,
-                                          false,1);
+                                          7,false,10,3,false,
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -217,7 +217,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.BRITISH,"5","SS","4",6,false,
                                           7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -235,8 +235,8 @@ public class Driver
         {
             Squad commissarSquad = new Squad(Counter.RUSSIAN,"5",
                                              Counter.COMMISSAR,"4",6,true,7,7,
-                                             false,10,3,false,Counter.GREEN,
-                                             false,1);
+                                             false,10,3,false,
+                                             Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -254,7 +254,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","-1",6,
                                           false,7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -270,7 +270,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","88L",6,
                                           true,7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -288,7 +288,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",-255,
                                           false,7,7,false,10,3,false,
-                                          Counter.FIRST_LINE,false,1);
+                                          Classification.FIRST_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -306,7 +306,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
                                           false,-1,7,false,10,3,false,
-                                          Counter.GREEN,false,1);
+                                          Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -323,8 +323,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          11,7,false,10,3,false,Counter.GREEN,
-                                          false,1);
+                                          11,7,false,10,3,false,
+                                          Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -342,7 +342,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
                                           false,7,-7,false,10,3,false,
-                                          Counter.GREEN,false,1);
+                                          Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -360,8 +360,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,17,false,10,3,false,Counter.GREEN,
-                                          false,1);
+                                          7,17,false,10,3,false,
+                                          Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -379,7 +379,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
                                           false,7,7,true,-1,3,false,
-                                          Counter.GREEN,false,1);
+                                          Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -396,8 +396,8 @@ public class Driver
         try
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,7,true,10,-1,false,Counter.GREEN,
-                                          false,1);
+                                          7,7,true,10,-1,false,
+                                          Classification.GREEN,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -415,7 +415,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
                                           false,7,7,true,10,6,false,
-                                          Counter.SECOND_LINE,false,1);
+                                          Classification.SECOND_LINE,false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -485,7 +485,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
                                           7,7,true,10,3,false,
-                                          Counter.SECOND_LINE,false,-4);
+                                          Classification.SECOND_LINE,false,-4);
         }
 
         catch (IllegalArgumentException e)
@@ -503,7 +503,7 @@ public class Driver
         {
             Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
                                           7,7,true,10,3,false,
-                                          Counter.SECOND_LINE,false,4);
+                                          Classification.SECOND_LINE,false,4);
         }
 
         catch (IllegalArgumentException e)
