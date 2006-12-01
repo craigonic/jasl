@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Id: Counter.java,v 1.6 2006/11/16 22:45:10 campbell Exp $
+// $Id: Counter.java,v 1.7 2006/12/01 17:14:41 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -22,7 +22,7 @@ import java.util.*;
  * This interface is used to define public constants for the classes in the
  * Counters package.
  *
- * @version 1.6
+ * @version 1.7
  * @author Craig R. Campbell
  * @see <A HREF="../../source/Counters/Counter.html">Source code</A>
  */
@@ -293,7 +293,7 @@ public interface Counter extends Serializable
      * It is not necessary that the unitType value specified for a new object
      * match a value in this list. If one of these values is specified, however,
      * it will be checked against the nationality and/or description parameters.
-     * For example, attempting to create a French SS Squad will result in an
+     * For example, attempting to create a <A HREF="#_FRENCH_">French</A> <A HREF="#_SS_">SS</A> <A HREF="Squad.html">Squad</A> will result in an
      * exception.
      *
      * @see Fighting#getUnitType
@@ -316,63 +316,6 @@ public interface Counter extends Serializable
      */
 
     public static final Vector UNIT_TYPES_VECTOR = new Vector(Arrays.asList(UNIT_TYPES));
-
-    // These constants are used to determine if the value of the classification
-    // parameter passed to the constructor is valid. They are given public
-    // attributes to allow external programs to access them when specifying
-    // the classification parameter in the creation of <A HREF="Personnel.html">Personnel</A> objects.
-
-    /** <A NAME="_ELITE_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Elite</B>.
-     */
-
-    public static final String ELITE           = "Elite";
-
-    /** <A NAME="_FIRST_LINE_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>1st Line</B>.
-     */
-
-    public static final String FIRST_LINE      = "1st Line";
-
-    /** <A NAME="_SECOND_LINE_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>2nd Line</B>.
-     */
-
-    public static final String SECOND_LINE     = "2nd Line";
-
-    /** <A NAME="_GREEN_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Green</B>.
-     */
-
-    public static final String GREEN           = "Green";
-
-    /** <A NAME="_CONSCRIPT_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Conscript</B>.
-     */
-
-    public static final String CONSCRIPT       = "Conscript";
-
-    /** <A NAME="_CLASSIFICATIONS_"></A>
-     * A list of the supported classifications.
-     *
-     * @see Personnel#getClassification
-     */
-
-    public static final String[] CLASSIFICATIONS = { ELITE, FIRST_LINE,
-                                                     SECOND_LINE, GREEN,
-                                                     CONSCRIPT };
-
-    /** <A NAME="_CLASSIFICATIONS_VECTOR_"></A>
-     * An alternative method of accessing the list of recognized unit
-     * classifications. This object is used to verify that the classification
-     * parameter specified for an object of a public class derived from <A HREF="Unit.html">Unit</A>
-     * matches one of the values found in the <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array.
-     *
-     * @see Personnel#getClassification
-     */
-
-    public static final Vector CLASSIFICATIONS_VECTOR = new Vector(Arrays.asList(CLASSIFICATIONS));
-
     /**
      * The number of elements in the <A HREF="#_DESCRIPTIONS_">DESCRIPTIONS</A> array and <A HREF="#_DESCRIPTIONS_VECTOR_">DESCRIPTIONS_VECTOR</A>.
      */
@@ -391,13 +334,6 @@ public interface Counter extends Serializable
      */
 
     public static final int UNIT_TYPES_LIST_SIZE      = UNIT_TYPES.length;
-
-    /**
-     * The number of elements in the <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array and
-     * <A HREF="#_CLASSIFICATIONS_VECTOR_">CLASSIFICATIONS_VECTOR</A>.
-     */
-
-    public static final int CLASSIFICATIONS_LIST_SIZE = CLASSIFICATIONS.length;
 
     // The following strings are used to build the error messages (see below)
     // that appear when an exception is thrown. Each subclass will have a
@@ -572,13 +508,6 @@ public interface Counter extends Serializable
      */
 
     public static final String ELR_LABEL                 = "Experience Level Rating";
-
-    /**
-     * Provides a label for a <A HREF="Personnel.html">Personnel</A> (MMC) unit's classification :
-     * <B>Classification</B>
-     */
-
-    public static final String CLASSIFICATION_LABEL      = "Classification";
 
     /**
      * Provides a label indicating if a <A HREF="Squad.html">Squad</A> has assault fire capability :
