@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By     : Craig R. Campbell  -  December 1998                       //
 //                                                                            //
-// $Id: Personnel.java,v 1.8 2006/11/24 03:15:18 craig Exp $
+// $Id: Personnel.java,v 1.9 2006/12/01 17:18:06 campbell Exp $
 // ************************************************************************** //
 
 package Counters;
@@ -21,12 +21,12 @@ package Counters;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * strictly a superclass and cannot be instantiated directly.
  *
- * @version 1.8
+ * @version 1.9
  * @author Craig R. Campbell
  * @see <A HREF="../../source/Counters/Personnel.html">Source code</A>
  */
 
-class Personnel extends Infantry
+class Personnel extends Infantry implements Classification
 {
     // Private symbolic constants
 
@@ -119,7 +119,7 @@ class Personnel extends Infantry
         // Check the classification parameter against the valid entries list and
         // set the local copy if it is valid.
 
-        if (CLASSIFICATIONS_VECTOR.contains(classification))
+        if (Classification.CLASSIFICATIONS_VECTOR.contains(classification))
         {
             this.classification = classification;
         }
@@ -200,7 +200,7 @@ class Personnel extends Infantry
 
         try
         {
-            returnString.append(formatTextString(CLASSIFICATION_LABEL,
+            returnString.append(formatTextString(Classification.CLASSIFICATION_LABEL,
                                                  THIRD_COLUMN_LABEL_WIDTH,
                                                  true,false));
         }
@@ -257,13 +257,13 @@ class Personnel extends Infantry
      *
      * @return a <CODE>String</CODE> specifying the classification.
      *
-     * @see Counter#CLASSIFICATIONS
-     * @see Counter#CLASSIFICATIONS_VECTOR
-     * @see Counter#ELITE
-     * @see Counter#FIRST_LINE
-     * @see Counter#SECOND_LINE
-     * @see Counter#GREEN
-     * @see Counter#CONSCRIPT
+     * @see Classification#CLASSIFICATIONS
+     * @see Classification#CLASSIFICATIONS_VECTOR
+     * @see Classification#ELITE
+     * @see Classification#FIRST_LINE
+     * @see Classification#SECOND_LINE
+     * @see Classification#GREEN
+     * @see Classification#CONSCRIPT
      */
 
     public String getClassification()
