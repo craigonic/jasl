@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 PROJECT_NAME           = jASL
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = ../docs/doxygen
+OUTPUT_DIRECTORY       = ../doc/jasl/doxygen
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 USE_WINDOWS_ENCODING   = NO
