@@ -9,10 +9,10 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Driver.java,v 1.9 2006/12/01 17:34:52 campbell Exp $
+// $Id: Driver.java,v 1.10 2007/04/07 05:58:21 craig Exp $
 // ************************************************************************** //
 
-import Counters.*;
+import jasl.Counters.*;
 
 public class Driver
 {
@@ -33,8 +33,8 @@ public class Driver
 
         // Create an instance of a Russian Squad.
 
-        Squad russianSquad = new Squad(Counter.RUSSIAN,"A",Counter.GUARDS,"6",2,
-                                       true,8,8,false,12,4,false,
+        Squad russianSquad = new Squad(Nationality.RUSSIAN,"A",UnitType.GUARDS,
+                                       "6",2,true,8,8,false,12,4,false,
                                        Classification.ELITE,true,0);
 
         // Display all of the entered values for this instance using the
@@ -143,7 +143,7 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,null,"Squad","4",6,
+            Squad germanSquad = new Squad(Nationality.GERMAN,null,"Squad","4",6,
                                           false,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
@@ -161,8 +161,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"","Squad","4",6,true,
-                                          7,7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"","Squad","4",6,
+                                          true,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
 
@@ -179,8 +179,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5",null,"4",6,false,
-                                          7,7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5",null,"4",6,
+                                          false,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
 
@@ -197,8 +197,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","","4",6,true,7,
-                                          7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","","4",6,true,
+                                          7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
 
@@ -215,8 +215,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.BRITISH,"5","SS","4",6,false,
-                                          7,7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.BRITISH,"5","SS","4",6,
+                                          false,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
 
@@ -233,8 +233,8 @@ public class Driver
 
         try
         {
-            Squad commissarSquad = new Squad(Counter.RUSSIAN,"5",
-                                             Counter.COMMISSAR,"4",6,true,7,7,
+            Squad commissarSquad = new Squad(Nationality.RUSSIAN,"5",
+                                             UnitType.COMMISSAR,"4",6,true,7,7,
                                              false,10,3,false,
                                              Classification.GREEN,false,1);
         }
@@ -252,7 +252,7 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","-1",6,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","-1",6,
                                           false,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
@@ -268,8 +268,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","88L",6,
-                                          true,7,7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","88L",
+                                          6,true,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
 
@@ -286,8 +286,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",-255,
-                                          false,7,7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",
+                                          -255,false,7,7,false,10,3,false,
                                           Classification.FIRST_LINE,false,1);
         }
 
@@ -304,7 +304,7 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
                                           false,-1,7,false,10,3,false,
                                           Classification.GREEN,false,1);
         }
@@ -322,8 +322,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          11,7,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
+                                          true,11,7,false,10,3,false,
                                           Classification.GREEN,false,1);
         }
 
@@ -340,7 +340,7 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
                                           false,7,-7,false,10,3,false,
                                           Classification.GREEN,false,1);
         }
@@ -359,8 +359,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,17,false,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
+                                          true,7,17,false,10,3,false,
                                           Classification.GREEN,false,1);
         }
 
@@ -377,7 +377,7 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
                                           false,7,7,true,-1,3,false,
                                           Classification.GREEN,false,1);
         }
@@ -395,8 +395,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,7,true,10,-1,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
+                                          true,7,7,true,10,-1,false,
                                           Classification.GREEN,false,1);
         }
 
@@ -413,7 +413,7 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
                                           false,7,7,true,10,6,false,
                                           Classification.SECOND_LINE,false,1);
         }
@@ -431,8 +431,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,7,true,10,3,false,null,false,1);
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
+                                          true,7,7,true,10,3,false,null,false,1);
         }
 
         catch (NullPointerException e)
@@ -448,8 +448,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","SS","4",6,true,
-                                          7,7,true,10,3,false,"",false,1);
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","SS","4",6,
+                                          true,7,7,true,10,3,false,"",false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -465,9 +465,9 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"4A","SS","4",6,false,
-                                          7,7,false,10,3,false,"Bozos",false,
-                                          1);
+            Squad germanSquad = new Squad(Nationality.GERMAN,"4A","SS","4",6,
+                                          false,7,7,false,10,3,false,"Bozos",
+                                          false,1);
         }
 
         catch (IllegalArgumentException e)
@@ -483,8 +483,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,7,true,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
+                                          true,7,7,true,10,3,false,
                                           Classification.SECOND_LINE,false,-4);
         }
 
@@ -501,8 +501,8 @@ public class Driver
 
         try
         {
-            Squad germanSquad = new Squad(Counter.GERMAN,"5","Squad","4",6,true,
-                                          7,7,true,10,3,false,
+            Squad germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
+                                          true,7,7,true,10,3,false,
                                           Classification.SECOND_LINE,false,4);
         }
 
@@ -526,8 +526,8 @@ public class Driver
 
         try
         {
-            Leader Grandpa = new Leader(Counter.BRITISH,"Sgt. Powell",
-                                        Counter.CANADIAN,10,10,5,-4);
+            Leader Grandpa = new Leader(Nationality.BRITISH,"Sgt. Powell",
+                                        UnitType.CANADIAN,10,10,5,-4);
         }
 
         catch (IllegalArgumentException e)
@@ -543,8 +543,8 @@ public class Driver
 
         try
         {
-            Leader Grandpa = new Leader(Counter.BRITISH,"Sgt. Powell",
-                                        Counter.CANADIAN,10,10,5,4);
+            Leader Grandpa = new Leader(Nationality.BRITISH,"Sgt. Powell",
+                                        UnitType.CANADIAN,10,10,5,4);
         }
 
         catch (IllegalArgumentException e)
