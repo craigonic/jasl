@@ -10,22 +10,22 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Fighting.java,v 1.10 2006/11/13 22:47:25 campbell Exp $
+// $Id: Fighting.java,v 1.11 2007/04/15 03:23:38 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to define units that have dynamic characteristics
  * (movement, firing, etc). This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.10
+ * @version 1.11
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Fighting.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Fighting.html">Source code</A>
  */
 
-abstract class Fighting extends Unit
+abstract class Fighting extends Unit implements Nationality, UnitType
 {
     // Public symbolic constants
 
@@ -68,7 +68,7 @@ abstract class Fighting extends Unit
 
     // This variable contains the nationality of the derived object of this
     // class (ie. "American" or "German"). It must match one of the values found
-    // in the <A HREF="Counter.html#_NATIONALITIES_">NATIONALITIES</A> list.
+    // in the <A HREF="Nationality.html#_NATIONALITIES_">NATIONALITIES</A> list.
 
     private String nationality;
 
@@ -83,7 +83,7 @@ abstract class Fighting extends Unit
     // etc.) for more precise identification. Infantry units will typically
     // have the same value as Unit.description but this could also be used for
     // special infantry designations such as SS, Gurkha, Paratroopers, etc.
-    // Examples of possible values are found in the <A HREF="Counter.html#_UNIT_TYPES_">UNIT_TYPES</A> list. If a value
+    // Examples of possible values are found in the <A HREF="UnitType.html#_UNIT_TYPES_">UNIT_TYPES</A> list. If a value
     // from this list is specified, it will be checked against the specified
     // nationality and, in some cases, the description.
 
@@ -619,19 +619,19 @@ abstract class Fighting extends Unit
      *
      * @return a <CODE>String</CODE> specifying the unit's nationality.
      *
-     * @see Counter#NATIONALITIES
-     * @see Counter#NATIONALITIES_VECTOR
-     * @see Counter#ALLIED_MINOR
-     * @see Counter#AMERICAN
-     * @see Counter#AXIS_MINOR
-     * @see Counter#BRITISH
-     * @see Counter#FINNISH
-     * @see Counter#FRENCH
-     * @see Counter#GERMAN
-     * @see Counter#ITALIAN
-     * @see Counter#JAPANESE
-     * @see Counter#PARTISAN
-     * @see Counter#RUSSIAN
+     * @see Nationality#NATIONALITIES
+     * @see Nationality#NATIONALITIES_VECTOR
+     * @see Nationality#ALLIED_MINOR
+     * @see Nationality#AMERICAN
+     * @see Nationality#AXIS_MINOR
+     * @see Nationality#BRITISH
+     * @see Nationality#FINNISH
+     * @see Nationality#FRENCH
+     * @see Nationality#GERMAN
+     * @see Nationality#ITALIAN
+     * @see Nationality#JAPANESE
+     * @see Nationality#PARTISAN
+     * @see Nationality#RUSSIAN
      */
 
     public String getNationality()
@@ -662,21 +662,21 @@ abstract class Fighting extends Unit
      * @return a <CODE>String</CODE> specifying a more precise description of the unit's
      * nationality, type, or capability.
      *
-     * @see Counter#UNIT_TYPES
-     * @see Counter#UNIT_TYPES_VECTOR
-     * @see Counter#AIRBORNE
-     * @see Counter#ANZAC
-     * @see Counter#CANADIAN
-     * @see Counter#COMMISSAR
-     * @see Counter#ENGINEERS
-     * @see Counter#FREE_FRENCH
-     * @see Counter#FREE_POLISH
-     * @see Counter#GUARDS
-     * @see Counter#GUARDSMEN
-     * @see Counter#GURKHA
-     * @see Counter#PARATROOPS
-     * @see Counter#SISSI
-     * @see Counter#SS
+     * @see UnitType#UNIT_TYPES
+     * @see UnitType#UNIT_TYPES_VECTOR
+     * @see UnitType#AIRBORNE
+     * @see UnitType#ANZAC
+     * @see UnitType#CANADIAN
+     * @see UnitType#COMMISSAR
+     * @see UnitType#ENGINEERS
+     * @see UnitType#FREE_FRENCH
+     * @see UnitType#FREE_POLISH
+     * @see UnitType#GUARDS
+     * @see UnitType#GUARDSMEN
+     * @see UnitType#GURKHA
+     * @see UnitType#PARATROOPS
+     * @see UnitType#SISSI
+     * @see UnitType#SS
      */
 
     public String getUnitType()
