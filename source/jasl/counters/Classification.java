@@ -11,10 +11,10 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  November 2006                            //
 //                                                                            //
-// $Id: Classification.java,v 1.1 2006/12/01 17:05:24 campbell Exp $
+// $Id: Classification.java,v 1.2 2007/04/15 03:15:06 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 import java.util.*; // For Vector.
 
@@ -22,9 +22,9 @@ import java.util.*; // For Vector.
  * This interface is used to define public constants and required methods
  * associated with the classification of <A HREF="Personnel.html">Personnel</A> units.
  *
- * @version 1.1
+ * @version 1.2
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Classification.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Classification.html">Source code</A>
  */
 
 public interface Classification
