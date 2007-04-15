@@ -10,10 +10,10 @@
 //                                                                            //
 // Written By     : Craig R. Campbell  -  December 1998                       //
 //                                                                            //
-// $Id: Personnel.java,v 1.9 2006/12/01 17:18:06 campbell Exp $
+// $Id: Personnel.java,v 1.10 2007/04/15 03:48:52 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to define the characteristics which are common to all
@@ -21,9 +21,9 @@ package Counters;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * strictly a superclass and cannot be instantiated directly.
  *
- * @version 1.9
+ * @version 1.10
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Personnel.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Personnel.html">Source code</A>
  */
 
 class Personnel extends Infantry implements Classification

@@ -10,19 +10,19 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Mobile.java,v 1.8 2006/11/16 23:42:28 campbell Exp $
+// $Id: Mobile.java,v 1.9 2007/04/15 03:46:50 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to define the characteristics of units that have the
  * ability to move on their own. This class is strictly a superclass and cannot
  * be instantiated directly.
  *
- * @version 1.8
+ * @version 1.9
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Mobile.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Mobile.html">Source code</A>
  */
 
 class Mobile extends Fighting

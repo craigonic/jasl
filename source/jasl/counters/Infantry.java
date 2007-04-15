@@ -10,19 +10,19 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Infantry.java,v 1.9 2006/11/27 22:21:49 campbell Exp $
+// $Id: Infantry.java,v 1.10 2007/04/15 03:45:43 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to define the characteristics which are common to all
  * infantry units. This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.9
+ * @version 1.10
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Infantry.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Infantry.html">Source code</A>
  */
 
 class Infantry extends Mobile
