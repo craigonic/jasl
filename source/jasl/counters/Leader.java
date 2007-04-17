@@ -10,17 +10,17 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Leader.java,v 1.8 2006/11/24 04:55:20 craig Exp $
+// $Id: Leader.java,v 1.9 2007/04/17 03:33:09 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 1.8
+ * @version 1.9
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Leader.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Leader.html">Source code</A>
  */
 
 public final class Leader extends Infantry
@@ -59,11 +59,11 @@ public final class Leader extends Infantry
     /**
      * Construct a new <CODE>Leader</CODE>.
      *
-     * @param nationality the nationality of the Leader. Example - <B><A HREF="Counter.html#_BRITISH_">BRITISH</A></B>
+     * @param nationality the nationality of the Leader. Example - <B><A HREF="Nationality.html#_BRITISH_">BRITISH</A></B>
      * @param identity an identifier for the Leader.
      * Example - <B>"Sgt. Powell"</B>
      * @param unitType a more specific nationality, type, or capability
-     * description for the Leader. Example - <B><A HREF="Counter.html#_CANADIAN_">CANADIAN</A></B>
+     * description for the Leader. Example - <B><A HREF="UnitType.html#_CANADIAN_">CANADIAN</A></B>
      * @param morale the morale level of the Leader in its unbroken state.
      * Example - <B>8</B>
      * @param brokenMorale the morale level of the Leader when it is
