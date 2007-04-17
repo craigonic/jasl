@@ -9,20 +9,20 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Id: Unit.java,v 1.11 2006/11/17 23:38:17 campbell Exp $
+// $Id: Unit.java,v 1.12 2007/04/17 03:28:40 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to define the basic components of a counter.
  *
- * @version 1.10
+ * @version 1.12
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Unit.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Unit.html">Source code</A>
  */
 
-public abstract class Unit implements Counter
+public abstract class Unit implements Counter, Description
 {
     // Protected symbolic constants
 
@@ -410,12 +410,12 @@ public abstract class Unit implements Counter
      *
      * @return a <CODE>String</CODE> specifying the unit description.
      *
-     * @see Counter#DESCRIPTIONS
-     * @see Counter#DESCRIPTIONS_VECTOR
-     * @see Counter#CREW
-     * @see Counter#HALF_SQUAD
-     * @see Counter#LEADER
-     * @see Counter#SQUAD
+     * @see Description#DESCRIPTIONS
+     * @see Description#DESCRIPTIONS_VECTOR
+     * @see Description#CREW
+     * @see Description#HALF_SQUAD
+     * @see Description#LEADER
+     * @see Description#SQUAD
      */
 
     public String getDescription()
