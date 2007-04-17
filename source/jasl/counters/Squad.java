@@ -9,17 +9,17 @@
 //                                                                            //
 // Written By : Craig R. Campbell  -  December 1998                           //
 //                                                                            //
-// $Id: Squad.java,v 1.9 2006/11/24 21:21:25 craig Exp $
+// $Id: Squad.java,v 1.10 2007/04/17 03:37:48 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 /**
  * This class is used to represent a Squad counter.
  *
- * @version 1.9
+ * @version 1.10
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Squad.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Squad.html">Source code</A>
  */
 
 public final class Squad extends Personnel
@@ -69,10 +69,10 @@ public final class Squad extends Personnel
      * @param basicPointValue the point "value" of the Squad for the
      * purpose of determining battlefield integrity and for design your own
      * (DYO) scenarios. Example - <B>15</B>
-     * @param nationality the nationality of the Squad. Example - <B><A HREF="Counter.html#_GERMAN_">GERMAN</A></B>
+     * @param nationality the nationality of the Squad. Example - <B><A HREF="Nationality.html#_GERMAN_">GERMAN</A></B>
      * @param identity an identifier for the Squad. Example - <B>"A1"</B>
      * @param unitType a more specific nationality, type, or capability
-     * description for the Squad. Example - <B><A HREF="Counter.html#_SS_">SS</A></B>
+     * description for the Squad. Example - <B><A HREF="UnitType.html#_SS_">SS</A></B>
      * @param firepower the inherent firepower of the Squad. Example - <B>"6"</B>
      * @param normalRange the maximum range that the Squad's inherent
      * firepower can be used at full strength. Example - <B>5</B>
@@ -89,7 +89,7 @@ public final class Squad extends Personnel
      * Example - <B>5</B>
      * @param hasMaximumELR indicates if the Squad inherently has the
      * maximum experience level rating. Example - <B>true</B>
-     * @param classification the quality of the Squad. Example - <B><A HREF="Counter.html#_FIRST_LINE_">FIRST_LINE</A></B>
+     * @param classification the quality of the Squad. Example - <B><A HREF="Classification.html#_FIRST_LINE_">FIRST_LINE</A></B>
      * @param assaultFireCapable indicates if the Squad can use assault
      * fire and movement. Example - <B>false</B>
      * @param smokePlacementExponent a value used to indicate the inherent
