@@ -5,26 +5,25 @@
 //                jASL.                                                       //
 //                                                                            //
 //                NOTE: This program is based on Advanced Squad Leader, which //
-//                was created by The Avalon Hill Game Company, and lives      //
-//                on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.                               //
+//                      was created by The Avalon Hill Game Company, and      //
+//                      lives on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.                   //
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Id: Counter.java,v 1.7 2006/12/01 17:14:41 campbell Exp $
+// $Id: Counter.java,v 1.8 2007/04/20 03:40:24 craig Exp $
 // ************************************************************************** //
 
-package Counters;
+package jasl.Counters;
 
 import java.io.*;
-import java.util.*;
 
 /**
  * This interface is used to define public constants for the classes in the
  * Counters package.
  *
- * @version 1.7
+ * @version 1.8
  * @author Craig R. Campbell
- * @see <A HREF="../../source/Counters/Counter.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/Counters/Counter.html">Source code</A>
  */
 
 public interface Counter extends Serializable
@@ -33,307 +32,6 @@ public interface Counter extends Serializable
 
     // These constants are available to all programs and can be used to specify
     // parameters for new objects or to build menus.
-
-    // These constants are available to all subclasses and are used to describe
-    // the counter types that may be directly instantiated using classes in the
-    // Counters hierarchy.
-
-    /** <A NAME="_CREW_"></A>
-     * Indicates that the counter type of a unit is <B>Crew</B>.
-     */
-
-    public static final String CREW        = "Crew";
-
-    /** <A NAME="_HALF_SQUAD_"></A>
-     * Indicates that the counter type of a unit is <B>Half Squad</B>.
-     */
-
-    public static final String HALF_SQUAD  = "Half Squad";
-
-    /** <A NAME="_LEADER_"></A>
-     * Indicates that the counter type of a unit is <B><A HREF="Leader.html">Leader</A></B>.
-     */
-
-    public static final String LEADER      = "Leader";
-
-    /** <A NAME="_SQUAD_"></A>
-     * Indicates that the counter type of a unit is <B><A HREF="Squad.html">Squad</A></B>.
-     */
-
-    public static final String SQUAD       = "Squad";
-
-    // This static array is used in the constructor to verify the description
-    // parameter passed to it when an object derived from <A HREF="Unit.html">Unit</A> is instantiated.
-    // The description parameter is generally specified as a constant in each
-    // of the public classes derived from <A HREF="Unit.html">Unit</A>. The list and the check of the
-    // variable in the constructor are included for consistency.
-
-    /** <A NAME="_DESCRIPTIONS_"></A>
-     * A list of the supported counter types. Each entry is directly associated
-     * with a public class derived from <A HREF="Unit.html">Unit</A>.
-     *
-     * @see Unit#getDescription
-     */
-
-    public static final String[] DESCRIPTIONS = { CREW, HALF_SQUAD, LEADER,
-                                                  SQUAD };
-
-    /** <A NAME="_DESCRIPTIONS_VECTOR_"></A>
-     * An alternative method of accessing the list of supported counter types.
-     *
-     * @see Unit#getDescription
-     */
-
-    public static final Vector DESCRIPTIONS_VECTOR = new Vector(Arrays.asList(DESCRIPTIONS));
-
-    // Recognized nationality values. The nationality variable (see
-    // <A HREF="Fighting.html">Fighting</A>.java) best describes the army that the <A HREF="Unit.html">Unit</A> belongs to, not
-    // necessarily the true nationality of the soldiers in that <A HREF="Unit.html">Unit</A>.
-
-    /** <A NAME="_ALLIED_MINOR_"></A>
-     * Indicates that a unit's nationality is <B>Allied Minor</B>.
-     */
-
-    public static final String ALLIED_MINOR = "Allied Minor";
-
-    /** <A NAME="_AMERICAN_"></A>
-     * Indicates that a unit's nationality is <B>American</B>.
-     */
-
-    public static final String AMERICAN     = "American";
-
-    /** <A NAME="_AXIS_MINOR_"></A>
-     * Indicates that a unit's nationality is <B>Axis Minor</B>.
-     */
-
-    public static final String AXIS_MINOR   = "Axis Minor";
-
-    /** <A NAME="_BRITISH_"></A>
-     * Indicates that a unit's nationality is <B>British</B>.
-     */
-
-    public static final String BRITISH      = "British";
-
-    /** <A NAME="_FINNISH_"></A>
-     * Indicates that a unit's nationality is <B>Finnish</B>.
-     */
-
-    public static final String FINNISH      = "Finnish";
-
-    /** <A NAME="_FRENCH_"></A>
-     * Indicates that a unit's nationality is <B>French</B>.
-     */
-
-    public static final String FRENCH       = "French";
-
-    /** <A NAME="_GERMAN_"></A>
-     * Indicates that a unit's nationality is <B>German</B>.
-     */
-
-    public static final String GERMAN       = "German";
-
-    /** <A NAME="_ITALIAN_"></A>
-     * Indicates that a unit's nationality is <B>Italian</B>.
-     */
-
-    public static final String ITALIAN      = "Italian";
-
-    /** <A NAME="_JAPANESE_"></A>
-     * Indicates that a unit's nationality is <B>Japanese</B>.
-     */
-
-    public static final String JAPANESE     = "Japanese";
-
-    /** <A NAME="_PARTISAN_"></A>
-     * Indicates that a unit's nationality is <B>Partisan</B>.
-     */
-
-    public static final String PARTISAN     = "Partisan";
-
-    /** <A NAME="_RUSSIAN_"></A>
-     * Indicates that a unit's nationality is <B>Russian</B>.
-     */
-
-    public static final String RUSSIAN      = "Russian";
-
-    /** <A NAME="_NATIONALITIES_"></A>
-     * A list of the recognized unit nationalities.
-     *
-     * @see Fighting#getNationality
-     */
-
-    public static final String[] NATIONALITIES = { ALLIED_MINOR, AMERICAN,
-                                                   AXIS_MINOR, BRITISH, FINNISH,
-                                                   FRENCH, GERMAN, ITALIAN,
-                                                   JAPANESE, PARTISAN,
-                                                   RUSSIAN };
-
-    /** <A NAME="_NATIONALITIES_VECTOR_"></A>
-     * An alternative method of accessing the list of recognized unit
-     * nationalities. This object is used to verify that the nationality
-     * parameter specified for an object of a public class derived from <A HREF="Unit.html">Unit</A>
-     * matches one of the values found in the <A HREF="#_NATIONALITIES_">NATIONALITIES</A> array.
-     *
-     * @see Fighting#getNationality
-     */
-
-    public static final Vector NATIONALITIES_VECTOR = new Vector(Arrays.asList(NATIONALITIES));
-
-    // Recognized unitType values. These are used to identify specific types and
-    // more specific nationalities for infantry units. The unitType variable can
-    // also be used by the calling program to indicate other names or attributes
-    // for the <A HREF="Unit.html">Unit</A> it is applied to.
-
-    /** <A NAME="_PARATROOPS_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Paratroops</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_AMERICAN_">AMERICAN</A>.
-     */
-
-    public static final String PARATROOPS   = "Paratroops";
-
-    /** <A NAME="_AIRBORNE_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Airborne</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String AIRBORNE     = "Airborne";
-
-    /** <A NAME="_ANZAC_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>ANZAC</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String ANZAC        = "ANZAC";
-
-    /** <A NAME="_CANADIAN_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Canadian</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String CANADIAN     = "Canadian";
-
-    /** <A NAME="_FREE_FRENCH_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Free French</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String FREE_FRENCH  = "Free French";
-
-    /** <A NAME="_FREE_POLISH_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Free Polish</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String FREE_POLISH  = "Free Polish";
-
-    /** <A NAME="_GUARDSMEN_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Guardsmen</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String GUARDSMEN    = "Guardsmen";
-
-    /** <A NAME="_GURKHA_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Gurkha</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_BRITISH_">BRITISH</A>.
-     */
-
-    public static final String GURKHA       = "Gurkha";
-
-    /** <A NAME="_SISSI_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Sissi</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_FINNISH_">FINNISH</A>.
-     */
-
-    public static final String SISSI        = "Sissi";
-
-    /** <A NAME="_SS_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>SS</B>. If this value is specified as the unitType parameter for an object,
-     * the nationality parameter must be <A HREF="#_GERMAN_">GERMAN</A>.
-     */
-
-    public static final String SS           = "SS";
-
-    /** <A NAME="_ENGINEERS_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Engineers</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_GERMAN_">GERMAN</A>.
-     */
-
-    public static final String ENGINEERS    = "Engineers";
-
-    /** <A NAME="_COMMISSAR_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Commissar</B>. This value may only be specified as the unitType parameter for
-     * a <A HREF="Leader.html">Leader</A> object. The nationality parameter must be <A HREF="#_RUSSIAN_">RUSSIAN</A>.
-     */
-
-    public static final String COMMISSAR    = "Commissar";
-
-    /** <A NAME="_GUARDS_"></A>
-     * Indicates that a unit's more precise nationality, type, or capability is
-     * <B>Guards</B>. If this value is specified as the unitType parameter for an
-     * object, the nationality parameter must be <A HREF="#_RUSSIAN_">RUSSIAN</A>.
-     */
-
-    public static final String GUARDS       = "Guards";
-
-    /** <A NAME="_UNIT_TYPES_"></A>
-     * A list of the recognized unit nationalities, types, and capabilities.
-     * It is not necessary that the unitType value specified for a new object
-     * match a value in this list. If one of these values is specified, however,
-     * it will be checked against the nationality and/or description parameters.
-     * For example, attempting to create a <A HREF="#_FRENCH_">French</A> <A HREF="#_SS_">SS</A> <A HREF="Squad.html">Squad</A> will result in an
-     * exception.
-     *
-     * @see Fighting#getUnitType
-     */
-
-    public static final String[] UNIT_TYPES = { PARATROOPS, AIRBORNE, ANZAC,
-                                                CANADIAN, FREE_FRENCH,
-                                                FREE_POLISH, GUARDSMEN, GURKHA,
-                                                SISSI, SS, ENGINEERS, COMMISSAR,
-                                                GUARDS };
-
-    /** <A NAME="_UNIT_TYPES_VECTOR_"></A>
-     * An alternative method of accessing the list of the recognized unit types.
-     * This object is used to verify that the unitType parameter specified for
-     * an object of a public class derived from <A HREF="Unit.html">Unit</A>, if it matches one of the
-     * of the values found in the <A HREF="#_UNIT_TYPES_">UNIT_TYPES</A> array, does not conflict with the
-     * nationality and/or description parameters.
-     *
-     * @see Fighting#getUnitType
-     */
-
-    public static final Vector UNIT_TYPES_VECTOR = new Vector(Arrays.asList(UNIT_TYPES));
-    /**
-     * The number of elements in the <A HREF="#_DESCRIPTIONS_">DESCRIPTIONS</A> array and <A HREF="#_DESCRIPTIONS_VECTOR_">DESCRIPTIONS_VECTOR</A>.
-     */
-
-    public static final int DESCRIPTIONS_LIST_SIZE    = DESCRIPTIONS.length;
-
-    /**
-     * The number of elements in the <A HREF="#_NATIONALITIES_">NATIONALITIES</A> array and
-     * <A HREF="#_NATIONALITIES_VECTOR_">NATIONALITIES_VECTOR</A>.
-     */
-
-    public static final int NATIONALITIES_LIST_SIZE   = NATIONALITIES.length;
-
-    /**
-     * The number of elements in the <A HREF="#_UNIT_TYPES_">UNIT_TYPES</A> array and <A HREF="#_UNIT_TYPES_VECTOR_">UNIT_TYPES_VECTOR</A>.
-     */
-
-    public static final int UNIT_TYPES_LIST_SIZE      = UNIT_TYPES.length;
 
     // The following strings are used to build the error messages (see below)
     // that appear when an exception is thrown. Each subclass will have a
@@ -403,29 +101,10 @@ public interface Counter extends Serializable
     // user interface as well.
 
     /**
-     * Provides a label for a unit's counter type : <B>Description</B>
-     */
-
-    public static final String DESCRIPTION_LABEL         = "Description";
-
-    /**
-     * Provides a label for a unit's nationality : <B>Nationality</B>
-     */
-
-    public static final String NATIONALITY_LABEL         = "Nationality";
-
-    /**
      * Provides a label for a unit's identity : <B>Identity</B>
      */
 
     public static final String IDENTITY_LABEL            = "Identity";
-
-    /**
-     * Provides a label for a unit's more precise nationality, type, or
-     * capability : <B>Unit Type</B>
-     */
-
-    public static final String UNIT_TYPE_LABEL           = "Unit Type";
 
     /**
      * Provides a label for a unit's normal range : <B>Normal Range</B>
