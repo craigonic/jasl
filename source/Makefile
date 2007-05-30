@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.15 2007/04/07 05:46:33 craig Exp $
+# $Id: Makefile,v 1.16 2007/05/30 21:16:58 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -16,6 +16,7 @@ include $(JASL_BASE)/util/jasl.make
 # the Driver program.
 
 DRIVER_CLASS       = Driver.class
+DRIVER_CNI_SRC     = ${DRIVER_CLASS:.class=.cpp}
 DRIVER_EXEC        = ${DRIVER_CLASS:.class=}
 DRIVER_JAR         = ${DRIVER_CLASS:.class=.jar}
 DRIVER_MANIFEST    = ${DRIVER_CLASS:.class=.mf}
@@ -28,6 +29,9 @@ DRIVER_TEST        = ${DRIVER_CLASS:.class=.test}
 
 DRIVER_DYNAMIC     = $(DRIVER_EXEC)_dynamic
 DRIVER_STATIC      = $(DRIVER_EXEC)_static
+
+DRIVER_CNI_DYNAMIC = $(DRIVER_EXEC)_cni_dynamic
+DRIVER_CNI_STATIC  = $(DRIVER_EXEC)_cni_static
 
 # Name and file collection variables.
 
@@ -48,7 +52,7 @@ all build: $(ALL_CLASSES)
 # the processing of the jar target to prevent them from being included in the
 # jar archive.
 
-build_all: gcj gcj_dynamic gcj_static jar
+build_all: gcj gcj_dynamic gcj_static cni_dynamic cni_static jar
 
 # Build the native executable version of all programs, removing all of the
 # intermediate files generated to build each one. These files are necessary for
@@ -101,6 +105,18 @@ gcj_dynamic: $(DRIVER_DYNAMIC)
 
 gcj_static: $(DRIVER_STATIC)
 
+# Build the native executable version, specifically the C++ source file(s) for
+# all programs, using the gcc compiler and linking with the cni-wrapper dynamic
+# library and one or more of the jasl dynamic libraries in $(LIB_PATH).
+
+cni_dynamic: $(DRIVER_CNI_DYNAMIC)
+
+# Build the native executable version, specifically the C++ source file(s) for
+# all programs, using the gcc compiler and linking with the cni-wrapper static
+# library and one or more of the jasl static libraries in $(LIB_PATH).
+
+cni_static: $(DRIVER_CNI_STATIC)
+
 # Build the java version of the Driver program, which is used to test the
 # classes defined in the jasl directory and its sub-directories.
 
@@ -120,19 +136,45 @@ DRIVER_BUILD_OPTIONS = --main=$(DRIVER_EXEC) -o $(BIN_PATH)/
 
 $(DRIVER_EXEC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_EXEC) $(DRIVER_SRC) \
-                     $(GCJ_OBJECT_FILES)
+	                 $(GCJ_OBJECT_FILES)
 
 # Build and link with the dynamic libraries.
 
 $(DRIVER_DYNAMIC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_DYNAMIC) $(DRIVER_SRC) \
-                     -L$(LIB_PATH) -l$(COUNTERS_BASE_LIB_NAME)
+	                 -L$(LIB_PATH) -l$(COUNTERS_BASE_LIB_NAME)
 
 # Build and link with the static libraries.
 
 $(DRIVER_STATIC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_STATIC) $(DRIVER_SRC) \
-                     $(COUNTERS_STATIC_LIB_PATH)
+	                 $(COUNTERS_STATIC_LIB_PATH)
+
+# Build the C++ version of the Driver program, which uses the Compiled Native
+# Interface (CNI) wrapper, and is used to test the classes defined in the jasl
+# directory and its sub-directories.
+
+# Options common to building both forms of the C++ version of the Driver
+# program.
+
+DRIVER_CNI_BUILD_OPTIONS = -I$(INCLUDE_PATH) -o $(BIN_PATH)/
+DRIVER_CNI_DYNAMIC_LIBS  = -lgcj -lstdc++
+
+# Build and link with the dynamic libraries.
+
+$(DRIVER_CNI_DYNAMIC):
+	$(GCC_BUILD_CMD) $(DRIVER_CNI_BUILD_OPTIONS)$(DRIVER_CNI_DYNAMIC) \
+	                 $(DRIVER_CNI_SRC) -L$(LIB_PATH) \
+	                 $(DRIVER_CNI_DYNAMIC_LIBS) \
+	                 -l$(CNI_WRAPPER_BASE_LIB_NAME) \
+	                 -l$(COUNTERS_BASE_LIB_NAME)
+
+# Build and link with the static libraries.
+
+$(DRIVER_CNI_STATIC):
+	$(GCC_BUILD_CMD) $(DRIVER_CNI_BUILD_OPTIONS)$(DRIVER_CNI_STATIC) \
+	                 $(DRIVER_CNI_SRC) $(DRIVER_CNI_DYNAMIC_LIBS) \
+	                 $(CNI_WRAPPER_STATIC_LIB_PATH) $(COUNTERS_STATIC_LIB_PATH)
 
 # Remove all of the existing program files from the output directory or a
 # specific subset.
@@ -142,7 +184,8 @@ clean_all: clean_java clean_obj clean
 clean_java clean_obj:
 	@(cd $(COUNTERS_PKG_PATH); $(MAKE) $@)
 
-clean: clean_class clean_gcj clean_gcj_dynamic clean_gcj_static clean_jar
+clean: clean_class clean_gcj clean_gcj_dynamic clean_gcj_static \
+       clean_cni_dynamic clean_cni_static clean_jar
 
 clean_class:
 	$(RM) $(BIN_PATH)/$(DRIVER_CLASS)
@@ -155,6 +198,12 @@ clean_gcj_dynamic:
 
 clean_gcj_static:
 	$(RM) $(BIN_PATH)/$(DRIVER_STATIC)
+
+clean_cni_dynamic:
+	$(RM) $(BIN_PATH)/$(DRIVER_CNI_DYNAMIC)
+
+clean_cni_static:
+	$(RM) $(BIN_PATH)/$(DRIVER_CNI_STATIC)
 
 clean_jar:
 	$(RM) $(BIN_PATH)/$(DRIVER_JAR)
@@ -181,8 +230,11 @@ test_gcj_dynamic: $(BIN_PATH)/$(DRIVER_DYNAMIC) run_test
 test_gcj_static: TEST_EXEC = ./$(DRIVER_STATIC)
 test_gcj_static: $(BIN_PATH)/$(DRIVER_STATIC) run_test
 
-test_gcj_static: TEST_EXEC = ./$(DRIVER_STATIC)
-test_gcj_static: $(BIN_PATH)/$(DRIVER_STATIC) run_test
+test_cni_dynamic: TEST_EXEC = /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_CNI_DYNAMIC)"
+test_cni_dynamic: $(BIN_PATH)/$(DRIVER_CNI_DYNAMIC) run_test
+
+test_cni_static: TEST_EXEC = ./$(DRIVER_CNI_STATIC)
+test_cni_static: $(BIN_PATH)/$(DRIVER_CNI_STATIC) run_test
 
 test_jar: TEST_EXEC = $(JAR_RUN_CMD) $(DRIVER_JAR)
 test_jar: $(BIN_PATH)/$(DRIVER_JAR) run_test
@@ -191,7 +243,7 @@ test_jar: $(BIN_PATH)/$(DRIVER_JAR) run_test
 # used to enable and simplify source code navigation from most text editors.
 
 ctags:
-	@$(CTAGS_BUILD_CMD) $(ALL_PACKAGES)
+	@$(CTAGS_BUILD_CMD) $(WRAPPERS_DIRECTORY) $(ALL_PACKAGES)
 
 # Create HTML versions of the source files. Each file is converted using the
 # source-highlight program, which generates an "image" of the file with syntax
@@ -199,10 +251,12 @@ ctags:
 # the files together on an HTML page.
 
 docs:
+	$(CPP2HTML) --title="$(DRIVER_CNI_SRC)" --input=$(DRIVER_CNI_SRC) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$$i.html ;\
 	done
-	@(cd $(COUNTERS_PKG_PATH); $(MAKE) $@)
+	@(cd $(WRAPPERS_DIRECTORY); $(MAKE) $@)
+	@(cd $(COUNTERS_PKG_PATH);  $(MAKE) $@)
 	@$(HTLS) $(SRC_DOCS_PATH)
 
 # Create HTML documentation using javadoc.
