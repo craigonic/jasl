@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.7 2007/05/30 21:02:00 campbell Exp $
+# $Id: jasl.make,v 1.8 2007/06/07 20:56:23 campbell Exp $
 ################################################################################
 
 ## Program name.
@@ -78,11 +78,15 @@ CTAGS_BUILD_CMD    = /usr/bin/ctags --file-tags=yes -R --excmd=number
 
 # Linked source files.
 
+MAKEFILE           = Makefile
 SRC_DOCS_PATH      = $(DOCS_PATH)/source
-HTLS               = $(UTIL_PATH)/htls -genpage -index
+
 SRC_HIGHLIGHT_CMD  = source-highlight --doc --tab=4 --ctags=''
 CPP2HTML           = $(SRC_HIGHLIGHT_CMD) --src-lang=cpp
 JAVA2HTML          = $(SRC_HIGHLIGHT_CMD) --src-lang=java
+MAKE2HTML          = $(SRC_HIGHLIGHT_CMD) --src-lang=makefile
+
+HTLS               = $(UTIL_PATH)/htls -genpage -index
 SED_CONV_CMD       = sed -f $(UTIL_PATH)/htmlconv
 
 # javadoc.
