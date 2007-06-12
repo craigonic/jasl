@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.16 2007/05/30 21:16:58 campbell Exp $
+# $Id: Makefile,v 1.17 2007/06/12 23:17:58 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -41,6 +41,8 @@ JAVA_SRC_FILES     = ${ALL_CLASSES:.class=.java}
 JAVA_CLASSES       = ${ALL_CLASSES:.class=}
 
 GCJ_OBJECT_FILES   = $(COUNTERS_OBJ_FILES)
+
+## Build #######################################################################
 
 # Build the java bytecode for all programs. This will also compile the files in
 # the jasl directory and its sub-directories.
@@ -176,6 +178,8 @@ $(DRIVER_CNI_STATIC):
 	                 $(DRIVER_CNI_SRC) $(DRIVER_CNI_DYNAMIC_LIBS) \
 	                 $(CNI_WRAPPER_STATIC_LIB_PATH) $(COUNTERS_STATIC_LIB_PATH)
 
+## Clean #######################################################################
+
 # Remove all of the existing program files from the output directory or a
 # specific subset.
 
@@ -208,6 +212,8 @@ clean_cni_static:
 clean_jar:
 	$(RM) $(BIN_PATH)/$(DRIVER_JAR)
 
+## Test ########################################################################
+
 # Run the Driver program in its various forms and compare the output to the
 # previously saved result (Driver.out).
 
@@ -239,11 +245,7 @@ test_cni_static: $(BIN_PATH)/$(DRIVER_CNI_STATIC) run_test
 test_jar: TEST_EXEC = $(JAR_RUN_CMD) $(DRIVER_JAR)
 test_jar: $(BIN_PATH)/$(DRIVER_JAR) run_test
 
-# Create an index of all of the language objects in the source code. This is
-# used to enable and simplify source code navigation from most text editors.
-
-ctags:
-	@$(CTAGS_BUILD_CMD) $(WRAPPERS_DIRECTORY) $(ALL_PACKAGES)
+## Documentation ###############################################################
 
 # Create HTML versions of the source files. Each file is converted using the
 # source-highlight program, which generates an "image" of the file with syntax
@@ -251,7 +253,8 @@ ctags:
 # the files together on an HTML page.
 
 docs:
-	$(CPP2HTML) --title="$(DRIVER_CNI_SRC)" --input=$(DRIVER_CNI_SRC) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(MAKEFILE).html
+	@$(CPP2HTML) --title="$(DRIVER_CNI_SRC)" --input=$(DRIVER_CNI_SRC) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$$i.html ;\
 	done
@@ -281,6 +284,14 @@ doxygen:
 # in the same directory as javadoc.
 
 all_docs: javadocs doxygen docs
+
+## Miscellaneous ###############################################################
+
+# Create an index of all of the language objects in the source code. This is
+# used to enable and simplify source code navigation from most text editors.
+
+ctags:
+	@$(CTAGS_BUILD_CMD) $(WRAPPERS_DIRECTORY) $(ALL_PACKAGES)
 
 # Create an executable jar archive of the Driver program. Execution of this
 # target will automatically remove any object files that exist in order to
