@@ -29,9 +29,8 @@ properly. Examples:
 </UL>
 <LI><I>Optional. </I>
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
-build the native executable version of this program, static and dynamic
+build the native executable version(s) of this program, static and dynamic
 libraries, and header files.
-<LI><I>Optional. </I><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT>.
 <LI><I>Optional. </I>
 <TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>.
 This program is used to create HTML versions of the source files.
@@ -43,7 +42,8 @@ to build a linked hierarchy of the HTML versions of the source files.
 is an alternative to
 <TT><A HREF=http://java.sun.com/j2se/javadoc/index.jsp>javadoc</A></TT>. Note
 that the same parameters and output directory will be used for both programs.
-<LI><I>Optional. </I>A <A HREF=../BuildARMToolChainNotes.html>toolchain</A>
+<LI><I>Optional. </I><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT>.
+<LI><I>Optional. </I>A <A HREF=BuildARMToolChainNotes.html>toolchain</A>
 capable of building an executable with <A HREF=http://gcc.gnu.org/java/>GCJ</A>
 for a non-iX86 architecture. I have used these source files and build structure,
 with only the minor change noted below for the <TT>gcj</TT> and <TT>gcj_obj</TT>
@@ -55,17 +55,19 @@ compiler, such as arm-linux-gcj, specify the execution of make as follows:
 </UL>
 </UL>
 <P>
-The purpose of each target defined in the Makefile is listed below. The
-executable and object files are written to (and deleted from) the output
-directory (<B><I>$JASL_BASE</I>/bin</B>) and its sub-directories.
+The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> is
+listed below. The executable and object files are written to (and deleted from)
+the output directory (<B><I>$JASL_BASE</I>/bin</B>) and its sub-directories. All
+of the libraries referenced are found in <B><I>$JASL_BASE/lib</I></B>.
 <UL>
-<LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all the source
-files using
+<LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all of the .java
+source files using
 <TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javac.html>javac</A></TT>,
 placing the .class files in the output directory.
 The .class files in each sub-directory are also generated.
 <LI><TT>build_all</TT> - executes the actions defined for the <TT>gcj</TT>,
-<TT>gcj_dynamic</TT>, <TT>gcj_static</TT>, and <TT>jar</TT> targets.
+<TT>gcj_dynamic</TT>, <TT>gcj_static</TT>, <TT>cni_dynamic</TT>,
+<TT>cni_static</TT>, and <TT>jar</TT> targets.
 <LI><TT>build_gcj</TT> - executes the actions defined for the <TT>gcj</TT>
 target. Upon completion, the <TT>clean_obj</TT>, <TT>clean_class</TT>, and
 <TT>clean_java</TT> targets are executed, removing all of the intermediate
@@ -78,47 +80,65 @@ files created by the build.
 <TT>build_gcj_dynamic</TT> target, with the <TT>gcj_static</TT> target replacing
 <TT>gcj_dynamic</TT>.
 <P>
-<LI><TT>gcj_obj</TT> - compiles all of the source files in each sub-directory
-using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing the object
-(.o) files in the matching sub-directory of the output directory. The .class
-files for each source file are also generated and placed in the appropriate
-location as a result of the execution of this target.
+<LI><TT>gcj_obj</TT> - compiles all of the .java source files in each
+sub-directory using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>,
+placing the object (.o) files in the matching sub-directory of the output
+directory. The .class files for each source file are also generated and placed
+in the appropriate location as a result of the execution of this target.
 <LI><TT>gcj</TT> - executes the actions defined for the <TT>gcj_obj</TT> target
 and then builds native executable(s), linked with the individual object (.o)
 files, using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>. The file(s)
 are placed in the output directory.
 <LI><TT>gcj_dynamic</TT> - executes the actions defined for the <TT>all</TT> or
 <TT>build</TT> target. When this is complete, native executable(s), linked with
-one or more of the <I>dynamic</I> libraries in <B><I>$JASL_BASE</I>/lib</B>, are
-generated using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>. The
-file(s), which have a "_dynamic" suffix, are placed in the output directory.
+one or more of the <I>dynamic</I> <TT>jasl</TT> libraries, are generated using
+<A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>. The file(s), which have a
+"_dynamic" suffix, are placed in the output directory.
 <LI><TT>gcj_static</TT> - performs a similar function to the
-<TT>gcj_dynamic</TT> target, except the linking is with one or more of the
-<I>static</I> libraries in <B><I>$JASL_BASE</I>/lib</B>. The file(s), which have
-a "_static" suffix, are also placed in the output directory.
+<TT>gcj_dynamic</TT> target, except the linking is with the appropriate
+<I>static</I> <TT>jasl</TT> libraries and each output filename ends with
+"_static".
 <P>
+<LI><TT>cni_dynamic</TT> - compiles the .cpp source file(s) using
+<A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A> and links them with
+<I>dynamic</I> versions of one or more of the <TT>jasl</TT> libraries and the
+<TT>cni-wrapper</TT> library. These native executable(s) have a "_cni_dynamic"
+suffix and are placed in the output directory.
+<LI><TT>cni_static</TT> - performs a similar function to the
+<TT>cni_dynamic</TT> target, except the linking is with the appropriate
+<I>static</I> libraries and each output filename ends with "cni_static".
+<P>
+<I>The </I><TT>clean</TT><I> targets remove the specified files from the output
+directory and/or its sub-directories.</I>
 <LI><TT>clean_all</TT> - executes the actions defined for the
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
-<LI><TT>clean_java</TT> - deletes all of the .class files in the sub-directories
-of the output directory.
+<LI><TT>clean_java</TT> - deletes all of the .class files in the <TT>jasl</TT>
+sub-directory hierarchy.
 <LI><TT>clean_obj</TT> - deletes all of the object (.o) files in the
-sub-directories of the output directory.
+<TT>jasl</TT> sub-directory hierarchy.
 <P>
-<LI><TT>clean</TT> - executes the actions defined for each of the 
+<LI><TT>clean</TT> - executes the actions defined for each of the
 <TT>clean_xxx</TT> targets defined below.
 <P>
-<LI><TT>clean_class</TT> - deletes the .class program file(s) in the output
-directory.
-<LI><TT>clean_gcj</TT> - deletes the native executable(s) (linked with
-individual object (.o) files) in the output directory.
-<LI><TT>clean_gcj_dynamic</TT> - deletes the native executable(s) (linked with
-one or more of the <I>dynamic</I> libraries in <B><I>$JASL_BASE</I>/lib</B>) in
-the output directory.
-<LI><TT>clean_gcj_static</TT> - deletes the native executable(s) (linked with
-one or more of the <I>static</I> libraries in <B><I>$JASL_BASE</I>/lib</B>) in
-the output directory.
-<LI><TT>clean_jar</TT> - deletes the jar archive in the output directory.
+<LI><TT>clean_class</TT> - deletes the .class program file(s).
+<LI><TT>clean_gcj</TT> - deletes the native (from .java source and linked with
+individual object (.o) files) executable(s).
+<LI><TT>clean_gcj_dynamic</TT> - deletes the native (from .java source and
+linked with one or more of the <I>dynamic</I> <TT>jasl</TT> libraries)
+executable(s).
+<LI><TT>clean_gcj_static</TT> - deletes the native (from .java source and linked
+with one or more of the <I>static</I> <TT>jasl</TT> libraries) executable(s).
+<LI><TT>clean_cni_dynamic</TT> - deletes the native (from .cpp source and linked
+with the <I>dynamic</I> versions of one or more of the <TT>jasl</TT> libraries
+and the <TT>cni-wrapper</TT> library) executable(s).
+<LI><TT>clean_cni_static</TT> - deletes the native (from .cpp source and linked
+with the <I>static</I> versions of one or more of the <TT>jasl</TT> libraries
+and the <TT>cni-wrapper</TT> library) executable(s).
+<LI><TT>clean_jar</TT> - deletes the
+<TT>
+<A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/jar.html>jar</A>
+</TT> archive.
 <P>
 <I>The </I><TT>test</TT><I> targets execute the specified output format and
 compare the result, using
@@ -127,21 +147,26 @@ a saved file.</I>
 <LI><TT>test</TT> - the java bytecode.
 <LI><TT>test_gcj</TT> - the native executable(s), linked with individual object
 (.o) files.
-<LI><TT>test_gcj_dynamic</TT> - the native executable(s), linked with one or
-more of the <I>dynamic</I> libraries in <B><I>$JASL_BASE</I>/lib</B>.
-<LI><TT>test_gcj_static</TT> - the native executable(s), linked with one or
-more of the <I>static</I> libraries in <B><I>$JASL_BASE</I>/lib</B>.
-<LI><TT>test_jar</TT> - the jar archive.
-<P>
-<LI><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT> - creates a file
-(<B>tags</B>) in the source directory that indexes many of the language objects.
-This is useful for navigating the code from text editors, such as
-<A HREF="http://vim.sourceforge.net/">Vim</A>, that support it.
-<P>
-<LI><TT>docs</TT> - generates an HTML version of each source file using
+<LI><TT>test_gcj_dynamic</TT> - the native (from .java source) executable(s),
+linked with one or more of the <I>dynamic</I> <TT>jasl</TT> libraries.
+<LI><TT>test_gcj_static</TT> - the native (from .java source) executable(s),
+linked with one or more of the <I>static</I> <TT>jasl</TT> libraries.
+<LI><TT>test_cni_dynamic</TT> - the native (from .cpp source) executable(s),
+linked with the <I>dynamic</I> versions of one or more of the <TT>jasl</TT>
+libraries and the <TT>cni-wrapper</TT> library.
+<LI><TT>test_cni_static</TT> - the native (from .cpp source) executable(s),
+linked with the <I>static</I> versions of one or more of the <TT>jasl</TT>
+libraries and the <TT>cni-wrapper</TT> library.
+<LI><TT>test_jar</TT> - the
 <TT>
-<A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A>
-</TT>,
+<A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/jar.html>jar</A>
+</TT> archive.
+<P>
+<I>The following targets are used to generate the documentation from the source
+files, placing the results in the indicated locations.</I>
+<LI><TT>docs</TT> - generates an HTML version of each source file and the
+<A HREF=Makefile.html>Makefile</A> using
+<TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>,
 placing the output files in
 <B><I>$JASL_BASE</I>/share/jasl/doc/<A HREF=index.html>source</A></B>. This
 file, <B>source.html</B>, is also generated, and includes links to all of the
@@ -167,6 +192,12 @@ placed in
 <P>
 <LI><TT>all_docs</TT> - executes the actions defined for the
 <TT>docs</TT>, <TT>javadocs</TT>, and <TT>doxygen</TT> targets.
+<P>
+<I>Miscellaneous program and build targets.</I>
+<LI><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT> - creates a file
+(<B>tags</B>) in the source directory that indexes many of the language objects.
+This is useful for navigating the source code from text editors, such as
+<A HREF="http://vim.sourceforge.net/">Vim</A>, that support it.
 <P>
 <LI><TT>jar</TT> - create an executable
 <TT>
