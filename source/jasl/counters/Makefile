@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.16 2007/04/14 04:24:30 craig Exp $
+# $Id: Makefile,v 1.17 2007/06/14 22:55:56 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -336,6 +336,7 @@ clean_static_lib:
 # page.
 
 docs:
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)/$(MAKEFILE).html
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)/$$i.html ;\
 		(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(COUNTERS_PKG_PATH)/$$i.html) ;\
