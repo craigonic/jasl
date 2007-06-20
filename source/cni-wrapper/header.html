@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<TITLE>cni-wrapper</TITLE>
+</HEAD>
+<H1>cni-wrapper</H1>
+<HR>
+<H2>Building this library</H2>
+The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
+this directory is listed below. The header file and library files are written to
+or removed from
+<B>
+<I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/include/jasl/counters
+</B>
+and <B> <I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/lib</B>,
+respectively.
+<P>
+<UL>
+<LI><I>none</I> or <TT>obj</TT> - uses
+<A HREF=http://gcc.gnu.org/>GCC</A> to compile the source (.cpp) file into an
+object (.o) file.
+<LI><TT>hdr</TT> - copies the header (.h) file to the directory noted above.
+<LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
+then uses the object (.o) file to generate dynamic and static libraries, as
+well as the necessary links, in the directory noted above. Upon completion, the
+<TT>clean</TT> target is used to remove the object (.o) file.
+<P>
+<LI><TT>clean</TT> - deletes the object (.o) file in this directory.
+<P>
+<LI><TT>clean_hdr</TT> - deletes the copy of the header (.h) file in the
+directory noted above.
+<P>
+<LI><TT>clean_libs</TT> - executes the actions defined for the
+<TT>clean_dynamic_lib</TT> and <TT>clean_static_lib</TT> targets.
+<LI><TT>clean_dynamic_lib</TT> - deletes the dynamic library and its associated
+links in the directory noted above.
+<LI><TT>clean_static_lib</TT> - deletes the static library file in the directory
+noted above.
+<P>
+<LI><TT>docs</TT> - generates an HTML version of each source file and the
+<A HREF=Makefile.html>Makefile</A> using
+<TT>
+<A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A>
+</TT>,
+placing the output files in
+<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/share/jasl/doc/source/<A HREF=index.html>wrappers</A></B>. This file,
+<B>wrappers.html</B>, is also generated, and includes links to all of the HTML
+files. This target is also referenced by the
+<A HREF=../Makefile.html>Makefile</A> in the parent directory.
+</UL>
+<HR>
+<A HREF="http://vim.sourceforge.net/"><img src="../vim.png" align="right" BORDER=0></A>
