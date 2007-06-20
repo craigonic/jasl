@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.17 2007/06/12 23:17:58 campbell Exp $
+# $Id: Makefile,v 1.18 2007/06/20 22:36:05 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -254,7 +254,7 @@ test_jar: $(BIN_PATH)/$(DRIVER_JAR) run_test
 
 docs:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(MAKEFILE).html
-	@$(CPP2HTML) --title="$(DRIVER_CNI_SRC)" --input=$(DRIVER_CNI_SRC) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
+	@$(CAT) $(DRIVER_CNI_SRC) | $(CPP2HTML) --title="$(DRIVER_CNI_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$$i.html ;\
 	done
