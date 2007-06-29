@@ -6,7 +6,7 @@
  *
  * Written By  : Craig R. Campbell  -  April 2007
  *
- * $Id: CniWrapper.cpp,v 1.1 2007/06/18 22:25:10 campbell Exp $
+ * $Id: CniWrapper.cpp,v 1.2 2007/06/29 20:27:20 campbell Exp $
  */
 
 #include "cniWrapper.h"
@@ -31,8 +31,10 @@ CNI_WRAPPER::~CNI_WRAPPER(void)
 // This method returns a pointer to a copy of the text data in the return value
 // format. IT IS THE RESPONSIBILITY OF THE CALLER TO FREE THE MEMORY ASSOCIATED
 // WITH THE RETURNED STRING.
+//
+// Note that jstring is equivalent to ::java::lang::String*
 
-const char* CNI_WRAPPER::stringToConstChar(::java::lang::String* javaString)
+const char* CNI_WRAPPER::stringToConstChar(jstring javaString)
 {
     const char* returnString = NULL;
 
@@ -60,8 +62,10 @@ const char* CNI_WRAPPER::stringToConstChar(::java::lang::String* javaString)
 // This method returns a pointer to a Java String object, which manages a copy
 // of the specified text. The returned object should NOT be explicitly deleted,
 // as this task will be performed by the garbage collector of the JVM.
+//
+// Note that jstring is equivalent to ::java::lang::String*
 
-::java::lang::String* CNI_WRAPPER::constCharToString(const char* constCharString)
+jstring CNI_WRAPPER::constCharToString(const char* constCharString)
 {
     return (constCharString != NULL) ? JvNewStringUTF(constCharString) : NULL;
 }
