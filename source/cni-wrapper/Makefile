@@ -1,12 +1,12 @@
 ################################################################################
 # Makefile - This make parameter file is used to build the Compiled Native     #
-#            Interface (CNI) wrapper, which is used to create a Java Virtual   #
-#            Machine (JVM) to enable the execution of Java code compiled with  #
-#            GCJ.                                                              #
+#            Interface (CNI) wrapper library, which is used to create a Java   #
+#            Virtual Machine (JVM) to enable the execution of Java code        #
+#            compiled with GCJ.                                                #
 #                                                                              #
 # Written By : Craig R. Campbell  -  May 2007                                  #
 #                                                                              #
-# $Id: Makefile,v 1.1 2007/06/18 22:18:37 campbell Exp $
+# $Id: Makefile,v 1.2 2007/06/29 17:44:26 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -16,20 +16,27 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source and object files in/of/for this
 # library.
 
-CNI_WRAPPER_SRC  = cniWrapper.cpp
-CNI_WRAPPER_EXEC = ${CNI_WRAPPER_SRC:.cpp=}
-CNI_WRAPPER_HDR  = ${CNI_WRAPPER_SRC:.cpp=.h}
-CNI_WRAPPER_OBJ  = ${CNI_WRAPPER_SRC:.cpp=.o}
+CNI_WRAPPER_SRC   = cniWrapper.cpp
+CNI_WRAPPER_EXEC  = ${CNI_WRAPPER_SRC:.cpp=}
+CNI_WRAPPER_HDR   = ${CNI_WRAPPER_SRC:.cpp=.h}
+CNI_WRAPPER_OBJ   = ${CNI_WRAPPER_SRC:.cpp=.o}
+
+# This header file is not part of the library. It provides typedef declarations
+# to simplify access to classes in the jasl libraries through programs that use
+# it.
+
+JASL_WRAPPER_HDR  = jaslWrapper.h
 
 # Build the object file.
 
 obj: $(CNI_WRAPPER_SRC)
 	$(GCC_COMPILE_CMD) $(CNI_WRAPPER_SRC)
 
-# Install the header file in the include directory/
+# Install the header files in the include directory.
 
-hdr: $(CNI_WRAPPER_HDR)
-	$(CP) $(CNI_WRAPPER_HDR) $(INCLUDE_PATH)
+hdr: $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR)
+	$(CP) -f $(CNI_WRAPPER_HDR)  $(INCLUDE_PATH)
+	$(CP) -f $(JASL_WRAPPER_HDR) $(INCLUDE_PATH)
 
 # Define variables used to represent the dynamic and static libraries.
 
@@ -81,7 +88,7 @@ clean_static_lib:
 
 docs:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)/$(MAKEFILE).html
-	@for i in $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC) ; do \
+	@for i in $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC) $(JASL_WRAPPER_HDR) ; do \
  		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)/$$i.html ;\
 	done
 	@$(HTLS) $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)
