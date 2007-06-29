@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  May 2007                                  #
 #                                                                              #
-# $Id: Makefile,v 1.2 2007/06/29 17:44:26 campbell Exp $
+# $Id: Makefile,v 1.3 2007/06/29 20:45:43 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -43,7 +43,7 @@ hdr: $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    = $(LIB_PREFIX)$(CNI_WRAPPER_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME = $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME = $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
