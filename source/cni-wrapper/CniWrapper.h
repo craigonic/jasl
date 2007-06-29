@@ -6,7 +6,7 @@
  *
  * Written By  : Craig R. Campbell  -  April 2007
  *
- * $Id: CniWrapper.h,v 1.1 2007/06/18 22:22:05 campbell Exp $
+ * $Id: CniWrapper.h,v 1.2 2007/06/29 17:55:06 campbell Exp $
  */
 
 #ifndef CNI_WRAPPER_H // {
@@ -41,9 +41,11 @@ class CNI_WRAPPER
          * This method returns a pointer to a copy of the text data in the
          * return value format. IT IS THE RESPONSIBILITY OF THE CALLER TO FREE
          * THE MEMORY ASSOCIATED WITH THE RETURNED STRING.
+         *
+         * Note that jstring is equivalent to ::java::lang::String*
          */
 
-        const char* stringToConstChar(::java::lang::String* javaString);
+        const char* stringToConstChar(jstring javaString);
 
         /**
          * \brief Return <A HREF="http://java.sun.com/">Java</A> <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> representation of a const char* string.
@@ -52,9 +54,11 @@ class CNI_WRAPPER
          * a copy of the specified text. The returned object should NOT be
          * explicitly deleted, as this task will be performed by the garbage
          * collector of the JVM.
+         *
+         * Note that jstring is equivalent to ::java::lang::String*
          */
 
-        ::java::lang::String* constCharToString(const char* constCharString);
+        jstring constCharToString(const char* constCharString);
 };
 
 // Global object used to create and manage the connection and interaction with
