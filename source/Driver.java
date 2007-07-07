@@ -1,7 +1,7 @@
 // ************************************************************************** //
 // Driver.java - This file contains the Driver class, which is used to test   //
 //               the basic functionality of the classes and methods in the    //
-//               Counters package.                                            //
+//               <B>counters</B> package.                                            //
 //                                                                            //
 //               NOTE: This program is based on Advanced Squad Leader, which  //
 //                     was created by The Avalon Hill Game Company, and lives //
@@ -9,10 +9,10 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Driver.java,v 1.10 2007/04/07 05:58:21 craig Exp $
+// $Id: Driver.java,v 1.11 2007/07/07 04:47:59 craig Exp $
 // ************************************************************************** //
 
-import jasl.Counters.*;
+import jasl.counters.*;
 
 public class Driver
 {
