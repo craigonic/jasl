@@ -1,7 +1,7 @@
 // ************************************************************************** //
 // Dice.java - This class is used to simulate the rolling of two standard     //
 //             dice. It is intended to support the classes within the         //
-//             Counters package and thus does not fall within the hierarchy   //
+//             <B>counters</B> package and thus does not fall within the hierarchy   //
 //             of classes derived from Unit.                                  //
 //                                                                            //
 //             All of the calculations (die rolls) are performed              //
@@ -13,10 +13,10 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Id: Dice.java,v 1.9 2007/04/15 03:18:52 craig Exp $
+// $Id: Dice.java,v 1.10 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 /**
  * This is a utility class used to provide the simulated result(s) of rolling
@@ -24,7 +24,7 @@ package jasl.Counters;
  *
  * @version 1.9
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Dice.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Dice.html">Source code</A>
  */
 
 public final class Dice
@@ -80,7 +80,7 @@ public final class Dice
      * "rolled" automatically.
      *
      * @throws IllegalStateException in the case of an invalid result on one or
-     * both of the dice
+     * both of the dice.
      */
 
     public Dice()

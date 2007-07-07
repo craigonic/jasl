@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Leader.java - This class is a member of the Counters package, which        //
+// Leader.java - This class is a member of the <B>counters</B> package, which        //
 //               contains the class definitions and implementations for       //
 //               objects used to represent the virtual playing pieces in      //
 //               jASL.                                                        //
@@ -10,17 +10,17 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Leader.java,v 1.9 2007/04/17 03:33:09 craig Exp $
+// $Id: Leader.java,v 1.10 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 /**
  * This class is used to represent a Leader counter.
  *
  * @version 1.9
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Leader.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
 
 public final class Leader extends Infantry

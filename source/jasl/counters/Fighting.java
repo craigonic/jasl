@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Fighting.java - This class is a member of the Counters package, which      //
+// Fighting.java - This class is a member of the <B>counters</B> package, which      //
 //                 contains the class definitions and implementations for     //
 //                 objects used to represent the virtual playing pieces in    //
 //                 jASL.                                                      //
@@ -10,10 +10,10 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Fighting.java,v 1.11 2007/04/15 03:23:38 craig Exp $
+// $Id: Fighting.java,v 1.12 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 /**
  * This class is used to define units that have dynamic characteristics
@@ -22,7 +22,7 @@ package jasl.Counters;
  *
  * @version 1.11
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Fighting.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
 
 abstract class Fighting extends Unit implements Nationality, UnitType

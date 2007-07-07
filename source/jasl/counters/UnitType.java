@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// UnitType.java - This interface is part of the Counters package, which      //
+// UnitType.java - This interface is part of the <B>counters</B> package, which      //
 //                 contains the class definitions and implementations for     //
 //                 objects used to represent the virtual playing pieces in    //
 //                 jASL.                                                      //
@@ -10,10 +10,10 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 2006                            //
 //                                                                            //
-// $Id: UnitType.java,v 1.1 2007/05/02 03:45:35 craig Exp $
+// $Id: UnitType.java,v 1.2 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 import java.util.*; // For Vector.
 
@@ -23,7 +23,7 @@ import java.util.*; // For Vector.
  *
  * @version 1.1
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/UnitType.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/UnitType.html">Source code</A>
  */
 
 public interface UnitType

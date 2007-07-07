@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Mobile.java - This class is a member of the Counters package, which        //
+// Mobile.java - This class is a member of the <B>counters</B> package, which        //
 //               contains the class definitions and implementations for       //
 //               objects used to represent the virtual playing pieces in      //
 //               jASL.                                                        //
@@ -10,10 +10,10 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Mobile.java,v 1.9 2007/04/15 03:46:50 craig Exp $
+// $Id: Mobile.java,v 1.10 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 /**
  * This class is used to define the characteristics of units that have the
@@ -22,7 +22,7 @@ package jasl.Counters;
  *
  * @version 1.9
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Mobile.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Mobile.html">Source code</A>
  */
 
 class Mobile extends Fighting

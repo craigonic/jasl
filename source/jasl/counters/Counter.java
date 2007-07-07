@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Counter.java - This interface is part of the Counters package, which       //
+// Counter.java - This interface is part of the <B>counters</B> package, which       //
 //                contains the class definitions and implementations for      //
 //                objects used to represent the virtual playing pieces in     //
 //                jASL.                                                       //
@@ -10,20 +10,20 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Id: Counter.java,v 1.8 2007/04/20 03:40:24 craig Exp $
+// $Id: Counter.java,v 1.9 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 import java.io.*;
 
 /**
  * This interface is used to define public constants for the classes in the
- * Counters package.
+ * counters package.
  *
  * @version 1.8
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Counter.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Counter.html">Source code</A>
  */
 
 public interface Counter extends Serializable

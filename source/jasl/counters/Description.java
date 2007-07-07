@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Description.java - This interface is part of the Counters package, which   //
+// Description.java - This interface is part of the <B>counters</B> package, which   //
 //                    contains the class definitions and implementations for  //
 //                    objects used to represent the virtual playing pieces in //
 //                    jASL.                                                   //
@@ -10,10 +10,10 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 2006                            //
 //                                                                            //
-// $Id: Description.java,v 1.1 2007/05/02 03:39:12 craig Exp $
+// $Id: Description.java,v 1.2 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 import java.util.*; // For Vector.
 
@@ -23,13 +23,13 @@ import java.util.*; // For Vector.
  *
  * @version 1.1
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Description.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Description.html">Source code</A>
  */
 
 public interface Description
 {
     // Recognized description values. These constants represent the counter
-    // types that may be directly instantiated using classes in the Counters
+    // types that may be directly instantiated using classes in the counters
     // hierarchy.
 
     /** <A NAME="_CREW_"></A>

@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Classification.java - This interface is part of the Counters package,      //
+// Classification.java - This interface is part of the <B>counters</B> package,      //
 //                       which contains the class definitions and             //
 //                       implementations for objects used to represent the    //
 //                       virtual playing pieces in jASL.                      //
@@ -11,10 +11,10 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  November 2006                            //
 //                                                                            //
-// $Id: Classification.java,v 1.2 2007/04/15 03:15:06 craig Exp $
+// $Id: Classification.java,v 1.3 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 import java.util.*; // For Vector.
 
@@ -24,7 +24,7 @@ import java.util.*; // For Vector.
  *
  * @version 1.2
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Classification.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Classification.html">Source code</A>
  */
 
 public interface Classification

@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Unit.java - This class is a member of the Counters package, which contains //
+// Unit.java - This class is a member of the <B>counters</B> package, which contains //
 //             the class definitions and implementations for objects used to  //
 //             to represent the virtual playing pieces in jASL.               //
 //                                                                            //
@@ -9,17 +9,17 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Id: Unit.java,v 1.12 2007/04/17 03:28:40 craig Exp $
+// $Id: Unit.java,v 1.13 2007/07/07 04:37:40 craig Exp $
 // ************************************************************************** //
 
-package jasl.Counters;
+package jasl.counters;
 
 /**
  * This class is used to define the basic components of a counter.
  *
  * @version 1.12
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/Counters/Unit.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
 public abstract class Unit implements Counter, Description
