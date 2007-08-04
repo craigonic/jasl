@@ -83,7 +83,7 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 INPUT                  = ../source
-FILE_PATTERNS          = *.java cniWrapper.h cniWrapper.cpp
+FILE_PATTERNS          = *.java cniWrapper.h cniWrapper.cpp jaslWrapper.h
 RECURSIVE              = YES
 EXCLUDE                = Driver.java
 EXCLUDE_SYMLINKS       = NO
