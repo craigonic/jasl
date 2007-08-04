@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.8 2007/06/07 20:56:23 campbell Exp $
+# $Id: jasl.make,v 1.9 2007/08/04 04:27:27 craig Exp $
 ################################################################################
 
 ## Program name.
@@ -120,9 +120,9 @@ CNI_WRAPPER_BASE_LIB_NAME    = cni-wrapper
 CNI_WRAPPER_STATIC_LIB_NAME  = $(LIB_PREFIX)$(CNI_WRAPPER_BASE_LIB_NAME).a
 CNI_WRAPPER_STATIC_LIB_PATH  = $(LIB_PATH)/$(CNI_WRAPPER_STATIC_LIB_NAME)
 
-# Counters package.
+# counters package.
 
-COUNTERS_PKG_NAME            = Counters
+COUNTERS_PKG_NAME            = counters
 
 COUNTERS_PKG_PATH            = $(PROGRAM_NAME)/$(COUNTERS_PKG_NAME)
 COUNTERS_OBJ_PATH            = ${JASL_BASE}/bin/$(COUNTERS_PKG_PATH)
