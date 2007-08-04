@@ -1,13 +1,13 @@
 ################################################################################
 # Makefile - This make parameter file is used to build the bytecode (.class)   #
-#            files for the Counters package of the jASL program. It also       #
+#            files for the counters package of the jASL program. It also       #
 #            includes parameters to build object (.o) files using the gcj      #
 #            compiler. In both cases, the files can compiled individually or   #
 #            the entire package can be recreated.                              #
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.17 2007/06/14 22:55:56 campbell Exp $
+# $Id: Makefile,v 1.18 2007/08/04 04:46:40 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -284,7 +284,7 @@ HEADER_FILES_LIST      = $(INCLUDE_OUTPUT_PATH)/*.h
 DYNAMIC_LIB_NO_VERSION_LINKNAME    = $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME = $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME = $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
