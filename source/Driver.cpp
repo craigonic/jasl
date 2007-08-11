@@ -10,23 +10,17 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  April 2007                             //
 //                                                                            //
-// $Id: Driver.cpp,v 1.1 2007/06/22 22:22:05 campbell Exp $
+// $Id: Driver.cpp,v 1.2 2007/08/11 04:50:09 craig Exp $
 // ************************************************************************** //
 
 #include <stdio.h>
 
-#include <java/lang/Throwable.h>
-
-#include <jasl/Counters/Unit.h>
-#include <jasl/Counters/Leader.h>
-#include <jasl/Counters/Squad.h>
-#include <jasl/Counters/Dice.h>
+#include <java/lang/Throwable.h> // For jthrowable.
 
 #include <cniWrapper.h>
+#include <jaslWrapper.h>
 
-#pragma GCC java_exceptions
-
-static void printJavaString(::java::lang::String* javaString)
+static void printJavaString(jstring javaString)
 {
     if (cniWrapper)
     {
@@ -40,7 +34,7 @@ static void printJavaString(::java::lang::String* javaString)
     }
 }
 
-static void printExceptionMessage(java::lang::Throwable* exception)
+static void printExceptionMessage(jthrowable exception)
 {
     if (exception)
     {
@@ -64,14 +58,14 @@ int main(int argc, char *argv[])
         if (cniWrapper == NULL) return -1;
 
         // These items are used to set parameters requiring conversion from
-        // const char* to String for use in generating the jasl::Counters
+        // const char* to String for use in generating the jasl::counters
         // objects below.
 
-        ::java::lang::String* nationality    = NULL;
-        ::java::lang::String* identity       = NULL;
-        ::java::lang::String* unitType       = NULL;
-        ::java::lang::String* firepower      = NULL;
-        ::java::lang::String* classification = NULL;
+        jstring nationality    = NULL;
+        jstring identity       = NULL;
+        jstring unitType       = NULL;
+        jstring firepower      = NULL;
+        jstring classification = NULL;
 
         // Create an instance of a German Leader.
 
@@ -79,11 +73,8 @@ int main(int argc, char *argv[])
         identity    = cniWrapper->constCharToString("Lt. Fellbaum");
         unitType    = cniWrapper->constCharToString("Leader");
 
-        jasl::Counters::Leader* germanLeader = new jasl::Counters::Leader(nationality,
-                                                                          identity,
-                                                                          unitType,
-                                                                          9,9,4,
-                                                                          -1);
+        Leader* germanLeader = new Leader(nationality,identity,unitType,
+                                          9,9,4,-1);
 
         // Display all of the entered values for this instance using the
         // toString() method.
@@ -109,17 +100,9 @@ int main(int argc, char *argv[])
         firepower      = cniWrapper->constCharToString("6");
         classification = cniWrapper->constCharToString("Elite");
 
-        jasl::Counters::Squad* russianSquad = new jasl::Counters::Squad(nationality,
-                                                                        identity,
-                                                                        unitType,
-                                                                        firepower,
-                                                                        2,true,
-                                                                        8,8,
-                                                                        false,
-                                                                        12,4,
-                                                                        false,
-                                                                        classification,
-                                                                        true,0);
+        Squad* russianSquad = new Squad(nationality,identity,unitType,firepower,
+                                        2,true,8,8,false,12,4,false,
+                                        classification,true,0);
 
         // Display all of the entered values for this instance using the
         // toString() method.
@@ -147,44 +130,40 @@ int main(int argc, char *argv[])
         // to Java objects.
 /*
          using namespace java::lang;
-         JArray<jasl::Counters::Unit*>* UnitArray = (JArray<jasl::Counters::Unit*>*)JvNewObjectArray(4,&jasl::Counters::Unit::class$,NULL);
+         JArray<Unit*>* UnitArray = (JArray<Unit*>*)JvNewObjectArray(4,&Unit::class$,NULL);
 
-        jasl::Counters::Unit** UnitList = elements(UnitArray);
+        Unit** UnitList = elements(UnitArray);
 */
         // The old fashioned way seems to work as well, at least in this case.
         // Note, however, that when the array is created this way, it should be
         // explicitly deleted (see below). The freeing of the memory associated
         // with the individual objects is handled by the JVM garbage collector.
 
-        jasl::Counters::Unit** UnitList = new jasl::Counters::Unit*[4];
+        Unit** UnitList = new Unit*[4];
 
         nationality = cniWrapper->constCharToString("American");
         identity    = cniWrapper->constCharToString("Sgt. Slaughter");
         unitType    = cniWrapper->constCharToString("Ranger");
 
-        UnitList[0] = new jasl::Counters::Leader(nationality,identity,unitType,
-                                                 9,9,4,-1);
+        UnitList[0] = new Leader(nationality,identity,unitType,9,9,4,-1);
 
         identity       = cniWrapper->constCharToString("X");
         unitType       = cniWrapper->constCharToString("Squad");
         firepower      = cniWrapper->constCharToString("6");
         classification = cniWrapper->constCharToString("1st Line");
 
-        UnitList[1] = new jasl::Counters::Squad(nationality,identity,unitType,
-                                                firepower,6,false,6,6,false,11,
-                                                4,false,classification,true,3);
+        UnitList[1] = new Squad(nationality,identity,unitType,firepower,6,false,
+                                6,6,false,11,4,false,classification,true,3);
 
         identity = cniWrapper->constCharToString("Y");
 
-        UnitList[2] = new jasl::Counters::Squad(nationality,identity,unitType,
-                                                firepower,6,false,6,6,false,11,
-                                                4,false,classification,true,3);
+        UnitList[2] = new Squad(nationality,identity,unitType,firepower,6,false,
+                                6,6,false,11,4,false,classification,true,3);
 
         identity = cniWrapper->constCharToString("Z");
 
-        UnitList[3] = new jasl::Counters::Squad(nationality,identity,unitType,
-                                                firepower,6,false,6,6,false,11,
-                                                4,false,classification,true,3);
+        UnitList[3] = new Squad(nationality,identity,unitType,firepower,6,false,
+                                6,6,false,11,4,false,classification,true,3);
 
         printf("Displaying Unit array with a Leader & 3 Squads\n");
 
@@ -213,7 +192,7 @@ int main(int argc, char *argv[])
 
         // Create an instance of a German Squad (that throws some exceptions).
 
-        jasl::Counters::Squad* germanSquad = NULL;
+        Squad* germanSquad = NULL;
 
         // NULL Nationality
 
@@ -226,13 +205,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,
+                                    6,true,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -245,13 +223,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -264,13 +241,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -284,13 +260,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -303,13 +278,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -323,13 +297,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -342,13 +315,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -362,13 +334,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -383,13 +354,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            russianSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                     true,7,7,false,10,3,false,classification,
+                                     false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -405,13 +375,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -422,13 +391,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -441,13 +409,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,-255,
-                                                    false,7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,
+                                    -255,false,7,7,false,10,3,false,
+                                    classification,false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -460,13 +427,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    -1,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,-1,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -477,13 +443,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,
-                                                    11,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,11,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -494,13 +459,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,-7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,-7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -511,13 +475,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,
-                                                    7,17,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,17,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -528,13 +491,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,true,-1,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,true,-1,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -545,13 +507,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,true,10,-1,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,true,10,-1,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -564,13 +525,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,true,10,6,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,true,10,6,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -583,13 +543,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,true,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,true,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -603,13 +562,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,true,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,true,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -623,13 +581,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,false,
-                                                    7,7,false,10,3,false,
-                                                    classification,false,1);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    false,7,7,false,10,3,false,classification,
+                                    false,1);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -643,13 +600,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,true,10,3,false,
-                                                    classification,false,-4);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,true,10,3,false,classification,
+                                    false,-4);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -660,13 +616,12 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new jasl::Counters::Squad(nationality,identity,
-                                                    unitType,firepower,6,true,7,
-                                                    7,true,10,3,false,
-                                                    classification,false,4);
+            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
+                                    true,7,7,true,10,3,false,classification,
+                                    false,4);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -676,7 +631,7 @@ int main(int argc, char *argv[])
         //       exceptions have been tested above as part of the creation of a
         //       Squad.
 
-        jasl::Counters::Leader* Grandpa = NULL;
+        Leader* Grandpa = NULL;
 
         // Invalid Modifier (Minimum)
 
@@ -689,11 +644,10 @@ int main(int argc, char *argv[])
 
         try
         {
-            Grandpa = new jasl::Counters::Leader(nationality,identity,unitType,
-                                                 10,10,5,-4);
+            Grandpa = new Leader(nationality,identity,unitType,10,10,5,-4);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -704,11 +658,10 @@ int main(int argc, char *argv[])
 
         try
         {
-            Grandpa = new jasl::Counters::Leader(nationality,identity,unitType,
-                                                 10,10,5,4);
+            Grandpa = new Leader(nationality,identity,unitType,10,10,5,4);
         }
 
-        catch (java::lang::Throwable* t)
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
@@ -717,12 +670,12 @@ int main(int argc, char *argv[])
 
         printf("\nTesting the execution of the Dice class:\n\n");
 
-        jasl::Counters::Dice* theDice     = NULL;
-        const char*           diceResults = NULL;
+        Dice*       theDice     = NULL;
+        const char* diceResults = NULL;
 
         for (int i = 0;i < 12;i++)
         {
-            theDice = new jasl::Counters::Dice();
+            theDice = new Dice();
 
             if (theDice)
             {
@@ -738,7 +691,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    catch (java::lang::Throwable* t)
+    catch (jthrowable t)
     {
         printExceptionMessage(t);
     }
