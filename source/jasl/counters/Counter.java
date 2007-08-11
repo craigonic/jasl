@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 2001                           //
 //                                                                            //
-// $Id: Counter.java,v 1.9 2007/07/07 04:37:40 craig Exp $
+// $Id: Counter.java,v 1.10 2007/08/11 05:15:12 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -21,7 +21,7 @@ import java.io.*;
  * This interface is used to define public constants for the classes in the
  * counters package.
  *
- * @version 1.8
+ * @version 1.10
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Counter.html">Source code</A>
  */

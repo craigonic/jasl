@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Infantry.java,v 1.11 2007/07/07 04:37:40 craig Exp $
+// $Id: Infantry.java,v 1.12 2007/08/11 05:15:12 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,7 +20,7 @@ package jasl.counters;
  * infantry units. This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.10
+ * @version 1.12
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */

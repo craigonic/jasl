@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Mobile.java,v 1.10 2007/07/07 04:37:40 craig Exp $
+// $Id: Mobile.java,v 1.11 2007/08/11 05:15:12 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,7 +20,7 @@ package jasl.counters;
  * ability to move on their own. This class is strictly a superclass and cannot
  * be instantiated directly.
  *
- * @version 1.9
+ * @version 1.11
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Mobile.html">Source code</A>
  */

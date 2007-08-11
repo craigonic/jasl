@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 2006                            //
 //                                                                            //
-// $Id: UnitType.java,v 1.2 2007/07/07 04:37:40 craig Exp $
+// $Id: UnitType.java,v 1.3 2007/08/11 05:15:12 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -21,7 +21,7 @@ import java.util.*; // For Vector.
  * This interface is used to define public constants and required methods
  * associated with the unit type of <A HREF="Fighting.html">Fighting</A> units.
  *
- * @version 1.1
+ * @version 1.3
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/UnitType.html">Source code</A>
  */
