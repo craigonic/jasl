@@ -6,19 +6,21 @@
 <HR>
 <H2>Building this library</H2>
 The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
-this directory is listed below. The header file and library files are written to
+this directory is listed below. The header and library files are written to
 or removed from
 <B>
-<I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/include/jasl/counters
-</B>
-and <B> <I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/lib</B>,
-respectively.
+<I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/include</B> and
+<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/lib</B>,
+respectively. Note that <A HREF=jaslWrapper.h.html>jaslWrapper.h</A> is not
+directly associated with this library. It provides typedef declarations to
+simplify access to classes in the jasl libraries through programs that require
+it for execution. See <A HREF=../Driver.cpp.html>Driver.cpp</A> for an example.
 <P>
 <UL>
 <LI><I>none</I> or <TT>obj</TT> - uses
 <A HREF=http://gcc.gnu.org/>GCC</A> to compile the source (.cpp) file into an
 object (.o) file.
-<LI><TT>hdr</TT> - copies the header (.h) file to the directory noted above.
+<LI><TT>hdr</TT> - copies the header (.h) files to the directory noted above.
 <LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
 then uses the object (.o) file to generate dynamic and static libraries, as
 well as the necessary links, in the directory noted above. Upon completion, the
@@ -26,7 +28,7 @@ well as the necessary links, in the directory noted above. Upon completion, the
 <P>
 <LI><TT>clean</TT> - deletes the object (.o) file in this directory.
 <P>
-<LI><TT>clean_hdr</TT> - deletes the copy of the header (.h) file in the
+<LI><TT>clean_hdr</TT> - deletes the copies of the header (.h) files in the
 directory noted above.
 <P>
 <LI><TT>clean_libs</TT> - executes the actions defined for the
