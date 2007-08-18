@@ -6,7 +6,7 @@
  *
  * Written By  : Craig R. Campbell  -  April 2007
  *
- * $Id: CniWrapper.h,v 1.2 2007/06/29 17:55:06 campbell Exp $
+ * $Id: CniWrapper.h,v 1.3 2007/08/18 05:34:54 craig Exp $
  */
 
 #ifndef CNI_WRAPPER_H // {
@@ -23,7 +23,7 @@
  * Methods are also provided to convert const char* strings to <A HREF="http://java.sun.com/">Java</A> <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A>
  * objects and vice-versa.
  *
- * @version 1.1
+ * @version 1.3
  * @author Craig R. Campbell
  * @see <A HREF="../../source/wrappers/cniWrapper.h.html">Source code</A>
  */
