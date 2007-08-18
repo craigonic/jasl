@@ -18,7 +18,7 @@ in the source directory and its sub-directories:
 <LI>A <A HREF=http://java.sun.com/j2se/>Java SE</A> SDK (version 1.5 or higher)
 is installed.
 <LI>The original directory structure for this system is in place.
-<A NAME="JASL_BASE"></A>The top level directory is <B>jasl</B>, which is
+<A NAME="JASL_BASE"></A>The top level directory is <TT>jasl</TT>, which is
 referred to as <B><I>$JASL_BASE</I></B> in this document. An environment variable
 with this name is necessary for
 <TT><A HREF=http://directory.fsf.org/GNU/make.html>make</A></TT> to work
@@ -29,7 +29,7 @@ properly. Examples:
 </UL>
 <LI><I>Optional. </I>
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (3.0 or higher). This can be used to
-build the native executable version(s) of this program, static and dynamic
+build the native executable versions of this program, static and dynamic
 libraries, and header files.
 <LI><I>Optional. </I>
 <TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>.
@@ -163,32 +163,24 @@ libraries and the <TT>cni-wrapper</TT> library.
 </TT> archive.
 <P>
 <I>The following targets are used to generate the documentation from the source
-files, placing the results in the indicated locations.</I>
+files, placing the results in the indicated sub-directory of
+<B>$JASL_BASE/share/jasl/doc</B>.</I>
 <LI><TT>docs</TT> - generates an HTML version of each source file and the
 <A HREF=Makefile.html>Makefile</A> using
 <TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>,
 placing the output files in
-<B><I>$JASL_BASE</I>/share/jasl/doc/<A HREF=index.html>source</A></B>. This
-file, <B>source.html</B>, is also generated, and includes links to all of the
-HTML files in their respective sub-directories.
+<B><A HREF=index.html>source</A></B>. This file, <B>source.html</B>, is also
+generated, and includes links to all of the HTML files in their respective
+sub-directories.
 <LI><TT>javadocs</TT> - generates class documentation for this program using
-<TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javadoc.html>javadoc</A></TT>.
-The output files are placed in
-<B>
-<I>$JASL_BASE</I>/share/jasl/doc/<A HREF=../javadocs/index.html>javadocs</A>
-</B>.
+<TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javadoc.html>javadoc</A></TT>, placing the output files in
+<B><A HREF=../javadocs/index.html>javadocs</A></B>.
 <LI><TT>gjdocs</TT> - generates class documentation for this program using
-<TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>.
-The output files are placed in
-<B>
-<I>$JASL_BASE</I>/share/jasl/doc/<A HREF=../javadocs/index.html>javadocs</A>
-</B>.
+<TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>, placing the
+output files in <B><A HREF=../javadocs/index.html>javadocs</A></B>.
 <LI><TT>doxygen</TT> - generates class documentation for this program using
-<TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>. The output files are
-placed in
-<B>
-<I>$JASL_BASE</I>/share/jasl/doc/<A HREF=../doxygen/html/index.html>doxygen/html</A>
-</B>.
+<TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>, placing the output files
+in <B><A HREF=../doxygen/html/index.html>doxygen/html</A></B>.
 <P>
 <LI><TT>all_docs</TT> - executes the actions defined for the
 <TT>docs</TT>, <TT>javadocs</TT>, and <TT>doxygen</TT> targets.
