@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  May 2007                                  #
 #                                                                              #
-# $Id: Makefile,v 1.3 2007/06/29 20:45:43 campbell Exp $
+# $Id: Makefile,v 1.4 2007/08/24 04:02:02 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -27,12 +27,12 @@ CNI_WRAPPER_OBJ   = ${CNI_WRAPPER_SRC:.cpp=.o}
 
 JASL_WRAPPER_HDR  = jaslWrapper.h
 
-# Build the object file.
+# Build the object (.o) file.
 
 obj: $(CNI_WRAPPER_SRC)
 	$(GCC_COMPILE_CMD) $(CNI_WRAPPER_SRC)
 
-# Install the header files in the include directory.
+# Install the header (.h) files in the include directory.
 
 hdr: $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR)
 	$(CP) -f $(CNI_WRAPPER_HDR)  $(INCLUDE_PATH)
@@ -65,10 +65,11 @@ static_lib:
 clean:
 	$(RM) $(CNI_WRAPPER_OBJ)
 
-# Remove the header (.h) file from the include output directory.
+# Remove the header (.h) files from the include output directory.
 
 clean_hdr:
 	$(RM) $(INCLUDE_PATH)/$(CNI_WRAPPER_HDR)
+	$(RM) $(INCLUDE_PATH)/$(JASL_WRAPPER_HDR)
 
 # Remove all of the dynamic and/or static library files and links from the
 # library output directory.
