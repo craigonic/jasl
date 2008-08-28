@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.9 2007/08/04 04:27:27 craig Exp $
+# $Id: jasl.make,v 1.10 2008/08/28 20:03:25 campbell Exp $
 ################################################################################
 
 ## Program name.
@@ -30,8 +30,18 @@ LIB_PATH           = ${INSTALL_DIRECTORY}/lib
 SRC_PATH           = ${JASL_BASE}/source
 UTIL_PATH          = ${JASL_BASE}/util
 
+# A sub-directory of the source directory.
 WRAPPERS_DIRECTORY = wrappers
-WRAPPERS_PATH      = $(SRC_PATH)/$(WRAPPERS_DIRECTORY)
+# A sub-directory of the wrappers directory.
+SWIG_DIRECTORY     = swig
+
+PERL_SRC_PATH      = $(SRC_PATH)/perljASL
+PERL_BIN_PATH      = $(BIN_PATH)/perljASL
+PERL_LIB_PATH      = $(LIB_PATH)/perl
+
+PYTHON_SRC_PATH    = $(SRC_PATH)/pyjASL
+PYTHON_BIN_PATH    = $(BIN_PATH)/pyjASL
+PYTHON_LIB_PATH    = $(LIB_PATH)/python
 
 ## Java, gcc and gcj compiler related settings.
 
@@ -72,7 +82,7 @@ JAR_RUN_CMD        = $(JAVA_RUN_CMD) -jar
 
 ## ctags.
 
-CTAGS_BUILD_CMD    = /usr/bin/ctags --file-tags=yes -R --excmd=number
+CTAGS_BUILD_CMD    = ctags --file-tags=yes -R --excmd=number
 
 ## Documentation build variables.
 
@@ -126,6 +136,7 @@ COUNTERS_PKG_NAME            = counters
 
 COUNTERS_PKG_PATH            = $(PROGRAM_NAME)/$(COUNTERS_PKG_NAME)
 COUNTERS_OBJ_PATH            = ${JASL_BASE}/bin/$(COUNTERS_PKG_PATH)
+COUNTERS_HDR_PATH            = $(INCLUDE_PATH)/$(COUNTERS_PKG_PATH)
 
 COUNTERS_SRC_FILES           = $(COUNTERS_PKG_PATH)/*.java
 COUNTERS_OBJ_FILES           = $(COUNTERS_OBJ_PATH)/*.o
