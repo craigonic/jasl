@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Infantry.java,v 1.12 2007/08/11 05:15:12 craig Exp $
+// $Id: Infantry.java,v 1.13 2008/09/04 04:35:11 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,541 +20,574 @@ package jasl.counters;
  * infantry units. This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.12
+ * @version 1.13
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
 
 class Infantry extends Mobile
 {
-    // Public symbolic constants
+	// Public symbolic constants
 
-    /**
-     * Minimum valid morale (normal and broken) value : <B>0</B>
-     */
+	/**
+	 * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's normal morale value : <B>Morale</B>
+	 */
 
-    public static final int MIN_MORALE =  0;
+	public static final String MORALE_LABEL = "Morale";
 
-    /**
-     * Maximum valid morale (normal and broken) value : <B>10</B>
-     */
+	/**
+	 * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's broken morale value :
+	 * <B>Broken Morale</B>
+	 */
 
-    public static final int MAX_MORALE = 10;
+	public static final String BROKEN_MORALE_LABEL = "Broken Morale";
 
-    /**
-     * Minimum valid basic point value : <B>0</B>
-     */
+	/**
+	 * Provides a label indicating if an <A HREF="Infantry.html">Infantry</A> unit has self rally
+	 * capability : <B>Can Self Rally ?</B>
+	 */
 
-    public static final int MIN_BPV    =  0;
+	public static final String CAN_SELF_RALLY_LABEL = "Can Self Rally ?";
 
-    /** <A NAME="_MIN_ELR_"></A>
-     * Minimum valid experience level rating value : <B>0</B>
-     */
+	/**
+	 * Provides a label for a unit's basic point value : <B>Basic Point Value</B>
+	 */
 
-    public static final int MIN_ELR    =  0;
+	public static final String BPV_LABEL = "Basic Point Value";
 
-    /** <A NAME="_MAX_ELR_"></A>
-     * Maximum valid experience level rating value : <B>5</B>
-     */
+	/**
+	 * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's experience level rating :
+	 * <B>Experience Level Rating</B>
+	 */
 
-    public static final int MAX_ELR    =  5;
+	public static final String ELR_LABEL = "Experience Level Rating";
 
-    // Protected symbolic constants
+	// Protected symbolic constants
 
-    // Legal status values. <A HREF="Unit.html#_DEFAULT_STRING_VALUE_">DEFAULT_STRING_VALUE</A> is also a legal value. Its
-    // value is "Unknown". Additional values will be added here as necessary.
+	// Legal status values. <A HREF="Unit.html#_DEFAULT_STRING_VALUE_">DEFAULT_STRING_VALUE</A> is also a legal value. Its
+	// value is "Unknown". Additional values will be added here as necessary.
 
-    /** <A NAME="_BROKEN_"></A>
-     * Indicates that the unit's current status is <B>Broken</B>.
-     *
-     * @see #getStatus
-     */
+	/** <A NAME="_BROKEN_"></A>
+	 * Indicates that the unit's current status is <B>Broken</B>.
+	 *
+	 * @see #getStatus
+	 */
 
-    protected static final String BROKEN    = "Broken";
+	protected static final String BROKEN = "Broken";
 
-    /** <A NAME="_DESPERATE_"></A>
-     * Indicates that the unit's current status is <B>Desperate</B>.
-     *
-     * @see #getStatus
-     */
+	/** <A NAME="_DESPERATE_"></A>
+	 * Indicates that the unit's current status is <B>Desperate</B>.
+	 *
+	 * @see #getStatus
+	 */
 
-    protected static final String DESPERATE = "Desperate";
+	protected static final String DESPERATE = "Desperate";
 
-    // Private symbolic constants
+	/**
+	 * Minimum valid basic point value : <B>0</B>
+	 */
 
-    // This constant is used as part of the error messages (see below) that are
-    // generated when an exception is thrown.
+	protected static final int MIN_BPV = 0;
 
-    private static final String CLASS_NAME = "Infantry";
+	// Private symbolic constants
 
-    // Private data members
+	/**
+	 * Minimum valid morale (normal and broken) value : <B>0</B>
+	 */
 
-    // This variable contains the normal morale value of the derived object of
-    // this class.
+	private static final int MIN_MORALE = 0;
 
-    private int morale;
+	/**
+	 * Maximum valid morale (normal and broken) value : <B>10</B>
+	 */
 
-    // This variable contains the morale value of the derived object of this
-    // class when it is "broken".
+	private static final int MAX_MORALE = 10;
 
-    private int brokenMorale;
+	/** <A NAME="_MIN_ELR_"></A>
+	 * Minimum valid experience level rating value : <B>0</B>
+	 */
 
-    // This variable indicates whether or not it is possible for the derived
-    // object of this class to "self rally". This attribute is not visible to
-    // the calling program, but is applied during the execution of the restore()
-    // method.
+	private static final int MIN_ELR = 0;
 
-    private boolean selfRallyCapable;
+	/** <A NAME="_MAX_ELR_"></A>
+	 * Maximum valid experience level rating value : <B>5</B>
+	 */
 
-    // This variable stores the basic point value of the unit that this object
-    // represents. This is used in the calculation of Battlefield Integrity and
-    // for design your own (DYO) scenarios.
+	private static final int MAX_ELR = 5;
 
-    private int basicPointValue;
+	// This constant is used as part of the error messages (see below) that are
+	// generated when an exception is thrown.
 
-    // This variable stores the experience level rating of the unit this object
-    // represents. This is used in unit substitution and replacement.
+	private static final String CLASS_NAME = "Infantry";
 
-    private int experienceLevelRating;
+	// Private data members
 
-    // The following string is used as messages for any exceptions that may be
-    // generated by bad data being passed to the constructor.
+	// This variable contains the normal morale value of the derived object of
+	// this class.
 
-    private static final String invalidArgumentError =
-        buildErrorMessage(CLASS_NAME,CONSTRUCTOR,INVALID_PARAMETER_MSG);
+	private int morale;
 
-    // Constructor
+	// This variable contains the morale value of the derived object of this
+	// class when it is "broken".
 
-    // This constructor is used during the instantiation of classes derived from
-    // Infantry. The parameters are passed up the chain from the object being
-    // created.
-
-    protected Infantry(String description,String nationality,String identity,
-                       String unitType,String firepower,int normalRange,
-                       int portageValue,boolean sprayFireCapable,int movement,
-                       int portageCapacity,int morale,int brokenMorale,
-                       boolean selfRallyCapable,int basicPointValue,
-                       int experienceLevelRating)
-    {
-        // Pass the first 10 parameters to the superclass constructor. If any
-        // exceptions are thrown, assume that they will be caught and handled by
-        // the program creating the object.
-
-        super(description,nationality,identity,unitType,firepower,normalRange,
-              portageValue,sprayFireCapable,movement,portageCapacity);
-
-        // Verify that the specified firepower parameter is a positive integer
-        // value. If the parameter contains any letters (for example "20L")
-        // Integer.parseInt() will throw a NumberFormatException. If this
-        // exception is caught or the parameter is less than zero, throw an
-        // exception. Otherwise assume that the value has been set correctly in
-        // the superclass.
-
-        try
-        {
-            if (Integer.parseInt(firepower) < MIN_FIREPOWER)
-            {
-                throw new IllegalArgumentException(invalidArgumentError +
-                                                   firepower);
-            }
-        }
-
-        catch (NumberFormatException exception)
-        {
-                throw new NumberFormatException(invalidArgumentError +
-                                                   firepower);
-        }
-
-        // Check the value of each remaining parameter and copy the value to the
-        // local copy of the corresponding variable if an exception is not
-        // found.
-
-        // Morale
-
-        if ((morale < MIN_MORALE) || (morale > MAX_MORALE))
-        {
-            throw new IllegalArgumentException(invalidArgumentError + morale);
-        }
-
-        this.morale = morale;
-
-        // Broken Morale
-
-        if ((brokenMorale < MIN_MORALE) || (brokenMorale > MAX_MORALE))
-        {
-            throw new IllegalArgumentException(invalidArgumentError +
-                                               brokenMorale);
-        }
-
-        this.brokenMorale = brokenMorale;
-
-        // Self Rally Capability
-
-        this.selfRallyCapable = selfRallyCapable;
-
-        // Basic Point Value
-
-        if (basicPointValue < MIN_BPV)
-        {
-            throw new IllegalArgumentException(invalidArgumentError +
-                                               basicPointValue);
-        }
-
-        this.basicPointValue = basicPointValue;
-
-        // Experience Level Rating
-
-        if ((experienceLevelRating < MIN_ELR) ||
-            (experienceLevelRating > MAX_ELR))
-        {
-            throw new IllegalArgumentException(invalidArgumentError +
-                                               experienceLevelRating);
-        }
-
-        else
-        {
-            this.experienceLevelRating = experienceLevelRating;
-        }
-    }
-
-    // Public access methods
-
-    /**
-     * Display the value of each of the private data members that describe the
-     * current instance. All of the members, beginning with the top-level class
-     * (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this level, are appended to
-     * the returned string. Each value is preceded by a label defined in the
-     * <B><A HREF="Counter.html">Counter</A></B> interface. There are no more than two values, including labels,
-     * in each line of output.
-     *
-     * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
-     */
-
-    public String toString()
-    {
-        // Define local constants.
-
-        String METHOD_LABEL = CLASS_NAME + TO_STRING_LABEL;
-
-        // Create a buffer to store the string to be returned, initializing it
-        // with the string defined in the parent class version of this method.
-
-        StringBuffer returnString = new StringBuffer(super.toString());
-
-        // Add the information describing the data stored in this class
-        // instance.
-
-        // Morale
-
-        try
-        {
-            returnString.append(formatTextString(MORALE_LABEL,
-                                                 FIRST_COLUMN_LABEL_WIDTH,
-                                                 true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(formatTextString(getMorale(),
-                                                 SECOND_COLUMN_VALUE_WIDTH,
-                                                 false,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Broken Morale
-
-        try
-        {
-            returnString.append(formatTextString(BROKEN_MORALE_LABEL,
-                                                 THIRD_COLUMN_LABEL_WIDTH,
-                                                 true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(formatTextString(getBrokenMorale(),
-                                                 FOURTH_COLUMN_VALUE_WIDTH,
-                                                 false,true));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Self Rally Capability
-
-        try
-        {
-            returnString.append(formatTextString(CAN_SELF_RALLY_LABEL,
-                                                 FIRST_COLUMN_LABEL_WIDTH,
-                                                 true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(formatTextString(canSelfRally() ? YES : NO,
-                                                 SECOND_COLUMN_VALUE_WIDTH,
-                                                 false,true));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Basic Point Value
-
-        try
-        {
-            returnString.append(formatTextString(BPV_LABEL,
-                                                 FIRST_COLUMN_LABEL_WIDTH,
-                                                 true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(formatTextString(getBPV(),
-                                                 SECOND_COLUMN_VALUE_WIDTH,
-                                                 false,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Experience Level Rating
-
-        try
-        {
-            returnString.append(formatTextString(ELR_LABEL,
-                                                 THIRD_COLUMN_LABEL_WIDTH,
-                                                 true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(formatTextString(getELR(),
-                                                 FOURTH_COLUMN_VALUE_WIDTH,
-                                                 false,true));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Return the completed string to calling program.
-
-        return (returnString.toString());
-    }
-
-    /**
-     * Determine the current status of this unit.
-     *
-     * @return a comma delimited <CODE>String</CODE> describing the unit status. The list
-     * will include one or more of the string constants that are associated with
-     * unit status.
-     *
-     * @see Infantry#BROKEN
-     * @see Infantry#DESPERATE
-     * @see Unit#NORMAL
-     */
-
-    public String getStatus()
-    {
-        return (NORMAL);
-    }
-
-    /**
-     * Determine the morale level of this unit when it is in its normal state.
-     *
-     * @return a <CODE>String</CODE> specifying the normal morale level.
-     */
-
-    public String getMorale()
-    {
-        return (Integer.toString(morale));
-    }
-
-    /**
-     * Determine the morale level of this unit when it is broken.
-     *
-     * @return a <CODE>String</CODE> specifying the broken morale level.
-     */
-
-    public String getBrokenMorale()
-    {
-        return (Integer.toString(brokenMorale));
-    }
-
-    /**
-     * Determine if this unit has the ability to rally without the presence of
-     * a <B><A HREF="Leader.html">Leader</A></B>. This is indicated on the back of the physical counter by a
-     * square around the broken morale value.
-     *
-     * @return a <CODE>boolean</CODE> indicating if a unit has this attribute.
-     */
-
-    public boolean canSelfRally()
-    {
-        return (selfRallyCapable);
-    }
-
-    /**
-     * Determine the basic point value of this unit. This value is used to
-     * determine battlefield integrity and for design your own (DYO) scenarios.
-     *
-     * @return a <CODE>String</CODE> specifying the basic point value.
-     */
-
-    public String getBPV()
-    {
-        return (Integer.toString(basicPointValue));
-    }
-
-    /**
-     * Determine the current experience level rating of this unit. This is a
-     * value between <A HREF="#_MIN_ELR_">MIN_ELR</A> and <A HREF="#_MAX_ELR_">MAX_ELR</A>, inclusive.
-     *
-     * @return a <CODE>String</CODE> specifying the experience level rating.
-     */
-
-    public String getELR()
-    {
-        return (Integer.toString(experienceLevelRating));
-    }
-
-    // Public game actions
-
-    /**
-     * Attempt to restore the status of this unit from <A HREF="#_BROKEN_">Broken</A> and/or <A HREF="#_DESPERATE_">Desperate</A>
-     * to <A HREF="Unit.html#_NORMAL_">Normal</A>.
-     *
-     * @param isLeaderPresent indicates if a <B><A HREF="Leader.html">Leader</A></B> is present, which may
-     * determine if a restoration attempt can be made or not.
-     *
-     * @param modifier the applicable dice roll modifier for the attempt.
-     * This includes leadership DRM as well as other factors.
-     *
-     * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
-     * result of calling this method.
-     */
-
-    public boolean restore(boolean isLeaderPresent,int modifier)
-    {
-        // Verify that the "unit" actually needs to be rallied.
-
-        if ((getStatus().equals(BROKEN)) || (getStatus().equals(DESPERATE)))
-        {
-            // If the unit is capable of self-rallying (leaders and some elite
-            // units) or a unbroken leader is present in the same space, make
-            // the rally attempt.
-
-            if (canSelfRally() || isLeaderPresent)
-            {
-                return (true);
-            }
-        }
-
-        // Unless determined otherwise above, the "unit" automatically fails
-        // (<A HREF="Unit.html#_DEFAULT_FLAG_VALUE_">DEFAULT_FLAG_VALUE</A> has a value of "false").
-
-        return (DEFAULT_FLAG_VALUE);
-    }
-
-    /**
-     * Perform a morale or task check on this unit.
-     *
-     * @param modifier the applicable dice roll modifier for the check.
-     * This includes leadership DRM as well as other factors.
-     *
-     * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
-     * result of calling this method.
-     */
-
-    public boolean check(int modifier)
-    {
-        return (DEFAULT_FLAG_VALUE);
-    }
+	private int brokenMorale;
+
+	// This variable indicates whether or not it is possible for the derived
+	// object of this class to "self rally". This attribute is not visible to
+	// the calling program, but is applied during the execution of the restore()
+	// method.
+
+	private boolean selfRallyCapable;
+
+	// This variable stores the basic point value of the unit that this object
+	// represents. This is used in the calculation of Battlefield Integrity and
+	// for design your own (DYO) scenarios.
+
+	private int basicPointValue;
+
+	// This variable stores the experience level rating of the unit this object
+	// represents. This is used in unit substitution and replacement.
+
+	private int experienceLevelRating;
+
+	// The following string is used as messages for any exceptions that may be
+	// generated by bad data being passed to the constructor.
+
+	private static final String invalidArgumentError =
+		buildErrorMessage(CLASS_NAME,CONSTRUCTOR,INVALID_PARAMETER_MSG);
+
+	// Constructor
+
+	// This constructor is used during the instantiation of classes derived from
+	// Infantry. The parameters are passed up the chain from the object being
+	// created.
+
+	protected Infantry(String description,String nationality,String identity,
+	                   String unitType,String firepower,int normalRange,
+	                   int portageValue,boolean sprayFireCapable,int movement,
+	                   int portageCapacity,int morale,int brokenMorale,
+	                   boolean selfRallyCapable,int basicPointValue,
+	                   int experienceLevelRating)
+	{
+		// Pass the first 10 parameters to the superclass constructor. If any
+		// exceptions are thrown, assume that they will be caught and handled by
+		// the program creating the object.
+
+		super(description,nationality,identity,unitType,firepower,normalRange,
+		      portageValue,sprayFireCapable,movement,portageCapacity);
+
+		// Verify that the specified firepower parameter is a positive integer
+		// value. If the parameter contains any letters (for example "20L")
+		// Integer.parseInt() will throw a NumberFormatException. If this
+		// exception is caught or the parameter is less than zero, throw an
+		// exception. Otherwise assume that the value has been set correctly in
+		// the superclass.
+
+		try
+		{
+			if (Integer.parseInt(firepower) < MIN_FIREPOWER)
+			{
+				throw new IllegalArgumentException(invalidArgumentError +
+				                                   firepower);
+			}
+		}
+
+		catch (NumberFormatException exception)
+		{
+				throw new NumberFormatException(invalidArgumentError +
+				                                firepower);
+		}
+
+		// Check the value of each remaining parameter and copy the value to the
+		// local copy of the corresponding variable if an exception is not
+		// found.
+
+		// Morale
+
+		if ((morale < MIN_MORALE) || (morale > MAX_MORALE))
+		{
+			throw new IllegalArgumentException(invalidArgumentError + morale);
+		}
+
+		this.morale = morale;
+
+		// Broken Morale
+
+		if ((brokenMorale < MIN_MORALE) || (brokenMorale > MAX_MORALE))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   brokenMorale);
+		}
+
+		this.brokenMorale = brokenMorale;
+
+		// Self Rally Capability
+
+		this.selfRallyCapable = selfRallyCapable;
+
+		// Basic Point Value
+
+		if (basicPointValue < MIN_BPV)
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   basicPointValue);
+		}
+
+		this.basicPointValue = basicPointValue;
+
+		// Experience Level Rating
+
+		if ((experienceLevelRating < MIN_ELR) ||
+		    (experienceLevelRating > MAX_ELR))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   experienceLevelRating);
+		}
+
+		else
+		{
+			this.experienceLevelRating = experienceLevelRating;
+		}
+	}
+
+	// Public access methods
+
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. All of the members, beginning with the top-level class
+	 * (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this level, are appended to
+	 * the returned string. Each value is preceded by a label defined in the
+	 * <B><A HREF="Counter.html">Counter</A></B> interface. There are no more than two values, including labels,
+	 * in each line of output.
+	 *
+	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
+	 */
+
+	public String toString()
+	{
+		// Define local constants.
+
+		String METHOD_LABEL = CLASS_NAME + TO_STRING_LABEL;
+
+		// Create a buffer to store the string to be returned, initializing it
+		// with the string defined in the parent class version of this method.
+
+		StringBuffer returnString = new StringBuffer(super.toString());
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		// Morale
+
+		try
+		{
+			returnString.append(formatTextString(MORALE_LABEL,
+			                                     FIRST_COLUMN_LABEL_WIDTH,
+			                                     true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(formatTextString(getMorale(),
+			                                     SECOND_COLUMN_VALUE_WIDTH,
+			                                     false,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Broken Morale
+
+		try
+		{
+			returnString.append(formatTextString(BROKEN_MORALE_LABEL,
+			                                     THIRD_COLUMN_LABEL_WIDTH,
+			                                     true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(formatTextString(getBrokenMorale(),
+			                                     FOURTH_COLUMN_VALUE_WIDTH,
+			                                     false,true));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Self Rally Capability
+
+		try
+		{
+			returnString.append(formatTextString(CAN_SELF_RALLY_LABEL,
+			                                     FIRST_COLUMN_LABEL_WIDTH,
+			                                     true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(formatTextString(canSelfRally() ? YES : NO,
+			                                     SECOND_COLUMN_VALUE_WIDTH,
+			                                     false,true));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Basic Point Value
+
+		try
+		{
+			returnString.append(formatTextString(BPV_LABEL,
+			                                     FIRST_COLUMN_LABEL_WIDTH,
+			                                     true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(formatTextString(getBPV(),
+			                                     SECOND_COLUMN_VALUE_WIDTH,
+			                                     false,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Experience Level Rating
+
+		try
+		{
+			returnString.append(formatTextString(ELR_LABEL,
+			                                     THIRD_COLUMN_LABEL_WIDTH,
+			                                     true,false));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		try
+		{
+			returnString.append(formatTextString(getELR(),
+			                                     FOURTH_COLUMN_VALUE_WIDTH,
+			                                     false,true));
+		}
+
+		catch (NullPointerException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			System.err.println(METHOD_LABEL + exception);
+		}
+
+		// Return the completed string to calling program.
+
+		return (returnString.toString());
+	}
+
+	/**
+	 * Determine the current status of this unit.
+	 *
+	 * @return a comma delimited <CODE>String</CODE> describing the unit status. The list
+	 * will include one or more of the string constants that are associated with
+	 * unit status.
+	 *
+	 * @see Infantry#BROKEN
+	 * @see Infantry#DESPERATE
+	 * @see Unit#NORMAL
+	 */
+
+	public String getStatus()
+	{
+		return (NORMAL);
+	}
+
+	/**
+	 * Determine the morale level of this unit when it is in its normal state.
+	 *
+	 * @return a <CODE>String</CODE> specifying the normal morale level.
+	 */
+
+	public String getMorale()
+	{
+		return (Integer.toString(morale));
+	}
+
+	/**
+	 * Determine the morale level of this unit when it is broken.
+	 *
+	 * @return a <CODE>String</CODE> specifying the broken morale level.
+	 */
+
+	public String getBrokenMorale()
+	{
+		return (Integer.toString(brokenMorale));
+	}
+
+	/**
+	 * Determine if this unit has the ability to rally without the presence of
+	 * a <B><A HREF="Leader.html">Leader</A></B>. This is indicated on the back of the physical counter by a
+	 * square around the broken morale value.
+	 *
+	 * @return a <CODE>boolean</CODE> indicating if a unit has this attribute.
+	 */
+
+	public boolean canSelfRally()
+	{
+		return (selfRallyCapable);
+	}
+
+	/**
+	 * Determine the basic point value of this unit. This value is used to
+	 * determine battlefield integrity and for design your own (DYO) scenarios.
+	 *
+	 * @return a <CODE>String</CODE> specifying the basic point value.
+	 */
+
+	public String getBPV()
+	{
+		return (Integer.toString(basicPointValue));
+	}
+
+	/**
+	 * Determine the current experience level rating of this unit. This is a
+	 * value between <A HREF="#_MIN_ELR_">MIN_ELR</A> and <A HREF="#_MAX_ELR_">MAX_ELR</A>, inclusive.
+	 *
+	 * @return a <CODE>String</CODE> specifying the experience level rating.
+	 */
+
+	public String getELR()
+	{
+		return (Integer.toString(experienceLevelRating));
+	}
+
+	// Public game actions
+
+	/**
+	 * Attempt to restore the status of this unit from <A HREF="#_BROKEN_">Broken</A> and/or <A HREF="#_DESPERATE_">Desperate</A>
+	 * to <A HREF="Unit.html#_NORMAL_">Normal</A>.
+	 *
+	 * @param isLeaderPresent indicates if a <B><A HREF="Leader.html">Leader</A></B> is present, which may
+	 * determine if a restoration attempt can be made or not.
+	 *
+	 * @param modifier the applicable dice roll modifier for the attempt.
+	 * This includes leadership DRM as well as other factors.
+	 *
+	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
+	 * result of calling this method.
+	 */
+
+	public boolean restore(boolean isLeaderPresent,int modifier)
+	{
+		// Verify that the "unit" actually needs to be rallied.
+
+		if ((getStatus().equals(BROKEN)) || (getStatus().equals(DESPERATE)))
+		{
+			// If the unit is capable of self-rallying (leaders and some elite
+			// units) or a unbroken leader is present in the same space, make
+			// the rally attempt.
+
+			if (canSelfRally() || isLeaderPresent)
+			{
+				return (true);
+			}
+		}
+
+		// Unless determined otherwise above, the "unit" automatically fails
+		// (<A HREF="Unit.html#_DEFAULT_FLAG_VALUE_">DEFAULT_FLAG_VALUE</A> has a value of "false").
+
+		return (DEFAULT_FLAG_VALUE);
+	}
+
+	/**
+	 * Perform a morale or task check on this unit.
+	 *
+	 * @param modifier the applicable dice roll modifier for the check.
+	 * This includes leadership DRM as well as other factors.
+	 *
+	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
+	 * result of calling this method.
+	 */
+
+	public boolean check(int modifier)
+	{
+		return (DEFAULT_FLAG_VALUE);
+	}
 }
