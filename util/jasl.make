@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.10 2008/08/28 20:03:25 campbell Exp $
+# $Id: jasl.make,v 1.11 2008/09/05 23:17:31 campbell Exp $
 ################################################################################
 
 ## Program name.
@@ -30,18 +30,17 @@ LIB_PATH           = ${INSTALL_DIRECTORY}/lib
 SRC_PATH           = ${JASL_BASE}/source
 UTIL_PATH          = ${JASL_BASE}/util
 
-# A sub-directory of the source directory.
-WRAPPERS_DIRECTORY = wrappers
-# A sub-directory of the wrappers directory.
+# The following are sub-directories of the source directory.
+CNI_DIRECTORY      = cni-wrapper
 SWIG_DIRECTORY     = swig
+PERL_DIRECTORY     = perl
+PYTHON_DIRECTORY   = python
 
-PERL_SRC_PATH      = $(SRC_PATH)/perljASL
 PERL_BIN_PATH      = $(BIN_PATH)/perljASL
-PERL_LIB_PATH      = $(LIB_PATH)/perl
+PERL_LIB_PATH      = $(LIB_PATH)/$(PERL_DIRECTORY)
 
-PYTHON_SRC_PATH    = $(SRC_PATH)/pyjASL
 PYTHON_BIN_PATH    = $(BIN_PATH)/pyjASL
-PYTHON_LIB_PATH    = $(LIB_PATH)/python
+PYTHON_LIB_PATH    = $(LIB_PATH)/$(PYTHON_DIRECTORY)
 
 ## Java, gcc and gcj compiler related settings.
 
@@ -126,7 +125,7 @@ LIB_PREFIX                   = lib
 
 # CNI (Compiled Native Interface) wrapper.
 
-CNI_WRAPPER_BASE_LIB_NAME    = cni-wrapper
+CNI_WRAPPER_BASE_LIB_NAME    = $(CNI_DIRECTORY)
 CNI_WRAPPER_STATIC_LIB_NAME  = $(LIB_PREFIX)$(CNI_WRAPPER_BASE_LIB_NAME).a
 CNI_WRAPPER_STATIC_LIB_PATH  = $(LIB_PATH)/$(CNI_WRAPPER_STATIC_LIB_NAME)
 
