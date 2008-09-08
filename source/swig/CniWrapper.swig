@@ -1,6 +1,6 @@
 // ************************************************************************** //
-// <A HREF="../cniWrapper.h.html">CniWrapper</A>.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is    //
-//                   used to generate libraries that link to the <A HREF="../wrappers.html">cni-wrapper</A>  //
+// <A HREF="../cni-wrapper/cniWrapper.h.html">CniWrapper</A>.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is    //
+//                   used to generate libraries that link to the <A HREF="../cni-wrapper/cni-wrapper.html">cni-wrapper</A>  //
 //                   library. These libraries, along with the other files     //
 //                   that are generated, are used to create, manage, and      //
 //                   close a JVM (<A HREF="http://java.sun.com/">Java</A> Virtual Machine). The JVM is required  //
@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: CniWrapper.swig,v 1.1 2008/09/03 20:31:38 campbell Exp $
+// $Id: CniWrapper.swig,v 1.2 2008/09/08 20:30:53 campbell Exp $
 // ************************************************************************** //
 
 %module CniWrapper;
@@ -21,7 +21,7 @@
 #include <gcj/cni.h>
 %}
 
-// The public interface of the <A HREF="../cniWrapper.h.html">CNI_WRAPPER</A> class.
+// The public interface of the <A HREF="../cni-wrapper/cniWrapper.h.html">CNI_WRAPPER</A> class.
 
 class CNI_WRAPPER
 {
