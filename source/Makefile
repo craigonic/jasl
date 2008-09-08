@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.18 2007/06/20 22:36:05 campbell Exp $
+# $Id: Makefile,v 1.19 2008/09/08 20:08:07 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -258,8 +258,9 @@ docs:
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$$i.html ;\
 	done
-	@(cd $(WRAPPERS_DIRECTORY); $(MAKE) $@)
-	@(cd $(COUNTERS_PKG_PATH);  $(MAKE) $@)
+	@(cd $(CNI_DIRECTORY); $(MAKE) $@)
+	@(cd $(SWIG_DIRECTORY); $(MAKE) $@)
+	@(cd $(COUNTERS_PKG_PATH); $(MAKE) $@)
 	@$(HTLS) $(SRC_DOCS_PATH)
 
 # Create HTML documentation using javadoc.
@@ -291,7 +292,7 @@ all_docs: javadocs doxygen docs
 # used to enable and simplify source code navigation from most text editors.
 
 ctags:
-	@$(CTAGS_BUILD_CMD) $(WRAPPERS_DIRECTORY) $(ALL_PACKAGES)
+	@$(CTAGS_BUILD_CMD) $(CNI_WRAPPER_SRC_FILES) $(COUNTERS_SRC_FILES)
 
 # Create an executable jar archive of the Driver program. Execution of this
 # target will automatically remove any object files that exist in order to
