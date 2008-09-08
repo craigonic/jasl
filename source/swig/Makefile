@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.1 2008/08/26 22:58:15 campbell Exp $
+# $Id: Makefile,v 1.2 2008/09/08 20:24:08 campbell Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -218,7 +218,7 @@ clean_counters_libs : clean_counters_perl clean_counters_python
 # Build all of the wrapper libraries and install them, along with their
 # respective module files, in the appropriate output directories.
 
-libs: cni_libs counters_libs
+libs: cni_libs counters_libs clean
 
 # Remove the generated files from this directory.
 
@@ -236,7 +236,7 @@ clean_all: clean clean_libs
 # Create an HTML version of this file using the source-highlight program, which
 # generates an "image" of the file with syntax color coding.
 
-SWIG_DOCS_PATH = $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)/$(SWIG_DIRECTORY)
+SWIG_DOCS_PATH = $(SRC_DOCS_PATH)/$(SWIG_DIRECTORY)
 
 docs:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SWIG_DOCS_PATH)/$(MAKEFILE).html
