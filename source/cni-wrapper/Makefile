@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  May 2007                                  #
 #                                                                              #
-# $Id: Makefile,v 1.4 2007/08/24 04:02:02 craig Exp $
+# $Id: Makefile,v 1.5 2008/09/08 20:16:59 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -88,8 +88,8 @@ clean_static_lib:
 # the files together on an HTML page.
 
 docs:
-	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)/$(MAKEFILE).html
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$(MAKEFILE).html
 	@for i in $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC) $(JASL_WRAPPER_HDR) ; do \
- 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)/$$i.html ;\
+ 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$$i.html ;\
 	done
-	@$(HTLS) $(SRC_DOCS_PATH)/$(WRAPPERS_DIRECTORY)
+	@$(HTLS) $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)
