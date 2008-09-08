@@ -6,7 +6,7 @@
  *
  * Written By  : Craig R. Campbell  -  April 2007
  *
- * $Id: CniWrapper.h,v 1.3 2007/08/18 05:34:54 craig Exp $
+ * $Id: CniWrapper.h,v 1.4 2008/09/08 20:14:56 campbell Exp $
  */
 
 #ifndef CNI_WRAPPER_H // {
@@ -25,7 +25,7 @@
  *
  * @version 1.3
  * @author Craig R. Campbell
- * @see <A HREF="../../source/wrappers/cniWrapper.h.html">Source code</A>
+ * @see <A HREF="../../source/cni-wrapper/cniWrapper.h.html">Source code</A>
  */
 
 class CNI_WRAPPER
