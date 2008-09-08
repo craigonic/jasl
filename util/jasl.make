@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.11 2008/09/05 23:17:31 campbell Exp $
+# $Id: jasl.make,v 1.12 2008/09/08 18:52:31 campbell Exp $
 ################################################################################
 
 ## Program name.
@@ -124,6 +124,8 @@ DOXYGEN_DEF_FILE   = $(UTIL_PATH)/doxygen.jasl
 LIB_PREFIX                   = lib
 
 # CNI (Compiled Native Interface) wrapper.
+
+CNI_WRAPPER_SRC_FILES        = $(CNI_DIRECTORY)/*.cpp $(CNI_DIRECTORY)/*.h
 
 CNI_WRAPPER_BASE_LIB_NAME    = $(CNI_DIRECTORY)
 CNI_WRAPPER_STATIC_LIB_NAME  = $(LIB_PREFIX)$(CNI_WRAPPER_BASE_LIB_NAME).a
