@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.2 2008/09/08 20:24:08 campbell Exp $
+# $Id: Makefile,v 1.3 2008/09/11 15:33:01 campbell Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -128,7 +128,7 @@ COUNTERS_LIBRARY_NAME = Counters
 # Input file for SWIG.
 COUNTERS_SWIG_SRC_FILE = $(COUNTERS_LIBRARY_NAME).swig
 # jasl-counters library header files.
-COUNTERS_HDR_FILES = -include Dice.h
+COUNTERS_HDR_FILES = -include jaslWrapper.h
 # swig command output file.
 COUNTERS_SWIG_WRAPPER_SRC = $(COUNTERS_LIBRARY_NAME)_wrap.cxx
 # Wrapper object file.
@@ -153,7 +153,7 @@ counters_python_src: $(COUNTERS_SWIG_SRC_FILE)
 
 # Build the object (.o) file for the desired target language.
 
-COUNTERS_COMMON_COMPILE_OPTIONS = -I$(COUNTERS_HDR_PATH) $(COUNTERS_HDR_FILES) \
+COUNTERS_COMMON_COMPILE_OPTIONS = -I$(INCLUDE_PATH) $(COUNTERS_HDR_FILES) \
                                   $(COUNTERS_SWIG_WRAPPER_SRC)
 
 counters_perl_obj: counters_perl_src
