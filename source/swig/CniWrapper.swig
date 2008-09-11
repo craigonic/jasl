@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// <A HREF="../cni-wrapper/cniWrapper.h.html">CniWrapper</A>.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is    //
+// CniWrapper.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is    //
 //                   used to generate libraries that link to the <A HREF="../cni-wrapper/cni-wrapper.html">cni-wrapper</A>  //
 //                   library. These libraries, along with the other files     //
 //                   that are generated, are used to create, manage, and      //
@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: CniWrapper.swig,v 1.2 2008/09/08 20:30:53 campbell Exp $
+// $Id: CniWrapper.swig,v 1.3 2008/09/11 20:14:36 campbell Exp $
 // ************************************************************************** //
 
 %module CniWrapper;
