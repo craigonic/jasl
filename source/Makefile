@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.19 2008/09/08 20:08:07 campbell Exp $
+# $Id: Makefile,v 1.20 2008/09/22 20:13:55 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -17,6 +17,8 @@ include $(JASL_BASE)/util/jasl.make
 
 DRIVER_CLASS       = Driver.class
 DRIVER_CNI_SRC     = ${DRIVER_CLASS:.class=.cpp}
+DRIVER_PERL_SRC    = ${DRIVER_CLASS:.class=.pl}
+DRIVER_PYTHON_SRC  = ${DRIVER_CLASS:.class=.py}
 DRIVER_EXEC        = ${DRIVER_CLASS:.class=}
 DRIVER_JAR         = ${DRIVER_CLASS:.class=.jar}
 DRIVER_MANIFEST    = ${DRIVER_CLASS:.class=.mf}
@@ -255,6 +257,8 @@ test_jar: $(BIN_PATH)/$(DRIVER_JAR) run_test
 docs:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(MAKEFILE).html
 	@$(CAT) $(DRIVER_CNI_SRC) | $(CPP2HTML) --title="$(DRIVER_CNI_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
+	@$(CAT) $(DRIVER_PERL_SRC) | $(PERL2HTML) --title="$(DRIVER_PERL_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_PERL_SRC).html
+	@$(CAT) $(DRIVER_PYTHON_SRC) | $(PYTHON2HTML) --title="$(DRIVER_PYTHON_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_PYTHON_SRC).html
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$$i.html ;\
 	done
