@@ -7,17 +7,12 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.18 2007/08/04 04:46:40 craig Exp $
+# $Id: Makefile,v 1.19 2008/09/25 04:25:39 craig Exp $
 ################################################################################
 
 # System-wide build variables.
 
 include $(JASL_BASE)/util/jasl.make
-
-# Directory specific build variables.
-
-BIN_OUTPUT_PATH      = $(BIN_PATH)/$(COUNTERS_PKG_PATH)
-INCLUDE_OUTPUT_PATH  = $(INCLUDE_PATH)/$(COUNTERS_PKG_PATH)
 
 # Define variables to represent the source, object, and class files in/of/for
 # this package.
@@ -232,59 +227,53 @@ hdr: $(GCJ_HEADER_FILES)
 # and install it in the include output directory.
 
 GCJH_BUILD_CMD = $(GCJH_CMD) $(GCJ_CLASSPATH_CMD)/$(COUNTERS_PKG_PATH) \
-                 -d $(INCLUDE_OUTPUT_PATH)
+                 -d $(COUNTERS_HDR_PATH)
 
-$(COUNTER_HDR): $(BIN_OUTPUT_PATH)/$(COUNTER_CLASS)
+$(COUNTER_HDR): $(COUNTERS_BIN_PATH)/$(COUNTER_CLASS)
 	$(GCJH_BUILD_CMD) $(COUNTER_EXEC)
 
-$(DESCRIPTION_HDR): $(BIN_OUTPUT_PATH)/$(DESCRIPTION_CLASS)
+$(DESCRIPTION_HDR): $(COUNTERS_BIN_PATH)/$(DESCRIPTION_CLASS)
 	$(GCJH_BUILD_CMD) $(DESCRIPTION_EXEC)
 
-$(NATIONALITY_HDR): $(BIN_OUTPUT_PATH)/$(NATIONALITY_CLASS)
+$(NATIONALITY_HDR): $(COUNTERS_BIN_PATH)/$(NATIONALITY_CLASS)
 	$(GCJH_BUILD_CMD) $(NATIONALITY_EXEC)
 
-$(UNIT_TYPE_HDR): $(BIN_OUTPUT_PATH)/$(UNIT_TYPE_CLASS)
+$(UNIT_TYPE_HDR): $(COUNTERS_BIN_PATH)/$(UNIT_TYPE_CLASS)
 	$(GCJH_BUILD_CMD) $(UNIT_TYPE_EXEC)
 
-$(CLASSIFICATION_HDR): $(BIN_OUTPUT_PATH)/$(CLASSIFICATION_CLASS)
+$(CLASSIFICATION_HDR): $(COUNTERS_BIN_PATH)/$(CLASSIFICATION_CLASS)
 	$(GCJH_BUILD_CMD) $(CLASSIFICATION_EXEC)
 
-$(UNIT_HDR): $(BIN_OUTPUT_PATH)/$(UNIT_CLASS)
+$(UNIT_HDR): $(COUNTERS_BIN_PATH)/$(UNIT_CLASS)
 	$(GCJH_BUILD_CMD) $(UNIT_EXEC)
 
-$(FIGHTING_HDR): $(BIN_OUTPUT_PATH)/$(FIGHTING_CLASS)
+$(FIGHTING_HDR): $(COUNTERS_BIN_PATH)/$(FIGHTING_CLASS)
 	$(GCJH_BUILD_CMD) $(FIGHTING_EXEC)
 
-$(MOBILE_HDR): $(BIN_OUTPUT_PATH)/$(MOBILE_CLASS)
+$(MOBILE_HDR): $(COUNTERS_BIN_PATH)/$(MOBILE_CLASS)
 	$(GCJH_BUILD_CMD) $(MOBILE_EXEC)
 
-$(INFANTRY_HDR): $(BIN_OUTPUT_PATH)/$(INFANTRY_CLASS)
+$(INFANTRY_HDR): $(COUNTERS_BIN_PATH)/$(INFANTRY_CLASS)
 	$(GCJH_BUILD_CMD) $(INFANTRY_EXEC)
 
-$(PERSONNEL_HDR): $(BIN_OUTPUT_PATH)/$(PERSONNEL_CLASS)
+$(PERSONNEL_HDR): $(COUNTERS_BIN_PATH)/$(PERSONNEL_CLASS)
 	$(GCJH_BUILD_CMD) $(PERSONNEL_EXEC)
 
-$(SQUAD_HDR): $(BIN_OUTPUT_PATH)/$(SQUAD_CLASS)
+$(SQUAD_HDR): $(COUNTERS_BIN_PATH)/$(SQUAD_CLASS)
 	$(GCJH_BUILD_CMD) $(SQUAD_EXEC)
 
-$(LEADER_HDR): $(BIN_OUTPUT_PATH)/$(LEADER_CLASS)
+$(LEADER_HDR): $(COUNTERS_BIN_PATH)/$(LEADER_CLASS)
 	$(GCJH_BUILD_CMD) $(LEADER_EXEC)
 
-$(DICE_HDR): $(BIN_OUTPUT_PATH)/$(DICE_CLASS)
+$(DICE_HDR): $(COUNTERS_BIN_PATH)/$(DICE_CLASS)
 	$(GCJH_BUILD_CMD) $(DICE_EXEC)
-
-# Define variables to represent, based on extension and destination, groups of
-# files generated in this directory.
-
-CLASS_FILES_LIST       = $(BIN_OUTPUT_PATH)/*.class
-HEADER_FILES_LIST      = $(INCLUDE_OUTPUT_PATH)/*.h
 
 # Define variables used to represent the dynamic and static libraries.
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    = $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME = $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME = $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).2
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
@@ -306,7 +295,7 @@ static_lib:
 clean: clean_java clean_obj
 
 clean_java:
-	$(RM) $(CLASS_FILES_LIST)
+	$(RM) $(COUNTERS_CLASS_FILES)
 
 clean_obj:
 	$(RM) $(COUNTERS_OBJ_FILES)
@@ -314,7 +303,7 @@ clean_obj:
 # Remove all of the header (.h) files from the include output directory.
 
 clean_hdr:
-	$(RM) $(HEADER_FILES_LIST)
+	$(RM) $(COUNTERS_HDR_FILES)
 
 # Remove all of the dynamic and/or static library files and links from the
 # library output directory.
