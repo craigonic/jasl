@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.12 2008/09/08 18:52:31 campbell Exp $
+# $Id: jasl.make,v 1.13 2008/09/26 17:00:23 campbell Exp $
 ################################################################################
 
 ## Program name.
@@ -31,6 +31,7 @@ SRC_PATH           = ${JASL_BASE}/source
 UTIL_PATH          = ${JASL_BASE}/util
 
 # The following are sub-directories of the source directory.
+
 CNI_DIRECTORY      = cni-wrapper
 SWIG_DIRECTORY     = swig
 PERL_DIRECTORY     = perl
@@ -94,6 +95,8 @@ SRC_HIGHLIGHT_CMD  = source-highlight --doc --tab=4 --ctags=''
 CPP2HTML           = $(SRC_HIGHLIGHT_CMD) --src-lang=cpp
 JAVA2HTML          = $(SRC_HIGHLIGHT_CMD) --src-lang=java
 MAKE2HTML          = $(SRC_HIGHLIGHT_CMD) --src-lang=makefile
+PERL2HTML          = $(SRC_HIGHLIGHT_CMD) --src-lang=perl
+PYTHON2HTML        = $(SRC_HIGHLIGHT_CMD) --src-lang=python
 
 HTLS               = $(UTIL_PATH)/htls -genpage -index
 SED_CONV_CMD       = sed -f $(UTIL_PATH)/htmlconv
@@ -108,7 +111,6 @@ JAVADOC_OPTIONS    = -version -author -package -nodeprecatedlist -use \
 JAVADOC_TITLE      = -windowtitle "jASL Programming Documentation"
 JAVADOC_CMD_LIST   = -d $(JAVADOCS_PATH) $(JAVADOCS_LINK) $(JAVADOC_OPTIONS) \
                      $(JAVADOC_TITLE)
-
 # gjdoc.
 
 GJDOC              = gjdoc
@@ -137,10 +139,13 @@ COUNTERS_PKG_NAME            = counters
 
 COUNTERS_PKG_PATH            = $(PROGRAM_NAME)/$(COUNTERS_PKG_NAME)
 COUNTERS_OBJ_PATH            = ${JASL_BASE}/bin/$(COUNTERS_PKG_PATH)
+COUNTERS_BIN_PATH            = $(BIN_PATH)/$(COUNTERS_PKG_PATH)
 COUNTERS_HDR_PATH            = $(INCLUDE_PATH)/$(COUNTERS_PKG_PATH)
 
 COUNTERS_SRC_FILES           = $(COUNTERS_PKG_PATH)/*.java
+COUNTERS_CLASS_FILES         = $(COUNTERS_BIN_PATH)/*.class
 COUNTERS_OBJ_FILES           = $(COUNTERS_OBJ_PATH)/*.o
+COUNTERS_HDR_FILES           = $(COUNTERS_HDR_PATH)/*.h
 
 COUNTERS_BASE_LIB_NAME       = $(PROGRAM_NAME)-$(COUNTERS_PKG_NAME)
 COUNTERS_STATIC_LIB_NAME     = $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).a
