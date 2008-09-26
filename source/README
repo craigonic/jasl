@@ -1,0 +1,55 @@
+# Instructions for cleaning and rebuilding everything. This may become a target
+# in the Makefile, someday ;)
+
+# Go to the source.
+
+cd $JASL_BASE/source
+
+# Clean everything.
+
+make clean_all
+(cd jasl/counters;make clean_hdr clean_libs)
+(cd cni-wrapper;make clean_hdr clean_libs)
+(cd swig;make clean_libs)
+
+# Install the header files and build the libraries.
+
+(cd cni-wrapper;make hdr libs)
+make
+(cd jasl/counters;make hdr libs)
+
+# Build the wrapper libraries. Note that the Makefile may require editing to set
+# the correct path(s) for the Perl and/or Python headers.
+
+make clean_all
+(cd swig;make libs)
+
+# Build all the executables.
+
+make build_all
+
+# Install the scripts. Note that the installed version of Driver.py may require
+# editing to set the correct system path.
+
+make perl python
+
+# Test everything.
+
+make test
+make test_jar
+make test_gcj
+make test_gcj_dynamic
+make test_gcj_static
+make test_cni_dynamic
+make test_cni_static
+make test_perl
+make test_python
+
+# Build all of the documentation. This requires a network connection for
+# javadoc to work correctly.
+
+make all_docs
+
+# Update the ctags file.
+
+make ctags
