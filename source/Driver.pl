@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# ##############################################################################
+################################################################################
 # Driver.pl - This file contains the Driver script, which is used to test the  #
 #             functionality of the public <A HREF="http://java.sun.com/">Java</A> classes defined in the <A HREF="jasl/jasl.html">jasl</A>     #
 #             package hierarchy, accessed by <A HREF="http://www.perl.org/">Perl</A> using <A HREF="swig/swig.html">libraries</A> and files    #
@@ -7,13 +7,12 @@
 #                                                                              #
 #             The <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) <A HREF="http://gcc.gnu.org/onlinedocs/gcj/Invocation.html#Invocation">invocation</A> functions, which  #
 #             are required to use the Java classes, are initiated in this      #
-#             script by either the <A HREF="swig/CniWrapper.swig.html">CniWrapper</A> module or <A HREF="http://search.cpan.org/~rusekd/GCJ-Cni/">GCJ-Cni</A>. The former    #
-#             also provides methods to convert a native string to or from a    #
-#             Java <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A>. GCJ-Cni provides similar functionality.             #
+#             script by the <A HREF="swig/CniWrapper.swig.html">CniWrapper</A> module. This module also provides       #
+#             methods to convert a native string to or from a Java <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A>.     #
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 2008                               #
 #                                                                              #
-# $Id: Driver.pl,v 1.2 2008/09/30 23:27:03 campbell Exp $
+# $Id: Driver.pl,v 1.3 2008/10/03 21:59:46 campbell Exp $
 ################################################################################
 
 #$PERLLIB_INC = "/home/campbell/java/jasl/lib";
@@ -21,24 +20,24 @@
 
 #use diagnostics;
 #use diagnostics -verbose;
-#use GCJ::Cni;
+
 use CniWrapper;
 use Counters;
 
-#GCJ::Cni::JvCreateJavaVM(undef);
-#GCJ::Cni::JvAttachCurrentThread(undef,undef);
 my $cni_wrapper = new CniWrapper::CNI_WRAPPER();
 
-my $dice = new Counters::Dice();
+    # Test the Dice class.
 
-printf "White die value : %d\t",$dice->getWhiteDieValue();
-printf "Colored die value: %d\t",$dice->getColoredDieValue();
-printf "Combined result : %d\n",$dice->getCombinedResult();
+    printf("\nTesting the execution of the Dice class:\n\n");
 
-$dice = new Counters::Dice();
+    for ($i = 0;$i < 12;$i++)
+    {
+        $theDice = new Counters::Dice();
 
-printf "White die value : %d\t",$dice->getWhiteDieValue();
-printf "Colored die value: %d\t",$dice->getColoredDieValue();
-printf "Combined result : %d\n",$dice->getCombinedResult();
+#       printf("White: %d Colored: %d Combined: %2d\n",
+#              $theDice->getWhiteDieValue(),
+#              $theDice->getColoredDieValue(),
+#              $theDice->getCombinedResult());
 
-#GCJ::Cni::JvDetachCurrentThread();
+        printf("%s\n",$cni_wrapper->stringToConstChar($theDice->toString()));
+    }
