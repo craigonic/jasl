@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: CniWrapper.swig,v 1.3 2008/09/11 20:14:36 campbell Exp $
+// $Id: CniWrapper.swig,v 1.4 2008/10/10 23:08:45 campbell Exp $
 // ************************************************************************** //
 
 %module CniWrapper;
@@ -21,6 +21,12 @@
 #include <gcj/cni.h>
 %}
 
+// The stringToConstChar() method allocates memory to store the data copied from
+// the <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory to be freed in the wrapper
+// function after it creates the native data item to store the string.
+
+%newobject CNI_WRAPPER::stringToConstChar(::java::lang::String* javaString);
+
 // The public interface of the <A HREF="../cni-wrapper/cniWrapper.h.html">CNI_WRAPPER</A> class.
 
 class CNI_WRAPPER
@@ -29,6 +35,6 @@ class CNI_WRAPPER
 
         CNI_WRAPPER();
         ~CNI_WRAPPER();
-        const char* stringToConstChar(jstring javaString);
-        jstring constCharToString(const char* constCharString);
+        const char* stringToConstChar(::java::lang::String* javaString);
+        ::java::lang::String* constCharToString(const char* constCharString);
 };
