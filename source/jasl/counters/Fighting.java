@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Fighting.java,v 1.14 2008/09/02 02:45:34 craig Exp $
+// $Id: Fighting.java,v 1.15 2008/11/25 08:17:37 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,7 +20,7 @@ package jasl.counters;
  * (movement, firing, etc). This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.14
+ * @version 1.15
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -175,9 +175,10 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	// Fighting. The parameters are passed up the chain from the object being
 	// created.
 
-	protected Fighting(String description,String nationality,String identity,
-	                   String unitType,String firepower,int normalRange,
-	                   int portageValue,boolean sprayFireCapable)
+	protected Fighting(Descriptions description,String nationality,
+	                   String identity,String unitType,String firepower,
+	                   int normalRange,int portageValue,
+	                   boolean sprayFireCapable)
 	{
 		// Pass the first parameter to the superclass constructor. If any
 		// exceptions are thrown, assume that they will be caught and handled by
@@ -273,10 +274,10 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 			                                   unitType);
 		}
 
-		if ((unitType.equals(COMMISSAR)) && (!(description.equals(LEADER))))
+		if ((unitType.equals(COMMISSAR)) && (description != Descriptions.LEADER))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
-			                                   description +
+			                                   description.label() +
 			                                   AND_SEPARATOR + unitType);
 		}
 
