@@ -10,96 +10,96 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 2006                            //
 //                                                                            //
-// $Id: Description.java,v 1.3 2007/08/11 05:15:12 craig Exp $
+// $Id: Description.java,v 1.4 2008/11/25 07:15:08 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
 
-import java.util.*; // For Vector.
-
 /**
- * This interface is used to define public constants and required methods
- * associated with the general description of a <A HREF="Unit.html">Unit</A>.
+ * This interface is used to define the public constants, using an enum, and
+ * required methods associated with the general description of a <A HREF="Unit.html">Unit</A>.
  *
- * @version 1.3
+ * @version 1.4
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Description.html">Source code</A>
  */
 
 public interface Description
 {
-    // Recognized description values. These constants represent the counter
-    // types that may be directly instantiated using classes in the counters
-    // hierarchy.
+	/**
+	 * Recognized description values. These constants represent the counter
+	 * types that may be directly instantiated using the public classes in the
+	 * <B>counters</B> hierarchy.
+	 */
 
-    /** <A NAME="_CREW_"></A>
-     * Indicates that the counter type of a unit is <B>Crew</B>.
-     */
+	public enum Descriptions
+	{
+		/** <A NAME="_CREW_"></A>
+		 * Indicates that the counter type of a unit is <B>Crew</B>.
+		 */
 
-    public static final String CREW        = "Crew";
+		CREW("Crew"),
 
-    /** <A NAME="_HALF_SQUAD_"></A>
-     * Indicates that the counter type of a unit is <B>Half Squad</B>.
-     */
+		/** <A NAME="_HALF_SQUAD_"></A>
+		 * Indicates that the counter type of a unit is <B>Half Squad</B>.
+		 */
 
-    public static final String HALF_SQUAD  = "Half Squad";
+		HALF_SQUAD("Half Squad"),
 
-    /** <A NAME="_LEADER_"></A>
-     * Indicates that the counter type of a unit is <B><A HREF="Leader.html">Leader</A></B>.
-     */
+		/** <A NAME="_LEADER_"></A>
+		 * Indicates that the counter type of a unit is <B><A HREF="Leader.html">Leader</A></B>.
+		 */
 
-    public static final String LEADER      = "Leader";
+		LEADER("Leader"),
 
-    /** <A NAME="_SQUAD_"></A>
-     * Indicates that the counter type of a unit is <B><A HREF="Squad.html">Squad</A></B>.
-     */
+		/** <A NAME="_SQUAD_"></A>
+		 * Indicates that the counter type of a unit is <B><A HREF="Squad.html">Squad</A></B>.
+		 */
 
-    public static final String SQUAD       = "Squad";
+		SQUAD("Squad");
 
-    /** <A NAME="_DESCRIPTIONS_"></A>
-     * A list of the supported counter types. Each entry is directly associated
-     * with a public class derived from <A HREF="Unit.html">Unit</A>.
-     *
-     * @see #getDescription
-     */
+		// Private data members
 
-    public static final String[] DESCRIPTIONS = { CREW, HALF_SQUAD, LEADER,
-                                                  SQUAD };
+		// The label associated with the enum constant.
 
-    /** <A NAME="_DESCRIPTIONS_VECTOR_"></A>
-     * An alternative method of accessing the list of supported counter types.
-     *
-     * @see #getDescription
-     */
+		private final String label;
 
-    public static final Vector DESCRIPTIONS_VECTOR = new Vector(Arrays.asList(DESCRIPTIONS));
+		// Constructor
 
-    /**
-     * The number of elements in the <A HREF="#_DESCRIPTIONS_">DESCRIPTIONS</A> array and <A HREF="#_DESCRIPTIONS_VECTOR_">DESCRIPTIONS_VECTOR</A>.
-     */
+		Descriptions(String label)
+		{
+			this.label = label;
+		}
 
-    public static final int DESCRIPTIONS_LIST_SIZE    = DESCRIPTIONS.length;
+		// Public access method
 
-    /**
-     * Provides a label for a unit's counter type : <B>Description</B>
-     */
+		/**
+		 * Returns the label associated with the enum constant.
+		 *
+		 * @return the <CODE>String</CODE> associated with the constant.
+		 */
 
-    public static final String DESCRIPTION_LABEL         = "Description";
+		public String label()
+		{
+			return label;
+		}
+	}
+
+	// This constant is provided primarily for use in displaying the
+	// description of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
+
+	/**
+	 * Provides a label for a unit's counter type : <B>Description</B>
+	 */
+
+	public static final String DESCRIPTION_LABEL = "Description";
 
     // Access methods.
 
     /**
-     * Determine the description of a unit. The recognized values are listed
-     * below.
+     * Determine the description of a unit.
      *
      * @return a <CODE>String</CODE> specifying the unit description.
-     *
-     * @see #DESCRIPTIONS
-     * @see #DESCRIPTIONS_VECTOR
-     * @see #CREW
-     * @see #HALF_SQUAD
-     * @see #LEADER
-     * @see #SQUAD
      */
 
     public abstract String getDescription();
