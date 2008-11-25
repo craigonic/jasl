@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By     : Craig R. Campbell  -  December 1998                       //
 //                                                                            //
-// $Id: Personnel.java,v 1.13 2008/09/02 03:13:02 craig Exp $
+// $Id: Personnel.java,v 1.14 2008/11/25 08:19:48 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -21,7 +21,7 @@ package jasl.counters;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * strictly a superclass and cannot be instantiated directly.
  *
- * @version 1.13
+ * @version 1.14
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
@@ -87,12 +87,12 @@ class Personnel extends Infantry implements Classification
 	// Personnel. The parameters are passed up the chain from the object being
 	// created.
 
-	protected Personnel(String description,String nationality,String identity,
-	                    String unitType,String firepower,int normalRange,
-	                    boolean sprayFireCapable,int morale,int brokenMorale,
-	                    boolean selfRallyCapable,int basicPointValue,
-	                    int experienceLevelRating,boolean hasMaximumELR,
-	                    String classification)
+	protected Personnel(Descriptions description,String nationality,
+	                    String identity,String unitType,String firepower,
+	                    int normalRange,boolean sprayFireCapable,int morale,
+	                    int brokenMorale,boolean selfRallyCapable,
+	                    int basicPointValue,int experienceLevelRating,
+	                    boolean hasMaximumELR,String classification)
 	{
 		// Pass the first 13 parameters to the superclass constructor. Note
 		// that one or more variables has been set with symbolic constants.

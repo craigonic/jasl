@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Mobile.java,v 1.12 2008/09/03 04:39:06 craig Exp $
+// $Id: Mobile.java,v 1.13 2008/11/25 08:19:48 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,7 +20,7 @@ package jasl.counters;
  * ability to move on their own. This class is strictly a superclass and cannot
  * be instantiated directly.
  *
- * @version 1.12
+ * @version 1.13
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Mobile.html">Source code</A>
  */
@@ -92,7 +92,7 @@ class Mobile extends Fighting
 	// Mobile. The parameters are passed up the chain from the object being
 	// created.
 
-	protected Mobile(String description,String nationality,String identity,
+	protected Mobile(Descriptions description,String nationality,String identity,
 	                 String unitType,String firepower,int normalRange,
 	                 int portageValue,boolean sprayFireCapable,int movement,
 	                 int portageCapacity)
