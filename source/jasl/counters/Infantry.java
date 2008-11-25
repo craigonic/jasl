@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Infantry.java,v 1.13 2008/09/04 04:35:11 craig Exp $
+// $Id: Infantry.java,v 1.14 2008/11/25 07:57:56 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,7 +20,7 @@ package jasl.counters;
  * infantry units. This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.13
+ * @version 1.14
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
@@ -162,9 +162,10 @@ class Infantry extends Mobile
 	// Infantry. The parameters are passed up the chain from the object being
 	// created.
 
-	protected Infantry(String description,String nationality,String identity,
-	                   String unitType,String firepower,int normalRange,
-	                   int portageValue,boolean sprayFireCapable,int movement,
+	protected Infantry(Descriptions description,String nationality,
+	                   String identity,String unitType,String firepower,
+	                   int normalRange,int portageValue,
+	                   boolean sprayFireCapable,int movement,
 	                   int portageCapacity,int morale,int brokenMorale,
 	                   boolean selfRallyCapable,int basicPointValue,
 	                   int experienceLevelRating)
