@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.19 2008/09/25 04:25:39 craig Exp $
+# $Id: Makefile,v 1.20 2008/12/20 06:56:16 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -28,6 +28,14 @@ DESCRIPTION_EXEC     = ${DESCRIPTION_CLASS:.class=}
 DESCRIPTION_HDR      = ${DESCRIPTION_CLASS:.class=.h}
 DESCRIPTION_OBJ      = ${DESCRIPTION_CLASS:.class=.o}
 DESCRIPTION_SRC      = ${DESCRIPTION_CLASS:.class=.java}
+
+# This file is generated when Description.java is compiled and represents the
+# Descriptions enum defined in that class. The following definitions are used to
+# generate the header file.
+
+DESCRIPTIONS_CLASS   = Description\$$Descriptions.class
+DESCRIPTIONS_EXEC    = ${DESCRIPTIONS_CLASS:.class=}
+DESCRIPTIONS_HDR     = ${DESCRIPTIONS_CLASS:.class=.h}
 
 NATIONALITY_CLASS    = Nationality.class
 NATIONALITY_EXEC     = ${NATIONALITY_CLASS:.class=}
@@ -98,6 +106,7 @@ DICE_SRC             = ${DICE_CLASS:.class=.java}
 INTERFACES           = $(COUNTER_CLASS) $(DESCRIPTION_CLASS) \
                        $(NATIONALITY_CLASS) $(UNIT_TYPE_CLASS) \
                        $(CLASSIFICATION_CLASS)
+ENUMS                = $(DESCRIPTIONS_CLASS)
 SUPER_CLASSES        = $(UNIT_CLASS) $(FIGHTING_CLASS) $(MOBILE_CLASS)
 INF_CLASSES          = $(INFANTRY_CLASS) $(PERSONNEL_CLASS) $(SQUAD_CLASS) \
                        $(LEADER_CLASS)
@@ -106,7 +115,7 @@ UTIL_CLASSES         = $(DICE_CLASS)
 ALL_CLASSES          = $(INTERFACES) $(SUPER_CLASSES) $(INF_CLASSES) \
                        $(UTIL_CLASSES)
 
-GCJ_HEADER_FILES     = ${ALL_CLASSES:.class=.h}
+GCJ_HEADER_FILES     = ${ALL_CLASSES:.class=.h} ${ENUMS:.class=.h}
 
 GCJ_OBJECT_FILES     = ${ALL_CLASSES:.class=.o}
 
@@ -235,6 +244,9 @@ $(COUNTER_HDR): $(COUNTERS_BIN_PATH)/$(COUNTER_CLASS)
 $(DESCRIPTION_HDR): $(COUNTERS_BIN_PATH)/$(DESCRIPTION_CLASS)
 	$(GCJH_BUILD_CMD) $(DESCRIPTION_EXEC)
 
+$(DESCRIPTIONS_HDR):
+	$(GCJH_BUILD_CMD) $(DESCRIPTIONS_EXEC)
+
 $(NATIONALITY_HDR): $(COUNTERS_BIN_PATH)/$(NATIONALITY_CLASS)
 	$(GCJH_BUILD_CMD) $(NATIONALITY_EXEC)
 
@@ -273,7 +285,7 @@ $(DICE_HDR): $(COUNTERS_BIN_PATH)/$(DICE_CLASS)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    = $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME = $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME = $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).2
+DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).3
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
