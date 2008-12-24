@@ -22,7 +22,7 @@ it for execution. See <A HREF=../Driver.cpp.html>Driver.cpp</A> for an example.
 object (.o) file.
 <LI><TT>hdr</TT> - copies the header (.h) files to the directory noted above.
 <LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
-then uses the object (.o) file to generate dynamic and static libraries, as
+then uses the object (.o) file to generate shared and static libraries, as
 well as the necessary links, in the directory noted above. Upon completion, the
 <TT>clean</TT> target is used to remove the object (.o) file.
 <P>
@@ -33,7 +33,7 @@ directory noted above.
 <P>
 <LI><TT>clean_libs</TT> - executes the actions defined for the
 <TT>clean_dynamic_lib</TT> and <TT>clean_static_lib</TT> targets.
-<LI><TT>clean_dynamic_lib</TT> - deletes the dynamic library and its associated
+<LI><TT>clean_dynamic_lib</TT> - deletes the shared library and its associated
 links in the directory noted above.
 <LI><TT>clean_static_lib</TT> - deletes the static library file in the directory
 noted above.
@@ -44,9 +44,9 @@ noted above.
 <A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A>
 </TT>,
 placing the output files in
-<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/share/jasl/doc/source/<A HREF=index.html>wrappers</A></B>. This file,
-<B>wrappers.html</B>, is also generated, and includes links to all of the HTML
-files. This target is also referenced by the
+<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/share/jasl/doc/source/<A HREF=index.html>cni-wrapper</A></B>. This file,
+<B>cni-wrapper.html</B>, is also generated, and includes links to all of the
+HTML files. This target is also referenced by the
 <A HREF=../Makefile.html>Makefile</A> in the parent directory.
 </UL>
 <HR>
