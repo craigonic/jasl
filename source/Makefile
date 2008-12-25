@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.21 2008/09/23 23:27:24 campbell Exp $
+# $Id: Makefile,v 1.22 2008/12/25 07:53:36 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -287,7 +287,9 @@ test_python: $(PYTHON_BIN_PATH)/$(DRIVER_EXEC)
 # color coding. After the files are generated, the htls program is used to link
 # the files together on an HTML page.
 
-docs:
+HTLS_CFG_FILE = source.cfg
+
+docs_all:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(MAKEFILE).html
 	@$(CAT) $(DRIVER_CNI_SRC) | $(CPP2HTML) --title="$(DRIVER_CNI_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
 	@$(CAT) $(DRIVER_PERL_SRC) | $(PERL2HTML) --title="$(DRIVER_PERL_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_PERL_SRC).html
@@ -298,7 +300,18 @@ docs:
 	@(cd $(CNI_DIRECTORY); $(MAKE) $@)
 	@(cd $(SWIG_DIRECTORY); $(MAKE) $@)
 	@(cd $(COUNTERS_PKG_PATH); $(MAKE) $@)
+	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
+	@$(CP) -f vim.png $(SRC_DOCS_PATH)
+
+clean_docs:
+	@(cd $(CNI_DIRECTORY); $(MAKE) $@)
+	@(cd $(SWIG_DIRECTORY); $(MAKE) $@)
+	@(cd $(COUNTERS_PKG_PATH); $(MAKE) $@)
+	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
+	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_CFG_FILE)
+
+docs: docs_all clean_docs
 
 # Create HTML documentation using javadoc.
 
