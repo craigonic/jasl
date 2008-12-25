@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.13 2008/09/26 17:00:23 campbell Exp $
+# $Id: jasl.make,v 1.14 2008/12/25 07:37:21 craig Exp $
 ################################################################################
 
 ## Program name.
@@ -100,6 +100,8 @@ PYTHON2HTML        = $(SRC_HIGHLIGHT_CMD) --src-lang=python
 
 HTLS               = $(UTIL_PATH)/htls -genpage -index
 SED_CONV_CMD       = sed -f $(UTIL_PATH)/htmlconv
+
+HTLS_HEADER_FILE   = header.html
 
 # javadoc.
 
