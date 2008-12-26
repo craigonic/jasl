@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.3 2008/09/11 15:33:01 campbell Exp $
+# $Id: Makefile,v 1.4 2008/12/26 05:56:40 craig Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -237,10 +237,18 @@ clean_all: clean clean_libs
 # generates an "image" of the file with syntax color coding.
 
 SWIG_DOCS_PATH = $(SRC_DOCS_PATH)/$(SWIG_DIRECTORY)
+HTLS_CFG_FILE  = $(SWIG_DIRECTORY).cfg
 
-docs:
+docs_all:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SWIG_DOCS_PATH)/$(MAKEFILE).html
 	@for i in `ls *.swig` ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SWIG_DOCS_PATH)/$$i.html ;\
 	done
+	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(SWIG_DOCS_PATH)
 	@$(HTLS) $(SWIG_DOCS_PATH)
+
+clean_docs:
+	@$(RM) $(SWIG_DOCS_PATH)/$(HTLS_HEADER_FILE)
+	@$(RM) $(SWIG_DOCS_PATH)/$(HTLS_CFG_FILE)
+
+docs: docs_all clean_docs
