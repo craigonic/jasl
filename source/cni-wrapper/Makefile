@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  May 2007                                  #
 #                                                                              #
-# $Id: Makefile,v 1.5 2008/09/08 20:16:59 campbell Exp $
+# $Id: Makefile,v 1.6 2008/12/26 06:02:40 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -87,9 +87,19 @@ clean_static_lib:
 # color coding. After the files are generated, the htls program is used to link
 # the files together on an HTML page.
 
-docs:
+CNI_DOCS_PATH = $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)
+HTLS_CFG_FILE = $(CNI_DIRECTORY).cfg
+
+docs_all:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$(MAKEFILE).html
 	@for i in $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC) $(JASL_WRAPPER_HDR) ; do \
  		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$$i.html ;\
 	done
-	@$(HTLS) $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)
+	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(CNI_DOCS_PATH)
+	@$(HTLS) $(CNI_DOCS_PATH)
+
+clean_docs:
+	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE)
+	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_CFG_FILE)
+
+docs: docs_all clean_docs

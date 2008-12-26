@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.20 2008/12/20 06:56:16 craig Exp $
+# $Id: Makefile,v 1.21 2008/12/26 06:06:21 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -336,10 +336,20 @@ clean_static_lib:
 # are generated, the htls program is used to link the files together on an HTML
 # page.
 
-docs:
-	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)/$(MAKEFILE).html
+COUNTERS_DOCS_PATH = $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)
+HTLS_CFG_FILE      = $(COUNTERS_PKG_NAME).cfg
+
+docs_all:
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(COUNTERS_DOCS_PATH)/$(MAKEFILE).html
 	@for i in $(JAVA_CLASSES) ; do \
-		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)/$$i.html ;\
+		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(COUNTERS_DOCS_PATH)/$$i.html ;\
 		(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(COUNTERS_PKG_PATH)/$$i.html) ;\
 	done
-	@$(HTLS) $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)
+	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(COUNTERS_DOCS_PATH)
+	@$(HTLS) $(COUNTERS_DOCS_PATH)
+
+clean_docs:
+	@$(RM) $(COUNTERS_DOCS_PATH)/$(HTLS_HEADER_FILE)
+	@$(RM) $(COUNTERS_DOCS_PATH)/$(HTLS_CFG_FILE)
+
+docs: docs_all clean_docs
