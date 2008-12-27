@@ -6,11 +6,16 @@
 <HR>
 <H2>Building the wrapper libraries and their associated modules</H2>
 The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
-this directory is listed below. The library and module files are written to
-or removed from
-<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>
-/lib/{scripting language name (lower case)}
-</B>.
+this directory is listed below. The output files are written to or removed from
+<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/lib/{scripting language name (lower case)}</B>
+for the libraries or the sub-directories of
+<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/bin</B>, associated
+with their scripting language below, for the module files.
+<P>
+<UL>
+<LI><TT><A HREF="http://www.perl.org/">perl</A></TT> - <B><I>perljASL</I></B>
+<LI><TT><A HREF="http://www.python.org/">python</A></TT> - <B><I>pyjASL</I></B>
+</UL>
 <P>
 <UL>
 <I>
@@ -26,7 +31,7 @@ available in order for the other wrapper libraries to work.
 <LI><TT>cni_{language name}_src</TT> - uses
 <A HREF="http://www.swig.org/">SWIG</A> to generate the library source file
 (<I>CniWrapper_wrap.cxx</I>). If successful, it also creates the module file,
-placing it in the output directory.
+placing it in the directory noted above.
 <P>
 <LI><TT>cni_{language name}_obj</TT> - executes the actions defined for the
 <TT>cni_{language name}_src</TT> target and then uses
@@ -57,9 +62,9 @@ targets work for all scripting languages.
 <TT>clean_cni_{language name}_lib</TT> targets.
 <P>
 <LI><TT>clean_cni_{language name}_module</TT> - deletes the module file(s) from
-the output directory.
-<LI><TT>clean_cni_{language name}_lib</TT> - deletes the library from the output
-directory.
+the directory noted above.
+<LI><TT>clean_cni_{language name}_lib</TT> - deletes the library from the
+directory noted above.
 <P>
 <I>
 The following targets are used to build and clean the libraries and module files
@@ -72,7 +77,7 @@ library using the scripting language name
 <LI><TT>counters_{language name}_src</TT> - uses
 <A HREF="http://www.swig.org/">SWIG</A> to generate the library source file
 (<I>Counters_wrap.cxx</I>). If successful, it also creates the module file,
-placing it in the output directory.
+placing it in the directory noted above.
 <P>
 <LI><TT>counters_{language name}_obj</TT> - executes the actions defined for the
 <TT>counters_{language name}_src</TT> target and then uses
@@ -83,12 +88,12 @@ object (.o) file.
 <TT>counters_{language name}_lib</TT> target.
 <P>
 <LI><TT>counters_{language name}_lib</TT> - executes the actions defined for the
-<TT>counters_{language name}_obj</TT> target and then uses the object (.o) file to
-generate a shared library (<I>Counters.so</I>) in the directory noted above.
+<TT>counters_{language name}_obj</TT> target and then uses the object (.o) file
+to generate a shared library (<I>Counters.so</I>) in the directory noted above.
 <P>
 <LI><TT>clean_counters</TT> - executes the actions defined for the
-<TT>clean_counters_src</TT> and <TT>clean_counters_obj</TT> targets. Note that these
-targets work for all scripting languages.
+<TT>clean_counters_src</TT> and <TT>clean_counters_obj</TT> targets. Note that
+these targets work for all scripting languages.
 <P>
 <LI><TT>clean_counters_src</TT> - deletes the library source file
 (<I>Counters_wrap.cxx</I>).
@@ -98,14 +103,14 @@ targets work for all scripting languages.
 <LI><TT>clean_counters_libs</TT> - executes the actions defined for the
 <TT>clean_counters_{language name}</TT> targets.
 <P>
-<LI><TT>clean_counters_{language name}</TT> - executes the actions defined for the
-<TT>clean_counters_{language name}_module</TT> and
+<LI><TT>clean_counters_{language name}</TT> - executes the actions defined for
+the <TT>clean_counters_{language name}_module</TT> and
 <TT>clean_counters_{language name}_lib</TT> targets.
 <P>
 <LI><TT>clean_counters_{language name}_module</TT> - deletes the module file(s)
-from the output directory.
+from the directory noted above.
 <LI><TT>clean_counters_{language name}_lib</TT> - deletes the library from the
-output directory.
+directory noted above.
 <P>
 <I>
 The following targets are used to build and clean all of the libraries and
@@ -127,8 +132,7 @@ and the indicated documentation.
 <LI><TT>docs</TT> - generates an HTML version of each interface file and the
 <A HREF=Makefile.html>Makefile</A> using
 <TT>
-<A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A>
-</TT>,
+<A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>,
 placing the output files in
 <B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/share/jasl/doc/source/<A HREF=index.html>swig</A></B>.
 This file, <B>swig.html</B>, is also generated, and includes links to all of the
