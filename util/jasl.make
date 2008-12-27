@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.14 2008/12/25 07:37:21 craig Exp $
+# $Id: jasl.make,v 1.15 2008/12/27 07:28:22 craig Exp $
 ################################################################################
 
 ## Program name.
@@ -34,14 +34,14 @@ UTIL_PATH          = ${JASL_BASE}/util
 
 CNI_DIRECTORY      = cni-wrapper
 SWIG_DIRECTORY     = swig
-PERL_DIRECTORY     = perl
-PYTHON_DIRECTORY   = python
+PERL_DIRECTORY     = perljASL
+PYTHON_DIRECTORY   = pyjASL
 
-PERL_BIN_PATH      = $(BIN_PATH)/perljASL
-PERL_LIB_PATH      = $(LIB_PATH)/$(PERL_DIRECTORY)
+PERL_BIN_PATH      = $(BIN_PATH)/$(PERL_DIRECTORY)
+PERL_LIB_PATH      = $(LIB_PATH)/perl
 
-PYTHON_BIN_PATH    = $(BIN_PATH)/pyjASL
-PYTHON_LIB_PATH    = $(LIB_PATH)/$(PYTHON_DIRECTORY)
+PYTHON_BIN_PATH    = $(BIN_PATH)/$(PYTHON_DIRECTORY)
+PYTHON_LIB_PATH    = $(LIB_PATH)/python
 
 ## Java, gcc and gcj compiler related settings.
 
