@@ -7,8 +7,8 @@
 <H2>Building jASL</H2>
 The generation of the files and documentation for the jASL program depends on
 the availability of the
-'<TT><A HREF=http://directory.fsf.org/GNU/make.html>make</A></TT>' program. An
-alternative application for build automation is
+'<TT><A HREF=http://www.gnu.org/software/make/make.html>make</A></TT>' program.
+An alternative application for build automation is
 <A HREF=http://jakarta.apache.org/ant/index.html>Ant</A>. Its implementation for
 this program is left as an exercise.
 <P>
@@ -19,9 +19,9 @@ in the source directory and its sub-directories:
 is installed.
 <LI>The original directory structure for this system is in place.
 <A NAME="JASL_BASE"></A>The top level directory is <TT>jasl</TT>, which is
-referred to as <B><I>$JASL_BASE</I></B> in this document. An environment variable
-with this name is necessary for
-<TT><A HREF=http://directory.fsf.org/GNU/make.html>make</A></TT> to work
+referred to as <B><I>$JASL_BASE</I></B> in this document. An environment
+variable with this name is necessary for
+<TT><A HREF=http://www.gnu.org/software/make/make.html>make</A></TT> to work
 properly. Examples:
 <UL>
 <TT>setenv JASL_BASE /home/craig/java/jasl</TT><BR>
@@ -37,35 +37,34 @@ access to the shared libraries by scripting languages such as
 <TT><A HREF="http://www.perl.org/">perl</A></TT> and
 <TT><A HREF="http://www.python.org/">python</A></TT>.
 <LI><I>Optional. </I>
-<TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>.
+<TT><A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>.
 This program is used to create HTML versions of the source files.
 <LI><I>Optional. </I><TT><A HREF=http://www.perl.org/>perl</A></TT> and
-<TT><A HREF=http://directory.fsf.org/GNU/sed.html>sed</A></TT>, which are used
+<TT><A HREF=http://www.gnu.org/software/sed/>sed</A></TT>, which are used
 to build a linked hierarchy of the HTML versions of the source files.
 <LI><I>Optional. </I>
-<TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>. This program
-is an alternative to
+<TT><A HREF=http://www.gnu.org/software/classpath/cp-tools/>gjdoc</A></TT>. This
+program is an alternative to
 <TT><A HREF=http://java.sun.com/j2se/javadoc/index.jsp>javadoc</A></TT>. Note
 that the same parameters and output directory will be used for both programs.
 <LI><I>Optional. </I><TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>.
 <LI><I>Optional. </I><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT>.
-<LI><I>Optional. </I>A <A HREF=../BuildARMToolChainNotes.html>toolchain</A>
-capable of building an executable with <A HREF=http://gcc.gnu.org/java/>GCJ</A>
-for a non-iX86 architecture. I have used these source files and build structure,
-with only the minor change noted below for the <TT>gcj</TT> and <TT>gcj_obj</TT>
-targets, to cross-compile an executable and run it on my
-<A HREF=http://www.myzaurus.com/>Sharp Zaurus</A>. To specify an alternative gcj
-compiler, such as arm-linux-gcj, specify the execution of make as follows:
+<LI><I>Optional. </I>A toolchain capable of building an executable with
+<A HREF=http://gcc.gnu.org/java/>GCJ</A> for a non-iX86 architecture. These
+source files and build structure have been used to cross-compile an executable
+and run it on a <A HREF=http://www.myzaurus.com/>Sharp Zaurus</A>. To specify an
+alternative gcj compiler, such as arm-linux-gcj, run
+<TT><A HREF=http://www.gnu.org/software/make/make.html>make</A></TT> as follows:
 <UL>
 <TT>make GCJ_COMPILER=arm-linux-gcj <I>[gcj related target]</I></TT>
 </UL>
 </UL>
 <P>
 The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> is
-listed below. The executable and object files are written to (and deleted from)
-the output directory (<B><I>$JASL_BASE</I>/bin</B>) and its sub-directories. All
-of the libraries referenced are found in <B><I>$JASL_BASE/lib</I></B> and its
-sub-directories.
+listed below. The executables, object files, and scripts are written or copied
+to (and deleted from) the output directory (<B><I>$JASL_BASE</I>/bin</B>) and
+its sub-directories. All of the libraries referenced are found in
+<B><I>$JASL_BASE/lib</I></B> and its sub-directories.
 <UL>
 <LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all of the .java
 source files using
@@ -114,7 +113,7 @@ one or more of the <I>shared</I> <TT>jasl</TT> libraries, are generated using
 suffix and are placed in the output directory.
 <LI><TT>cni_static</TT> - performs a similar function to the
 <TT>cni_dynamic</TT> target, except the linking is with the appropriate
-<I>static</I> libraries and each output filename ends with "cni_static".
+<I>static</I> libraries and each output filename ends with "_cni_static".
 <P>
 <LI><TT>jar</TT> - create an executable
 <TT>
@@ -128,9 +127,10 @@ them from being included in the archive.
 libraries generated with <A HREF="http://www.swig.org/">SWIG</A> (see
 <A HREF="swig/swig.html">here</A> for details), which link with the
 <I>shared</I> versions of one or more of the <TT>jasl</TT> libraries and the
-<TT>cni-wrapper</TT> library.</I>
-<LI><TT><A HREF="http://www.perl.org/">perl</A></TT>
-<LI><TT><A HREF="http://www.python.org/">python</A></TT>
+<TT>cni-wrapper</TT> library. The scripts are copied to the indicated
+sub-directories of the output directory.</I>
+<LI><TT><A HREF="http://www.perl.org/">perl</A></TT> - <B><I>perljASL</I></B>
+<LI><TT><A HREF="http://www.python.org/">python</A></TT> - <B><I>pyjASL</I></B>
 <P>
 <I>The </I><TT>clean</TT><I> targets remove the specified files from the output
 directory and/or its sub-directories.</I>
@@ -162,15 +162,16 @@ the <I>shared</I> versions of one or more of the <TT>jasl</TT> libraries and the
 <LI><TT>clean_cni_static</TT> - the native (from .cpp source and linked with the
 <I>static</I> versions of one or more of the <TT>jasl</TT> libraries
 and the <TT>cni-wrapper</TT> library) executable(s).
-<LI><TT>clean_perl</TT> - the <A HREF="http://www.perl.org/">Perl</A> script(s).
+<LI><TT>clean_perl</TT> - the <A HREF="http://www.perl.org/">Perl</A> script(s)
+(see above for sub-directory name).
 <LI><TT>clean_python</TT> - the <A HREF="http://www.python.org/">Python</A>
-script(s).
+script(s) (see above for sub-directory name).
 <P>
 <I>The </I><TT>test</TT><I> targets execute the specified output format or files
 and compare the results, using
-</I><TT><A HREF=http://directory.fsf.org/GNU/diffutils.html>diff</A></TT><I>, to
+</I><TT><A HREF=http://www.gnu.org/software/diffutils/>diff</A></TT><I>, to
 a saved file.</I>
-<LI><TT>test</TT> - the java bytecode.
+<LI><TT>test</TT> - the java bytecode (.class) file(s).
 <LI><TT>test_jar</TT> - the
 <TT>
 <A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/jar.html>jar</A>
@@ -196,7 +197,7 @@ files, placing the results in the indicated sub-directory of
 <B>$JASL_BASE/share/jasl/doc</B>.</I>
 <LI><TT>docs</TT> - generates an HTML version of each source file and the
 <A HREF=Makefile.html>Makefile</A> using
-<TT><A HREF=http://directory.fsf.org/GNU/sourcehighlight.html>source-highlight</A></TT>,
+<TT><A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>,
 placing the output files in
 <B><A HREF=index.html>source</A></B>. This file, <B>source.html</B>, is also
 generated, and includes links to all of the HTML files in their respective
@@ -205,8 +206,8 @@ sub-directories.
 <TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javadoc.html>javadoc</A></TT>, placing the output files in
 <B><A HREF=../javadocs/index.html>javadocs</A></B>.
 <LI><TT>gjdocs</TT> - generates class documentation for this program using
-<TT><A HREF=http://directory.fsf.org/cp-tools.html>gjdoc</A></TT>, placing the
-output files in <B><A HREF=../javadocs/index.html>javadocs</A></B>.
+<TT><A HREF=http://www.gnu.org/software/classpath/cp-tools/>gjdoc</A></TT>,
+placing the output files in <B><A HREF=../javadocs/index.html>javadocs</A></B>.
 <LI><TT>doxygen</TT> - generates class documentation for this program using
 <TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>, placing the output files
 in <B><A HREF=../doxygen/html/index.html>doxygen/html</A></B>.
