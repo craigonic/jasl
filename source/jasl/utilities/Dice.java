@@ -1,8 +1,7 @@
 // ************************************************************************** //
 // Dice.java - This class is used to simulate the rolling of two standard     //
-//             dice. It is intended to support the classes within the         //
-//             <B>counters</B> package and thus does not fall within the hierarchy   //
-//             of classes derived from Unit.                                  //
+//             dice. It is intended to support the classes more directly      //
+//             associated with the game itself.                               //
 //                                                                            //
 //             All of the calculations (die rolls) are performed              //
 //             automatically when an instance of the Dice class is            //
@@ -13,325 +12,243 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 //                                                                            //
-// $Id: Dice.java,v 1.11 2007/08/11 05:15:12 craig Exp $
+// $Id: Dice.java,v 1.12 2009/03/28 03:36:18 craig Exp $
 // ************************************************************************** //
 
-package jasl.counters;
+package jasl.utilities;
 
 /**
  * This is a utility class used to provide the simulated result(s) of rolling
  * one or two six sided dice.
  *
- * @version 1.11
+ * @version 1.12
  * @author Craig R. Campbell
- * @see <A HREF="../../../source/jasl/counters/Dice.html">Source code</A>
+ * @see <A HREF="../../../source/jasl/utilities/Dice.html">Source code</A>
  */
 
 public final class Dice
 {
-    // Private symbolic constants
+	// Private symbolic constants
 
-    // These constants are used to define the minimum and maximum possible
-    // result values for a single die. The MAX_ROLL constant is also used in the
-    // rollIt() method to set the maximum random value.
+	// These constants are used to define the minimum and maximum possible
+	// result values for a single die. The MAX_ROLL constant is also used in the
+	// rollIt() method to set the maximum random value.
 
-    private static final int MIN_ROLL = 1;
-    private static final int MAX_ROLL = 6;
+	private static final int MIN_ROLL = 1;
+	private static final int MAX_ROLL = 6;
 
-    // This constant is used to initialize member and local variables.
+	// This constant is used as part of the error messages (see below) that
+	// that are generated when an exception is thrown.
 
-    private static final int INITIAL_VALUE = 0;
+	private static final String CLASS_NAME = "Dice";
 
-    // This constant is used as part of the error messages (see below) that
-    // that are generated when an exception is thrown.
+	// Private data members
 
-    private static final String CLASS_NAME = "Dice";
+	// This variable contains the result of rolling the white die.
 
-    // Private data members
+	private int whiteDieValue;
 
-    // This variable contains the result of rolling the white die.
+	// This variable contains the result of rolling the colored die.
 
-    private int whiteDieValue;
+	private int coloredDieValue;
 
-    // This variable contains the result of rolling the colored die.
+	// This variable contains the combined result of rolling the two dice.
 
-    private int coloredDieValue;
+	private int combinedResult;
 
-    // This variable contains the combined result of rolling the two dice.
+	// This variable is used to store the result of "rolling" a die while it is
+	// checked to verify that it falls within the expected range.
 
-    private int combinedResult;
+	private int tmpResult;
 
-    // This variable is used to store the result of "rolling" a die while it is
-    // checked to verify that it falls within the expected range.
+	// The following string is used as a message for any exceptions that may
+	// result during the simulated roll of the dice.
 
-    private int tmpResult;
+	private static final String badResultError =
+		Messages.buildErrorMessage(CLASS_NAME,Messages.CONSTRUCTOR,
+		                           "Invalid result : ");
 
-    // The following string is used as a message for any exceptions that may
-    // result during the simulated roll of the dice.
+	// Constructor
 
-    private static final String badResultError =
-        Unit.buildErrorMessage(CLASS_NAME,Counter.CONSTRUCTOR,
-                               "Invalid result : ");
+	/**
+	 * Construct a new <CODE>Dice</CODE> instance. When the object is created, both dice are
+	 * "rolled" automatically.
+	 *
+	 * @throws IllegalStateException in the case of an invalid result on one or
+	 * both of the dice.
+	 */
 
-    // Constructor
+	public Dice()
+	{
+		// Initialize the data members.
 
-    /**
-     * Construct a new <CODE>Dice</CODE> instance. When the object is created, both dice are
-     * "rolled" automatically.
-     *
-     * @throws IllegalStateException in the case of an invalid result on one or
-     * both of the dice.
-     */
+		whiteDieValue   = 0;
+		coloredDieValue = 0;
+		combinedResult  = 0;
+		tmpResult       = 0;
 
-    public Dice()
-    {
-        // Initialize the data members.
+		// Roll the dice. If the method fails, assume that a failure has
+		// occurred in calculating one of the die rolls (the result did not fall
+		// within the expected range). If this happens, throw the exception.
 
-        whiteDieValue   = INITIAL_VALUE;
-        coloredDieValue = INITIAL_VALUE;
-        combinedResult  = INITIAL_VALUE;
-        tmpResult       = INITIAL_VALUE;
+		if (!(rollEm()))
+		{
+			throw new IllegalStateException(badResultError + tmpResult);
+		}
+	}
 
-        // Roll the dice. If the method fails, assume that a failure has
-        // occurred in calculating one of the die rolls (the result did not fall
-        // within the expected range). If this happens, throw the exception.
+	// Private methods
 
-        if (!(rollEm()))
-        {
-            throw new IllegalStateException(badResultError + tmpResult);
-        }
-    }
+	// rollEm - A method to roll each die, verify that a valid result occurs,
+	//		  and copy the value to the appropriate member variable. If an
+	//		  invalid result occurs, the method returns false, which causes
+	//		  the constructor to throw an exception.
 
-    // Private methods
+	private boolean rollEm()
+	{
+		// Roll the white die.
 
-    // rollEm - A method to roll each die, verify that a valid result occurs,
-    //          and copy the value to the appropriate member variable. If an
-    //          invalid result occurs, the method returns false, which causes
-    //          the constructor to throw an exception.
+		tmpResult = rollIt();
 
-    private boolean rollEm()
-    {
-        // Roll the white die.
+		// Check the result and return false if it does not fall within the
+		// expected range.
 
-        tmpResult = rollIt();
+		if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
+		{
+			return false;
+		}
 
-        // Check the result and return false if it does not fall within the
-        // expected range.
+		// Copy the result to the whiteDieValue member variable.
 
-        if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
-        {
-            return (false);
-        }
+		whiteDieValue = tmpResult;
 
-        // Copy the result to the whiteDieValue member variable.
+		// Reset the tmpResult variable.
 
-        whiteDieValue = tmpResult;
+		tmpResult = 0;
 
-        // Reset the tmpResult variable.
+		// Roll the colored die.
 
-        tmpResult = INITIAL_VALUE;
+		tmpResult = rollIt();
 
-        // Roll the colored die.
+		// Check the result and return false if it does not fall within the
+		// expected range.
 
-        tmpResult = rollIt();
+		if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
+		{
+			return false;
+		}
 
-        // Check the result and return false if it does not fall within the
-        // expected range.
+		// Copy the result to the coloredDieValue member variable.
 
-        if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
-        {
-            return (false);
-        }
+		coloredDieValue = tmpResult;
 
-        // Copy the result to the coloredDieValue member variable.
+		// Sum the white and colored dice rolls and copy the value to the
+		// combinedResult member variable.
 
-        coloredDieValue = tmpResult;
+		combinedResult = whiteDieValue + coloredDieValue;
 
-        // Sum the white and colored dice rolls and copy the value to the
-        // combinedResult member variable.
+		// Return true to indicate that all of the die rolls were completed
+		// successfully.
 
-        combinedResult = whiteDieValue + coloredDieValue;
+		return true;
+	}
 
-        // Return true to indicate that all of the die rolls were completed
-        // successfully.
+	// rollIt - A method to roll a single die.
 
-        return (true);
-    }
+	private int rollIt()
+	{
+		return (int)Math.ceil(Math.random()*MAX_ROLL);
+	}
 
-    // rollIt - A method to roll a single die.
+	// Public access methods
 
-    private int rollIt()
-    {
-        return ((int)Math.ceil(Math.random()*MAX_ROLL));
-    }
+	/**
+	 * Display the value of each of the private data members that describe the
+	 * current instance. Each value is preceded by a label.
+	 *
+	 * @return a <CODE>String</CODE>.
+	 */
 
-    // Public access methods
+	public String toString()
+	{
+		// Define local constants.
 
-    /**
-     * Display the value of each of the private data members that describe the
-     * current instance. Each value is preceded by a label.
-     *
-     * @return a <CODE>String</CODE>.
-     */
+		String METHOD_LABEL = CLASS_NAME + Messages.TO_STRING_LABEL;
 
-    public String toString()
-    {
-        // Define local constants.
+		String WHITE_DIE_LABEL       = "White Die";
+		String COLORED_DIE_LABEL     = "Colored Die";
+		String COMBINED_RESULT_LABEL = "Combined Result";
 
-        String METHOD_LABEL = CLASS_NAME + Counter.TO_STRING_LABEL;
+		int    LABEL_WIDTH           = 20;
+		int    VALUE_WIDTH           =  5;
 
-        String WHITE_DIE_LABEL       = "White Die";
-        String COLORED_DIE_LABEL     = "Colored Die";
-        String COMBINED_RESULT_LABEL = "Combined Result";
+		// Create a buffer to store the string to be returned, initializing it
+		// with the values that define the header.
 
-        int    LABEL_WIDTH           = 20;
-        int    VALUE_WIDTH           =  5;
+		StringBuffer returnString = new StringBuffer();
 
-        // Create a buffer to store the string to be returned, initializing it
-        // with the values that define the header.
+		// Add the information describing the data stored in this class
+		// instance.
 
-        StringBuffer returnString = new StringBuffer();
+		// White Die
 
-        // Add the information describing the data stored in this class
-        // instance.
+		returnString.append(Messages.formatTextString(WHITE_DIE_LABEL,
+		                    LABEL_WIDTH,true,false));
 
-        // White Die
+		returnString.append(Messages.formatTextString(Integer.toString(getWhiteDieValue()),
+		                    VALUE_WIDTH,false,false));
 
-        try
-        {
-            returnString.append(Unit.formatTextString(WHITE_DIE_LABEL,
-                                                      LABEL_WIDTH,true,false));
-        }
+		// Colored Die
 
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
+		returnString.append(Messages.formatTextString(COLORED_DIE_LABEL,
+		                    LABEL_WIDTH,true,false));
 
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
+		returnString.append(Messages.formatTextString(Integer.toString(getColoredDieValue()),
+		                    VALUE_WIDTH,false,false));
 
-        try
-        {
-            returnString.append(Unit.formatTextString(Integer.toString(getWhiteDieValue()),
-                                                      VALUE_WIDTH,false,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Colored Die
-
-        try
-        {
-            returnString.append(Unit.formatTextString(COLORED_DIE_LABEL,
-                                                      LABEL_WIDTH,true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(Unit.formatTextString(Integer.toString(getColoredDieValue()),
-                                                      VALUE_WIDTH,false,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Combined Result
-
-        try
-        {
-            returnString.append(Unit.formatTextString(COMBINED_RESULT_LABEL,
-                                                      LABEL_WIDTH,true,false));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        try
-        {
-            returnString.append(Unit.formatTextString(Integer.toString(getCombinedResult()),
-                                                      VALUE_WIDTH,false,true));
-        }
-
-        catch (NullPointerException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        catch (IllegalArgumentException exception)
-        {
-            System.err.println(METHOD_LABEL + exception);
-        }
-
-        // Return the completed string to calling program.
-
-        return (returnString.toString());
-    }
-
-    /**
-     * Determine the result of rolling the white die.
-     *
-     * @return an <CODE>int</CODE> specifying the white die value.
-     */
-
-    public int getWhiteDieValue()
-    {
-        return (whiteDieValue);
-    }
-
-    /**
-     * Determine the result of rolling the colored die.
-     *
-     * @return an <CODE>int</CODE> specifying the colored die value.
-     */
-
-    public int getColoredDieValue()
-    {
-        return (coloredDieValue);
-    }
-
-    /**
-     * Determine the result of combining the values of the two dice.
-     *
-     * @return an <CODE>int</CODE> specifying the sum of the white and colored die values.
-     */
-
-    public int getCombinedResult()
-    {
-        return (combinedResult);
-    }
+		// Combined Result
+
+		returnString.append(Messages.formatTextString(COMBINED_RESULT_LABEL,
+		                    LABEL_WIDTH,true,false));
+
+		returnString.append(Messages.formatTextString(Integer.toString(getCombinedResult()),
+		                    VALUE_WIDTH,false,true));
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Return the result of rolling the white die.
+	 *
+	 * @return an <CODE>int</CODE> specifying the white die value.
+	 */
+
+	public int getWhiteDieValue()
+	{
+		return whiteDieValue;
+	}
+
+	/**
+	 * Return the result of rolling the colored die.
+	 *
+	 * @return an <CODE>int</CODE> specifying the colored die value.
+	 */
+
+	public int getColoredDieValue()
+	{
+		return coloredDieValue;
+	}
+
+	/**
+	 * Return the result of combining the values of the two dice.
+	 *
+	 * @return an <CODE>int</CODE> specifying the sum of the white and colored die values.
+	 */
+
+	public int getCombinedResult()
+	{
+		return combinedResult;
+	}
 }
