@@ -7,7 +7,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  January 2009                              #
 #                                                                              #
-# $Id: Makefile,v 1.1 2009/03/28 04:11:59 craig Exp $
+# $Id: Makefile,v 1.2 2009/05/05 16:55:29 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -48,7 +48,7 @@ all build: $(ALL_CLASSES)
 $(MESSAGES_CLASS):
 	$(JAVA_OPTIONS) $(MESSAGES_SRC)
 
-$(DICE_CLASS): $(UNIT_CLASS)
+$(DICE_CLASS):
 	$(JAVA_OPTIONS) $(DICE_SRC)
 
 # Build all of the individual object files. The gcj_obj target is used by the
@@ -63,7 +63,7 @@ $(MESSAGES_OBJ):
 	$(GCJ_COMPILE_CMD) $(MESSAGES_SRC)
 	$(MV) $(MESSAGES_OBJ) $(UTILITIES_OBJ_PATH)
 
-$(DICE_OBJ): $(UNIT_CLASS)
+$(DICE_OBJ): $(MESSAGES_CLASS)
 	$(GCJ_COMPILE_CMD) $(DICE_SRC)
 	$(MV) $(DICE_OBJ) $(UTILITIES_OBJ_PATH)
 
