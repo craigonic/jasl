@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.4 2008/12/26 05:56:40 craig Exp $
+# $Id: Makefile,v 1.5 2009/05/05 17:07:55 campbell Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -22,8 +22,8 @@ SWIG_PYTHON_CMD = $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 
 # GCC compile commands with options specific to each target language.
 
-GCC_PERL_COMPILE_CMD = $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.8.8/i686-linux/CORE
-GCC_PYTHON_COMPILE_CMD = $(GCC_COMPILE_CMD) -I/usr/include/python2.5
+GCC_PERL_COMPILE_CMD = $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.10.0/i686-linux/CORE
+GCC_PYTHON_COMPILE_CMD = $(GCC_COMPILE_CMD) -I/usr/include/python2.6
 
 # GCC build/link options common to all libraries and target languages.
 
