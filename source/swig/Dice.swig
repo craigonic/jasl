@@ -1,17 +1,17 @@
 // ************************************************************************** //
 // Dice.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is used to  //
 //             generate shared libraries that link to the library created for //
-//             the <A HREF="../jasl/counters/counters.html">package</A> containing this class. These libraries, along with //
+//             the <A HREF="../jasl/utilities/utilities.html">package</A> containing this class. These libraries, along with //
 //             the other files that are generated, allow objects of this type //
 //             to be accessed from the supported scripting languages (<A HREF="http://www.perl.org/">Perl</A>    //
 //             and <A HREF="http://www.python.org/">Python</A>).                                                   //
 //                                                                            //
-//             NOTE: This file is intended for use in the <A HREF="Counters.swig.html">Counters</A> interface  //
+//             NOTE: This file is intended for use in the <A HREF="Utilities.swig.html">Utilities</A> interface //
 //                   file, not to build standalone libraries.                 //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: Dice.swig,v 1.4 2008/09/11 22:09:53 campbell Exp $
+// $Id: Dice.swig,v 1.5 2009/09/01 21:30:48 campbell Exp $
 // ************************************************************************** //
 
 %module Dice;
@@ -24,7 +24,7 @@
 
 %apply SWIGTYPE* DISOWN { Dice* };
 
-// The public interface of the <A HREF="../jasl/counters/Dice.html">Dice</A> class.
+// The public interface of the <A HREF="../jasl/utilities/Dice.html">Dice</A> class.
 
 class Dice
 {
