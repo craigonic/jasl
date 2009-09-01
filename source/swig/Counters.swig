@@ -8,19 +8,10 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: Counters.swig,v 1.1 2008/09/11 20:48:05 campbell Exp $
+// $Id: Counters.swig,v 1.2 2009/09/01 22:03:51 campbell Exp $
 // ************************************************************************** //
 
 %module Counters;
-
-#ifdef SWIGPERL
-// Disable the generation of default destructors for all of the classes
-// associated with the files included below. This works for Perl, but not for
-// Python, so DISOWN typemap is used instead. See one of the files below for
-// more details.
-
-// %nodefaultdtor;
-#endif
 
 // <A HREF="../cni-wrapper/jaslWrapper.h.html">jaslWrapper.h</A> contains the #include declarations for the header files
 // associated with the interface description files listed below. It also
@@ -33,4 +24,3 @@
 // Load the interface files associated with the public classes of the
 // <B>jasl.counters</B> package.
 
-%include Dice.swig // <A HREF="Dice.swig.html">Dice</A>
