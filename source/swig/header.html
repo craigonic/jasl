@@ -2,7 +2,7 @@
 <HEAD>
 <TITLE>swig</TITLE>
 </HEAD>
-<H1><A HREF="http://www.swig.org/">SWIG</A></H1>
+<H1><A HREF="http://www.swig.org/">swig</A></H1>
 <HR>
 <H2>Building the wrapper libraries and their associated modules</H2>
 The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
@@ -110,6 +110,53 @@ the <TT>clean_counters_{language name}_module</TT> and
 <LI><TT>clean_counters_{language name}_module</TT> - deletes the module file(s)
 from the directory noted above.
 <LI><TT>clean_counters_{language name}_lib</TT> - deletes the library from the
+directory noted above.
+<P>
+<I>
+The following targets are used to build and clean the libraries and module files
+necessary to access the <A HREF="../jasl/utilities/utilities.html">Utilities</A>
+library using the scripting language name
+(<U><A HREF="http://www.perl.org/">perl</A></U> or
+<U><A HREF="http://www.python.org/">python</A></U>) included in the target name.
+</I>
+<P>
+<LI><TT>utilities_{language name}_src</TT> - uses
+<A HREF="http://www.swig.org/">SWIG</A> to generate the library source file
+(<I>Utilities_wrap.cxx</I>). If successful, it also creates the module file,
+placing it in the directory noted above.
+<P>
+<LI><TT>utilities_{language name}_obj</TT> - executes the actions defined for
+the <TT>utilities_{language name}_src</TT> target and then uses
+<A HREF=http://gcc.gnu.org/>GCC</A> to compile the generated source file into an
+object (.o) file.
+<P>
+<LI><TT>utilities_libs</TT> - executes the actions defined for each
+<TT>utilities_{language name}_lib</TT> target.
+<P>
+<LI><TT>utilities_{language name}_lib</TT> - executes the actions defined for
+the <TT>utilities_{language name}_obj</TT> target and then uses the object (.o)
+file to generate a shared library (<I>Utilities.so</I>) in the directory noted
+above.
+<P>
+<LI><TT>clean_utilities</TT> - executes the actions defined for the
+<TT>clean_utilities_src</TT> and <TT>clean_utilities_obj</TT> targets. Note that
+these targets work for all scripting languages.
+<P>
+<LI><TT>clean_utilities_src</TT> - deletes the library source file
+(<I>Utilities_wrap.cxx</I>).
+<LI><TT>clean_utilities_obj</TT> - deletes the library object file
+(<I>Utilities_wrap.o</I>).
+<P>
+<LI><TT>clean_utilities_libs</TT> - executes the actions defined for the
+<TT>clean_utilities_{language name}</TT> targets.
+<P>
+<LI><TT>clean_utilities_{language name}</TT> - executes the actions defined for
+the <TT>clean_utilities_{language name}_module</TT> and
+<TT>clean_utilities_{language name}_lib</TT> targets.
+<P>
+<LI><TT>clean_utilities_{language name}_module</TT> - deletes the module file(s)
+from the directory noted above.
+<LI><TT>clean_utilities_{language name}_lib</TT> - deletes the library from the
 directory noted above.
 <P>
 <I>
