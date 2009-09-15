@@ -22,11 +22,8 @@ is installed.
 referred to as <B><I>$JASL_BASE</I></B> in this document. An environment
 variable with this name is necessary for
 <TT><A HREF=http://www.gnu.org/software/make/make.html>make</A></TT> to work
-properly. Examples:
-<UL>
-<TT>setenv JASL_BASE /home/craig/java/jasl</TT><BR>
+properly. This can be set using the following command:
 <TT>export JASL_BASE=/home/craig/java/jasl</TT>
-</UL>
 <LI><I>Optional. </I>
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (4.3.2 or higher). It is used to build
 the native executable versions of this program, static and shared libraries, and
@@ -49,6 +46,12 @@ program is an alternative to
 that the same parameters and output directory will be used for both programs.
 <LI><I>Optional. </I><TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>.
 <LI><I>Optional. </I><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT>.
+<LI><I>Optional. </I><TT><A HREF=http://www.gnu.org/software/global/global.html>GNU GLOBAL</A></TT></TT>. Using this program requires the following environment
+variables to be set:
+<UL>
+<TT>export GTAGSROOT=$JASL_BASE/source</TT><BR>
+<TT>export GTAGSDBPATH=$GTAGSROOT/gtags</TT>
+</UL>
 <LI><I>Optional. </I>A toolchain capable of building an executable with
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> for a non-iX86 architecture. These
 source files and build structure have been used to cross-compile an executable
@@ -202,24 +205,36 @@ placing the output files in
 <B><A HREF=index.html>source</A></B>. This file, <B>source.html</B>, is also
 generated, and includes links to all of the HTML files in their respective
 sub-directories.
-<LI><TT>javadocs</TT> - generates class documentation for this program using
-<TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javadoc.html>javadoc</A></TT>, placing the output files in
-<B><A HREF=../javadocs/index.html>javadocs</A></B>.
-<LI><TT>gjdocs</TT> - generates class documentation for this program using
+<LI><TT>javadocs</TT> or <TT>gjdocs</TT> - generate class documentation for this
+program using either
+<TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javadoc.html>javadoc</A></TT> or
 <TT><A HREF=http://www.gnu.org/software/classpath/cp-tools/>gjdoc</A></TT>,
-placing the output files in <B><A HREF=../javadocs/index.html>javadocs</A></B>.
+respectively, placing the output files in
+<B><A HREF=../javadocs/index.html>javadocs</A></B>.
 <LI><TT>doxygen</TT> - generates class documentation for this program using
 <TT><A HREF=http://www.doxygen.org/>doxygen</A></TT>, placing the output files
 in <B><A HREF=../doxygen/html/index.html>doxygen/html</A></B>.
+<LI><TT>htags</TT> - generates a hypertext version of the source code using the
+<TT><A HREF=http://www.gnu.org/software/global/globaldoc.html#SEC35>GNU GLOBAL</A></TT>,
+allowing browsing by object and symbol names. The <TT>global</TT> target (see
+below) is used to rebuild the tag data necessary for input, and the output files
+are written to <B><A HREF=../global/HTML/index.html>global/HTML</A></B>.
 <P>
 <LI><TT>all_docs</TT> - executes the actions defined for the
-<TT>docs</TT>, <TT>javadocs</TT>, and <TT>doxygen</TT> targets.
+<TT>docs</TT>, <TT>javadocs</TT>, <TT>doxygen</TT>, and <TT>htags</TT> targets.
 <P>
 <I>Miscellaneous targets.</I>
 <LI><TT><A HREF=http://ctags.sourceforge.net/>ctags</A></TT> - creates a file
 (<B>tags</B>) in the source directory that indexes many of the language objects.
 This is useful for navigating the source code from text editors, such as
 <A HREF="http://vim.sourceforge.net/">Vim</A>, that support it.
+<LI><TT><A HREF=http://www.gnu.org/software/global/global.html>global</A></TT>
+- creates a sub-directory
+(<B>gtags</B>) of the source directory containing tag files, which can be used
+by a number of
+<A HREF=http://www.gnu.org/software/global/globaldoc.html#SEC9>programs</A> to
+provide source navigation functionality. They are also used by <TT>htags</TT>
+(see above).
 </UL>
 <HR>
 <A HREF="http://vim.sourceforge.net/"><img src="vim.png" align="right" BORDER=0></A>
