@@ -34,7 +34,7 @@
 #
 # Modified by : Craig Campbell  -  December 2002
 #
-# $Id: htls,v 1.4 2006/10/18 23:32:09 campbell Exp $
+# $Id: htls,v 1.5 2009/09/30 01:45:07 craig Exp $
 #
 
 # Set application name for messages and to exclude the program file from the
@@ -1283,7 +1283,7 @@ sub WriteHTMLFooter
         # Display the contact information for the person running the program.
 
         print HTMLOUT "Page Maintained by ";
-        print HTMLOUT "<A HREF = \"mailto:crc\@eskimo.com\">";
+        print HTMLOUT "<A HREF = \"mailto:craigonic\@gmail.com\">";
         print HTMLOUT "Craig Campbell</A>.";
 
         # Display the date.
