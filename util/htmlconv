@@ -5,20 +5,30 @@ s/&lt;A.*HREF.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1\2<\/A><\/b>/
 s/&lt;A HREF=\(".*"\)&gt;\(.*\)&lt;\/A&gt;\(.*\)&lt;A HREF=\(".*"\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1>\2<\/A>\3<A HREF=\4>\5<\/A>/
 s/&lt;A HREF=\(".*"\)&gt;\(.*\)&lt;\/A&gt;/<A HREF=\1>\2<\/A>/
 s/&lt;A.*NAME.*>=<.*>\(".*">\)&gt;\(.*\)&lt;\/A&gt;/<A NAME=\1\2<\/A><\/b>/
+s/&lt;A.*NAME.*=\(".*"\)&gt;&lt;\/A&gt;/<A NAME=\1><\/A>/
 s/&lt;\(CODE\)&gt;\(.*\)&lt;\(\/CODE\)&gt;/<\1>\2<\3>/
 s/&lt;\(B\)&gt;\(.*\)&lt;\(\/B\)&gt;\(.*\)&lt;\(B\)&gt;\(.*\)&lt;\(\/B\)&gt;/<\1>\2<\3>\4<\5>\6<\7>/
 s/&lt;\(B\)&gt;\(.*\)&lt;\(\/B\)&gt;/<\1>\2<\3>/
-s/\\file //
 s/\\brief //
+s/\\file //
 s/\\\(typedef \)/\1/
-s/@version/Version/
+s/@param\(<\/font><i><font color="#9A1900"> \)\([a-z][A-Za-z]*\) \([a-z]\)/@param\1<font color="#000000">\2<\/font> - \3/
+s/@param \([a-zA-Z]\+\) /@param <B>\1<\/B> /
+s/@see\(<.*> \)\([A-Z][a-z].*\)#\([A-Z][A-Z].*\)\(<\/font>\)/@see\1<A HREF="\2.html#_\3_">\2.\3<\/A>\4/
+s/@see\(<.*> \)\([A-Z][a-z].*\)#\([a-z][a-z].*\)\(<\/font>\)/@see\1<A HREF="\2.html">\2<\/A>.\3()\4/
+s/@see\(<.*> \)#\([A-Z][A-Z].*\)<\/font></@see\1<A HREF="#_\2_">\2<\/A><\/font></
+s/@see\(<.*> \)#\([a-z][a-z].*\)</@see\1<font color="#000000">\2()<\/font></
+s/@see\(<.*> \)\([A-Z][a-z].*\)\(<\/font>\)/@see\1<A HREF="\2.html">\2<\/A>\3/
+s/@see\(<.*> \)\(.*\)</@see\1<font color="#000000">\2<\/font></
+s/@see \([A-Z][a-z]\+[a-zA-Z]\+\)#\([A-Z]\+[A-Z_]\+\)</@see <A HREF="\1.html#_\2_">\1.\2<\/A></
+s/@see \([A-Z][a-z]\+[a-zA-Z]\+\)#\([a-z][a-zA-Z]\+\)</@see <A HREF="\1.html">\1<\/A>.\2()</
+s/@see \([A-Z][a-z]\+[a-zA-Z]\+\)</@see <A HREF="\1.html">\1<\/A></
+s/@see #\([a-z]\+[a-zA-Z]\+\)</@see \1()</
+s/@throws\(<.*"#\)9A1900">\( .*Exception\)\( [a-z].*<\/font>\)/@throws\1000000">\2<\/font><font color="#9A1900">\3/
+s/@throws \([a-zA-Z]\+Exception\) /@throws <B>\1<\/B> /
 s/@author/Author/
-s/@throws\(<.*"#\)9A1900">\( .*Exception\)\( [a-z].*<\/font>\)/Throws\1000000">\2<\/font><font color="#9A1900">\3/
-s/@param\(<\/font><i><font color="#9A1900"> \)\([a-z][A-Za-z]*\) \([a-z]\)/Parameter\1<font color="#000000">\2<\/font> - \3/
+s/@param/Parameter/
 s/@return/Returns/
-s/@see\(<.*> \)\([A-Z][a-z].*\)#\([A-Z][A-Z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html#_\3_">\2.\3<\/A>\4/
-s/@see\(<.*> \)\([A-Z][a-z].*\)#\([a-z][a-z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html">\2<\/A>.\3()\4/
-s/@see\(<.*> \)#\([A-Z][A-Z].*\)<\/font></See Also\1<A HREF="#_\2_">\2<\/A><\/font></
-s/@see\(<.*> \)#\([a-z][a-z].*\)</See Also\1<font color="#000000">\2()<\/font></
-s/@see\(<.*> \)\([A-Z][a-z].*\)\(<\/font>\)/See Also\1<A HREF="\2.html">\2<\/A>\3/
-s/@see\(<.*> \)\(.*\)</See Also\1<font color="#000000">\2<\/font></
+s/@see/See Also/
+s/@throws/Throws/
+s/@version/Version/
