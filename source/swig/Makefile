@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.6 2009/09/02 22:19:54 campbell Exp $
+# $Id: Makefile,v 1.7 2009/10/12 16:22:41 campbell Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -28,6 +28,22 @@ GCC_PYTHON_COMPILE_CMD = $(GCC_COMPILE_CMD) -I/usr/include/python2.6
 # GCC build/link options common to all libraries and target languages.
 
 GCC_COMMON_BUILD_OPTIONS = -lgcj -lstdc++ -L$(LIB_PATH)
+
+## Targets to create the output directories for the Perl files.
+
+perl_bin_directory:
+	$(INSTALL_DIR) $(PERL_BIN_PATH)
+
+perl_lib_directory:
+	$(INSTALL_DIR) $(PERL_LIB_PATH)
+
+## Targets to create the output directories for the Python files.
+
+python_bin_directory:
+	$(INSTALL_DIR) $(PYTHON_BIN_PATH)
+
+python_lib_directory:
+	$(INSTALL_DIR) $(PYTHON_LIB_PATH)
 
 ## CniWrapper ##################################################################
 
@@ -53,10 +69,10 @@ CNI_SWIG_WRAPPER_PYC = ${CNI_SWIG_WRAPPER_LIB:.so=.pyc}
 
 # Generate the wrapper source file for the desired target language.
 
-cni_perl_src: $(CNI_WRAPPER_SWIG_SRC_FILE)
+cni_perl_src: $(CNI_WRAPPER_SWIG_SRC_FILE) perl_bin_directory
 	$(SWIG_PERL_CMD) $(CNI_WRAPPER_SWIG_SRC_FILE)
 
-cni_python_src: $(CNI_WRAPPER_SWIG_SRC_FILE)
+cni_python_src: $(CNI_WRAPPER_SWIG_SRC_FILE) python_bin_directory
 	$(SWIG_PYTHON_CMD) $(CNI_WRAPPER_SWIG_SRC_FILE)
 
 # Build the object (.o) file for the desired target language.
@@ -76,11 +92,11 @@ CNI_COMMON_BUILD_OPTIONS = $(GCC_COMMON_BUILD_OPTIONS) \
                            -l$(CNI_WRAPPER_BASE_LIB_NAME) \
                            $(CNI_SWIG_WRAPPER_OBJ)
 
-cni_perl_lib: cni_perl_obj
+cni_perl_lib: cni_perl_obj perl_lib_directory
 	$(GCC_LIB_BUILD_CMD) $(PERL_LIB_PATH)/$(CNI_SWIG_WRAPPER_LIB) \
 	                     $(CNI_COMMON_BUILD_OPTIONS)
 
-cni_python_lib: cni_python_obj
+cni_python_lib: cni_python_obj python_lib_directory
 	$(GCC_LIB_BUILD_CMD) $(PYTHON_LIB_PATH)/_$(CNI_SWIG_WRAPPER_LIB) \
 	                     $(CNI_COMMON_BUILD_OPTIONS)
 
@@ -145,10 +161,10 @@ COUNTERS_SWIG_WRAPPER_PYC = ${COUNTERS_SWIG_WRAPPER_LIB:.so=.pyc}
 
 # Generate the wrapper source file for the desired target language.
 
-counters_perl_src: $(COUNTERS_SWIG_SRC_FILE)
+counters_perl_src: $(COUNTERS_SWIG_SRC_FILE) perl_bin_directory
 	$(SWIG_PERL_CMD) $(COUNTERS_SWIG_SRC_FILE)
 
-counters_python_src: $(COUNTERS_SWIG_SRC_FILE)
+counters_python_src: $(COUNTERS_SWIG_SRC_FILE) python_bin_directory
 	$(SWIG_PYTHON_CMD) $(COUNTERS_SWIG_SRC_FILE)
 
 # Build the object (.o) file for the desired target language.
@@ -168,11 +184,11 @@ COUNTERS_COMMON_BUILD_OPTIONS = $(GCC_COMMON_BUILD_OPTIONS) \
                                 -l$(COUNTERS_BASE_LIB_NAME) \
                                 $(COUNTERS_SWIG_WRAPPER_OBJ)
 
-counters_perl_lib: counters_perl_obj
+counters_perl_lib: counters_perl_obj perl_lib_directory
 	$(GCC_LIB_BUILD_CMD) $(PERL_LIB_PATH)/$(COUNTERS_SWIG_WRAPPER_LIB) \
 	                     $(COUNTERS_COMMON_BUILD_OPTIONS)
 
-counters_python_lib: counters_python_obj
+counters_python_lib: counters_python_obj python_lib_directory
 	$(GCC_LIB_BUILD_CMD) $(PYTHON_LIB_PATH)/_$(COUNTERS_SWIG_WRAPPER_LIB) \
 	                     $(COUNTERS_COMMON_BUILD_OPTIONS)
 
@@ -237,10 +253,10 @@ UTILITIES_SWIG_WRAPPER_PYC = ${UTILITIES_SWIG_WRAPPER_LIB:.so=.pyc}
 
 # Generate the wrapper source file for the desired target language.
 
-utilities_perl_src: $(UTILITIES_SWIG_SRC_FILE)
+utilities_perl_src: $(UTILITIES_SWIG_SRC_FILE) perl_bin_directory
 	$(SWIG_PERL_CMD) $(UTILITIES_SWIG_SRC_FILE)
 
-utilities_python_src: $(UTILITIES_SWIG_SRC_FILE)
+utilities_python_src: $(UTILITIES_SWIG_SRC_FILE) python_bin_directory
 	$(SWIG_PYTHON_CMD) $(UTILITIES_SWIG_SRC_FILE)
 
 # Build the object (.o) file for the desired target language.
@@ -260,11 +276,11 @@ UTILITIES_COMMON_BUILD_OPTIONS = $(GCC_COMMON_BUILD_OPTIONS) \
                                  -l$(UTILITIES_BASE_LIB_NAME) \
                                  $(UTILITIES_SWIG_WRAPPER_OBJ)
 
-utilities_perl_lib: utilities_perl_obj
+utilities_perl_lib: utilities_perl_obj perl_lib_directory
 	$(GCC_LIB_BUILD_CMD) $(PERL_LIB_PATH)/$(UTILITIES_SWIG_WRAPPER_LIB) \
 	                     $(UTILITIES_COMMON_BUILD_OPTIONS)
 
-utilities_python_lib: utilities_python_obj
+utilities_python_lib: utilities_python_obj python_lib_directory
 	$(GCC_LIB_BUILD_CMD) $(PYTHON_LIB_PATH)/_$(UTILITIES_SWIG_WRAPPER_LIB) \
 	                     $(UTILITIES_COMMON_BUILD_OPTIONS)
 
@@ -332,11 +348,12 @@ SWIG_DOCS_PATH = $(SRC_DOCS_PATH)/$(SWIG_DIRECTORY)
 HTLS_CFG_FILE  = $(SWIG_DIRECTORY).cfg
 
 docs_all:
+	@$(INSTALL_DIR) $(SWIG_DOCS_PATH)
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SWIG_DOCS_PATH)/$(MAKEFILE).html
 	@for i in `ls *.swig` ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SWIG_DOCS_PATH)/$$i.html ;\
 	done
-	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(SWIG_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(SWIG_DOCS_PATH)
 	@$(HTLS) $(SWIG_DOCS_PATH)
 
 clean_docs:
