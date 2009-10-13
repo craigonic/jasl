@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.7 2009/10/12 16:22:41 campbell Exp $
+# $Id: Makefile,v 1.8 2009/10/13 22:15:03 campbell Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -29,18 +29,12 @@ GCC_PYTHON_COMPILE_CMD = $(GCC_COMPILE_CMD) -I/usr/include/python2.6
 
 GCC_COMMON_BUILD_OPTIONS = -lgcj -lstdc++ -L$(LIB_PATH)
 
-## Targets to create the output directories for the Perl files.
-
-perl_bin_directory:
-	$(INSTALL_DIR) $(PERL_BIN_PATH)
+## Targets to create the output directories for the Perl and Python libraries.
+## The targets for the language module files, which are stored in
+## sub-directories of bin, are defined in jasl.make
 
 perl_lib_directory:
 	$(INSTALL_DIR) $(PERL_LIB_PATH)
-
-## Targets to create the output directories for the Python files.
-
-python_bin_directory:
-	$(INSTALL_DIR) $(PYTHON_BIN_PATH)
 
 python_lib_directory:
 	$(INSTALL_DIR) $(PYTHON_LIB_PATH)
