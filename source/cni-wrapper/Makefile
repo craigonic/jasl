@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  May 2007                                  #
 #                                                                              #
-# $Id: Makefile,v 1.6 2008/12/26 06:02:40 craig Exp $
+# $Id: Makefile,v 1.7 2009/10/15 20:19:27 campbell Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -34,9 +34,8 @@ obj: $(CNI_WRAPPER_SRC)
 
 # Install the header (.h) files in the include directory.
 
-hdr: $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR)
-	$(CP) -f $(CNI_WRAPPER_HDR)  $(INCLUDE_PATH)
-	$(CP) -f $(JASL_WRAPPER_HDR) $(INCLUDE_PATH)
+hdr: $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR) include_directory
+	$(INSTALL_STD_FILE) $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR) $(INCLUDE_PATH)
 
 # Define variables used to represent the dynamic and static libraries.
 
@@ -49,15 +48,15 @@ DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
 # along with the necessary links, and install it/them in the library output
 # directory.
 
-libs: obj dynamic_lib static_lib clean
+libs: dynamic_lib static_lib clean
 
-dynamic_lib:
+dynamic_lib: obj lib_directory
 	$(GCC_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) \
 	                     $(CNI_WRAPPER_OBJ)
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
 
-static_lib:
+static_lib: obj lib_directory
 	$(AR) $(CNI_WRAPPER_STATIC_LIB_PATH) $(CNI_WRAPPER_OBJ)
 
 # Remove the object file from this directory.
@@ -68,8 +67,7 @@ clean:
 # Remove the header (.h) files from the include output directory.
 
 clean_hdr:
-	$(RM) $(INCLUDE_PATH)/$(CNI_WRAPPER_HDR)
-	$(RM) $(INCLUDE_PATH)/$(JASL_WRAPPER_HDR)
+	$(RM) $(INCLUDE_PATH)/$(CNI_WRAPPER_HDR) $(INCLUDE_PATH)/$(JASL_WRAPPER_HDR)
 
 # Remove all of the dynamic and/or static library files and links from the
 # library output directory.
@@ -91,15 +89,16 @@ CNI_DOCS_PATH = $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)
 HTLS_CFG_FILE = $(CNI_DIRECTORY).cfg
 
 docs_all:
-	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$(MAKEFILE).html
+	@$(INSTALL_DIR) $(CNI_DOCS_PATH)
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(CNI_DOCS_PATH)/$(MAKEFILE).html
 	@for i in $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC) $(JASL_WRAPPER_HDR) ; do \
- 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$$i.html ;\
+		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(CNI_DOCS_PATH)/$$i.html ;\
 	done
-	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(CNI_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(CNI_DOCS_PATH)
 	@$(HTLS) $(CNI_DOCS_PATH)
 
 clean_docs:
-	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE)
-	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_CFG_FILE)
+	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE) \
+	       $(CNI_DOCS_PATH)/$(HTLS_CFG_FILE)
 
 docs: docs_all clean_docs
