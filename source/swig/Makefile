@@ -5,7 +5,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.8 2009/10/13 22:15:03 campbell Exp $
+# $Id: Makefile,v 1.9 2009/10/28 20:25:48 campbell Exp $
 ################################################################################
 
 ## System-wide build variables.
@@ -176,6 +176,7 @@ counters_python_obj: counters_python_src
 
 COUNTERS_COMMON_BUILD_OPTIONS = $(GCC_COMMON_BUILD_OPTIONS) \
                                 -l$(COUNTERS_BASE_LIB_NAME) \
+                                -l$(UTILITIES_BASE_LIB_NAME) \
                                 $(COUNTERS_SWIG_WRAPPER_OBJ)
 
 counters_perl_lib: counters_perl_obj perl_lib_directory
