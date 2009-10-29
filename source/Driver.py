@@ -11,7 +11,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 2008                               #
 #                                                                              #
-# $Id: Driver.py,v 1.1 2008/09/22 20:05:53 campbell Exp $
+# $Id: Driver.py,v 1.2 2009/10/29 23:21:03 campbell Exp $
 ################################################################################
 
 import sys
@@ -19,11 +19,20 @@ sys.path.append("/home/campbell/java/jasl/lib/python")
 
 from CniWrapper import *
 from Counters   import *
+from Utilities  import *
 
 cni_wrapper = CNI_WRAPPER()
 
-dice = Dice()
+# Test the Dice class.
 
-print "White die value : ",dice.getWhiteDieValue()
-print "Colored die value: ",dice.getColoredDieValue()
-print "Combined result : ",dice.getCombinedResult()
+print "\nTesting the execution of the Dice class:\n";
+
+for i in (list(range(12))):
+    dice = Dice()
+
+#   print "White: %d Colored: %d Combined: %2d\n" % \
+#         (dice.getWhiteDieValue(),   \
+#          dice.getColoredDieValue(), \
+#          dice.getCombinedResult())
+
+    print "%s" % (cni_wrapper.stringToConstChar(dice.toString()))
