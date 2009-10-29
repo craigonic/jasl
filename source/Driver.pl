@@ -12,7 +12,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 2008                               #
 #                                                                              #
-# $Id: Driver.pl,v 1.3 2008/10/03 21:59:46 campbell Exp $
+# $Id: Driver.pl,v 1.4 2009/10/29 23:14:59 campbell Exp $
 ################################################################################
 
 #$PERLLIB_INC = "/home/campbell/java/jasl/lib";
@@ -23,21 +23,22 @@
 
 use CniWrapper;
 use Counters;
+use Utilities;
 
 my $cni_wrapper = new CniWrapper::CNI_WRAPPER();
 
-    # Test the Dice class.
+# Test the Dice class.
 
-    printf("\nTesting the execution of the Dice class:\n\n");
+printf("\nTesting the execution of the Dice class:\n\n");
 
-    for ($i = 0;$i < 12;$i++)
-    {
-        $theDice = new Counters::Dice();
+for ($i = 0;$i < 12;$i++)
+{
+    $theDice = new Utilities::Dice();
 
-#       printf("White: %d Colored: %d Combined: %2d\n",
-#              $theDice->getWhiteDieValue(),
-#              $theDice->getColoredDieValue(),
-#              $theDice->getCombinedResult());
+#   printf("White: %d Colored: %d Combined: %2d\n",
+#          $theDice->getWhiteDieValue(),
+#          $theDice->getColoredDieValue(),
+#          $theDice->getCombinedResult());
 
-        printf("%s\n",$cni_wrapper->stringToConstChar($theDice->toString()));
-    }
+    printf("%s\n",$cni_wrapper->stringToConstChar($theDice->toString()));
+}
