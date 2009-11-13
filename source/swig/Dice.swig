@@ -11,7 +11,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: Dice.swig,v 1.5 2009/09/01 21:30:48 campbell Exp $
+// $Id: Dice.swig,v 1.6 2009/11/13 18:06:28 campbell Exp $
 // ************************************************************************** //
 
 %module Dice;
@@ -31,8 +31,8 @@ class Dice
     public:
 
         Dice();
-        virtual ::java::lang::String* toString();
-        virtual int                   getWhiteDieValue();
-        virtual int                   getColoredDieValue();
-        virtual int                   getCombinedResult();
+        ::java::lang::String* toString();
+        int                   getWhiteDieValue();
+        int                   getColoredDieValue();
+        int                   getCombinedResult();
 };
