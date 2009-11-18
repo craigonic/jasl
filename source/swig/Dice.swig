@@ -11,7 +11,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: Dice.swig,v 1.6 2009/11/13 18:06:28 campbell Exp $
+// $Id: Dice.swig,v 1.7 2009/11/18 16:50:47 campbell Exp $
 // ************************************************************************** //
 
 %module Dice;
@@ -30,9 +30,15 @@ class Dice
 {
     public:
 
+        // Constructor.
+
         Dice();
-        ::java::lang::String* toString();
+
+        // Access methods.
+
         int                   getWhiteDieValue();
         int                   getColoredDieValue();
         int                   getCombinedResult();
+
+        ::java::lang::String* toString();
 };
