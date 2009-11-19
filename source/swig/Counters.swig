@@ -8,7 +8,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
 //                                                                            //
-// $Id: Counters.swig,v 1.2 2009/09/01 22:03:51 campbell Exp $
+// $Id: Counters.swig,v 1.3 2009/11/19 20:47:42 campbell Exp $
 // ************************************************************************** //
 
 %module Counters;
@@ -24,3 +24,5 @@
 // Load the interface files associated with the public classes of the
 // <B>jasl.counters</B> package.
 
+%include Leader.swig // <A HREF="Leader.swig.html">Leader</A>
+%include Squad.swig  // <A HREF="Squad.swig.html">Squad</A>
