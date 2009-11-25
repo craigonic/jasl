@@ -9,10 +9,11 @@
 //                                                                            //
 // Written By  : Craig R. Campbell  -  December 1998                          //
 //                                                                            //
-// $Id: Driver.java,v 1.11 2007/07/07 04:47:59 craig Exp $
+// $Id: Driver.java,v 1.12 2009/11/25 06:19:14 craig Exp $
 // ************************************************************************** //
 
 import jasl.counters.*;
+import jasl.utilities.Dice;
 
 public class Driver
 {
