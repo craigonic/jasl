@@ -12,7 +12,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 2008                               #
 #                                                                              #
-# $Id: Driver.pl,v 1.4 2009/10/29 23:14:59 campbell Exp $
+# $Id: Driver.pl,v 1.5 2009/11/30 19:56:36 campbell Exp $
 ################################################################################
 
 #$PERLLIB_INC = "/home/campbell/java/jasl/lib";
@@ -27,6 +27,152 @@ use Utilities;
 
 my $cni_wrapper = new CniWrapper::CNI_WRAPPER();
 
+# Create an instance of a German Leader.
+
+$germanLeader = new Counters::Leader($cni_wrapper->constCharToString("German"),
+                                     $cni_wrapper->constCharToString("Lt. Fellbaum"),
+                                     $cni_wrapper->constCharToString("Leader"),
+                                     9,9,4,-1);
+
+# Display all of the entered values for this instance using the toString()
+# method.
+
+printf("Leader.toString() output:\n\n%s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->toString()));
+
+# Display the output of all of the access methods declared for the Leader class
+# using the instance created above.
+
+printf("Leader class access methods and output :\n");
+
+printf("\n\tgetDescription(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getDescription()));
+
+printf("\tcanSprayFire(): %d\n",$germanLeader->canSprayFire());
+printf("\tgetFirepower(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getFirepower()));
+printf("\tgetIdentity(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getIdentity()));
+printf("\tgetNationality(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getNationality()));
+printf("\tgetNormalRange(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getNormalRange()));
+printf("\tgetPortageValue(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getPortageValue()));
+printf("\tgetUnitType(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getUnitType()));
+
+printf("\tgetMovement(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getMovement()));
+printf("\tgetPortageCapacity(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getPortageCapacity()));
+printf("\tgetPortageLevel(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getPortageLevel()));
+
+printf("\tcanSelfRally(): %d\n",$germanLeader->canSelfRally());
+printf("\tgetBPV(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getBPV()));
+printf("\tgetBrokenMorale(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getBrokenMorale()));
+printf("\tgetELR(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getELR()));
+printf("\tgetMorale(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getMorale()));
+printf("\tgetStatus(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getStatus()));
+
+printf("\tgetModifier(): %s\n",
+       $cni_wrapper->stringToConstChar($germanLeader->getModifier()));
+
+#printf("\nConstant string test: %s\n",
+#       $cni_wrapper->stringToConstChar($Counters::Leader::MODIFIER_LABEL));
+
+# Create an instance of a Russian Squad.
+
+$russianSquad = new Counters::Squad($cni_wrapper->constCharToString("Russian"),
+                                    $cni_wrapper->constCharToString("A"),
+                                    $cni_wrapper->constCharToString("Guards"),
+                                    $cni_wrapper->constCharToString("6"),2,1,8,
+                                    8,0,12,4,0,
+                                    $cni_wrapper->constCharToString("Elite"),
+                                    1,0);
+
+# Display all of the entered values for this instance using the toString()
+# method.
+
+printf("\nSquad.toString() output:\n\n%s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->toString()));
+
+# Display the output of all of the access methods declared for the Squad class
+# using the instance created above.
+
+printf("Squad class access methods and output :\n");
+
+printf("\n\tgetDescription(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getDescription()));
+
+printf("\tcanSprayFire(): %d\n",$russianSquad->canSprayFire());
+printf("\tgetFirepower(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getFirepower()));
+printf("\tgetIdentity(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getIdentity()));
+printf("\tgetNationality(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getNationality()));
+printf("\tgetNormalRange(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getNormalRange()));
+printf("\tgetPortageValue(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getPortageValue()));
+printf("\tgetUnitType(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getUnitType()));
+
+printf("\tgetMovement(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getMovement()));
+printf("\tgetPortageCapacity(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getPortageCapacity()));
+printf("\tgetPortageLevel(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getPortageLevel()));
+
+printf("\tcanSelfRally(): %d\n",$russianSquad->canSelfRally());
+printf("\tgetBPV(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getBPV()));
+printf("\tgetBrokenMorale(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getBrokenMorale()));
+printf("\tgetELR(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getELR()));
+printf("\tgetMorale(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getMorale()));
+printf("\tgetStatus(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getStatus()));
+
+printf("\tgetClassification(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getClassification()));
+printf("\thasMaxELR(): %d\n",$russianSquad->hasMaxELR());
+
+printf("\tcanAssaultFire(): %d\n",$russianSquad->canAssaultFire());
+printf("\tgetSPE(): %s\n",
+       $cni_wrapper->stringToConstChar($russianSquad->getSPE()));
+
+#printf("\nConstant string test: %s\n",
+#       $cni_wrapper->stringToConstChar($Counters::Squad::CAN_ASSAULT_FIRE_LABEL));
+
+# Create an instance of a German Squad (that throws some exceptions).
+
+# NULL Nationality
+
+printf("\nTesting Exception handling during Squad creation:\n");
+printf("\nNull nationality parameter:\n");
+
+#$germanSquad = new Counters::Squad($cni_wrapper->constCharToString(undef),
+#                                   $cni_wrapper->constCharToString("5"),
+#                                   $cni_wrapper->constCharToString("Squad"),
+#                                   $cni_wrapper->constCharToString("4"),6,1,7,7,
+#                                   0,10,3,0,
+#                                   $cni_wrapper->constCharToString("1st Line"),
+#                                   0,1);
+
+#printf("Squad.toString() output:\n\n%s\n",
+#       $cni_wrapper->stringToConstChar($germanSquad->toString()));
+
 # Test the Dice class.
 
 printf("\nTesting the execution of the Dice class:\n\n");
@@ -35,7 +181,7 @@ for ($i = 0;$i < 12;$i++)
 {
     $theDice = new Utilities::Dice();
 
-#   printf("White: %d Colored: %d Combined: %2d\n",
+#   printf("Access methods test - White: %d Colored: %d Combined: %2d\n",
 #          $theDice->getWhiteDieValue(),
 #          $theDice->getColoredDieValue(),
 #          $theDice->getCombinedResult());
