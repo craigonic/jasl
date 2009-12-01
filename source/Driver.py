@@ -11,7 +11,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 2008                               #
 #                                                                              #
-# $Id: Driver.py,v 1.2 2009/10/29 23:21:03 campbell Exp $
+# $Id: Driver.py,v 1.3 2009/12/01 21:36:47 campbell Exp $
 ################################################################################
 
 import sys
@@ -23,16 +23,153 @@ from Utilities  import *
 
 cni_wrapper = CNI_WRAPPER()
 
+# Create an instance of a German Leader.
+
+germanLeader = Leader(cni_wrapper.constCharToString("German"),
+                      cni_wrapper.constCharToString("Lt. Fellbaum"),
+                      cni_wrapper.constCharToString("Leader"),9,9,4,-1)
+
+# Display all of the entered values for this instance using the toString()
+# method.
+
+print "Leader.toString() output:\n\n%s" % \
+      cni_wrapper.stringToConstChar(germanLeader.toString())
+
+# Display the output of all of the access methods declared for the Leader class
+# using the instance created above.
+
+print "Leader class access methods and output :\n"
+
+print "\tgetDescription(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getDescription())
+
+print "\tcanSprayFire(): %d" % germanLeader.canSprayFire()
+print "\tgetFirepower(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getFirepower())
+print "\tgetIdentity(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getIdentity())
+print "\tgetNationality(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getNationality())
+print "\tgetNormalRange(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getNormalRange())
+print "\tgetPortageValue(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getPortageValue())
+print "\tgetUnitType(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getUnitType())
+
+print "\tgetMovement(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getMovement())
+print "\tgetPortageCapacity(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getPortageCapacity())
+print "\tgetPortageLevel(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getPortageLevel())
+
+print "\tcanSelfRally(): %d" % germanLeader.canSelfRally()
+print "\tgetBPV(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getBPV())
+print "\tgetBrokenMorale(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getBrokenMorale())
+print "\tgetELR(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getELR())
+print "\tgetMorale(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getMorale())
+print "\tgetStatus(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getStatus())
+
+print "\tgetModifier(): %s" % \
+      cni_wrapper.stringToConstChar(germanLeader.getModifier())
+
+#print "\nConstant string test: %s" % \
+#      cni_wrapper.stringToConstChar(cvar.Leader_MODIFIER_LABEL)
+
+# Create an instance of a Russian Squad.
+
+russianSquad = Squad(cni_wrapper.constCharToString("Russian"),
+                     cni_wrapper.constCharToString("A"),
+                     cni_wrapper.constCharToString("Guards"),
+                     cni_wrapper.constCharToString("6"),2,1,8,8,0,12,4,0,
+                     cni_wrapper.constCharToString("Elite"),1,0)
+
+# Display all of the entered values for this instance using the toString()
+# method.
+
+print "\nSquad.toString() output:\n\n%s" % \
+      cni_wrapper.stringToConstChar(russianSquad.toString())
+
+# Display the output of all of the access methods declared for the Squad class
+# using the instance created above.
+
+print "Squad class access methods and output :\n"
+
+print "\tgetDescription(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getDescription())
+
+print "\tcanSprayFire(): %d" % russianSquad.canSprayFire()
+print "\tgetFirepower(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getFirepower())
+print "\tgetIdentity(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getIdentity())
+print "\tgetNationality(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getNationality())
+print "\tgetNormalRange(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getNormalRange())
+print "\tgetPortageValue(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getPortageValue())
+print "\tgetUnitType(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getUnitType())
+
+print "\tgetMovement(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getMovement())
+print "\tgetPortageCapacity(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getPortageCapacity())
+print "\tgetPortageLevel(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getPortageLevel())
+
+print "\tcanSelfRally(): %d" % russianSquad.canSelfRally()
+print "\tgetBPV(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getBPV())
+print "\tgetBrokenMorale(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getBrokenMorale())
+print "\tgetELR(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getELR())
+print "\tgetMorale(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getMorale())
+print "\tgetStatus(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getStatus())
+
+print "\tgetClassification(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getClassification())
+print "\thasMaxELR(): %d" % russianSquad.hasMaxELR()
+
+print "\tcanAssaultFire(): %d" % russianSquad.canAssaultFire()
+print "\tgetSPE(): %s" % \
+      cni_wrapper.stringToConstChar(russianSquad.getSPE())
+
+#print "\nConstant string test: %s" % \
+#      cni_wrapper.stringToConstChar(cvar.Squad_CAN_ASSAULT_FIRE_LABEL)
+
+# Create an instance of a German Squad (that throws some exceptions).
+
+# NULL Nationality
+
+print "\nTesting Exception handling during Squad creation:"
+print "\nNull nationality parameter:\n"
+
+#germanSquad = Squad(cni_wrapper.constCharToString(None),
+#                    cni_wrapper.constCharToString("5"),
+#                    cni_wrapper.constCharToString("Squad"),
+#                    cni_wrapper.constCharToString("4"),6,1,7,7,0,10,3,0,
+#                    cni_wrapper.constCharToString("1st Line"),0,1)
+
 # Test the Dice class.
 
-print "\nTesting the execution of the Dice class:\n";
+print "Testing the execution of the Dice class:\n"
 
 for i in (list(range(12))):
     dice = Dice()
 
-#   print "White: %d Colored: %d Combined: %2d\n" % \
-#         (dice.getWhiteDieValue(),   \
-#          dice.getColoredDieValue(), \
-#          dice.getCombinedResult())
+#   print "Access methods test - White: %d" % dice.getWhiteDieValue() + \
+#         " Colored: %d"  % dice.getColoredDieValue() + \
+#         " Combined: %2d" % dice.getCombinedResult()
 
     print "%s" % (cni_wrapper.stringToConstChar(dice.toString()))
