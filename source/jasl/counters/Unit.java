@@ -9,7 +9,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 //                                                                            //
-// $Id: Unit.java,v 1.16 2009/11/01 05:32:52 craig Exp $
+// $Id: Unit.java,v 1.17 2009/12/29 06:44:26 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
 /**
  * This class is used to define the basic components of a counter.
  *
- * @version 1.16
+ * @version 1.17
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
@@ -45,24 +45,11 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	private Descriptions description;
 
-	// Constructors
+	// Constructor.
 
-	// Default constructor.
-
-	/**
-	 * Construct a new <CODE>Unit</CODE>. This is an "empty" object and is intended for
-	 * use primarily as a reference to one of the derived public object
-	 * types.
-	 *
-	 * @see Leader
-	 * @see Squad
-	 */
-
-	public Unit() {}
-
-	// This constructor is used during the instantiation of classes derived
-	// from Unit. The parameter is passed up the chain from the object being
-	// created.
+	// During the instantiation of derived concrete classes the parameter
+	// is passed up the inheritance tree from the constructor of the object
+	// type being created.
 
 	protected Unit(Descriptions description)
 	{
