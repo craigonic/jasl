@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By    : Craig R. Campbell  -  December 1998                        //
 //                                                                            //
-// $Id: Fighting.java,v 1.16 2009/05/10 04:37:20 craig Exp $
+// $Id: Fighting.java,v 1.17 2009/12/30 06:40:23 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -22,7 +22,7 @@ import jasl.utilities.Messages;
  * (movement, firing, etc). This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.16
+ * @version 1.17
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -103,30 +103,31 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	// Private data members
 
 	// This variable contains the nationality of the derived object of this
-	// class (ie. "American" or "German"). It must match one of the values found
-	// in the <A HREF="Nationality.html#_NATIONALITIES_">NATIONALITIES</A> list.
+	// class (ie. "American" or "German"). It must match one of the values
+	// found in the <A HREF="Nationality.html#_NATIONALITIES_">NATIONALITIES</A> list.
 
 	private String nationality;
 
 	// This variable contains a simple identifier for the counter, typically
-	// a single alphanumeric character. It is also used to store the full name
-	// for <A HREF="Leader.html">Leader</A>s and Heroes.
+	// a single alphanumeric character. It is also used to store the full
+	// name for <A HREF="Leader.html">Leader</A>s and Heroes.
 
 	private String identity;
 
-	// This variable is used to store the specific type of the counter. It is
-	// intended for vehicles (Pz VIb, T-34/76, etc.) and weapons (FlaK 30, ATR,
-	// etc.) for more precise identification. Infantry units will typically
-	// have the same value as Unit.description but this could also be used for
-	// special infantry designations such as SS, Gurkha, Paratroopers, etc.
-	// Examples of possible values are found in the <A HREF="UnitType.html#_UNIT_TYPES_">UNIT_TYPES</A> list. If a value
-	// from this list is specified, it will be checked against the specified
-	// nationality and, in some cases, the description.
+	// This variable is used to store the specific type of the counter. It
+	// is intended for vehicles (Pz VIb, T-34/76, etc.) and weapons
+	// (FlaK 30, ATR, etc.) for more precise identification. Infantry units
+	// will typically have the same value as Unit.description but this could
+	// also be used for special infantry designations such as SS, Gurkha,
+	// Paratroopers, etc. Examples of possible values are found in the
+	// <A HREF="UnitType.html#_UNIT_TYPES_">UNIT_TYPES</A> list. If a value from this list is specified, it will be
+	// checked against the specified nationality and, in some cases, the
+	// description.
 
 	private String unitType;
 
-	// This variable contains the firepower value of the derived object of this
-	// class (ie. "4" or "88LL").
+	// This variable contains the firepower value of the derived object of
+	// this class (ie. "4" or "88LL").
 
 	private String firepower;
 
@@ -135,30 +136,32 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 
 	private int normalRange;
 
-	// This variable contains the level of portage points of a derived object
-	// of this class (how much it costs to carry a unit of this type). If this
-	// value is set to <A HREF="#_MAX_PORTAGE_VALUE_">MAX_PORTAGE_VALUE</A>, it cannot be carried by another unit.
+	// This variable contains the level of portage points of a derived
+	// object of this class (how much it costs to carry a unit of this
+	// type). If this value is set to <A HREF="#_MAX_PORTAGE_VALUE_">MAX_PORTAGE_VALUE</A>, it cannot be
+	// carried by another unit.
 
 	private int portageValue;
 
-	// This flag variable indicates whether or not the counter that this object
-	// represents is capable of spraying fire. This is indicated on the physical
-	// counter by an underscored range value.
+	// This flag variable indicates whether or not the counter that this
+	// object represents is capable of spraying fire. This is indicated on
+	// the physical counter by an underscored range value.
 
 	private boolean sprayFireCapable;
 
-	// This variable contains the current status of the derived object of this
-	// class. The labels for the status values are defined as protected symbolic
-	// constants in the appropriate subclass. This value is used as a bit-field
-	// with the status values corresponding to the individual bits.
+	// This variable contains the current status of the derived object of
+	// this class. The labels for the status values are defined as protected
+	// symbolic constants in the appropriate subclass. This value is used as
+	// a bit-field with the status values corresponding to the individual
+	// bits.
 
 	private int status;
 
-	// The following strings are used as messages for any exceptions that may be
-	// generated by bad data being passed to the constructor.
+	// The following strings are used as messages for any exceptions that
+	// may be generated by bad data being passed to the constructor.
 
-	// This constant is used as part of the error messages (see below) that are
-	// generated when an exception is thrown.
+	// This constant is used as part of the error messages (see below) that
+	// are generated when an exception is thrown.
 
 	private static final String CLASS_NAME = "Fighting";
 
@@ -176,24 +179,24 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 
 	// Constructor
 
-	// This constructor is used during the instantiation of classes derived from
-	// Fighting. The parameters are passed up the chain from the object being
-	// created.
+	// During the instantiation of derived concrete classes the parameters
+	// are passed up the inheritance tree from the constructor of the object
+	// type being created.
 
 	protected Fighting(Descriptions description,String nationality,
 	                   String identity,String unitType,String firepower,
 	                   int normalRange,int portageValue,
 	                   boolean sprayFireCapable)
 	{
-		// Pass the first parameter to the superclass constructor. If any
-		// exceptions are thrown, assume that they will be caught and handled by
-		// the program creating the object.
+		// Pass the first parameter to the superclass constructor. If
+		// any exceptions are thrown, assume that they will be caught
+		// and handled by the program creating the object.
 
 		super(description);
 
-		// Check the value of each remaining parameter and copy the value to
-		// the local copy of the corresponding variable if an exception is not
-		// found.
+		// Check the value of each remaining parameter and copy the
+		// value to the local copy of the corresponding variable if an
+		// exception is not found.
 
 		// Nationality
 
@@ -207,8 +210,8 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 			throw new IllegalArgumentException(zeroLengthArgumentError);
 		}
 
-		// Check the nationality parameter against the valid entries list and
-		// set the local copy if it is valid.
+		// Check the nationality parameter against the valid entries
+		// list and set the local copy if it is valid.
 
 		if (NATIONALITIES_VECTOR.contains(nationality))
 		{
@@ -307,8 +310,9 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 		}
 
 		// Additional checks of the firepower value may be performed in
-		// subclasses. For example, a firepower value of "20L" specified for an
-		// an infantry unit would cause an exception to be thrown.
+		// subclasses. For example, a firepower value of "20L" specified
+		// for an an infantry unit would cause an exception to be
+		// thrown.
 
 		this.firepower = firepower;
 
@@ -337,9 +341,9 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 
 		this.sprayFireCapable = sprayFireCapable;
 
-		// Set the initial status to the default. This value will be set more
-		// specifically by a subclass constructor or the calling program through
-		// the use of the setStatus() method.
+		// Set the initial status to the default. This value will be set
+		// more specifically by a subclass constructor or the calling
+		// program through the use of the setStatus() method.
 
 		this.status = 0;
 	}
@@ -347,20 +351,22 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	// Public access methods
 
 	/**
-	 * Display the value of each of the private data members that describe the
-	 * current instance. All of the members, beginning with the top-level class
-	 * (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this level, are appended to
-	 * the returned string. Each value is preceded by a label defined in this
-	 * class or the interface associated with the item. There are no more than
-	 * two values, including labels, in each line of output.
+	 * Display the value of each of the private data members that describe
+	 * the current instance. All of the members, beginning with the
+	 * top-level class (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this
+	 * level, are appended to the returned string. Each value is preceded by
+	 * a label defined in this class or the interface associated with the
+	 * item. There are no more than two values, including labels, in each
+	 * line of output.
 	 *
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
 	public String toString()
 	{
-		// Create a buffer to store the string to be returned, initializing it
-		// with the string defined in the parent class version of this method.
+		// Create a buffer to store the string to be returned,
+		// initializing it with the string defined in the parent class
+		// version of this method.
 
 		StringBuffer returnString = new StringBuffer(super.toString());
 
@@ -479,8 +485,9 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	}
 
 	/**
-	 * Return the identity of this unit. This is typically a single alphanumeric
-	 * character, but it may also be a full name (ie. for <B><A HREF="Leader.html">Leader</A></B>s and Heroes).
+	 * Return the identity of this unit. This is typically a single
+	 * alphanumeric character, but it may also be a full name (ie. for
+	 * <B><A HREF="Leader.html">Leader</A></B>s and Heroes).
 	 *
 	 * @return a <CODE>String</CODE> specifying the unit's identity.
 	 */
@@ -491,10 +498,11 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	}
 
 	/**
-	 * Return the type of this unit. This provides more accurate identification
-	 * and application of attributes associated with specific unit types. For
-	 * example, it may specify vehicle names (Pz VIb, T-34/76, etc.) as well as
-	 * special infantry designations (SS, Gurkha, Paratroopers, etc.).
+	 * Return the type of this unit. This provides more accurate
+	 * identification and application of attributes associated with specific
+	 * unit types. For example, it may specify vehicle names (Pz VIb,
+	 * T-34/76, etc.) as well as special infantry designations (SS, Gurkha,
+	 * Paratroopers, etc.).
 	 *
 	 * @return a <CODE>String</CODE> specifying a more precise description of the unit's
 	 * nationality, type, or capability.
@@ -534,8 +542,8 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	}
 
 	/**
-	 * Return the maximum range that this unit may fire its weapon(s) at full
-	 * effect.
+	 * Return the maximum range that this unit may fire its weapon(s) at
+	 * full effect.
 	 *
 	 * @return a <CODE>String</CODE> specifying the normal range of the unit's weapon(s).
 	 */
@@ -546,9 +554,9 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	}
 
 	/**
-	 * Return the portage value of this unit. This is a measure of the "cost" to
-	 * another unit to carry this unit. If the value is <A HREF="#_MAX_PORTAGE_VALUE_">MAX_PORTAGE_VALUE</A>,
-	 * the unit may not be carried.
+	 * Return the portage value of this unit. This is a measure of the
+	 * "cost" to another unit to carry this unit. If the value is
+	 * <A HREF="#_MAX_PORTAGE_VALUE_">MAX_PORTAGE_VALUE</A>, the unit may not be carried.
 	 *
 	 * @return a <CODE>String</CODE> specifying the portage value.
 	 */
@@ -559,9 +567,9 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 	}
 
 	/**
-	 * Return if this unit is capable of spraying fire (attacking two adjacent
-	 * hexes with a single fire action). This is indicated on the physical
-	 * counter by an underscored range value.
+	 * Return if this unit is capable of spraying fire (attacking two
+	 * adjacent hexes with a single fire action). This is indicated on the
+	 * physical counter by an underscored range value.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if a unit has this capability.
 	 */
@@ -637,8 +645,8 @@ abstract class Fighting extends Unit implements Nationality, UnitType
 
 		String METHOD_NAME = "setIdentity";
 
-		// Check the parameters received and throw the appropriate exception
-		// if necessary.
+		// Check the parameters received and throw the appropriate
+		// exception if necessary.
 
 		if (newIdentity == null)
 		{
