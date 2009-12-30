@@ -10,7 +10,7 @@
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 2006                            //
 //                                                                            //
-// $Id: Description.java,v 1.4 2008/11/25 07:15:08 craig Exp $
+// $Id: Description.java,v 1.5 2009/12/30 05:59:31 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -19,7 +19,7 @@ package jasl.counters;
  * This interface is used to define the public constants, using an enum, and
  * required methods associated with the general description of a <A HREF="Unit.html">Unit</A>.
  *
- * @version 1.4
+ * @version 1.5
  * @author Craig R. Campbell
  * @see <A HREF="../../../source/jasl/counters/Description.html">Source code</A>
  */
@@ -28,8 +28,8 @@ public interface Description
 {
 	/**
 	 * Recognized description values. These constants represent the counter
-	 * types that may be directly instantiated using the public classes in the
-	 * <B>counters</B> hierarchy.
+	 * types that may be directly instantiated using the public classes in
+	 * the <B>counters</B> hierarchy.
 	 */
 
 	public enum Descriptions
@@ -94,13 +94,13 @@ public interface Description
 
 	public static final String DESCRIPTION_LABEL = "Description";
 
-    // Access methods.
+	// Access methods.
 
-    /**
-     * Determine the description of a unit.
-     *
-     * @return a <CODE>String</CODE> specifying the unit description.
-     */
+	/**
+	 * Return the description of a unit.
+	 *
+	 * @return a <CODE>String</CODE> specifying the unit description.
+	 */
 
-    public abstract String getDescription();
+	public abstract String getDescription();
 }
