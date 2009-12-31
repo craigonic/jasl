@@ -6,7 +6,7 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  November 2002                             #
 #                                                                              #
-# $Id: jasl.make,v 1.15 2008/12/27 07:28:22 craig Exp $
+# $Id: jasl.make,v 1.16 2009/12/31 21:41:53 craig Exp $
 ################################################################################
 
 ## Program name.
@@ -66,6 +66,7 @@ GCJ_BUILD_CMD      = $(GCJ_COMPILER) $(GCJ_CLASSPATH_CMD) $(GCJ_OPTIMIZE)
 GCJ_COMPILE_CMD    = $(GCJ_BUILD_CMD) -c
 
 GCJH_CMD           = gcjh -force
+GJAVAH_CMD         = gjavah -verbose -cni -force -d $(INCLUDE_PATH) -all
 
 SHARED_LIB_OPTIONS = $(GCJ_OPTIMIZE) -shared -o
 GCC_LIB_BUILD_CMD  = $(GCC_COMPILER) $(SHARED_LIB_OPTIONS)
@@ -87,6 +88,11 @@ CTAGS_BUILD_CMD    = ctags --file-tags=yes -R --excmd=number
 ## Documentation build variables.
 
 # Linked source files.
+
+# The LC_ALL enviroment variable must be set or overridden in order for the
+# [a-z] pattern in a regular expression (see htmlconv) to work correctly.
+
+export LC_ALL      = C
 
 MAKEFILE           = Makefile
 SRC_DOCS_PATH      = $(DOCS_PATH)/source
@@ -123,6 +129,25 @@ DOXYGEN            = doxygen
 DOXYGEN_DOC_PATH   = $(DOCS_PATH)/doxygen
 DOXYGEN_DEF_FILE   = $(UTIL_PATH)/doxygen.jasl
 
+# global (gtags and htags)
+
+GTAGS              = gtags
+GTAGS_FIND         = find . -type f -name "*.java"
+GTAGS_OPTIONS      = -f -
+GTAGS_PATH         = $(SRC_PATH)/$(GTAGS)
+
+HTAGS              = htags
+HTAGS_DOCS_PATH    = $(DOCS_PATH)/global
+HTAGS_TITLE        = "jASL Source Navigation"
+HTAGS_OPTIONS      = -h -I -T --tabs 4 -F -x --title $(HTAGS_TITLE) \
+                     -d ${GTAGSDBPATH} $(HTAGS_DOCS_PATH)
+HTAGS_OUTPUT_PATH  = $(HTAGS_DOCS_PATH)/HTML
+HTAGS_SED_CMD      = $(SED_CONV_CMD) --in-place
+HTAGS_FIND_CNV_CMD = find $(HTAGS_OUTPUT_PATH) -type f -name "*.html" \
+                     -exec $(HTAGS_SED_CMD) {} \;
+
+HTAGS_ADDLINKS_CMD = $(UTIL_PATH)/addlinks $(HTAGS_OUTPUT_PATH)
+
 ## Library and package path and file descriptions.
 
 LIB_PREFIX                   = lib
@@ -153,7 +178,25 @@ COUNTERS_BASE_LIB_NAME       = $(PROGRAM_NAME)-$(COUNTERS_PKG_NAME)
 COUNTERS_STATIC_LIB_NAME     = $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).a
 COUNTERS_STATIC_LIB_PATH     = $(LIB_PATH)/$(COUNTERS_STATIC_LIB_NAME)
 
-ALL_PACKAGES                 = $(COUNTERS_PKG_PATH)
+# utilities package.
+
+UTILITIES_PKG_NAME           = utilities
+
+UTILITIES_PKG_PATH           = $(PROGRAM_NAME)/$(UTILITIES_PKG_NAME)
+UTILITIES_OBJ_PATH           = ${JASL_BASE}/bin/$(UTILITIES_PKG_PATH)
+UTILITIES_BIN_PATH           = $(BIN_PATH)/$(UTILITIES_PKG_PATH)
+UTILITIES_HDR_PATH           = $(INCLUDE_PATH)/$(UTILITIES_PKG_PATH)
+
+UTILITIES_SRC_FILES          = $(UTILITIES_PKG_PATH)/*.java
+UTILITIES_CLASS_FILES        = $(UTILITIES_BIN_PATH)/*.class
+UTILITIES_OBJ_FILES          = $(UTILITIES_OBJ_PATH)/*.o
+UTILITIES_HDR_FILES          = $(UTILITIES_HDR_PATH)/*.h
+
+UTILITIES_BASE_LIB_NAME      = $(PROGRAM_NAME)-$(UTILITIES_PKG_NAME)
+UTILITIES_STATIC_LIB_NAME    = $(LIB_PREFIX)$(UTILITIES_BASE_LIB_NAME).a
+UTILITIES_STATIC_LIB_PATH    = $(LIB_PATH)/$(UTILITIES_STATIC_LIB_NAME)
+
+ALL_PACKAGES                 = $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH)
 
 ## Miscellaneous programs.
 
@@ -162,8 +205,46 @@ CAT              = /bin/cat
 CP               = /bin/cp -p
 DATE             = /bin/date
 DIFF             = /usr/bin/diff
+INSTALL          = /usr/bin/install
 LN               = /bin/ln -sf
 MAKE             = /usr/bin/make
 MV               = /bin/mv
 RM               = /bin/rm -f
 RM_RECURSIVE     = $(RM) -r
+
+## Constants and arguments associated with the install program, which is used to
+## create directories and install files directly.
+
+INSTALL_EXE_MODE = --mode=0755
+INSTALL_STD_MODE = --mode=0644
+
+INSTALL_DIR      = $(INSTALL) --directory $(INSTALL_EXE_MODE)
+
+INSTALL_FILE     = $(INSTALL) --preserve-timestamps
+INSTALL_EXE_FILE = $(INSTALL_FILE) $(INSTALL_EXE_MODE)
+INSTALL_STD_FILE = $(INSTALL_FILE) $(INSTALL_STD_MODE)
+
+## Targets to create the top-level directories for output files.
+
+bin_directory:
+	$(INSTALL_DIR) $(BIN_PATH)
+
+docs_directory:
+	$(INSTALL_DIR) $(DOCS_PATH)
+
+include_directory:
+	$(INSTALL_DIR) $(INCLUDE_PATH)
+
+lib_directory:
+	$(INSTALL_DIR) $(LIB_PATH)
+
+## These targets are for the destination directories of the module files
+## associated with the libraries for each scripting language. The files are
+## actually generated in the swig directory, but the targets are defined here
+## for use in installing the scripts that use the libraries.
+
+perl_bin_directory:
+	$(INSTALL_DIR) $(PERL_BIN_PATH)
+
+python_bin_directory:
+	$(INSTALL_DIR) $(PYTHON_BIN_PATH)
