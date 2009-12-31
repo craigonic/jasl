@@ -3,11 +3,11 @@
 #            files for the utilities package of the jASL program. It also      #
 #            includes parameters to build object (.o) files using the gcj      #
 #            compiler. In both cases, the files can compiled individually or   #
-#            the entire package can be recreated.                              #
+#            the entire package can be re-created.                             #
 #                                                                              #
 # Written By : Craig R. Campbell  -  January 2009                              #
 #                                                                              #
-# $Id: Makefile,v 1.2 2009/05/05 16:55:29 campbell Exp $
+# $Id: Makefile,v 1.3 2009/12/31 22:57:02 craig Exp $
 ################################################################################
 
 # System-wide build variables.
@@ -45,10 +45,10 @@ all build: $(ALL_CLASSES)
 
 # Compile the individual Java classes in this package.
 
-$(MESSAGES_CLASS):
+$(MESSAGES_CLASS): bin_directory
 	$(JAVA_OPTIONS) $(MESSAGES_SRC)
 
-$(DICE_CLASS):
+$(DICE_CLASS): $(MESSAGES_CLASS)
 	$(JAVA_OPTIONS) $(DICE_SRC)
 
 # Build all of the individual object files. The gcj_obj target is used by the
@@ -61,15 +61,18 @@ gcj gcj_obj: $(GCJ_OBJECT_FILES)
 
 $(MESSAGES_OBJ):
 	$(GCJ_COMPILE_CMD) $(MESSAGES_SRC)
+	$(INSTALL_DIR) $(UTILITIES_OBJ_PATH)
 	$(MV) $(MESSAGES_OBJ) $(UTILITIES_OBJ_PATH)
 
 $(DICE_OBJ): $(MESSAGES_CLASS)
 	$(GCJ_COMPILE_CMD) $(DICE_SRC)
+	$(INSTALL_DIR) $(UTILITIES_OBJ_PATH)
 	$(MV) $(DICE_OBJ) $(UTILITIES_OBJ_PATH)
 
 # Build all of the individual header files.
 
-hdr: $(GCJ_HEADER_FILES)
+hdr: include_directory $(GCJ_HEADER_FILES)
+#	$(GJAVAH_CMD) $(UTILITIES_BIN_PATH)
 
 # Using the installed .class files, build the header file that defines each one
 # and install it in the include output directory.
@@ -77,10 +80,10 @@ hdr: $(GCJ_HEADER_FILES)
 GCJH_BUILD_CMD = $(GCJH_CMD) $(GCJ_CLASSPATH_CMD)/$(UTILITIES_PKG_PATH) \
                  -d $(UTILITIES_HDR_PATH)
 
-$(MESSAGES_HDR): $(UTILITIES_BIN_PATH)/$(MESSAGES_CLASS)
+$(MESSAGES_HDR): $(MESSAGES_CLASS)
 	$(GCJH_BUILD_CMD) $(MESSAGES_EXEC)
 
-$(DICE_HDR): $(UTILITIES_BIN_PATH)/$(DICE_CLASS)
+$(DICE_HDR): $(DICE_CLASS)
 	$(GCJH_BUILD_CMD) $(DICE_EXEC)
 
 # Define variables used to represent the dynamic and static libraries.
@@ -88,21 +91,21 @@ $(DICE_HDR): $(UTILITIES_BIN_PATH)/$(DICE_CLASS)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    = $(LIB_PREFIX)$(UTILITIES_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME = $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME = $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_FILENAME               = $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
 # directory.
 
-libs: gcj dynamic_lib static_lib clean_obj
+libs: dynamic_lib static_lib clean_obj
 
-dynamic_lib:
+dynamic_lib: lib_directory gcj
 	$(GCJ_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) \
 	                     $(UTILITIES_OBJ_FILES)
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
 
-static_lib:
+static_lib: lib_directory gcj
 	$(AR) $(UTILITIES_STATIC_LIB_PATH) $(UTILITIES_OBJ_FILES)
 
 # Remove all of the .class and/or object files from the binary output directory.
@@ -143,12 +146,16 @@ UTILITIES_DOCS_PATH = $(SRC_DOCS_PATH)/$(UTILITIES_PKG_PATH)
 HTLS_CFG_FILE       = $(UTILITIES_PKG_NAME).cfg
 
 docs_all:
+	@$(INSTALL_DIR) $(UTILITIES_DOCS_PATH)
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(UTILITIES_DOCS_PATH)/$(MAKEFILE).html
 	@for i in $(JAVA_CLASSES) ; do \
 		$(CAT) $$i.java | $(JAVA2HTML) --title="$$i.java" | $(SED_CONV_CMD) > $(UTILITIES_DOCS_PATH)/$$i.html ;\
-		(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(UTILITIES_PKG_PATH)/$$i.html) ;\
+		if [ -d $(DOXYGEN_DOC_PATH)/html ]; then \
+			(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(UTILITIES_PKG_PATH)/$$i.html) ;\
+		fi \
 	done
-	@$(CP) -f $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(UTILITIES_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) \
+	                     $(UTILITIES_DOCS_PATH)
 	@$(HTLS) $(UTILITIES_DOCS_PATH)
 
 clean_docs:
