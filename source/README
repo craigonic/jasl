@@ -9,6 +9,7 @@ cd $JASL_BASE/source
 
 make clean_all
 (cd jasl/counters;make clean_hdr clean_libs)
+(cd jasl/utilities;make clean_hdr clean_libs)
 (cd cni-wrapper;make clean_hdr clean_libs)
 (cd swig;make clean_libs)
 
@@ -16,6 +17,7 @@ make clean_all
 
 (cd cni-wrapper;make hdr libs)
 make
+(cd jasl/utilities;make hdr libs)
 (cd jasl/counters;make hdr libs)
 
 # Build the wrapper libraries. Note that the Makefile may require editing to set
