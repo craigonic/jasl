@@ -13,53 +13,41 @@ respective output directory as follows:
 <B>
 <I><A HREF="../../source.html#JASL_BASE">$JASL_BASE</A></I>/bin/jasl/utilities
 </B>
-<LI>Header (.h) files -
-<B>
-<I><A HREF="../../source.html#JASL_BASE">$JASL_BASE</A></I>/include/jasl/utilities
-</B>
-<LI>Library files and links -
-<B>
-<I><A HREF="../../source.html#JASL_BASE">$JASL_BASE</A></I>/lib
-</B>
+<LI>Header (.h) files - <B><I>$JASL_BASE</I>/include/jasl/utilities</B>
+<LI>Library files and links - <B><I>$JASL_BASE</I>/lib</B>
 </UL>
 Note that many of the targets are also referenced by the
 <A HREF=../../Makefile.html>Makefile</A> in the parent directory during
 recursive cleans and builds.
 <UL>
-<LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all the source
-files using
+<LI><I>none</I> or <TT>all</TT> - compiles all the source files using
 <TT>
 <A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javac.html>javac</A></TT>,
 placing the bytecode (.class) files in the directory noted above.
-<LI><TT>gcj</TT> or <TT>gcj_obj</TT> - compiles all the source files using
-<A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing the object (.o)
-files in the directory noted above.<BR>
-The <TT>gcj_obj</TT> target is intended for use in builds initiated from the
-parent directory. The bytecode (.class) files for each source file are also
-generated and placed in the appropriate location as a result of the execution of
-either of these targets.
+<LI><TT>obj</TT> - compiles all the source files using
+<TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>,
+placing the object (.o) files in the directory noted above.<BR>
+This target is also used in builds initiated from the top-level directory. The
+bytecode (.class) files for each source file are also generated and placed in
+the appropriate location as a result of its execution.
 <LI><TT>hdr</TT> - generates a
 <A HREF=http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI>CNI</A>
-header file from each bytecode (.class) file using
-<A HREF=http://gcc.gnu.org/onlinedocs/gcc-4.2.4/gcj/Invoking-gcjh.html#Invoking-gcjh>gcjh</A>, placing
-the header (.h) files in the directory noted above.
-<LI><TT>libs</TT> - executes the actions defined for the <TT>gcj</TT> target and
+header file from each bytecode (.class) file using <TT>gjavah</TT>,
+placing the header (.h) files in the directory noted above.
+<LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
 then uses the object (.o) files to generate dynamic and static libraries, as
 well as the necessary links, in the directory noted above. Upon completion, the
 <TT>clean_obj</TT> target is used to remove the object (.o) files.
 <P>
 <LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
-bytecode file using
-<TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javac.html>javac</A></TT>,
-placing <TT>filename.class</TT> in the directory noted above.
+bytecode file using <TT>javac</TT>, placing <TT>filename.class</TT> in the
+directory noted above.
 <LI><I>filename</I><TT>.o</TT> - compiles <TT>filename.java</TT> into an object
-file using <A HREF=http://gcc.gnu.org/java/compile.html>GCJ</A>, placing
-<TT>filename.o</TT> in the directory noted above.
-<LI><I>filename</I><TT>.h</TT> - generates a
-<A HREF=http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI>CNI</A>
-header file from <TT>filename.class</TT> using
-<A HREF=http://gcc.gnu.org/onlinedocs/gcc-4.2.4/gcj/Invoking-gcjh.html#Invoking-gcjh>gcjh</A>, placing
-the output file in the directory noted above.
+file using <TT>gcj</TT>, placing <TT>filename.o</TT> in the directory noted
+above.
+<LI><I>filename</I><TT>.h</TT> - generates a CNI header file from
+<TT>filename.class</TT> using <TT>gjavah</TT>, placing the output file in the
+directory noted above.
 <P>
 <LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
 and <TT>clean_obj</TT> targets.
@@ -79,12 +67,12 @@ links in the directory noted above.
 noted above.
 <P>
 <LI><TT>docs</TT> - generates an HTML version of each source file and the
-<A HREF=Makefile.html>Makefile</A> using
+Makefile using
 <TT><A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>,
 placing the output files in
-<B><I><A HREF="../../source.html#JASL_BASE">$JASL_BASE</A></I>/share/jasl/doc/source/jasl/<A HREF=index.html>utilities</A></B>. This file,
-<B>utilities.html</B>, is also generated, and includes links to all of the HTML
-files.
+<B><I>$JASL_BASE</I>/share/jasl/doc/source/jasl/<A HREF=index.html>utilities</A></B>.
+This file, <B>utilities.html</B>, is also generated, and includes links to all
+of the HTML files.
 </UL>
 <HR>
 <A HREF="http://vim.sourceforge.net/"><img src="../../vim.png" align="right" BORDER=0></A>
