@@ -32,22 +32,22 @@ bytecode (.class) files for each source file are also generated and placed in
 the appropriate location as a result of its execution.
 <LI><TT>hdr</TT> - generates a
 <A HREF=http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI>CNI</A>
-header file from each bytecode (.class) file using <TT>gjavah</TT>, placing the
-header (.h) files in the directory noted above.
+header file from each bytecode (.class) file using <TT><U>gjavah</U></TT>,
+placing the header (.h) files in the directory noted above.
 <LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
 then uses the object (.o) files to generate dynamic and static libraries, as
 well as the necessary links, in the directory noted above. Upon completion, the
 <TT>clean_obj</TT> target is used to remove the object (.o) files.
 <P>
 <LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
-bytecode file using <TT>javac</TT>, placing <TT>filename.class</TT> in the
-directory noted above.
+bytecode file using <TT><U>javac</U></TT>, placing <TT>filename.class</TT> in
+the directory noted above.
 <LI><I>filename</I><TT>.o</TT> - compiles <TT>filename.java</TT> into an object
-file using <TT>gcj</TT>, placing <TT>filename.o</TT> in the directory noted
-above.
-<LI><I>filename</I><TT>.h</TT> - generates a CNI header file from
-<TT>filename.class</TT> using <TT>gjavah</TT>, placing the output file in the
-directory noted above.
+file using <TT><U>gcj</U></TT>, placing <TT>filename.o</TT> in the directory
+noted above.
+<LI><I>filename</I><TT>.h</TT> - generates a <U>CNI</U> header file from
+<TT>filename.class</TT> using <TT><U>gjavah</U></TT>, placing the output file in
+the directory noted above.
 <P>
 <LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
 and <TT>clean_obj</TT> targets.
@@ -67,7 +67,7 @@ links in the directory noted above.
 noted above.
 <P>
 <LI><TT>docs</TT> - generates an HTML version of each source file and the
-Makefile using
+<U>Makefile</U> using
 <TT><A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>,
 placing the output files in
 <B><I>$JASL_BASE</I>/share/jasl/doc/source/jasl/<A HREF=index.html>utilities</A></B>.
