@@ -8,9 +8,8 @@
 The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
 this directory is listed below. The output files are written to or removed from
 <B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/lib/{scripting language name (lower case)}</B>
-for the libraries or the sub-directories of
-<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/bin</B>, associated
-with their scripting language below, for the module files.
+for the libraries or the sub-directories of <B><I>$JASL_BASE</I>/bin</B>,
+associated with their scripting language below, for the module files.
 <P>
 <UL>
 <LI><TT><A HREF="http://www.perl.org/">perl</A></TT> - <B><I>perljASL</I></B>
@@ -21,22 +20,20 @@ with their scripting language below, for the module files.
 <I>
 The following targets are used to build and clean the libraries and module files
 necessary to access the <A HREF="../cni-wrapper/cni-wrapper.html">CniWrapper</A>
-library using the scripting language name
-(<U><A HREF="http://www.perl.org/">perl</A></U> or
-<U><A HREF="http://www.python.org/">python</A></U>) included in the target name.
-The desired version(s) of this library and its associated files must be
-available in order for the other wrapper libraries to work.
+library using the scripting language name (<U>perl</U> or <U>python</U>)
+included in the target name. The desired version(s) of this library and its
+associated files must be available in order for the other wrapper libraries to
+work.
 </I>
 <P>
-<LI><TT>cni_{language name}_src</TT> - uses
-<A HREF="http://www.swig.org/">SWIG</A> to generate the library source file
-(<I>CniWrapper_wrap.cxx</I>). If successful, it also creates the module file,
-placing it in the directory noted above.
+<LI><TT>cni_{language name}_src</TT> - uses <TT><U>swig</U></TT> to generate the
+library source file (<I>CniWrapper_wrap.cxx</I>). If successful, it also creates
+the module file, placing it in the directory noted above.
 <P>
 <LI><TT>cni_{language name}_obj</TT> - executes the actions defined for the
 <TT>cni_{language name}_src</TT> target and then uses
-<A HREF=http://gcc.gnu.org/>GCC</A> to compile the generated source file into an
-object (.o) file.
+<TT><A HREF="http://gcc.gnu.org/">gcc</A></TT> to compile the generated source
+file into an object (.o) file.
 <P>
 <LI><TT>cni_libs</TT> - executes the actions defined for each
 <TT>cni_{language name}_lib</TT> target.
@@ -69,20 +66,18 @@ directory noted above.
 <I>
 The following targets are used to build and clean the libraries and module files
 necessary to access the <A HREF="../jasl/counters/counters.html">Counters</A>
-library using the scripting language name
-(<U><A HREF="http://www.perl.org/">perl</A></U> or
-<U><A HREF="http://www.python.org/">python</A></U>) included in the target name.
+library using the scripting language name (<U>perl</U> or <U>python</U>)
+included in the target name.
 </I>
 <P>
-<LI><TT>counters_{language name}_src</TT> - uses
-<A HREF="http://www.swig.org/">SWIG</A> to generate the library source file
-(<I>Counters_wrap.cxx</I>). If successful, it also creates the module file,
-placing it in the directory noted above.
+<LI><TT>counters_{language name}_src</TT> - uses <TT><U>swig</U></TT> to
+generate the library source file (<I>Counters_wrap.cxx</I>). If successful, it
+also creates the module file, placing it in the directory noted above.
 <P>
 <LI><TT>counters_{language name}_obj</TT> - executes the actions defined for the
 <TT>counters_{language name}_src</TT> target and then uses
-<A HREF=http://gcc.gnu.org/>GCC</A> to compile the generated source file into an
-object (.o) file.
+<TT><U>gcc</U></TT> to compile the generated source file into an object (.o)
+file.
 <P>
 <LI><TT>counters_libs</TT> - executes the actions defined for each
 <TT>counters_{language name}_lib</TT> target.
@@ -115,20 +110,18 @@ directory noted above.
 <I>
 The following targets are used to build and clean the libraries and module files
 necessary to access the <A HREF="../jasl/utilities/utilities.html">Utilities</A>
-library using the scripting language name
-(<U><A HREF="http://www.perl.org/">perl</A></U> or
-<U><A HREF="http://www.python.org/">python</A></U>) included in the target name.
+library using the scripting language name (<U>perl</U> or <U>python</U>)
+included in the target name.
 </I>
 <P>
-<LI><TT>utilities_{language name}_src</TT> - uses
-<A HREF="http://www.swig.org/">SWIG</A> to generate the library source file
-(<I>Utilities_wrap.cxx</I>). If successful, it also creates the module file,
-placing it in the directory noted above.
+<LI><TT>utilities_{language name}_src</TT> - uses <TT><U>swig</U></TT> to
+generate the library source file (<I>Utilities_wrap.cxx</I>). If successful, it
+also creates the module file, placing it in the directory noted above.
 <P>
 <LI><TT>utilities_{language name}_obj</TT> - executes the actions defined for
 the <TT>utilities_{language name}_src</TT> target and then uses
-<A HREF=http://gcc.gnu.org/>GCC</A> to compile the generated source file into an
-object (.o) file.
+<TT><U>gcc</U></TT> to compile the generated source file into an object (.o)
+file.
 <P>
 <LI><TT>utilities_libs</TT> - executes the actions defined for each
 <TT>utilities_{language name}_lib</TT> target.
@@ -177,11 +170,10 @@ and the indicated documentation.
 <TT>clean_{library name}_libs</TT> target.
 <P>
 <LI><TT>docs</TT> - generates an HTML version of each interface file and the
-<A HREF=Makefile.html>Makefile</A> using
-<TT>
-<A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>,
+<U>Makefile</U> using
+<TT><A HREF=http://www.gnu.org/software/src-highlite/>source-highlight</A></TT>,
 placing the output files in
-<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/share/jasl/doc/source/<A HREF=index.html>swig</A></B>.
+<B><I>$JASL_BASE</I>/share/jasl/doc/source/<A HREF=index.html>swig</A></B>.
 This file, <B>swig.html</B>, is also generated, and includes links to all of the
 HTML files. This target is also referenced by the
 <A HREF=../Makefile.html>Makefile</A> in the parent directory.
