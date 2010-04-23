@@ -75,18 +75,25 @@ copied to (and deleted from) the output directory (<B><I>$JASL_BASE</I>/bin</B>)
 and its sub-directories. All of the libraries referenced are found in
 <B><I>$JASL_BASE/lib</I></B> and its sub-directories.
 <UL>
-<LI><I>none</I> or <TT>all</TT> or <TT>build</TT> - compiles all of the .java
-source files using
+<LI><I>none</I> or <TT>all</TT> - compiles all of the .java source files using
 <TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javac.html>javac</A></TT>,
 placing the java bytecode (.class) files in the output directory.
 The java bytecode files in each sub-directory are also generated.
 <LI><TT>build_all</TT> - executes the actions defined for the <TT>gcj</TT>,
-<TT>gcj_dynamic</TT>, <TT>gcj_static</TT>, <TT>cni_dynamic</TT>,
-<TT>cni_static</TT>, and <TT>jar</TT> targets.
+<TT>gcj_dynamic</TT>, <TT>gcj_static</TT>, <TT>build_cni_dynamic</TT>,
+<TT>build_cni_static</TT>, and <TT>build_jar</TT> targets.
+<P>
+<LI><TT>build_jar</TT> - create an executable
+<TT><A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/jar.html>jar</A></TT>
+archive of the jASL program. This target will delete the object (.o) files in
+the sub-directories of the output directory (see <TT>clean_obj</TT>) to prevent
+them from being included in the archive.
+<P>
 <LI><TT>build_gcj</TT> - executes the actions defined for the <TT>gcj</TT>
 target. Upon completion, the <TT>clean_obj</TT>, <TT>clean_class</TT>, and
 <TT>clean_java</TT> targets are executed, removing all of the intermediate
 files created by the build.
+<P>
 <LI><TT>build_gcj_dynamic</TT> - executes the actions defined for the
 <TT>gcj_dynamic</TT> target. Upon completion, the <TT>clean_class</TT> and
 <TT>clean_java</TT> targets are executed, removing all of the intermediate
@@ -95,44 +102,33 @@ files created by the build.
 <TT>build_gcj_dynamic</TT> target, with the <TT>gcj_static</TT> target replacing
 <TT>gcj_dynamic</TT>.
 <P>
-<LI><TT>gcj_obj</TT> - compiles all of the .java source files in each
-sub-directory using
-<TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>,
-placing the object (.o) files in the matching sub-directory of the output
-directory. The java bytecode (.class) files for each source file are also
-generated and placed in the appropriate location as a result of the execution of
-this target.
-<LI><TT>gcj</TT> - executes the actions defined for the <TT>gcj_obj</TT> target
-and then builds native executable(s), linked with the individual object (.o)
-files, using <TT><U>gcj</U></TT>. The file(s)
-are placed in the output directory.
-<LI><TT>gcj_dynamic</TT> - executes the actions defined for the <TT>all</TT> or
-<TT>build</TT> target. When this is complete, native executable(s), linked with
-one or more of the <I>shared</I> <TT><A HREF="jasl/jasl.html">jasl</A></TT>
-libraries, are generated using <TT><U>gcj</U></TT>. The file(s), which have a
-"_dynamic" suffix, are placed in the output directory.
+<LI><TT>build_cni_dynamic</TT> - compiles the .cpp source file(s) using
+<TT><U>gcj</U></TT> and links them with <I>shared</I> versions of one or more of
+the <TT><U>jasl</U></TT> libraries and the
+<TT><A HREF="cni-wrapper/cni-wrapper.html">cni-wrapper</A></TT> library. These
+native executable(s) have a "_cni_dynamic" suffix and are placed in the output
+directory.
+<LI><TT>build_cni_static</TT> - performs a similar function to the
+<TT>build_cni_dynamic</TT> target, except the linking is with the appropriate
+<I>static</I> libraries and each output filename ends with "_cni_static".
+<P>
+<LI><TT>obj</TT> - compiles all of the .java source files in each sub-directory
+using <TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>, placing the
+object (.o) files in the matching sub-directory of the output directory. The
+java bytecode (.class) files for each source file are also generated and placed
+in the appropriate location as a result of the execution of this target.
+<LI><TT>gcj</TT> - executes the actions defined for the <TT>obj</TT> target and
+then builds native executable(s), linked with the individual object (.o) files,
+using <TT><U>gcj</U></TT>. The file(s) are placed in the output directory.
+<LI><TT>gcj_dynamic</TT> - executes the actions defined for the <TT>all</TT>
+target. When this is complete, native executable(s), linked with one or more of
+the <I>shared</I> <TT><A HREF="jasl/jasl.html">jasl</A></TT> libraries, are
+generated using <TT><U>gcj</U></TT>. The file(s), which have a "_dynamic"
+suffix, are placed in the output directory.
 <LI><TT>gcj_static</TT> - performs a similar function to the
 <TT>gcj_dynamic</TT> target, except the linking is with the appropriate
 <I>static</I> <TT><U>jasl</U></TT> libraries and each output filename ends with
 "_static".
-<P>
-<LI><TT>cni_dynamic</TT> - compiles the .cpp source file(s) using
-<TT><U>gcj</U></TT> and links them with
-<I>shared</I> versions of one or more of the <TT><U>jasl</U></TT> libraries and
-the <TT><A HREF="cni-wrapper/cni-wrapper.html">cni-wrapper</A></TT> library.
-These native executable(s) have a "_cni_dynamic" suffix and are placed in the
-output directory.
-<LI><TT>cni_static</TT> - performs a similar function to the
-<TT>cni_dynamic</TT> target, except the linking is with the appropriate
-<I>static</I> libraries and each output filename ends with "_cni_static".
-<P>
-<LI><TT>jar</TT> - create an executable
-<TT>
-<A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/jar.html>jar</A>
-</TT>
-archive of the jASL program. This target will delete the object (.o) files in
-the sub-directories of the output directory (see <TT>clean_obj</TT>) to prevent
-them from being included in the archive.
 <P>
 <A NAME="SWIG_LIBS"></A><I>The following targets install scripts that require
 modules and libraries generated with <U>SWIG</U>
