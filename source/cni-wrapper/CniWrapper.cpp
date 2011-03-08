@@ -1,81 +1,120 @@
 /**
- * \file cniWrapper.cpp
+ * \file CniWrapper.cpp
  *
  * This file defines the class infrastructure used to create and manage the
  * connection and interaction with a <A HREF="http://java.sun.com/">Java</A> Virtual Machine.
  *
  * Written By  : Craig R. Campbell  -  April 2007
- *
- * $Id: CniWrapper.cpp,v 1.2 2007/06/29 20:27:20 campbell Exp $
  */
 
-#include "cniWrapper.h"
+#include "CniWrapper.h"
+
+// Initialize the static pointer to this Singleton object. This item is set in
+// the instance() method.
+
+CniWrapper* CniWrapper::_instance = 0;
 
 // Constructor.
 
-CNI_WRAPPER::CNI_WRAPPER(void)
+CniWrapper::CniWrapper()
 {
-    JvCreateJavaVM(NULL);
-    JvAttachCurrentThread(NULL,NULL);
+	JvCreateJavaVM(0);
+	JvAttachCurrentThread(0,0);
 }
 
 // Destructor.
 
-CNI_WRAPPER::~CNI_WRAPPER(void)
+CniWrapper::~CniWrapper()
 {
-    JvDetachCurrentThread();
+	JvDetachCurrentThread();
+
+	_instance = 0;
 }
 
-// Return const char* string representation of a Java String.
-//
-// This method returns a pointer to a copy of the text data in the return value
-// format. IT IS THE RESPONSIBILITY OF THE CALLER TO FREE THE MEMORY ASSOCIATED
-// WITH THE RETURNED STRING.
-//
-// Note that jstring is equivalent to ::java::lang::String*
+// instance: Create (if it does not already exist) the one and only instance of
+//           an object of this type and return its address.
 
-const char* CNI_WRAPPER::stringToConstChar(jstring javaString)
+CniWrapper* CniWrapper::instance()
 {
-    const char* returnString = NULL;
+	if (_instance == 0) _instance = new CniWrapper();
 
-    if (javaString)
-    {
-        int javaStringLength = JvGetStringUTFLength(javaString);
-
-        char* newCharString = new char[javaStringLength + 1];
-
-        if (newCharString)
-        {
-            JvGetStringUTFRegion(javaString,0,javaStringLength,newCharString);
-
-            newCharString[javaStringLength] = '\0';
-
-            returnString = newCharString;
-        }
-    }
-
-    return returnString;
+	return _instance;
 }
 
-// Return Java String representation of a const char* string.
+// stringToConstChar: Return const char* string representation of a Java String.
 //
-// This method returns a pointer to a Java String object, which manages a copy
-// of the specified text. The returned object should NOT be explicitly deleted,
-// as this task will be performed by the garbage collector of the JVM.
-//
-// Note that jstring is equivalent to ::java::lang::String*
+// This method is (intended to be) accessed using the js2cc() function. jstring
+// is equivalent to ::java::lang::String*
 
-jstring CNI_WRAPPER::constCharToString(const char* constCharString)
+const char* CniWrapper::stringToConstChar(jstring javaString) const
 {
-    return (constCharString != NULL) ? JvNewStringUTF(constCharString) : NULL;
+	const char* returnString = 0;
+
+	if (javaString)
+	{
+		int javaStringLength = JvGetStringUTFLength(javaString);
+
+		char* newCharString = new char[javaStringLength + 1];
+
+		if (newCharString)
+		{
+			JvGetStringUTFRegion(javaString,0,javaStringLength,
+			                     newCharString);
+
+			newCharString[javaStringLength] = '\0';
+
+			returnString = newCharString;
+		}
+	}
+
+	return returnString;
 }
 
-/**
- * \brief Global object used to create and manage the connection and interaction
- * with a <A HREF="http://java.sun.com/">Java</A> Virtual Machine.
- *
- * This object must be created in order to execute <A HREF="http://java.sun.com/">Java</A> code compiled with <A HREF="http://gcc.gnu.org/java/">GCJ</A>
- * through the Compiled Native Interface (<A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A>).
- */
+// constCharToString: Return Java String representation of a const char* string.
+//
+// This method is (intended to be) accessed using the cc2js() function. jstring
+// is equivalent to ::java::lang::String*
 
-CNI_WRAPPER* cniWrapper = NULL;
+const jstring CniWrapper::constCharToString(const char* constCharString) const
+{
+	return (constCharString != 0) ? JvNewStringUTF(constCharString) : 0;
+}
+
+/******************************************************************************/
+
+// startCniWrapper: Create the one and only instance of a CniWrapper object.
+
+const CniWrapper* startCniWrapper()
+{
+	return CniWrapper::instance();
+}
+
+// stopCniWrapper: Destroy the one and only instance of a CniWrapper object.
+
+void stopCniWrapper()
+{
+	delete CniWrapper::instance();
+}
+
+// js2cc: Return the const char* string representation of the specified Java
+//        String object.
+
+const char* js2cc(jstring javaString)
+{
+	return CniWrapper::instance()->stringToConstChar(javaString);
+}
+
+// cc2js: Return a Java String object containing the specified const char*
+//        string.
+
+const jstring cc2js(const char* constCharString)
+{
+	return CniWrapper::instance()->constCharToString(constCharString);
+}
+
+// delcc: Release the memory allocated for the specified string using delete.
+
+void delcc(const char* constCharString)
+{
+	delete [] constCharString;
+}
