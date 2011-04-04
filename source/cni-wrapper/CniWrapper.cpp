@@ -4,7 +4,7 @@
  * This file defines the class infrastructure used to create and manage the
  * connection and interaction with a <A HREF="http://java.sun.com/">Java</A> Virtual Machine.
  *
- * Written By  : Craig R. Campbell  -  April 2007
+ * Written By: Craig R. Campbell  -  April 2007
  */
 
 #include "CniWrapper.h"
