@@ -4,9 +4,8 @@
 #            Virtual Machine (JVM) to enable the execution of Java code        #
 #            compiled with GCJ.                                                #
 #                                                                              #
-# Written By : Craig R. Campbell  -  May 2007                                  #
+# Written By: Craig R. Campbell  -  May 2007                                   #
 #                                                                              #
-# $Id: Makefile,v 1.8 2010/02/08 22:54:33 campbell Exp $
 ################################################################################
 
 # These entries are included to eliminate pointless searching for the files,
@@ -27,35 +26,46 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source and object files in/of/for this
 # library.
 
-CNI_WRAPPER_SRC   := cniWrapper.cpp
-CNI_WRAPPER_EXEC  := ${CNI_WRAPPER_SRC:.cpp=}
-CNI_WRAPPER_HDR   := ${CNI_WRAPPER_SRC:.cpp=.h}
-CNI_WRAPPER_OBJ   := ${CNI_WRAPPER_SRC:.cpp=.o}
+CNI_WRAPPER_SRC        := CniWrapper.cpp
+CNI_WRAPPER_HDR        := ${CNI_WRAPPER_SRC:.cpp=.h}
+CNI_WRAPPER_OBJ        := ${CNI_WRAPPER_SRC:.cpp=.o}
+
+JASL_ERROR_MESSAGE_SRC := JaslErrorMessage.cpp
+JASL_ERROR_MESSAGE_HDR := ${JASL_ERROR_MESSAGE_SRC:.cpp=.h}
+JASL_ERROR_MESSAGE_OBJ := ${JASL_ERROR_MESSAGE_SRC:.cpp=.o}
 
 # This header file is not part of the library. It provides typedef declarations
 # to simplify access to classes in the jasl libraries through programs that use
 # it.
 
-JASL_WRAPPER_HDR  := jaslWrapper.h
+JASL_WRAPPER_HDR := jaslWrapper.h
 
-# Build the object (.o) file.
+# Collections of the source files contained in this directory.
+
+CPP_FILES := $(CNI_WRAPPER_SRC) $(JASL_ERROR_MESSAGE_SRC)
+HDR_FILES := ${CPP_FILES:.cpp=.h} $(JASL_WRAPPER_HDR)
+OBJ_FILES := ${CPP_FILES:.cpp=.o}
+SRC_FILES := $(CPP_FILES) $(HDR_FILES)
+
+# Build the object (.o) files.
 
 .PHONY : obj
 obj: $(CNI_WRAPPER_SRC)
 	$(GCC_COMPILE_CMD) $(CNI_WRAPPER_SRC)
+	$(GCC_COMPILE_CMD) $(JASL_ERROR_MESSAGE_SRC)
 
 # Install the header (.h) files in the include directory.
 
 .PHONY : hdr
-hdr: $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR) include_directory
-	$(INSTALL_STD_FILE) $(CNI_WRAPPER_HDR) $(JASL_WRAPPER_HDR) $(INCLUDE_PATH)
+hdr: $(HDR_FILES) include_directory
+	$(INSTALL_STD_FILE) $(HDR_FILES) $(INCLUDE_PATH)
 
 # Define variables used to represent the dynamic and static libraries.
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(CNI_WRAPPER_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
-DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
@@ -66,26 +76,27 @@ libs: dynamic_lib static_lib clean
 
 .PHONY : dynamic_lib
 dynamic_lib: obj lib_directory
-	$(GCC_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) \
-	                     $(CNI_WRAPPER_OBJ)
+	$(GCC_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) $(OBJ_FILES)
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
 
 .PHONY : static_lib
 static_lib: obj lib_directory
-	$(AR) $(CNI_WRAPPER_STATIC_LIB_PATH) $(CNI_WRAPPER_OBJ)
+	$(AR) $(CNI_WRAPPER_STATIC_LIB_PATH) $(OBJ_FILES)
 
-# Remove the object file from this directory.
+# Remove the object files from this directory.
 
 .PHONY : clean
 clean:
-	$(RM) $(CNI_WRAPPER_OBJ)
+	$(RM) $(OBJ_FILES)
 
 # Remove the header (.h) files from the include output directory.
 
 .PHONY : clean_hdr
 clean_hdr:
-	$(RM) $(INCLUDE_PATH)/$(CNI_WRAPPER_HDR) $(INCLUDE_PATH)/$(JASL_WRAPPER_HDR)
+	$(RM) $(INCLUDE_PATH)/$(CNI_WRAPPER_HDR)
+	$(RM) $(INCLUDE_PATH)/$(JASL_ERROR_MESSAGE_HDR)
+	$(RM) $(INCLUDE_PATH)/$(JASL_WRAPPER_HDR)
 
 # Remove all of the dynamic and/or static library files and links from the
 # library output directory.
@@ -113,7 +124,7 @@ HTLS_CFG_FILE := $(CNI_DIRECTORY).cfg
 docs_all:
 	@$(INSTALL_DIR) $(CNI_DOCS_PATH)
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(CNI_DOCS_PATH)/$(MAKEFILE).html
-	@for i in $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC) $(JASL_WRAPPER_HDR) ; do \
+	@for i in $(SRC_FILES) ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(CNI_DOCS_PATH)/$$i.html ;\
 	done
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(CNI_DOCS_PATH)
