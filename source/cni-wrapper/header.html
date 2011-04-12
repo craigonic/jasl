@@ -18,15 +18,15 @@ the jasl libraries through programs that require it for execution. See
 <P>
 <UL>
 <LI><TT>obj</TT> - uses <TT><A HREF=http://gcc.gnu.org/>gcc</A></TT> to compile
-the source (.cpp) file into an object (.o) file.
+the source (.cpp) files into object (.o) files.
 <LI><TT>hdr</TT> - copies the header (.h) files to the directory noted above.
 <LI><I>none</I> or <TT>libs</TT> - executes the actions defined for the
-<TT>obj</TT> target and then uses the object (.o) file to generate shared and
+<TT>obj</TT> target and then uses the object (.o) files to generate shared and
 static libraries, as well as the necessary links, in the directory noted above.
 Upon completion, the <TT>clean</TT> target is used to remove the object (.o)
-file.
+files.
 <P>
-<LI><TT>clean</TT> - deletes the object (.o) file in this directory.
+<LI><TT>clean</TT> - deletes the object (.o) files in this directory.
 <P>
 <LI><TT>clean_hdr</TT> - deletes the copies of the header (.h) files in the
 directory noted above.
