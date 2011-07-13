@@ -50,15 +50,16 @@ SRC_FILES := $(CPP_FILES) $(HDR_FILES)
 # Build the object (.o) files.
 
 .PHONY : obj
-obj: $(CNI_WRAPPER_SRC)
+obj: $(SRC_FILES)
 	$(GCC_COMPILE_CMD) $(CNI_WRAPPER_SRC)
 	$(GCC_COMPILE_CMD) $(JASL_ERROR_MESSAGE_SRC)
 
 # Install the header (.h) files in the include directory.
 
 .PHONY : hdr
-hdr: $(HDR_FILES) include_directory
-	$(INSTALL_STD_FILE) $(HDR_FILES) $(INCLUDE_PATH)
+hdr: $(HDR_FILES)
+	$(INSTALL_DIR) $(CNI_HDR_PATH)
+	$(INSTALL_STD_FILE) $(HDR_FILES) $(CNI_HDR_PATH)
 
 # Define variables used to represent the dynamic and static libraries.
 
@@ -127,11 +128,15 @@ docs_all:
 	@for i in $(SRC_FILES) ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(CNI_DOCS_PATH)/$$i.html ;\
 	done
+
+	$(MAKE) -C $(PROGRAM_NAME) $@
+
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(CNI_DOCS_PATH)
 	@$(HTLS) $(CNI_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
+	$(MAKE) -C $(PROGRAM_NAME) $@
 	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE) \
 	       $(CNI_DOCS_PATH)/$(HTLS_CFG_FILE)
 
