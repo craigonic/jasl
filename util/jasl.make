@@ -4,9 +4,8 @@
 #             to JASL_BASE, which is a required environment variable that must #
 #             refer to the topmost directory named jasl.                       #
 #                                                                              #
-# Written By : Craig R. Campbell  -  November 2002                             #
+# Written By: Craig R. Campbell  -  November 2002                              #
 #                                                                              #
-# $Id: jasl.make,v 1.17 2010/02/04 00:45:57 campbell Exp $
 ################################################################################
 
 ## Program name.
@@ -22,10 +21,10 @@ PROGRAM_NAME       := jasl
 
 INSTALL_DIRECTORY  := ${JASL_BASE}
 
-BIN_PATH           := ${INSTALL_DIRECTORY}/bin
-DOCS_PATH          := ${INSTALL_DIRECTORY}/share/${PROGRAM_NAME}/doc
-INCLUDE_PATH       := ${INSTALL_DIRECTORY}/include
-LIB_PATH           := ${INSTALL_DIRECTORY}/lib
+BIN_PATH           := $(INSTALL_DIRECTORY)/bin
+DOCS_PATH          := $(INSTALL_DIRECTORY)/share/$(PROGRAM_NAME)/doc
+INCLUDE_PATH       := $(INSTALL_DIRECTORY)/include
+LIB_PATH           := $(INSTALL_DIRECTORY)/lib/$(PROGRAM_NAME)
 
 SRC_PATH           := ${JASL_BASE}/source
 UTIL_PATH          := ${JASL_BASE}/util
@@ -150,9 +149,12 @@ HTAGS_ADDLINKS_CMD := $(UTIL_PATH)/addlinks $(HTAGS_OUTPUT_PATH)
 
 ## Library and package path and file descriptions.
 
+CNI_PREFIX                   := cni
 LIB_PREFIX                   := lib
 
 # CNI (Compiled Native Interface) wrapper.
+
+CNI_HDR_PATH                 := $(INCLUDE_PATH)/$(PROGRAM_NAME)/$(CNI_PREFIX)
 
 CNI_WRAPPER_SRC_FILES        := $(CNI_DIRECTORY)/*.cpp $(CNI_DIRECTORY)/*.h
 
@@ -178,6 +180,15 @@ COUNTERS_BASE_LIB_NAME       := $(PROGRAM_NAME)-$(COUNTERS_PKG_NAME)
 COUNTERS_STATIC_LIB_NAME     := $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).a
 COUNTERS_STATIC_LIB_PATH     := $(LIB_PATH)/$(COUNTERS_STATIC_LIB_NAME)
 
+# CNI wrapper library for the counters package.
+
+CNI_COUNTERS_HDR_PATH        := $(CNI_HDR_PATH)/$(COUNTERS_PKG_PATH)
+CNI_COUNTERS_HDR_FILES       := $(CNI_COUNTERS_HDR_PATH)/*.h
+
+CNI_COUNTERS_BASE_LIB_NAME   := $(CNI_PREFIX)-$(COUNTERS_BASE_LIB_NAME)
+CNI_COUNTERS_STATIC_LIB_NAME := $(LIB_PREFIX)$(CNI_COUNTERS_BASE_LIB_NAME).a
+CNI_COUNTERS_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_COUNTERS_STATIC_LIB_NAME)
+
 # utilities package.
 
 UTILITIES_PKG_NAME           := utilities
@@ -196,7 +207,16 @@ UTILITIES_BASE_LIB_NAME      := $(PROGRAM_NAME)-$(UTILITIES_PKG_NAME)
 UTILITIES_STATIC_LIB_NAME    := $(LIB_PREFIX)$(UTILITIES_BASE_LIB_NAME).a
 UTILITIES_STATIC_LIB_PATH    := $(LIB_PATH)/$(UTILITIES_STATIC_LIB_NAME)
 
-ALL_PACKAGES                 := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH)
+# CNI wrapper library for the utilities package.
+
+CNI_UTILITIES_HDR_PATH        := $(CNI_HDR_PATH)/$(UTILITIES_PKG_PATH)
+CNI_UTILITIES_HDR_FILES       := $(CNI_UTILITIES_HDR_PATH)/*.h
+
+CNI_UTILITIES_BASE_LIB_NAME   := $(CNI_PREFIX)-$(UTILITIES_BASE_LIB_NAME)
+CNI_UTILITIES_STATIC_LIB_NAME := $(LIB_PREFIX)$(CNI_UTILITIES_BASE_LIB_NAME).a
+CNI_UTILITIES_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_UTILITIES_STATIC_LIB_NAME)
+
+ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH)
 
 ## Miscellaneous programs.
 
