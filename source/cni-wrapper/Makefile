@@ -142,3 +142,10 @@ clean_docs:
 
 .PHONY : docs
 docs: docs_all clean_docs
+
+# Create HTML documentation using doxygen.
+
+.PHONY : doxygen
+doxygen: docs_directory
+	@$(RM_RECURSIVE) $(CNI_DOXYGEN_DOC_PATH)
+	@$(DOXYGEN) $(CNI_DOXYGEN_DEF_FILE)
