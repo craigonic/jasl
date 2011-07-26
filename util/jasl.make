@@ -29,6 +29,12 @@ LIB_PATH           := $(INSTALL_DIRECTORY)/lib/$(PROGRAM_NAME)
 SRC_PATH           := ${JASL_BASE}/source
 UTIL_PATH          := ${JASL_BASE}/util
 
+# The name of the sub-directory in each directory where object files generated
+# for the purpose of building the correponding libraries (shared and static) are
+# placed.
+
+OBJ_SUB_DIRECTORY  := .obj
+
 # The following are sub-directories of the source directory.
 
 CNI_DIRECTORY      := cni-wrapper
@@ -124,9 +130,12 @@ GJDOC              := gjdoc
 
 # doxygen.
 
-DOXYGEN            := doxygen
-DOXYGEN_DOC_PATH   := $(DOCS_PATH)/doxygen
-DOXYGEN_DEF_FILE   := $(UTIL_PATH)/doxygen.jasl
+DOXYGEN              := doxygen
+DOXYGEN_DOC_PATH     := $(DOCS_PATH)/doxygen
+DOXYGEN_DEF_FILE     := $(UTIL_PATH)/doxygen.jasl
+
+CNI_DOXYGEN_DOC_PATH := $(DOCS_PATH)/cni-doxygen
+CNI_DOXYGEN_DEF_FILE := $(UTIL_PATH)/cni-doxygen.jasl
 
 # global (gtags and htags)
 
@@ -261,6 +270,10 @@ include_directory:
 .PHONY : lib_directory
 lib_directory:
 	$(INSTALL_DIR) $(LIB_PATH)
+
+.PHONY : obj_sub_directory
+obj_sub_directory:
+	$(INSTALL_DIR) $(OBJ_SUB_DIRECTORY)
 
 ## These targets are for the destination directories of the module files
 ## associated with the libraries for each scripting language. The files are
