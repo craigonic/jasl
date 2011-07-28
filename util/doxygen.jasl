@@ -99,10 +99,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 INPUT                  = ../source
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.java \
-                         cniWrapper.h \
-                         cniWrapper.cpp \
-                         jaslWrapper.h
+FILE_PATTERNS          = *.java
 RECURSIVE              = YES
 EXCLUDE                = Driver.java
 EXCLUDE_SYMLINKS       = NO
