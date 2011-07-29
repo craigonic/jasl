@@ -57,7 +57,7 @@ class JaslErrorMessage
 		 * The returned string is a copy of data found in the object
 		 * passed to the constructor.
 		 *
-		 * <B>THE RETURNED STRING SHOULD <U>NOT</U> BE DELETED, AS THIS OCCURS AS
+		 * <B>THE RETURNED STRING SHOULD NOT BE DELETED, AS THIS OCCURS AS
 		 * PART OF THE DESTRUCTION OF THE OBJECT.</B>
 		 */
 
@@ -109,8 +109,8 @@ extern void deleteMessage(JaslErrorMessage* jaslErrorMessage);
  *
  * This function calls the <A HREF="#_TEXT_">text</A>() method of the indicated object.
  *
- * <B>NOTE: THE RETURNED STRING SHOULD <U>NOT</U> BE DELETED OR FREED. IT OCCURS
- * AS PART OF THE DESTRUCTION OF THE JaslErrorMessage OBJECT.</B>
+ * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
+ * OF THE DESTRUCTION OF THE JaslErrorMessage OBJECT.</B>
  */
 
 extern const char* messageText(JaslErrorMessage* jaslErrorMessage);
