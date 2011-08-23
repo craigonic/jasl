@@ -40,21 +40,28 @@ JASL_ERROR_MESSAGE_OBJ := ${JASL_ERROR_MESSAGE_SRC:.cpp=.o}
 
 JASL_WRAPPER_HDR := jaslWrapper.h
 
-# Collections of the source files contained in this directory.
-
 CPP_FILES := $(CNI_WRAPPER_SRC) $(JASL_ERROR_MESSAGE_SRC)
+
 HDR_FILES := ${CPP_FILES:.cpp=.h} $(JASL_WRAPPER_HDR)
 OBJ_FILES := ${CPP_FILES:.cpp=.o}
 SRC_FILES := $(CPP_FILES) $(HDR_FILES)
 
-# Build the object (.o) files.
+# Compile individual object files.
+
+$(CNI_WRAPPER_OBJ): $(CNI_WRAPPER_HDR) $(CNI_WRAPPER_SRC)
+	$(GCC_COMPILE_CMD) $(CNI_WRAPPER_SRC) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(CNI_WRAPPER_OBJ)
+
+$(JASL_ERROR_MESSAGE_OBJ): $(JASL_ERROR_MESSAGE_HDR) $(JASL_ERROR_MESSAGE_SRC)
+	$(GCC_COMPILE_CMD) $(JASL_ERROR_MESSAGE_SRC) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(JASL_ERROR_MESSAGE_OBJ)
+
+# Build all of the object (.o) files.
 
 .PHONY : obj
-obj: $(SRC_FILES)
-	$(GCC_COMPILE_CMD) $(CNI_WRAPPER_SRC)
-	$(GCC_COMPILE_CMD) $(JASL_ERROR_MESSAGE_SRC)
+obj: obj_sub_directory $(OBJ_FILES)
 
-# Install the header (.h) files in the include directory.
+# Install the header (.h) files in the appropriate include directory.
 
 .PHONY : hdr
 hdr: $(HDR_FILES)
@@ -72,32 +79,32 @@ DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
 # along with the necessary links, and install it/them in the library output
 # directory.
 
+CNI_WRAPPER_OBJ_FILES := $(OBJ_SUB_DIRECTORY)/*.o
+
 .PHONY : libs
 libs: dynamic_lib static_lib clean
 
 .PHONY : dynamic_lib
 dynamic_lib: obj lib_directory
-	$(GCC_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) $(OBJ_FILES)
+	$(GCC_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) $(CNI_WRAPPER_OBJ_FILES)
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
 
 .PHONY : static_lib
 static_lib: obj lib_directory
-	$(AR) $(CNI_WRAPPER_STATIC_LIB_PATH) $(OBJ_FILES)
+	$(AR) $(CNI_WRAPPER_STATIC_LIB_PATH) $(CNI_WRAPPER_OBJ_FILES)
 
 # Remove the object files from this directory.
 
 .PHONY : clean
 clean:
-	$(RM) $(OBJ_FILES)
+	$(RM_RECURSIVE) $(OBJ_SUB_DIRECTORY)
 
 # Remove the header (.h) files from the include output directory.
 
 .PHONY : clean_hdr
 clean_hdr:
-	$(RM) $(INCLUDE_PATH)/$(CNI_WRAPPER_HDR)
-	$(RM) $(INCLUDE_PATH)/$(JASL_ERROR_MESSAGE_HDR)
-	$(RM) $(INCLUDE_PATH)/$(JASL_WRAPPER_HDR)
+	$(RM) $(CNI_WRAPPER_HDR_FILES)
 
 # Remove all of the dynamic and/or static library files and links from the
 # library output directory.
@@ -119,7 +126,6 @@ clean_static_lib:
 # the files together on an HTML page.
 
 CNI_DOCS_PATH := $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)
-HTLS_CFG_FILE := $(CNI_DIRECTORY).cfg
 
 .PHONY : docs_all
 docs_all:
@@ -131,14 +137,13 @@ docs_all:
 
 	$(MAKE) -C $(PROGRAM_NAME) $@
 
-	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(CNI_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(CNI_DOCS_PATH)
 	@$(HTLS) $(CNI_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
 	$(MAKE) -C $(PROGRAM_NAME) $@
-	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE) \
-	       $(CNI_DOCS_PATH)/$(HTLS_CFG_FILE)
+	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs
