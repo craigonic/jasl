@@ -9,7 +9,7 @@ The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
 this directory is listed below. The files are written to or removed from their
 respective output directory as follows:
 <UL>
-<LI>Bytecode (.class) -
+<LI>Bytecode (.class) files -
 <B>
 <I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/bin/jasl/&lt package name &gt
 </B>
@@ -35,17 +35,17 @@ placing the object (.o) files in the corresponding directory noted above.<BR>
 header (.h) file from each source file using <TT><U>gjavah</U></TT>, placing the
 output files in the corresponding directory noted above.
 <LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
-then uses the object (.o) files to generate dynamic and static libraries, as
-well as the necessary links, in the directory noted above. Upon completion, the
+then uses the object (.o) files to generate shared and static libraries, as well
+as the necessary links, in the directory noted above. Upon completion, the
 <TT>clean_obj</TT> target is used to remove the directories containing the
 object (.o) files.
 <P>
 <LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
 and <TT>clean_obj</TT> targets.
-<LI><TT>clean_java</TT> - removes each of the directories noted above that are
-used to store the bytecode (.class) files.
-<LI><TT>clean_obj</TT> - removes each of the directories noted above that are
-used to store the object (.o) files.
+<LI><TT>clean_java</TT> - removes each of the directories noted above that
+contain bytecode (.class) files.
+<LI><TT>clean_obj</TT> - removes each of the directories noted above that
+contain object (.o) files.
 <P>
 <LI><TT>clean_hdr</TT> - removes each of the directories noted above that
 contain the generated header (.h) files.
