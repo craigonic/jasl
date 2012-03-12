@@ -79,20 +79,16 @@ public interface Status
 		// The following items typically reflect the state of a counter
 		// when it is inverted.
 
+		// <A HREF="Infantry.html">Infantry</A> specific states.
+
 		/** <A NAME="_BROKEN_STATE_"></A>
 		 * Indicates that the status of a unit is <B>Broken</B>.
-		 *
-		 * This applies to <A HREF="Infantry.html">infantry</A> units.
 		 */
 
 		BROKEN(BROKEN,0x00000001),
 
-		// Infantry specific states.
-
 		/** <A NAME="_DESPERATE_STATE_"></A>
 		 * Indicates that the status of a unit is <B>Desperate</B>.
-		 *
-		 * This applies to <A HREF="Infantry.html">infantry</A> units.
 		 */
 
 		DESPERATE(DESPERATE,0x00000002);

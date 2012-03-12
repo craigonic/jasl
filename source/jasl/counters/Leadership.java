@@ -1,12 +1,12 @@
 // ************************************************************************** //
-// Leadership.java - This interface is part of the <B>counters</B> package,          //
-//                   which contains the class definitions and implementations //
-//                   for objects used to represent the virtual playing pieces //
-//                   in jASL.                                                 //
+// Leadership.java - This interface is part of the <B>counters</B> package, which    //
+//                   contains the class definitions and implementations for   //
+//                   objects used to represent the virtual playing pieces in  //
+//                   jASL.                                                    //
 //                                                                            //
 //                   NOTE: This program is based on Advanced Squad Leader,    //
 //                         which was created by The Avalon Hill Game Company, //
-//                         Company, and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>. //
+//                         Company, and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.     //
 //                                                                            //
 // Written By: Craig R. Campbell  -  February 2012                            //
 // ************************************************************************** //
@@ -32,7 +32,7 @@ public interface Leadership
 	// not a <A HREF="Unit.html">Unit</A> has this capability using an objects toString() method.
 
 	/**
-	 * Provides a label for a <A HREF="Leader.html">leader</A>'s modifier value : <B>Modifier</B>
+	 * Provides a label for a leaders modifier value : <B>Modifier</B>
 	 */
 
 	public static final String MODIFIER_LABEL = "Modifier";
@@ -51,7 +51,7 @@ public interface Leadership
 	// Access methods
 
 	/**
-	 * Return the dice roll modifier (DRM) of a <A HREF="Leader.html">leader</A>.
+	 * Return the dice roll modifier (DRM) of a leader.
 	 *
 	 * @return an <CODE>int</CODE> specifying the modifier value.
 	 */

@@ -1,12 +1,12 @@
 // ************************************************************************** //
-// Identity.java - This interface is part of the <B>counters</B> package,          //
-//                 which contains the class definitions and implementations   //
-//                 for objects used to represent the virtual playing pieces   //
-//                 in jASL.                                                   //
+// Identity.java - This interface is part of the <B>counters</B> package, which      //
+//                 contains the class definitions and implementations for     //
+//                 objects used to represent the virtual playing pieces in    //
+//                 jASL.                                                      //
 //                                                                            //
 //                 NOTE: This program is based on Advanced Squad Leader,      //
 //                       which was created by The Avalon Hill Game Company,   //
-//                       Company, and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.   //
+//                       Company, and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.       //
 //                                                                            //
 // Written By: Craig R. Campbell  -  February 2012                            //
 // ************************************************************************** //
@@ -41,7 +41,7 @@ public interface Identity
 	/**
 	 * Return the identity of a unit. This is typically a single
 	 * alphanumeric character, but it may also be a full name (e.g. for
-	 * <B><A HREF="Leader.html">leader</A></B>s and heroes).
+	 * <A HREF="Leader.html">leader</A>s and heroes).
 	 *
 	 * @return a <CODE>String</CODE> specifying the units identity.
 	 */

@@ -33,20 +33,20 @@ public interface Morale
 	// toString() method.
 
 	/**
-	 * Provides a label for an <A HREF="Infantry.html">infantry</A> units normal morale value : <B>Morale</B>
+	 * Provides a label for an infantry units normal morale value : <B>Morale</B>
 	 */
 
 	public static final String MORALE_LABEL = "Morale";
 
 	/**
-	 * Provides a label for an <A HREF="Infantry.html">infantry</A> units broken morale value :
+	 * Provides a label for an infantry units broken morale value :
 	 * <B>Broken Morale</B>
 	 */
 
 	public static final String BROKEN_MORALE_LABEL = "Broken Morale";
 
 	/**
-	 * Provides a label indicating if an <A HREF="Infantry.html">infantry</A> unit has self rally
+	 * Provides a label indicating if an infantry unit has self rally
 	 * capability : <B>Can Self Rally ?</B>
 	 */
 
@@ -86,7 +86,7 @@ public interface Morale
 
 	/**
 	 * Return if a unit has the ability to rally without the presence of a
-	 * <B><A HREF="Leader.html">leader</A></B>. This is indicated on the back of the physical counter by a
+	 * <A HREF="Leader.html">leader</A>. This is indicated on the back of the physical counter by a
 	 * square around the broken morale value.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the unit has this capability.
@@ -100,7 +100,7 @@ public interface Morale
 	 * Perform a morale or task check on a unit.
 	 *
 	 * @param modifier the applicable dice roll modifier (DRM) for the check.
-	 * This includes leadership DRM as well as other factors.
+	 * This includes <A HREF="Leadership.html">leadership</A> DRM as well as other factors.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
 	 * a result of calling this method.
@@ -111,10 +111,10 @@ public interface Morale
 	/**
 	 * Attempt to restore a units status to <A HREF="Status.html#_NORMAL_STATE">normal</A>.
 	 *
-	 * @param leaderPresent indicates if a <B><A HREF="Leader.html">leader</A></B> is present, which may
+	 * @param leaderPresent indicates if a <A HREF="Leader.html">leader</A> is present, which may
 	 * determine if a restoration attempt can be made or not.
 	 * @param modifier the applicable dice roll modifier for the attempt.
-	 * This includes leadership DRM as well as other factors.
+	 * This includes <A HREF="Leadership.html">leadership</A> DRM as well as other factors.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
 	 * a result of calling this method.
