@@ -69,7 +69,7 @@ public interface Morale
 	// Access methods
 
 	/**
-	 * Return the morale level of a unit when it is in its <A HREF="Status.html#_NORMAL_STATE_">normal</A> state.
+	 * Return the morale level of a unit when it is in its <A HREF="Status.html#_NORMAL_">normal</A> state.
 	 *
 	 * @return a <CODE>int</CODE> specifying the normal morale level of the unit.
 	 */
@@ -77,7 +77,7 @@ public interface Morale
 	public abstract int morale();
 
 	/**
-	 * Return the morale level of a unit when it is in the <A HREF="Status.html#_BROKEN_STATE_">broken</A> state.
+	 * Return the morale level of a unit when it is in the <A HREF="Status.html#_BROKEN_">broken</A> state.
 	 *
 	 * @return a <CODE>int</CODE> specifying the broken morale level of the unit.
 	 */

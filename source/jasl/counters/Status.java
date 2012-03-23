@@ -38,30 +38,6 @@ public interface Status
 
 	public static final String STATUS_LABEL = "Status";
 
-	// The following constants are the text labels associated with each
-	// element of the States enum. They are used in the String returned by
-	// the status() method.
-
-	/** <A NAME="_NORMAL_"></A>
-	 * Indicates that a units current status is <B>Normal</B>.
-	 */
-
-	public static final String NORMAL = "Normal";
-
-	// Infantry status labels
-
-	/** <A NAME="_BROKEN_"></A>
-	 * Indicates that a units current status is <B>Broken</B>.
-	 */
-
-	public static final String BROKEN = "Broken";
-
-	/** <A NAME="_DESPERATE_"></A>
-	 * Indicates that a units current status is <B>Desperate</B>.
-	 */
-
-	public static final String DESPERATE = "Desperate";
-
 	/**
 	 * Recognized status values. These constants include a corresponding
 	 * label and a value, which is intended for use as a mask to set or
@@ -70,28 +46,28 @@ public interface Status
 
 	public enum States
 	{
-		/** <A NAME="_NORMAL_STATE_"></A>
+		/** <A NAME="_NORMAL_"></A>
 		 * Indicates that the status of a unit is <B>Normal</B>.
 		 */
 
-		NORMAL(NORMAL,0x00000000),
+		NORMAL("Normal",0x00000000),
 
 		// The following items typically reflect the state of a counter
 		// when it is inverted.
 
 		// <A HREF="Infantry.html">Infantry</A> specific states.
 
-		/** <A NAME="_BROKEN_STATE_"></A>
+		/** <A NAME="_BROKEN_"></A>
 		 * Indicates that the status of a unit is <B>Broken</B>.
 		 */
 
-		BROKEN(BROKEN,0x00000001),
+		BROKEN("Broken",0x00000001),
 
-		/** <A NAME="_DESPERATE_STATE_"></A>
+		/** <A NAME="_DESPERATE_"></A>
 		 * Indicates that the status of a unit is <B>Desperate</B>.
 		 */
 
-		DESPERATE(DESPERATE,0x00000002);
+		DESPERATE("Desperate",0x00000002);
 
 		// Private data members
 
