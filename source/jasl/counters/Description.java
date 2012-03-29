@@ -6,26 +6,37 @@
 //                                                                            //
 //                    NOTE: This program is based on Advanced Squad Leader,   //
 //                          which was created by The Avalon Hill Game         //
-//                          Company, and lives on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.  //
+//                          Company, and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.    //
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 2006                            //
-//                                                                            //
-// $Id: Description.java,v 1.5 2009/12/30 05:59:31 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
 
 /**
  * This interface is used to define the public constants, using an enum, and
- * required methods associated with the general description of a <A HREF="Unit.html">Unit</A>.
+ * required method associated with the general description of a <A HREF="Unit.html">Unit</A>. The method
+ * is intended for operation on a String member variable within the implementing
+ * class.
  *
- * @version 1.5
- * @author Craig R. Campbell
+ * @version 2.0
+ * @author Copyright (C) 2006-2012 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Description.html">Source code</A>
  */
 
 public interface Description
 {
+	// Symbolic constants
+
+	// This constant is provided primarily for use in displaying the
+	// description of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
+
+	/**
+	 * Provides a label for a unit's counter type : <B>Description</B>
+	 */
+
+	public static final String DESCRIPTION_LABEL = "Description";
+
 	/**
 	 * Recognized description values. These constants represent the counter
 	 * types that may be directly instantiated using the public classes in
@@ -85,16 +96,7 @@ public interface Description
 		}
 	}
 
-	// This constant is provided primarily for use in displaying the
-	// description of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
-
-	/**
-	 * Provides a label for a unit's counter type : <B>Description</B>
-	 */
-
-	public static final String DESCRIPTION_LABEL = "Description";
-
-	// Access methods.
+	// Access methods
 
 	/**
 	 * Return the description of a unit.
@@ -102,5 +104,5 @@ public interface Description
 	 * @return a <CODE>String</CODE> specifying the unit description.
 	 */
 
-	public abstract String getDescription();
+	public abstract String description();
 }
