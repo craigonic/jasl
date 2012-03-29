@@ -14,13 +14,13 @@
 package jasl.counters;
 
 /**
- * This interface is used to define the public constants, using an enum, that
- * describe the status of a <A HREF="Unit.html">Unit</A>. It also includes
- * required methods to set and retrieve it. These methods are intended for
- * operation on an integer member variable within the implementing class.
+ * This interface is used to define the public constants, using an enum, and
+ * required methods associated with the status of a <A HREF="Unit.html">Unit</A>. The methods are
+ * intended for operation on an integer member variable within the implementing
+ * class.
  *
  * @version 1.0
- * @author Copyright (C) 2011 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2011-2012 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Status.html">Source code</A>
  */
 
@@ -28,9 +28,8 @@ public interface Status
 {
 	// Symbolic constants
 
-	// This constant is provided primarily for use in displaying the output
-	// of the status() method in the output of a <A HREF="Unit.html">Unit</A> objects toString()
-	// method.
+	// This constant is provided primarily for use in displaying the status
+	// of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
 
 	/**
 	 * Provides a label for a units status : <B>Status</B>
@@ -88,7 +87,7 @@ public interface Status
 			this.value = value;
 		}
 
-		// Access methods
+		// Public access methods
 
 		/**
 		 * Returns the label associated with the enum constant.

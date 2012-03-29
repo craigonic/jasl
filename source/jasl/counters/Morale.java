@@ -109,7 +109,7 @@ public interface Morale
 	public abstract boolean check(int modifier);
 
 	/**
-	 * Attempt to restore a units status to <A HREF="Status.html#_NORMAL_STATE">normal</A>.
+	 * Attempt to restore a units status to <A HREF="Status.html#_NORMAL_">normal</A>.
 	 *
 	 * @param leaderPresent indicates if a <A HREF="Leader.html">leader</A> is present, which may
 	 * determine if a restoration attempt can be made or not.

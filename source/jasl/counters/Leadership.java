@@ -28,8 +28,8 @@ public interface Leadership
 {
 	// Symbolic constants
 
-	// This constant is provided primarily for use in displaying whether or
-	// not a <A HREF="Unit.html">Unit</A> has this capability using an objects toString() method.
+	// This constant is provided primarily for use in displaying the
+	// modifier associated with a <A HREF="Leader.html">Leader</A> using an objects toString() method.
 
 	/**
 	 * Provides a label for a leaders modifier value : <B>Modifier</B>
