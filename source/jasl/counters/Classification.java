@@ -7,119 +7,120 @@
 //                       NOTE: This program is based on Advanced Squad        //
 //                             Leader, which was created by The Avalon Hill   //
 //                             Game Company, and lives on at                  //
-//                             <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.                        //
+//                             <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.                          //
 //                                                                            //
 // Written By: Craig R. Campbell  -  November 2006                            //
-//                                                                            //
-// $Id: Classification.java,v 1.4 2007/08/11 05:15:12 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
 
-import java.util.*; // For Vector.
-
 /**
- * This interface is used to define public constants and required methods
- * associated with the classification of <A HREF="Personnel.html">Personnel</A> units.
+ * This interface is used to define public constants, using an enum, and
+ * required method associated with the classification of <A HREF="Personnel.html">Personnel</A> units. The
+ * method is intended for operation on a String member variable within the
+ * implementing class.
  *
- * @version 1.4
- * @author Craig R. Campbell
+ * @version 2.0
+ * @author Copyright (C) 2006-2012 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Classification.html">Source code</A>
  */
 
 public interface Classification
 {
-    // Public symbolic constants
+	// Symbolic constants
 
-    // These constants are used to determine if the value of the classification
-    // parameter passed to a constructor is valid. They are given public
-    // attributes to allow external programs to access them when specifying
-    // the classification parameter in the creation of <A HREF="Personnel.html">Personnel</A> objects.
+	// This constant is provided primarily for use in displaying the
+	// classification of a <A HREF="Personnel.html">Personnel</A> unit using an objects toString()
+	// method.
 
-    /** <A NAME="_ELITE_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Elite</B>.
-     */
+	/**
+	 * Provides a label for a <A HREF="Personnel.html">Personnel</A> (MMC) unit's classification :
+	 * <B>Classification</B>
+	 */
 
-    public static final String ELITE                  = "Elite";
+	public static final String CLASSIFICATION_LABEL = "Classification";
 
-    /** <A NAME="_FIRST_LINE_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>1st Line</B>.
-     */
+	/**
+	 * Recognized classification values.
+	 */
 
-    public static final String FIRST_LINE             = "1st Line";
+	public enum Classifications
+	{
+		/** <A NAME="_SS_"></A>
+		 * Indicates that the classification of a unit is <B>SS</B>.
+		 *
+		 * This value is applicable (obviously) only when the
+		 * nationality of the unit is <A HREF="Nationality.html#_GERMAN_">GERMAN</A>.
+		 */
 
-    /** <A NAME="_SECOND_LINE_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>2nd Line</B>.
-     */
+		SS("SS"),
 
-    public static final String SECOND_LINE            = "2nd Line";
+		/** <A NAME="_ELITE_"></A>
+		 * Indicates that the classification of a unit is <B>Elite</B>.
+		 */
 
-    /** <A NAME="_GREEN_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Green</B>.
-     */
+		ELITE("Elite"),
 
-    public static final String GREEN                  = "Green";
+		/** <A NAME="_FIRST_LINE_"></A>
+		 * Indicates that the classification of a unit is <B>1st Line</B>.
+		 */
 
-    /** <A NAME="_CONSCRIPT_"></A>
-     * Indicates that a <A HREF="Personnel.html">Personnel</A> unit's classification is <B>Conscript</B>.
-     */
+		FIRST_LINE("1st Line"),
 
-    public static final String CONSCRIPT              = "Conscript";
+		/** <A NAME="_SECOND_LINE_"></A>
+		 * Indicates that the classification of a unit is <B>2nd Line</B>.
+		 */
 
-    /** <A NAME="_CLASSIFICATIONS_"></A>
-     * A list of the supported classifications.
-     *
-     * @see #getClassification
-     */
+		SECOND_LINE("2nd Line"),
 
-    public static final String[] CLASSIFICATIONS      = { ELITE, FIRST_LINE,
-                                                          SECOND_LINE, GREEN,
-                                                          CONSCRIPT };
+		/** <A NAME="_GREEN_"></A>
+		 * Indicates that the classification of a unit is <B>Green</B>.
+		 */
 
-    /** <A NAME="_CLASSIFICATIONS_VECTOR_"></A>
-     * An alternative method of accessing the list of recognized unit
-     * classifications. This object is used to verify that the classification
-     * parameter specified for an object of a public class derived from <A HREF="Unit.html">Unit</A>
-     * matches one of the values found in the <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array.
-     *
-     * @see #getClassification
-     */
+		GREEN("Green"),
 
-    public static final Vector CLASSIFICATIONS_VECTOR = new Vector(Arrays.asList(CLASSIFICATIONS));
+		/** <A NAME="_CONSCRIPT_"></A>
+		 * Indicates that the classification of a unit is <B>Conscript</B>.
+		 */
 
-    /**
-     * The number of elements in the <A HREF="#_CLASSIFICATIONS_">CLASSIFICATIONS</A> array and
-     * <A HREF="#_CLASSIFICATIONS_VECTOR_">CLASSIFICATIONS_VECTOR</A>.
-     */
+		CONSCRIPT("Conscript");
 
-    public static final int CLASSIFICATIONS_LIST_SIZE = CLASSIFICATIONS.length;
+		// Private data members
 
-    // This constant is provided primarily for use in displaying the
-    // classification setting of a <A HREF="Personnel.html">Personnel</A> unit using an objects toString()
-    // method.
+		// The label associated with the enum constant.
 
-    /**
-     * Provides a label for a <A HREF="Personnel.html">Personnel</A> (MMC) unit's classification :
-     * <B>Classification</B>
-     */
+		private final String label;
 
-    public static final String CLASSIFICATION_LABEL   = "Classification";
+		// Constructor
 
-    // Access methods
+		Classifications(String label)
+		{
+			this.label = label;
+		}
 
-    /**
-     * Determine the classification of a unit. This is indicated on the front of
-     * the physical counter by an alphanumeric character in the upper right
-     * corner. The recognized values are listed below.
-     *
-     * @return a <CODE>String</CODE> specifying the classification.
-     *
-     * @see #ELITE
-     * @see #FIRST_LINE
-     * @see #SECOND_LINE
-     * @see #GREEN
-     * @see #CONSCRIPT
-     */
+		// Public access method
 
-    public abstract String getClassification();
+		/**
+		 * Returns the label associated with the enum constant.
+		 *
+		 * @return the <CODE>String</CODE> associated with the constant.
+		 */
+
+		public String label()
+		{
+			return label;
+		}
+	}
+
+	// Access methods
+
+	/**
+	 * Return the classification of a unit. This is indicated on the front
+	 * of the physical counter by an alphanumeric character in the upper
+	 * right corner.
+	 *
+	 * @return a <CODE>String</CODE> specifying the unit classification.
+	 */
+
+	public abstract String classification();
 }
