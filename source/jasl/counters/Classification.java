@@ -34,8 +34,10 @@ public interface Classification
 	// method.
 
 	/**
-	 * Provides a label for a <A HREF="Personnel.html">Personnel</A> (MMC) unit's classification :
+	 * Provides a label for a personnel (MMC) unit's classification :
 	 * <B>Classification</B>
+	 *
+	 * @see Personnel
 	 */
 
 	public static final String CLASSIFICATION_LABEL = "Classification";
@@ -50,7 +52,9 @@ public interface Classification
 		 * Indicates that the classification of a unit is <B>SS</B>.
 		 *
 		 * This value is applicable (obviously) only when the
-		 * nationality of the unit is <A HREF="Nationality.html#_GERMAN_">GERMAN</A>.
+		 * nationality of the unit is <B>German</B>.
+		 *
+		 * @see Nationality.Nationalities#GERMAN
 		 */
 
 		SS("SS"),

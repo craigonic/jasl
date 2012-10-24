@@ -33,13 +33,13 @@ public interface Morale
 	// toString() method.
 
 	/**
-	 * Provides a label for an infantry units normal morale value : <B>Morale</B>
+	 * Provides a label for an infantry unit's normal morale value : <B>Morale</B>
 	 */
 
 	public static final String MORALE_LABEL = "Morale";
 
 	/**
-	 * Provides a label for an infantry units broken morale value :
+	 * Provides a label for an infantry unit's broken morale value :
 	 * <B>Broken Morale</B>
 	 */
 
@@ -69,27 +69,33 @@ public interface Morale
 	// Access methods
 
 	/**
-	 * Return the morale level of a unit when it is in its <A HREF="Status.html#_NORMAL_">normal</A> state.
+	 * Return the morale level of a unit when it is in its normal state.
 	 *
-	 * @return a <CODE>int</CODE> specifying the normal morale level of the unit.
+	 * @return an <CODE>int</CODE> specifying the normal morale level of the unit.
+	 *
+	 * @see Status.States#NORMAL
 	 */
 
 	public abstract int morale();
 
 	/**
-	 * Return the morale level of a unit when it is in the <A HREF="Status.html#_BROKEN_">broken</A> state.
+	 * Return the morale level of a unit when it is in the broken state.
 	 *
-	 * @return a <CODE>int</CODE> specifying the broken morale level of the unit.
+	 * @return an <CODE>int</CODE> specifying the broken morale level of the unit.
+	 *
+	 * @see Status.States#BROKEN
 	 */
 
 	public abstract int brokenMorale();
 
 	/**
 	 * Return if a unit has the ability to rally without the presence of a
-	 * <A HREF="Leader.html">leader</A>. This is indicated on the back of the physical counter by a
+	 * leader. This is indicated on the back of the physical counter by a
 	 * square around the broken morale value.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the unit has this capability.
+	 *
+	 * @see Leadership
 	 */
 
 	public abstract boolean canSelfRally();
@@ -100,24 +106,30 @@ public interface Morale
 	 * Perform a morale or task check on a unit.
 	 *
 	 * @param modifier the applicable dice roll modifier (DRM) for the check.
-	 * This includes <A HREF="Leadership.html">leadership</A> DRM as well as other factors.
+	 * This includes leadership DRM as well as other factors.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
 	 * a result of calling this method.
+	 *
+	 * @see Leadership
+	 * @see Status
 	 */
 
 	public abstract boolean check(int modifier);
 
 	/**
-	 * Attempt to restore a units status to <A HREF="Status.html#_NORMAL_">normal</A>.
+	 * Attempt to restore a unit's status to normal.
 	 *
-	 * @param leaderPresent indicates if a <A HREF="Leader.html">leader</A> is present, which may
+	 * @param leaderPresent indicates if a leader is present, which may
 	 * determine if a restoration attempt can be made or not.
 	 * @param modifier the applicable dice roll modifier for the attempt.
-	 * This includes <A HREF="Leadership.html">leadership</A> DRM as well as other factors.
+	 * This includes leadership DRM as well as other factors.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
 	 * a result of calling this method.
+	 *
+	 * @see Leadership
+	 * @see Status
 	 */
 
 	public abstract boolean restore(boolean leaderPresent,int modifier);
