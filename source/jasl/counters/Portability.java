@@ -31,7 +31,7 @@ public interface Portability
 	// value of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
 
 	/**
-	 * Provides a label for a units portage value : <B>Portage Value</B>
+	 * Provides a label for a unit's portage value : <B>Portage Value</B>
 	 */
 
 	public static final String PORTAGE_VALUE_LABEL = "Portage Value";

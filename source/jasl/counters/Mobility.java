@@ -33,19 +33,19 @@ public interface Mobility
 	// toString() method.
 
 	/**
-	 * Provides a label for a units movement allowance : <B>Movement</B>
+	 * Provides a label for a unit's movement allowance : <B>Movement</B>
 	 */
 
 	public static final String MOVEMENT_LABEL = "Movement";
 
 	/**
-	 * Provides a label for a units portage capacity : <B>Portage Capacity</B>
+	 * Provides a label for a unit's portage capacity : <B>Portage Capacity</B>
 	 */
 
 	public static final String PORTAGE_CAPACITY_LABEL = "Portage Capacity";
 
 	/**
-	 * Provides a label for a units portage level : <B>Portage Level</B>
+	 * Provides a label for a unit's portage level : <B>Portage Level</B>
 	 */
 
 	public static final String PORTAGE_LEVEL_LABEL = "Portage Level";
@@ -79,20 +79,24 @@ public interface Mobility
 	public abstract int movement();
 
 	/**
-	 * Return the maximum number of portage points (PP) of <A HREF="Personnel.html">personnel</A> and/or
+	 * Return the maximum number of portage points (PP) of personnel and/or
 	 * equipment that a unit can carry without affecting the movement
 	 * factors or points available to it.
 	 *
 	 * @return an <CODE>int</CODE> specifying the portage capacity of the unit.
+	 *
+	 * @see Personnel
 	 */
 
 	public abstract int portageCapacity();
 
 	/**
-	 * Return the number of portage points (PP) of <A HREF="Personnel.html">personnel</A> and/or
+	 * Return the number of portage points (PP) of personnel and/or
 	 * equipment that a unit is currently carrying.
 	 *
 	 * @return an <CODE>int</CODE> specifying the current portage level of the unit.
+	 *
+	 * @see Personnel
 	 */
 
 	public abstract int portageLevel();

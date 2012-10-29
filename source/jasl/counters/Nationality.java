@@ -32,7 +32,7 @@ public interface Nationality
 	// nationality of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
 
 	/**
-	 * Provides a label for a units nationality : <B>Nationality</B>
+	 * Provides a label for a unit's nationality : <B>Nationality</B>
 	 */
 
 	public static final String NATIONALITY_LABEL = "Nationality";
@@ -46,67 +46,67 @@ public interface Nationality
 	public enum Nationalities
 	{
 		/** <A NAME="_ALLIED_MINOR_"></A>
-		 * Indicates that a units nationality is <B>Allied Minor</B>.
+		 * Indicates that a unit's nationality is <B>Allied Minor</B>.
 		 */
 
 		ALLIED_MINOR("Allied Minor"),
 
 		/** <A NAME="_AMERICAN_"></A>
-		 * Indicates that a units nationality is <B>American</B>.
+		 * Indicates that a unit's nationality is <B>American</B>.
 		 */
 
 		AMERICAN("American"),
 
 		/** <A NAME="_AXIS_MINOR_"></A>
-		 * Indicates that a units nationality is <B>Axis Minor</B>.
+		 * Indicates that a unit's nationality is <B>Axis Minor</B>.
 		 */
 
 		AXIS_MINOR("Axis Minor"),
 
 		/** <A NAME="_BRITISH_"></A>
-		 * Indicates that a units nationality is <B>British</B>.
+		 * Indicates that a unit's nationality is <B>British</B>.
 		 */
 
 		BRITISH("British"),
 
 		/** <A NAME="_FINNISH_"></A>
-		 * Indicates that a units nationality is <B>Finnish</B>.
+		 * Indicates that a unit's nationality is <B>Finnish</B>.
 		 */
 
 		FINNISH("Finnish"),
 
 		/** <A NAME="_FRENCH_"></A>
-		 * Indicates that a units nationality is <B>French</B>.
+		 * Indicates that a unit's nationality is <B>French</B>.
 		 */
 
 		FRENCH("French"),
 
 		/** <A NAME="_GERMAN_"></A>
-		 * Indicates that a units nationality is <B>German</B>.
+		 * Indicates that a unit's nationality is <B>German</B>.
 		 */
 
 		GERMAN("German"),
 
 		/** <A NAME="_ITALIAN_"></A>
-		 * Indicates that a units nationality is <B>Italian</B>.
+		 * Indicates that a unit's nationality is <B>Italian</B>.
 		 */
 
 		ITALIAN("Italian"),
 
 		/** <A NAME="_JAPANESE_"></A>
-		 * Indicates that a units nationality is <B>Japanese</B>.
+		 * Indicates that a unit's nationality is <B>Japanese</B>.
 		 */
 
 		JAPANESE("Japanese"),
 
 		/** <A NAME="_PARTISAN_"></A>
-		 * Indicates that a units nationality is <B>Partisan</B>.
+		 * Indicates that a unit's nationality is <B>Partisan</B>.
 		 */
 
 		PARTISAN("Partisan"),
 
 		/** <A NAME="_RUSSIAN_"></A>
-		 * Indicates that a units nationality is <B>Russian</B>.
+		 * Indicates that a unit's nationality is <B>Russian</B>.
 		 */
 
 		RUSSIAN("Russian");
@@ -143,7 +143,7 @@ public interface Nationality
 	/**
 	 * Return the nationality of a unit.
 	 *
-	 * @return a <CODE>String</CODE> specifying the units nationality.
+	 * @return a <CODE>String</CODE> specifying the unit's nationality.
 	 */
 
 	public abstract String nationality();

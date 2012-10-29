@@ -32,7 +32,7 @@ public interface Status
 	// of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
 
 	/**
-	 * Provides a label for a units status : <B>Status</B>
+	 * Provides a label for a unit's status : <B>Status</B>
 	 */
 
 	public static final String STATUS_LABEL = "Status";

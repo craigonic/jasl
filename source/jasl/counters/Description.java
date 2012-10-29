@@ -58,13 +58,17 @@ public interface Description
 		HALF_SQUAD("Half Squad"),
 
 		/** <A NAME="_LEADER_"></A>
-		 * Indicates that the counter type of a unit is <B><A HREF="Leader.html">Leader</A></B>.
+		 * Indicates that the counter type of a unit is <B>Leader</B>.
+		 *
+		 * @see Leader
 		 */
 
 		LEADER("Leader"),
 
 		/** <A NAME="_SQUAD_"></A>
-		 * Indicates that the counter type of a unit is <B><A HREF="Squad.html">Squad</A></B>.
+		 * Indicates that the counter type of a unit is <B>Squad</B>.
+		 *
+		 * @see Squad
 		 */
 
 		SQUAD("Squad");

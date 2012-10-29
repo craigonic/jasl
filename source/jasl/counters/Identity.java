@@ -31,7 +31,7 @@ public interface Identity
 	// identity of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
 
 	/**
-	 * Provides a label for a units identity : <B>Identity</B>
+	 * Provides a label for a unit's identity : <B>Identity</B>
 	 */
 
 	public static final String IDENTITY_LABEL = "Identity";
@@ -41,9 +41,9 @@ public interface Identity
 	/**
 	 * Return the identity of a unit. This is typically a single
 	 * alphanumeric character, but it may also be a full name (e.g. for
-	 * <A HREF="Leader.html">leader</A>s and heroes).
+	 * leaders and heroes).
 	 *
-	 * @return a <CODE>String</CODE> specifying the units identity.
+	 * @return a <CODE>String</CODE> specifying the unit's identity.
 	 */
 
 	public abstract String identity();
