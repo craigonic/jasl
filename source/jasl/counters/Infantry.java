@@ -6,11 +6,9 @@
 //                                                                            //
 //                 NOTE: This program is based on Advanced Squad Leader,      //
 //                       which was created by The Avalon Hill Game Company,   //
-//                       and lives on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.              //
+//                       and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.                //
 //                                                                            //
-// Written By    : Craig R. Campbell  -  December 1998                        //
-//                                                                            //
-// $Id: Infantry.java,v 1.16 2009/12/31 07:03:29 craig Exp $
+// Written By: Craig R. Campbell  -  December 1998                            //
 // ************************************************************************** //
 
 package jasl.counters;
@@ -22,34 +20,18 @@ import jasl.utilities.Messages;
  * infantry units. This class is strictly a superclass and cannot be
  * instantiated directly.
  *
- * @version 1.16
- * @author Craig R. Campbell
+ * @version 2.0
+ * @author Copyright (C) 1998-2012 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
 
-class Infantry extends Mobile
+class Infantry extends Mobile implements Morale
 {
-	// Public symbolic constants
+	// Symbolic constants
 
-	/**
-	 * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's normal morale value : <B>Morale</B>
-	 */
-
-	public static final String MORALE_LABEL = "Morale";
-
-	/**
-	 * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's broken morale value :
-	 * <B>Broken Morale</B>
-	 */
-
-	public static final String BROKEN_MORALE_LABEL = "Broken Morale";
-
-	/**
-	 * Provides a label indicating if an <A HREF="Infantry.html">Infantry</A> unit has self rally
-	 * capability : <B>Can Self Rally ?</B>
-	 */
-
-	public static final String CAN_SELF_RALLY_LABEL = "Can Self Rally ?";
+	// The following constants are provided primarily for use in displaying
+	// the value returned by their corresponding access methods in the <A HREF="Unit.html">Unit</A>
+	// objects toString() method.
 
 	/**
 	 * Provides a label for a unit's basic point value : <B>Basic Point Value</B>
@@ -58,52 +40,188 @@ class Infantry extends Mobile
 	public static final String BPV_LABEL = "Basic Point Value";
 
 	/**
-	 * Provides a label for an <A HREF="Infantry.html">Infantry</A> unit's experience level rating :
+	 * Provides a label for a unit's experience level rating :
 	 * <B>Experience Level Rating</B>
 	 */
 
 	public static final String ELR_LABEL = "Experience Level Rating";
 
-	// Protected symbolic constants
-
-	// Legal status values. Additional values will be added here as
-	// necessary.
-
-	/** <A NAME="_BROKEN_"></A>
-	 * Indicates that the unit's current status is <B>Broken</B>.
-	 *
-	 * @see #getStatus
+	/**
+	 * Recognized unit type values for Infantry. These are used to identify
+	 * additional characteristics/abilities or a more specific nationality.
 	 */
 
-	protected static final String BROKEN = "Broken";
+	public enum UnitTypes
+	{
+		/** <A NAME="_NONE_"></A>
+		 * Indicates that a more specific nationality, ability,
+		 * characteristic, etc. does not apply to an Infantry unit.
+		 */
 
-	/** <A NAME="_DESPERATE_"></A>
-	 * Indicates that the unit's current status is <B>Desperate</B>.
-	 *
-	 * @see #getStatus
-	 */
+		NONE(""),
 
-	protected static final String DESPERATE = "Desperate";
+		/** <A NAME="_PARATROOPS_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Paratroops</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>American</B>.
+		 *
+		 * @see Nationality.Nationalities#AMERICAN
+		 */
+
+		PARATROOPS("Paratroops"),
+
+		/** <A NAME="_AIRBORNE_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Airborne</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		AIRBORNE("Airborne"),
+
+		/** <A NAME="_ANZAC_"></A>
+		 * Indicates that a unit's more precise nationality is <B>ANZAC</B>. If
+		 * this value is specified as the unitType parameter for an
+		 * object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		ANZAC("ANZAC"),
+
+		/** <A NAME="_CANADIAN_"></A>
+		 * Indicates that a unit's more precise nationality is <B>Canadian</B>.
+		 * If this value is specified as the unitType parameter for an
+		 * object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		CANADIAN("Canadian"),
+
+		/** <A NAME="_FREE_FRENCH_"></A>
+		 * Indicates that a unit's more precise nationality is
+		 * <B>Free French</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		FREE_FRENCH("Free French"),
+
+		/** <A NAME="_FREE_POLISH_"></A>
+		 * Indicates that a unit's more precise nationality is
+		 * <B>Free Polish</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		FREE_POLISH("Free Polish"),
+
+		/** <A NAME="_GUARDSMEN_"></A>
+		 * Indicates that a unit's more precise type is <B>Guardsmen</B>. If
+		 * this value is specified as the unitType parameter for an
+		 * object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		GUARDSMEN("Guardsmen"),
+
+		/** <A NAME="_GURKHA_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Gurkha</B>. If this value is specified as the unitType parameter
+		 * for an object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		GURKHA("Gurkha"),
+
+		/** <A NAME="_SISSI_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Sissi</B>. If this value is specified as the unitType parameter
+		 * for an object, the nationality parameter must be <B>FINNISH</B>.
+		 *
+		 * @see Nationality.Nationalities#FINNISH
+		 */
+
+		SISSI("Sissi"),
+
+		/** <A NAME="_ENGINEERS_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Engineers</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>German</B>.
+		 *
+		 * @see Nationality.Nationalities#GERMAN
+		 */
+
+		ENGINEERS("Engineers"),
+
+		/** <A NAME="_COMMISSAR_"></A>
+		 * Indicates that a unit's more precise type is <B>Commissar</B>. This
+		 * value may only be specified as the unitType parameter for a
+		 * <B>Leader</B> object. The nationality parameter must be
+		 * <B>Russian</B>.
+		 *
+		 * @see Nationality.Nationalities#RUSSIAN
+		 * @see Leader
+		 */
+
+		COMMISSAR("Commissar"),
+
+		/** <A NAME="_GUARDS_"></A>
+		 * Indicates that a unit's more precise type is <B>Guards</B>. If this
+		 * value is specified as the unitType parameter for an object,
+		 * the nationality parameter must be <B>Russian</B>.
+		 *
+		 * @see Nationality.Nationalities#RUSSIAN
+		 */
+
+		GUARDS("Guards");
+
+		// Private data members
+
+		// The label associated with the enum constant.
+
+		private final String label;
+
+		// Constructor
+
+		UnitTypes(String label)
+		{
+			this.label = label;
+		}
+
+		// Public access method
+
+		/**
+		 * Returns the label associated with the enum constant.
+		 *
+		 * @return the <CODE>String</CODE> associated with the constant.
+		 */
+
+		public String label()
+		{
+			return label;
+		}
+	}
+
+	// The following constants define the minimums and maximum for their
+	// corresponding attributes.
 
 	/**
 	 * Minimum valid basic point value : <B>0</B>
 	 */
 
-	protected static final int MIN_BPV = 0;
-
-	// Private symbolic constants
-
-	/**
-	 * Minimum valid morale (normal and broken) value : <B>0</B>
-	 */
-
-	private static final int MIN_MORALE = 0;
-
-	/**
-	 * Maximum valid morale (normal and broken) value : <B>10</B>
-	 */
-
-	private static final int MAX_MORALE = 10;
+	private static final int MIN_BPV = 0;
 
 	/** <A NAME="_MIN_ELR_"></A>
 	 * Minimum valid experience level rating value : <B>0</B>
@@ -195,8 +313,8 @@ class Infantry extends Mobile
 
 		catch (NumberFormatException exception)
 		{
-				throw new NumberFormatException(invalidArgumentError +
-				                                firepower);
+			throw new NumberFormatException(invalidArgumentError +
+			                                firepower);
 		}
 
 		// Check the value of each remaining parameter and copy the
@@ -205,16 +323,19 @@ class Infantry extends Mobile
 
 		// Morale
 
-		if ((morale < MIN_MORALE) || (morale > MAX_MORALE))
+		if ((morale < Morale.MIN_MORALE) ||
+		    (morale > Morale.MAX_MORALE))
 		{
-			throw new IllegalArgumentException(invalidArgumentError + morale);
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   morale);
 		}
 
 		this.morale = morale;
 
 		// Broken Morale
 
-		if ((brokenMorale < MIN_MORALE) || (brokenMorale > MAX_MORALE))
+		if ((brokenMorale < Morale.MIN_MORALE) ||
+		    (brokenMorale > Morale.MAX_MORALE))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
 			                                   brokenMorale);
@@ -245,10 +366,7 @@ class Infantry extends Mobile
 			                                   experienceLevelRating);
 		}
 
-		else
-		{
-			this.experienceLevelRating = experienceLevelRating;
-		}
+		this.experienceLevelRating = experienceLevelRating;
 	}
 
 	// Public access methods
@@ -282,7 +400,7 @@ class Infantry extends Mobile
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(getMorale(),
+		returnString.append(Messages.formatTextString(Integer.toString(morale),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,false));
 
@@ -292,7 +410,7 @@ class Infantry extends Mobile
 		                                              THIRD_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(getBrokenMorale(),
+		returnString.append(Messages.formatTextString(Integer.toString(brokenMorale),
 		                                              FOURTH_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -302,7 +420,7 @@ class Infantry extends Mobile
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(Messages.getChoiceLabel(canSelfRally()),
+		returnString.append(Messages.formatTextString(Messages.getChoiceLabel(selfRallyCapable),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -312,7 +430,7 @@ class Infantry extends Mobile
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(getBPV(),
+		returnString.append(Messages.formatTextString(Integer.toString(basicPointValue),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,false));
 
@@ -322,7 +440,7 @@ class Infantry extends Mobile
 		                                              THIRD_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(getELR(),
+		returnString.append(Messages.formatTextString(Integer.toString(experienceLevelRating),
 		                                              FOURTH_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -332,50 +450,39 @@ class Infantry extends Mobile
 	}
 
 	/**
-	 * Return the current status of this unit.
+	 * Return the morale level of a unit when it is in its normal state.
 	 *
-	 * @return a comma delimited <CODE>String</CODE> describing the unit status. The list
-	 * will include one or more of the string constants that are associated
-	 * with unit status.
+	 * @return an <CODE>int</CODE> specifying the normal morale level of the unit.
 	 *
-	 * @see Infantry#BROKEN
-	 * @see Infantry#DESPERATE
-	 * @see Unit#NORMAL
+	 * @see Status.States#NORMAL
 	 */
 
-	public String getStatus()
+	public int morale()
 	{
-		return NORMAL;
+		return morale;
 	}
 
 	/**
-	 * Return the morale level of this unit when it is in its normal state.
+	 * Return the morale level of a unit when it is in the broken state.
 	 *
-	 * @return a <CODE>String</CODE> specifying the normal morale level.
+	 * @return an <CODE>int</CODE> specifying the broken morale level of the unit.
+	 *
+	 * @see Status.States#BROKEN
 	 */
 
-	public String getMorale()
+	public String brokenMorale()
 	{
-		return Integer.toString(morale);
+		return brokenMorale;
 	}
 
 	/**
-	 * Return the morale level of this unit when it is broken.
-	 *
-	 * @return a <CODE>String</CODE> specifying the broken morale level.
-	 */
-
-	public String getBrokenMorale()
-	{
-		return Integer.toString(brokenMorale);
-	}
-
-	/**
-	 * Return if this unit has the ability to rally without the presence of a
-	 * <B><A HREF="Leader.html">Leader</A></B>. This is indicated on the back of the physical counter by a
+	 * Return if a unit has the ability to rally without the presence of a
+	 * leader. This is indicated on the back of the physical counter by a
 	 * square around the broken morale value.
 	 *
-	 * @return a <CODE>boolean</CODE> indicating if a unit has this attribute.
+	 * @return a <CODE>boolean</CODE> indicating if the unit has this attribute.
+	 *
+	 * @see Leader
 	 */
 
 	public boolean canSelfRally()
@@ -384,57 +491,79 @@ class Infantry extends Mobile
 	}
 
 	/**
-	 * Return the basic point value of this unit. This value is used to
+	 * Return the basic point value of a unit. This value is used to
 	 * determine battlefield integrity and for design your own (DYO)
 	 * scenarios.
 	 *
-	 * @return a <CODE>String</CODE> specifying the basic point value.
+	 * @return an <CODE>int</CODE> specifying the basic point value of the unit.
 	 */
 
-	public String getBPV()
+	public int basicPointValue()
 	{
-		return Integer.toString(basicPointValue);
+		return basicPointValue;
 	}
 
 	/**
-	 * Return the current experience level rating of this unit. This is a
-	 * value between <A HREF="#_MIN_ELR_">MIN_ELR</A> and <A HREF="#_MAX_ELR_">MAX_ELR</A>, inclusive.
+	 * Return the experience level rating of a unit. This is a value between
+	 * the <A HREF="#_MIN_ELR_">minimum</A> and <A HREF="#_MAX_ELR_">maximum</A>, inclusive.
 	 *
-	 * @return a <CODE>String</CODE> specifying the experience level rating.
+	 * @return an <CODE>int</CODE> specifying the experience level rating for the unit.
 	 */
 
-	public String getELR()
+	public int experienceLevelRating()
 	{
-		return Integer.toString(experienceLevelRating);
+		return experienceLevelRating;
 	}
 
 	// Public game actions
 
 	/**
-	 * Attempt to restore the status of this unit from <A HREF="#_BROKEN_">Broken</A> and/or
-	 * <A HREF="#_DESPERATE_">Desperate</A> to <A HREF="Unit.html#_NORMAL_">Normal</A>.
+	 * Perform a morale or task check on a unit.
 	 *
-	 * @param isLeaderPresent indicates if a <B><A HREF="Leader.html">Leader</A></B> is present, which may
-	 * determine if a restoration attempt can be made or not.
+	 * @param modifier the applicable dice roll modifier (DRM) for the check.
+	 * This includes leadership DRM as well as other factors.
 	 *
+	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
+	 * a result of calling this method.
+	 *
+	 * @see Leader
+	 * @see Status
+	 */
+
+	public boolean check(int modifier)
+	{
+		return false;
+	}
+
+	/**
+	 * Attempt to restore a unit's status to normal.
+	 *
+	 * @param leaderPresent indicates if a leader is present, which may
+	 * determine if a restoration attempt can be made or not. Note that the
+	 * leader is considered "present" only when in the normal (unbroken)
+	 * state.
 	 * @param modifier the applicable dice roll modifier for the attempt.
 	 * This includes leadership DRM as well as other factors.
 	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
-	 * result of calling this method.
+	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
+	 * a result of calling this method.
+	 *
+	 * @see Leader
+	 * @see Status
 	 */
 
-	public boolean restore(boolean isLeaderPresent,int modifier)
+	public boolean restore(boolean leaderPresent,int modifier)
 	{
 		// Verify that the "unit" actually needs to be rallied.
 
-		if ((getStatus().equals(BROKEN)) || (getStatus().equals(DESPERATE)))
+		if ((isStatusSet(States.BROKEN)) ||
+		    (isStatusSet(States.DESPERATE)))
 		{
 			// If the unit is capable of self-rallying (leaders and
-			// some elite units) or a unbroken leader is present in
+			// some elite units) or a <B>unbroken</B> leader is present in
 			// the same space, make the rally attempt.
 
-			if (canSelfRally() || isLeaderPresent)
+			if (selfRallyCapable || leaderPresent)
 			{
 				return true;
 			}
@@ -443,21 +572,6 @@ class Infantry extends Mobile
 		// Unless determined otherwise above, the "unit" automatically
 		// fails.
 
-		return false;
-	}
-
-	/**
-	 * Perform a morale or task check on this unit.
-	 *
-	 * @param modifier the applicable dice roll modifier for the check.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
-	 * result of calling this method.
-	 */
-
-	public boolean check(int modifier)
-	{
 		return false;
 	}
 }
