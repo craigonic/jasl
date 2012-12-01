@@ -7,7 +7,6 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  January 2009                              #
 #                                                                              #
-# $Id: Makefile,v 1.4 2010/02/04 21:22:26 campbell Exp $
 ################################################################################
 
 # These entries are included to eliminate pointless searching for the files,
@@ -63,52 +62,40 @@ $(MESSAGES_CLASS): bin_directory
 $(DICE_CLASS): $(MESSAGES_CLASS)
 	$(JAVA_OPTIONS) $(DICE_SRC)
 
-# Build all of the individual object files.
-
-.PHONY : obj
-obj: $(GCJ_OBJECT_FILES)
-
 # Compile individual object files used to build a native executable with the gcj
 # compiler.
 
-$(MESSAGES_OBJ):
-	$(GCJ_COMPILE_CMD) $(MESSAGES_SRC)
-	$(INSTALL_DIR) $(UTILITIES_OBJ_PATH)
-	$(MV) $(MESSAGES_OBJ) $(UTILITIES_OBJ_PATH)
+$(MESSAGES_OBJ): $(MESSAGES_CLASS)
+	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(MESSAGES_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(MESSAGES_OBJ)
 
-$(DICE_OBJ): $(MESSAGES_CLASS)
-	$(GCJ_COMPILE_CMD) $(DICE_SRC)
-	$(INSTALL_DIR) $(UTILITIES_OBJ_PATH)
-	$(MV) $(DICE_OBJ) $(UTILITIES_OBJ_PATH)
+$(DICE_OBJ): $(DICE_CLASS)
+	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(DICE_CLASS) \
+	                  -o $(OBJ_SUB_DIRECTORY)/$(DICE_OBJ)
+
+# Build all of the individual object files.
+
+.PHONY : obj
+obj: obj_sub_directory $(GCJ_OBJECT_FILES)
 
 # Build all of the individual header files.
 
 .PHONY : hdr
-hdr: include_directory $(GCJ_HEADER_FILES)
-#	$(GJAVAH_CMD) $(UTILITIES_BIN_PATH)
-
-# Using the installed .class files, build the header file that defines each one
-# and install it in the include output directory.
-
-GCJH_BUILD_CMD := $(GCJH_CMD) $(GCJ_CLASSPATH_CMD)/$(UTILITIES_PKG_PATH) \
-                  -d $(UTILITIES_HDR_PATH)
-
-$(MESSAGES_HDR): $(MESSAGES_CLASS)
-	$(GCJH_BUILD_CMD) $(MESSAGES_EXEC)
-
-$(DICE_HDR): $(DICE_CLASS)
-	$(GCJH_BUILD_CMD) $(DICE_EXEC)
+hdr: include_directory
+	$(GJAVAH_CMD) $(UTILITIES_BIN_PATH)
 
 # Define variables used to represent the dynamic and static libraries.
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(UTILITIES_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
-DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
 # directory.
+
+LOCAL_OBJ_FILES := $(OBJ_SUB_DIRECTORY)/*.o
 
 .PHONY : libs
 libs: dynamic_lib static_lib clean_obj
@@ -116,13 +103,13 @@ libs: dynamic_lib static_lib clean_obj
 .PHONY : dynamic_lib
 dynamic_lib: lib_directory obj
 	$(GCJ_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) \
-	                     $(UTILITIES_OBJ_FILES)
+	                     $(LOCAL_OBJ_FILES)
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
 
 .PHONY : static_lib
 static_lib: lib_directory obj
-	$(AR) $(UTILITIES_STATIC_LIB_PATH) $(UTILITIES_OBJ_FILES)
+	$(AR) $(UTILITIES_STATIC_LIB_PATH) $(LOCAL_OBJ_FILES)
 
 # Remove all of the .class and/or object files from the binary output directory.
 
@@ -135,7 +122,7 @@ clean_java:
 
 .PHONY : clean_obj
 clean_obj:
-	$(RM) $(UTILITIES_OBJ_FILES)
+	$(RM_RECURSIVE) $(OBJ_SUB_DIRECTORY)
 
 # Remove all of the header (.h) files from the include output directory.
 
@@ -166,7 +153,6 @@ clean_static_lib:
 # page.
 
 UTILITIES_DOCS_PATH := $(SRC_DOCS_PATH)/$(UTILITIES_PKG_PATH)
-HTLS_CFG_FILE       := $(UTILITIES_PKG_NAME).cfg
 
 .PHONY : docs_all
 docs_all:
@@ -178,14 +164,12 @@ docs_all:
 			(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(UTILITIES_PKG_PATH)/$$i.html) ;\
 		fi \
 	done
-	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) \
-	                     $(UTILITIES_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(UTILITIES_DOCS_PATH)
 	@$(HTLS) $(UTILITIES_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
 	@$(RM) $(UTILITIES_DOCS_PATH)/$(HTLS_HEADER_FILE)
-	@$(RM) $(UTILITIES_DOCS_PATH)/$(HTLS_CFG_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs
