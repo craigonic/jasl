@@ -14,7 +14,7 @@
 package jasl.counters;
 
 /**
- * This interface is used to define public constant and required method
+ * This interface is used to define the public constant and required method
  * associated with the unit type of <A HREF="Fighting.html">Fighting</A> units. The method is intended for
  * operation on a String member variable within the implementing class.
  *

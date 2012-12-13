@@ -65,8 +65,10 @@ public interface Firepower
 	// Access methods
 
 	/**
-	 * Return the firepower of a unit. This may be an infantry fire table
-	 * (IFT) value or a gun type designation (i.e. 88LL).
+	 * Return the firepower designation for a unit.
+	 *
+	 * This may be an infantry fire table (IFT) value or a weapon type
+	 * description (e.g. 88LL, FT, etc.).
 	 *
 	 * @return a <CODE>String</CODE> specifying the unit's firepower.
 	 */
@@ -74,9 +76,12 @@ public interface Firepower
 	public abstract String firepower();
 
 	/**
-	 * Return the firepower equivalent of a unit. This is generally applied
-	 * to translate the capability of a gun designation (i.e. 88LL) into the
-	 * corresponding value on the infantry fire table (IFT).
+	 * Return the firepower equivalent for a unit.
+	 *
+	 * For units where the return value of firepower() is a number, it is
+	 * simply the integer representation, intended for direct application in
+	 * the infantry fire table (IFT). Otherwise, it is the translation of a
+	 * label (e.g. 88LL) into the corresponding IFT value.
 	 *
 	 * @return an <CODE>int</CODE> specifying the unit's firepower equivalent.
 	 */
