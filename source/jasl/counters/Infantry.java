@@ -17,7 +17,7 @@ import jasl.utilities.Messages;
 
 /**
  * This class is used to define the characteristics which are common to all
- * infantry units. This class is strictly a superclass and cannot be
+ * infantry units. It is intended strictly as a superclass, not to be
  * instantiated directly.
  *
  * @version 2.0
@@ -25,7 +25,7 @@ import jasl.utilities.Messages;
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
 
-class Infantry extends Mobile implements Morale
+abstract class Infantry extends Mobile implements Firepower, Morale
 {
 	// Symbolic constants
 
@@ -45,6 +45,8 @@ class Infantry extends Mobile implements Morale
 	 */
 
 	public static final String ELR_LABEL = "Experience Level Rating";
+
+	// Recognized Infantry unit types.
 
 	/**
 	 * Recognized unit type values for Infantry. These are used to identify
@@ -218,6 +220,14 @@ class Infantry extends Mobile implements Morale
 	// corresponding attributes.
 
 	/**
+	 * Maximum valid firepower (equivalent) value : <B>8</B>
+	 *
+	 * This item (obviously) applies to Infantry units only.
+	 */
+
+	private static final int MAX_FIREPOWER = 8;
+
+	/**
 	 * Minimum valid basic point value : <B>0</B>
 	 */
 
@@ -237,6 +247,18 @@ class Infantry extends Mobile implements Morale
 
 	// Private data members
 
+	// This variable stores the firepower of the unit that this object
+	// represents. Note that it is specified to the constructor as
+	// firepower, but this item (which has the matching type, both to the
+	// constructor and for application in the IFT) is used to store it.
+
+	private int firepowerEquivalent;
+
+	// This variable stores the normal range of the unit that this object
+	// represents.
+
+	private int normalRange;
+
 	// This variable contains the normal morale value of the derived object
 	// of this class.
 
@@ -248,9 +270,8 @@ class Infantry extends Mobile implements Morale
 	private int brokenMorale;
 
 	// This variable indicates whether or not it is possible for the derived
-	// object of this class to "self rally". This attribute is not visible
-	// to the calling program, but is applied during the execution of the
-	// restore() method.
+	// object of this class to "self rally". It is applied during the
+	// execution of the restore() method.
 
 	private boolean selfRallyCapable;
 
@@ -278,53 +299,47 @@ class Infantry extends Mobile implements Morale
 	// are passed up the inheritance tree from the constructor of the object
 	// type being created.
 
-	protected Infantry(Descriptions description,String nationality,
-	                   String identity,String unitType,String firepower,
-	                   int normalRange,int portageValue,
-	                   boolean sprayFireCapable,int movement,
-	                   int portageCapacity,int morale,int brokenMorale,
-	                   boolean selfRallyCapable,int basicPointValue,
+	protected Infantry(Descriptions description,Nationalities nationality,
+	                   UnitTypes unitType,int movement,int portageCapacity,
+	                   int firepower,int normalRange,int morale,
+	                   int brokenMorale,boolean selfRallyCapable,
+	                   int portageValue,int basicPointValue,
 	                   int experienceLevelRating)
 	{
-		// Pass the first 10 parameters to the superclass constructor.
-		// If any exceptions are thrown, assume that they will be caught
+		// Pass the first 5 parameters to the superclass constructor. If
+		// any exceptions are thrown, assume that they will be caught
 		// and handled by the program creating the object.
 
-		super(description,nationality,identity,unitType,firepower,
-		      normalRange,portageValue,sprayFireCapable,movement,
+		super(description,nationality,unitType.label(),movement,
 		      portageCapacity);
-
-		// Verify that the specified firepower parameter is a positive
-		// integer value. If the parameter contains any letters (for
-		// example "20L") Integer.parseInt() will throw a
-		// NumberFormatException. If this exception is caught or the
-		// parameter is less than zero, throw an exception. Otherwise
-		// assume that the value has been set correctly in the
-		// superclass.
-
-		try
-		{
-			if (Integer.parseInt(firepower) < MIN_FIREPOWER)
-			{
-				throw new IllegalArgumentException(invalidArgumentError +
-				                                   firepower);
-			}
-		}
-
-		catch (NumberFormatException exception)
-		{
-			throw new NumberFormatException(invalidArgumentError +
-			                                firepower);
-		}
 
 		// Check the value of each remaining parameter and copy the
 		// value to the local copy of the corresponding variable if an
 		// exception is not found.
 
+		// Firepower
+
+		if ((firepower < MIN_FIREPOWER) || (firepower > MAX_FIREPOWER))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   firepower);
+		}
+
+		this.firepowerEquivalent = firepower;
+
+		// Normal Range
+
+		if (normalRange < MIN_RANGE)
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   normalRange);
+		}
+
+		this.normalRange = normalRange;
+
 		// Morale
 
-		if ((morale < Morale.MIN_MORALE) ||
-		    (morale > Morale.MAX_MORALE))
+		if ((morale < MIN_MORALE) || (morale > MAX_MORALE))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
 			                                   morale);
@@ -334,8 +349,7 @@ class Infantry extends Mobile implements Morale
 
 		// Broken Morale
 
-		if ((brokenMorale < Morale.MIN_MORALE) ||
-		    (brokenMorale > Morale.MAX_MORALE))
+		if ((brokenMorale < MIN_MORALE) || (brokenMorale > MAX_MORALE))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
 			                                   brokenMorale);
@@ -394,6 +408,36 @@ class Infantry extends Mobile implements Morale
 		// Add the information describing the data stored in this class
 		// instance.
 
+		// Firepower
+
+		returnString.append(Messages.formatTextString(FIREPOWER_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(firepower(),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,false));
+
+		// Firepower Equivalent
+
+		returnString.append(Messages.formatTextString(FIREPOWER_EQUIV_LABEL,
+		                                              THIRD_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(firepower(),
+		                                              FOURTH_COLUMN_VALUE_WIDTH,
+		                                              false,true));
+
+		// Normal Range
+
+		returnString.append(Messages.formatTextString(NORMAL_RANGE_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(normalRange(),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,false));
+
 		// Morale
 
 		returnString.append(Messages.formatTextString(MORALE_LABEL,
@@ -450,6 +494,44 @@ class Infantry extends Mobile implements Morale
 	}
 
 	/**
+	 * Return the firepower designation for a unit.
+	 *
+	 * @return a <CODE>String</CODE> specifying the unit's firepower.
+	 *
+	 * @see Firepower#firepower
+	 */
+
+	public String firepower()
+	{
+		return Integer.toString(firepowerEquivalent);
+	}
+
+	/**
+	 * Return the firepower equivalent for a unit.
+	 *
+	 * @return an <CODE>int</CODE> specifying the unit's firepower equivalent.
+	 *
+	 * @see Firepower#firepowerEquivalent
+	 */
+
+	public int firepowerEquivalent()
+	{
+		return firepowerEquivalent;
+	}
+
+	/**
+	 * Return the maximum range that a unit may fire its weapon(s) at full
+	 * effect.
+	 *
+	 * @return an <CODE>int</CODE> specifying the normal range of the unit's weapon(s).
+	 */
+
+	public int normalRange()
+	{
+		return normalRange;
+	}
+
+	/**
 	 * Return the morale level of a unit when it is in its normal state.
 	 *
 	 * @return an <CODE>int</CODE> specifying the normal morale level of the unit.
@@ -470,7 +552,7 @@ class Infantry extends Mobile implements Morale
 	 * @see Status.States#BROKEN
 	 */
 
-	public String brokenMorale()
+	public int brokenMorale()
 	{
 		return brokenMorale;
 	}
@@ -556,8 +638,7 @@ class Infantry extends Mobile implements Morale
 	{
 		// Verify that the "unit" actually needs to be rallied.
 
-		if ((isStatusSet(States.BROKEN)) ||
-		    (isStatusSet(States.DESPERATE)))
+		if ((isStatusSet(BROKEN)) || (isStatusSet(DESPERATE)))
 		{
 			// If the unit is capable of self-rallying (leaders and
 			// some elite units) or a <B>unbroken</B> leader is present in
