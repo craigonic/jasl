@@ -21,11 +21,11 @@ import jasl.utilities.Messages;
  * instantiated directly.
  *
  * @version 2.0
- * @author Copyright (C) 1998-2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 1998-2013 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
 
-abstract class Infantry extends Mobile implements Firepower, Morale
+abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 {
 	// Symbolic constants
 
@@ -216,7 +216,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 		}
 	}
 
-	// The following constants define the minimums and maximum for their
+	// The following constants define the minimums and maximums for their
 	// corresponding attributes.
 
 	/**
@@ -275,6 +275,11 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 
 	private boolean selfRallyCapable;
 
+	// This variable contains the number of portage points associated with a
+	// derived object of this class (how much it costs to carry the unit).
+
+	private int portageValue;
+
 	// This variable stores the basic point value of the unit that this
 	// object represents. This is used in the calculation of Battlefield
 	// Integrity and for design your own (DYO) scenarios.
@@ -306,6 +311,43 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	                   int portageValue,int basicPointValue,
 	                   int experienceLevelRating)
 	{
+		// Since the unitType is ultimately stored as a string in a
+		// parent class, check the specified value against any of the
+		// other parameters that determine if it is valid or not.
+
+		if (((unitType == UnitTypes.PARATROOPS) &&
+		     (nationality != Nationalities.AMERICAN)) ||
+		    (((unitType == UnitTypes.AIRBORNE)    ||
+		      (unitType == UnitTypes.ANZAC)       ||
+		      (unitType == UnitTypes.CANADIAN)    ||
+		      (unitType == UnitTypes.FREE_FRENCH) ||
+		      (unitType == UnitTypes.FREE_POLISH) ||
+		      (unitType == UnitTypes.GUARDSMEN)   ||
+		      (unitType == UnitTypes.GURKHA))     &&
+		     (nationality != Nationalities.BRITISH))  ||
+		    ((unitType == UnitTypes.SISSI) &&
+		     (nationality != Nationalities.FINNISH))  ||
+		    ((unitType == UnitTypes.ENGINEERS) &&
+		     (nationality != Nationalities.GERMAN))   ||
+		    (((unitType == UnitTypes.COMMISSAR) ||
+		      (unitType == UnitTypes.GUARDS)) &&
+		     (nationality != Nationalities.RUSSIAN)))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   nationality.label() +
+			                                   Messages.AND_SEPARATOR +
+			                                   unitType.label());
+		}
+
+		if ((unitType == UnitTypes.COMMISSAR) &&
+		    (description != Descriptions.LEADER))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   description.label() +
+			                                   Messages.AND_SEPARATOR +
+			                                   unitType.label());
+		}
+
 		// Pass the first 5 parameters to the superclass constructor. If
 		// any exceptions are thrown, assume that they will be caught
 		// and handled by the program creating the object.
@@ -360,6 +402,17 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 		// Self Rally Capability
 
 		this.selfRallyCapable = selfRallyCapable;
+
+		// Portage Value
+
+		if ((portageValue < MIN_PORTAGE_VALUE) ||
+		    (portageValue > MAX_PORTAGE_VALUE))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   portageValue);
+		}
+
+		this.portageValue = portageValue;
 
 		// Basic Point Value
 
@@ -468,6 +521,16 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
+		// Portage Value
+
+		returnString.append(Messages.formatTextString(PORTAGE_VALUE_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(Integer.toString(portageValue),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,true));
+
 		// Basic Point Value
 
 		returnString.append(Messages.formatTextString(BPV_LABEL,
@@ -501,7 +564,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Firepower#firepower
 	 */
 
-	public String firepower()
+	public final String firepower()
 	{
 		return Integer.toString(firepowerEquivalent);
 	}
@@ -514,7 +577,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Firepower#firepowerEquivalent
 	 */
 
-	public int firepowerEquivalent()
+	public final int firepowerEquivalent()
 	{
 		return firepowerEquivalent;
 	}
@@ -526,7 +589,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @return an <CODE>int</CODE> specifying the normal range of the unit's weapon(s).
 	 */
 
-	public int normalRange()
+	public final int normalRange()
 	{
 		return normalRange;
 	}
@@ -539,7 +602,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Status.States#NORMAL
 	 */
 
-	public int morale()
+	public final int morale()
 	{
 		return morale;
 	}
@@ -552,7 +615,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Status.States#BROKEN
 	 */
 
-	public int brokenMorale()
+	public final int brokenMorale()
 	{
 		return brokenMorale;
 	}
@@ -567,9 +630,23 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Leader
 	 */
 
-	public boolean canSelfRally()
+	public final boolean canSelfRally()
 	{
 		return selfRallyCapable;
+	}
+
+	/**
+	 * Return the portage value of a unit. This is a measure of the "cost"
+	 * to another unit to carry it.
+	 *
+	 * @return an <CODE>int</CODE> specifying the portage value of the unit.
+	 *
+	 * @see Portability
+	 */
+
+	public final int portageValue()
+	{
+		return portageValue;
 	}
 
 	/**
@@ -580,7 +657,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @return an <CODE>int</CODE> specifying the basic point value of the unit.
 	 */
 
-	public int basicPointValue()
+	public final int basicPointValue()
 	{
 		return basicPointValue;
 	}
@@ -592,7 +669,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @return an <CODE>int</CODE> specifying the experience level rating for the unit.
 	 */
 
-	public int experienceLevelRating()
+	public final int experienceLevelRating()
 	{
 		return experienceLevelRating;
 	}
@@ -612,7 +689,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Status
 	 */
 
-	public boolean check(int modifier)
+	public final boolean check(int modifier)
 	{
 		return false;
 	}
@@ -634,11 +711,12 @@ abstract class Infantry extends Mobile implements Firepower, Morale
 	 * @see Status
 	 */
 
-	public boolean restore(boolean leaderPresent,int modifier)
+	public final boolean restore(boolean leaderPresent,int modifier)
 	{
 		// Verify that the "unit" actually needs to be rallied.
 
-		if ((isStatusSet(BROKEN)) || (isStatusSet(DESPERATE)))
+		if ((isStatusSet(States.BROKEN)) ||
+		    (isStatusSet(States.DESPERATE)))
 		{
 			// If the unit is capable of self-rallying (leaders and
 			// some elite units) or a <B>unbroken</B> leader is present in
