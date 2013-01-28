@@ -20,7 +20,7 @@ package jasl.counters;
  * implementing class.
  *
  * @version 1.0
- * @author Copyright (C) 2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2012-2013 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Mobility.html">Source code</A>
  */
 
@@ -69,7 +69,9 @@ public interface Mobility
 
 	/**
 	 * Return the number of movement factors or points available to a unit
-	 * before it begins to move. This value may be affected by the current
+	 * before it begins to move.
+	 *
+	 * This value does not include the effect, if any, of the current
 	 * portage level of the unit.
 	 *
 	 * @return an <CODE>int</CODE> specifying the movement capability of the unit in
@@ -84,8 +86,6 @@ public interface Mobility
 	 * factors or points available to it.
 	 *
 	 * @return an <CODE>int</CODE> specifying the portage capacity of the unit.
-	 *
-	 * @see Personnel
 	 */
 
 	public abstract int portageCapacity();
@@ -95,9 +95,18 @@ public interface Mobility
 	 * equipment that a unit is currently carrying.
 	 *
 	 * @return an <CODE>int</CODE> specifying the current portage level of the unit.
-	 *
-	 * @see Personnel
 	 */
 
 	public abstract int portageLevel();
+
+	// Update methods
+
+	/**
+	 * Set the number of portage points (PP) of personnel and/or equipment
+	 * that a unit is currently carrying.
+	 *
+	 * @param portageLevel the new portage level for the unit.
+	 */
+
+	public abstract void setPortageLevel(int portageLevel);
 }
