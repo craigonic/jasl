@@ -209,7 +209,7 @@ abstract class Mobile extends Fighting implements Mobility
 	 * Set the number of portage points (PP) of personnel and/or equipment
 	 * that a unit is currently carrying.
 	 *
-	 * @param portageLevel the new portage level for the unit.
+	 * @param newPortageLevel the new portage level for the unit.
 	 *
 	 * @throws IllegalArgumentException in the case of a new level less than
 	 * zero.
