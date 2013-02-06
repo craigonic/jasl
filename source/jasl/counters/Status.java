@@ -118,9 +118,10 @@ public interface Status
 	 * Return the current status of a unit.
 	 *
 	 * @return a comma delimited <CODE>String</CODE> describing the unit status. The list
-	 * will include one or more of the string constants, defined in this
-	 * interface, that are associated with unit status.
+	 * will contain the string constants associated with the states within
+	 * the overall status.
 	 *
+	 * @see #clearStatus
 	 * @see #setStatus
 	 */
 
@@ -140,11 +141,25 @@ public interface Status
 	// Update methods
 
 	/**
+	 * Change the status of a unit.
+	 *
+	 * @param state the state to be cleared or removed. This value will
+	 * be used as a mask to clear the corresponding bit in the status value.
+	 *
+	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
+	 * a result of calling this method.
+	 *
+	 * @see #status
+	 */
+
+	public abstract boolean clearStatus(States state);
+
+	/**
 	 * Change the status of a unit. The interpretation of the parameter
 	 * value will be determined by the implementor of this interface.
 	 *
-	 * @param state the new state. This value will be used as a mask
-	 * to set the corresponding bit in the status value.
+	 * @param state the state to be set or applied. This value will be
+	 * used as a mask to set the corresponding bit in the status value.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
 	 * a result of calling this method.
