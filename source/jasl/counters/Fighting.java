@@ -108,7 +108,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		_status = States.NORMAL.value();
 	}
 
-	// Protected access methods
+	// Public access methods
 
 	/**
 	 * Display the value of each of the private data members that describe
@@ -122,7 +122,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	protected String toString()
+	public String toString()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the string defined in the parent class
@@ -177,8 +177,6 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 		return returnString.toString();
 	}
-
-	// Public access methods
 
 	/**
 	 * Return the nationality of a unit.

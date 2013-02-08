@@ -311,6 +311,13 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 	                   int portageValue,int basicPointValue,
 	                   int experienceLevelRating)
 	{
+		// Pass the first 5 parameters to the superclass constructor. If
+		// any exceptions are thrown, assume that they will be caught
+		// and handled by the program creating the object.
+
+		super(description,nationality,unitType.label(),movement,
+		      portageCapacity);
+
 		// Since the unitType is ultimately stored as a string in a
 		// parent class, check the specified value against any of the
 		// other parameters that determine if it is valid or not.
@@ -347,13 +354,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 			                                   Messages.AND_SEPARATOR +
 			                                   unitType.label());
 		}
-
-		// Pass the first 5 parameters to the superclass constructor. If
-		// any exceptions are thrown, assume that they will be caught
-		// and handled by the program creating the object.
-
-		super(description,nationality,unitType.label(),movement,
-		      portageCapacity);
 
 		// Check the value of each remaining parameter and copy the
 		// value to the local copy of the corresponding variable if an
@@ -436,7 +436,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 		_experienceLevelRating = experienceLevelRating;
 	}
 
-	// Protected access methods
+	// Public access methods
 
 	/**
 	 * Display the value of each of the private data members that describe
@@ -450,7 +450,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	protected String toString()
+	public String toString()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the string defined in the parent class
@@ -487,7 +487,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(normalRange(),
+		returnString.append(Messages.formatTextString(Integer.toString(normalRange()),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -555,8 +555,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 
 		return returnString.toString();
 	}
-
-	// Public access methods
 
 	/**
 	 * Return the firepower designation for a unit.

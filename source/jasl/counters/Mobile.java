@@ -100,7 +100,7 @@ abstract class Mobile extends Fighting implements Mobility
 		                                   // instantiated.
 	}
 
-	// Protected access methods
+	// Public access methods
 
 	/**
 	 * Display the value of each of the private data members that describe
@@ -114,7 +114,7 @@ abstract class Mobile extends Fighting implements Mobility
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	protected String toString()
+	public String toString()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the string defined in the parent class
@@ -159,8 +159,6 @@ abstract class Mobile extends Fighting implements Mobility
 
 		return returnString.toString();
 	}
-
-	// Public access methods
 
 	/**
 	 * Return the number of movement factors or points available to a unit
@@ -209,21 +207,21 @@ abstract class Mobile extends Fighting implements Mobility
 	 * Set the number of portage points (PP) of personnel and/or equipment
 	 * that a unit is currently carrying.
 	 *
-	 * @param newPortageLevel the new portage level for the unit.
+	 * @param portageLevel the new portage level for the unit.
 	 *
 	 * @throws IllegalArgumentException in the case of a new level less than
 	 * zero.
 	 */
 
-	public final void setPortageLevel(int newPortageLevel)
+	public final void setPortageLevel(int portageLevel)
 	{
-		if (newPortageLevel < MIN_PORTAGE_LEVEL)
+		if (portageLevel < MIN_PORTAGE_LEVEL)
 		{
 			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
 			                                                              "setPortageLevel",
-			                                                              Messages.INVALID_PARAMETER_MSG + newPortageLevel));
+			                                                              Messages.INVALID_PARAMETER_MSG + portageLevel));
 		}
 
-		_portageLevel = newPortageLevel;
+		_portageLevel = portageLevel;
 	}
 }
