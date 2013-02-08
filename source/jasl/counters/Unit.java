@@ -5,11 +5,9 @@
 //                                                                            //
 //             NOTE: This program is based on Advanced Squad Leader, which    //
 //                   was created by The Avalon Hill Game Company, and lives   //
-//                   on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.                            //
+//                   on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                            //
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
-//                                                                            //
-// $Id: Unit.java,v 1.17 2009/12/29 06:44:26 craig Exp $
 // ************************************************************************** //
 
 package jasl.counters;
@@ -18,32 +16,23 @@ import java.io.*; // For Serializable
 import jasl.utilities.Messages;
 
 /**
- * This class is used to define the basic components of a counter.
+ * This class is used to define the basic components of a counter. It is
+ * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 1.17
- * @author Craig R. Campbell
+ * @version 2.0
+ * @author Copyright (C) 1998-2013 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
 public abstract class Unit implements Serializable, TextOutput, Description
 {
-	// Protected symbolic constants
-
-	/** <A NAME="_NORMAL_"></A>
-	 * Indicates that the unit's current status is <B>Normal</B>
-	 *
-	 * @see #getStatus
-	 */
-
-	protected static final String NORMAL = "Normal";
-
 	// Private data members
 
 	// This item provides a descriptive name for the derived object of this
 	// class. It is set to the enum value associated with name of the class
-	// being instantiated (ie. <A HREF="Description.html#_SQUAD_">"Squad"</A>).
+	// being instantiated (e.g. <A HREF="Description.html#_SQUAD_">"Squad"</A>).
 
-	private Descriptions description;
+	private Descriptions _description;
 
 	// Constructor.
 
@@ -53,7 +42,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	protected Unit(Descriptions description)
 	{
-		this.description = description;
+		_description = description;
 	}
 
 	// Public access methods
@@ -82,7 +71,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(getDescription(),
+		returnString.append(Messages.formatTextString(description(),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -92,122 +81,13 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	}
 
 	/**
-	 * Return the description of this unit. This is the name of the public
-	 * derived subclass that was specified to create this object. The
-	 * recognized values are listed <A HREF="Description.html">here</A>.
+	 * Return the description of a unit.
 	 *
 	 * @return a <CODE>String</CODE> specifying the unit description.
 	 */
 
-	public String getDescription()
+	public final String description()
 	{
-		return description.label();
+		return _description.label();
 	}
-
-	// The following abstract methods are defined in the subclasses of Unit.
-	// This is necessary in order to allow different public class types
-	// derived from Unit to be stored and accessed as the generic Unit type.
-	// It is also necessary in order to access the public access methods of
-	// the entire hierarchy without casting to a specific class type.
-
-	// Fighting.java
-
-	/**
-	 * Return the identity of this unit.
-	 *
-	 * @return a <CODE>String</CODE> specifying the unit's identity.
-	 *
-	 * @see Fighting#getIdentity
-	 */
-
-	abstract public String getIdentity();
-
-	/**
-	 * Return the type of this unit.
-	 *
-	 * @return a <CODE>String</CODE> specifying a more precise description of the unit
-	 * type.
-	 *
-	 * @see Fighting#getUnitType
-	 */
-
-	abstract public String getUnitType();
-
-	/**
-	 * Return the firepower of this unit.
-	 *
-	 * @return a <CODE>String</CODE> specifying the unit's firepower.
-	 *
-	 * @see Fighting#getFirepower
-	 */
-
-	abstract public String getFirepower();
-
-	/**
-	 * Return the maximum range that this unit may fire its weapon(s) at
-	 * full effect.
-	 *
-	 * @return a <CODE>String</CODE> specifying the normal range of the unit's weapon(s).
-	 *
-	 * @see Fighting#getNormalRange
-	 */
-
-	abstract public String getNormalRange();
-
-	/**
-	 * Return the current status of this unit.
-	 *
-	 * @return a comma delimited <CODE>String</CODE> describing the unit status.
-	 *
-	 * @see Fighting#getStatus
-	 * @see Infantry#getStatus
-	 */
-
-	abstract public String getStatus();
-
-	/**
-	 * Attempt to restore this unit's status to <A HREF="#_NORMAL_">NORMAL</A>.
-	 *
-	 * @param isLeaderPresent indicates if a <B><A HREF="Leader.html">Leader</A></B> is present, which may
-	 * determine if a restoration attempt can be made or not.
-	 * @param modifier the applicable dice roll modifier for the attempt.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
-	 * result of calling this method.
-	 *
-	 * @see Fighting#restore
-	 * @see Infantry#restore
-	 */
-
-	abstract public boolean restore(boolean isLeaderPresent,int modifier);
-
-	/**
-	 * Perform a morale or task check on this unit.
-	 *
-	 * @param modifier the applicable dice roll modifier for the check.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of a unit is changed as a
-	 * result of calling this method.
-	 *
-	 * @see Fighting#check
-	 * @see Infantry#check
-	 */
-
-	abstract public boolean check(int modifier);
-
-	// Mobile.java
-
-	/**
-	 * Return the number of movement factors or points available to this
-	 * unit before it begins to move.
-	 *
-	 * @return a <CODE>String</CODE> specifying the movement capability in factors or
-	 * points.
-	 *
-	 * @see Mobile#getMovement
-	 */
-
-	abstract public String getMovement();
 }
