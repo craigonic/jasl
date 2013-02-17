@@ -3,11 +3,10 @@
 #            files for the counters package of the jASL program. It also       #
 #            includes parameters to build object (.o) files using the gcj      #
 #            compiler. In both cases, the files can compiled individually or   #
-#            the entire package can be recreated.                              #
+#            the entire package can be re-created.                             #
 #                                                                              #
 # Written By : Craig R. Campbell  -  June 1999                                 #
 #                                                                              #
-# $Id: Makefile,v 1.22 2010/09/25 03:53:21 craig Exp $
 ################################################################################
 
 # These entries are included to eliminate pointless searching for the files,
@@ -173,124 +172,67 @@ $(SQUAD_CLASS): $(PERSONNEL_CLASS)
 $(LEADER_CLASS): $(INFANTRY_CLASS)
 	$(JAVA_OPTIONS) $(LEADER_SRC)
 
-# Build all of the individual object files.
-
-.PHONY : obj
-obj: $(GCJ_OBJECT_FILES)
-
 # Compile individual object files used to build a native executable with the gcj
 # compiler.
 
-$(TEXT_OUTPUT_OBJ):
-	$(GCJ_COMPILE_CMD) $(TEXT_OUTPUT_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(TEXT_OUTPUT_OBJ) $(COUNTERS_OBJ_PATH)
+$(TEXT_OUTPUT_OBJ): $(TEXT_OUTPUT_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(TEXT_OUTPUT_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(TEXT_OUTPUT_OBJ)
 
-$(DESCRIPTION_OBJ):
-	$(GCJ_COMPILE_CMD) $(DESCRIPTION_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(DESCRIPTION_OBJ) $(COUNTERS_OBJ_PATH)
+$(DESCRIPTION_OBJ): $(DESCRIPTION_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(DESCRIPTION_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(DESCRIPTION_OBJ)
 
-$(NATIONALITY_OBJ):
-	$(GCJ_COMPILE_CMD) $(NATIONALITY_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(NATIONALITY_OBJ) $(COUNTERS_OBJ_PATH)
+$(NATIONALITY_OBJ): $(NATIONALITY_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(NATIONALITY_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(NATIONALITY_OBJ)
 
-$(UNIT_TYPE_OBJ):
-	$(GCJ_COMPILE_CMD) $(UNIT_TYPE_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(UNIT_TYPE_OBJ) $(COUNTERS_OBJ_PATH)
+$(UNIT_TYPE_OBJ): $(UNIT_TYPE_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(UNIT_TYPE_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(UNIT_TYPE_OBJ)
 
-$(CLASSIFICATION_OBJ):
-	$(GCJ_COMPILE_CMD) $(CLASSIFICATION_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(CLASSIFICATION_OBJ) $(COUNTERS_OBJ_PATH)
+$(CLASSIFICATION_OBJ): $(CLASSIFICATION_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(CLASSIFICATION_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(CLASSIFICATION_OBJ)
 
-$(UNIT_OBJ): $(TEXT_OUTPUT_CLASS) $(DESCRIPTION_CLASS)
-	$(GCJ_COMPILE_CMD) $(UNIT_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(UNIT_OBJ) $(COUNTERS_OBJ_PATH)
+$(UNIT_OBJ): $(UNIT_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(UNIT_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(UNIT_OBJ)
 
-$(FIGHTING_OBJ): $(UNIT_CLASS) $(NATIONALITY_CLASS) $(UNIT_TYPE_CLASS)
-	$(GCJ_COMPILE_CMD) $(FIGHTING_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(FIGHTING_OBJ) $(COUNTERS_OBJ_PATH)
+$(FIGHTING_OBJ): $(FIGHTING_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(FIGHTING_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(FIGHTING_OBJ)
 
-$(MOBILE_OBJ): $(FIGHTING_CLASS)
-	$(GCJ_COMPILE_CMD) $(MOBILE_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(MOBILE_OBJ) $(COUNTERS_OBJ_PATH)
+$(MOBILE_OBJ): $(MOBILE_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(MOBILE_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(MOBILE_OBJ)
 
-$(INFANTRY_OBJ): $(MOBILE_CLASS)
-	$(GCJ_COMPILE_CMD) $(INFANTRY_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(INFANTRY_OBJ) $(COUNTERS_OBJ_PATH)
+$(INFANTRY_OBJ): $(INFANTRY_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(INFANTRY_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(INFANTRY_OBJ)
 
-$(PERSONNEL_OBJ): $(INFANTRY_CLASS) $(CLASSIFICATION_CLASS)
-	$(GCJ_COMPILE_CMD) $(PERSONNEL_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(PERSONNEL_OBJ) $(COUNTERS_OBJ_PATH)
+$(PERSONNEL_OBJ): $(PERSONNEL_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(PERSONNEL_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(PERSONNEL_OBJ)
 
-$(SQUAD_OBJ): $(PERSONNEL_CLASS)
-	$(GCJ_COMPILE_CMD) $(SQUAD_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(SQUAD_OBJ) $(COUNTERS_OBJ_PATH)
+$(SQUAD_OBJ): $(SQUAD_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(SQUAD_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(SQUAD_OBJ)
 
-$(LEADER_OBJ): $(INFANTRY_CLASS)
-	$(GCJ_COMPILE_CMD) $(LEADER_SRC)
-	$(INSTALL_DIR) $(COUNTERS_OBJ_PATH)
-	$(MV) $(LEADER_OBJ) $(COUNTERS_OBJ_PATH)
+$(LEADER_OBJ): $(LEADER_CLASS)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(LEADER_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(LEADER_OBJ)
+
+# Build all of the individual object files.
+
+.PHONY : obj
+obj: obj_sub_directory $(GCJ_OBJECT_FILES)
 
 # Build all of the individual header files.
 
 .PHONY : hdr
 hdr: include_directory
 	$(GJAVAH_CMD) $(COUNTERS_BIN_PATH)
-
-# Using the installed .class files, build the header file that defines each one
-# and install it in the include output directory.
-
-GCJH_BUILD_CMD := $(GCJH_CMD) $(GCJ_CLASSPATH_CMD)/$(COUNTERS_PKG_PATH) \
-                  -d $(COUNTERS_HDR_PATH)
-
-$(TEXT_OUTPUT_HDR): $(TEXT_OUTPUT_CLASS)
-	$(GCJH_BUILD_CMD) $(TEXT_OUTPUT_EXEC)
-
-$(DESCRIPTION_HDR): $(DESCRIPTION_CLASS)
-	$(GCJH_BUILD_CMD) $(DESCRIPTION_EXEC)
-
-$(DESCRIPTIONS_HDR): $(DESCRIPTION_HDR)
-	$(GCJH_BUILD_CMD) $(DESCRIPTIONS_EXEC)
-
-$(NATIONALITY_HDR): $(NATIONALITY_CLASS)
-	$(GCJH_BUILD_CMD) $(NATIONALITY_EXEC)
-
-$(UNIT_TYPE_HDR): $(UNIT_TYPE_CLASS)
-	$(GCJH_BUILD_CMD) $(UNIT_TYPE_EXEC)
-
-$(CLASSIFICATION_HDR): $(CLASSIFICATION_CLASS)
-	$(GCJH_BUILD_CMD) $(CLASSIFICATION_EXEC)
-
-$(UNIT_HDR): $(UNIT_CLASS)
-	$(GCJH_BUILD_CMD) $(UNIT_EXEC)
-
-$(FIGHTING_HDR): $(FIGHTING_CLASS)
-	$(GCJH_BUILD_CMD) $(FIGHTING_EXEC)
-
-$(MOBILE_HDR): $(MOBILE_CLASS)
-	$(GCJH_BUILD_CMD) $(MOBILE_EXEC)
-
-$(INFANTRY_HDR): $(INFANTRY_CLASS)
-	$(GCJH_BUILD_CMD) $(INFANTRY_EXEC)
-
-$(PERSONNEL_HDR): $(PERSONNEL_CLASS)
-	$(GCJH_BUILD_CMD) $(PERSONNEL_EXEC)
-
-$(SQUAD_HDR): $(SQUAD_CLASS)
-	$(GCJH_BUILD_CMD) $(SQUAD_EXEC)
-
-$(LEADER_HDR): $(LEADER_CLASS)
-	$(GCJH_BUILD_CMD) $(LEADER_EXEC)
 
 # Define variables used to represent the dynamic and static libraries.
 
@@ -303,19 +245,21 @@ DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
 # along with the necessary links, and install it/them in the library output
 # directory.
 
+LOCAL_OBJ_FILES := $(OBJ_SUB_DIRECTORY)/*.o
+
 .PHONY : libs
 libs: dynamic_lib static_lib clean_obj
 
 .PHONY : dynamic_lib
 dynamic_lib: lib_directory obj
 	$(GCJ_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) \
-	                     $(COUNTERS_OBJ_FILES)
+	                     $(LOCAL_OBJ_FILES)
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
 	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
 
 .PHONY : static_lib
 static_lib: lib_directory obj
-	$(AR) $(COUNTERS_STATIC_LIB_PATH) $(COUNTERS_OBJ_FILES)
+	$(AR) $(COUNTERS_STATIC_LIB_PATH) $(LOCAL_OBJ_FILES)
 
 # Remove all of the .class and/or object files from the binary output directory.
 
@@ -328,7 +272,7 @@ clean_java:
 
 .PHONY : clean_obj
 clean_obj:
-	$(RM) $(COUNTERS_OBJ_FILES)
+	$(RM_RECURSIVE) $(OBJ_SUB_DIRECTORY)
 
 # Remove all of the header (.h) files from the include output directory.
 
@@ -359,7 +303,6 @@ clean_static_lib:
 # page.
 
 COUNTERS_DOCS_PATH := $(SRC_DOCS_PATH)/$(COUNTERS_PKG_PATH)
-HTLS_CFG_FILE      := $(COUNTERS_PKG_NAME).cfg
 
 .PHONY : docs_all
 docs_all:
@@ -371,14 +314,12 @@ docs_all:
 			(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(COUNTERS_PKG_PATH)/$$i.html) ;\
 		fi \
 	done
-	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) \
-	                     $(COUNTERS_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(COUNTERS_DOCS_PATH)
 	@$(HTLS) $(COUNTERS_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
 	@$(RM) $(COUNTERS_DOCS_PATH)/$(HTLS_HEADER_FILE)
-	@$(RM) $(COUNTERS_DOCS_PATH)/$(HTLS_CFG_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs
