@@ -28,82 +28,57 @@ include $(JASL_BASE)/util/jasl.make
 # this package.
 
 TEXT_OUTPUT_CLASS    := TextOutput.class
-TEXT_OUTPUT_EXEC     := ${TEXT_OUTPUT_CLASS:.class=}
-TEXT_OUTPUT_HDR      := ${TEXT_OUTPUT_CLASS:.class=.h}
 TEXT_OUTPUT_OBJ      := ${TEXT_OUTPUT_CLASS:.class=.o}
 TEXT_OUTPUT_SRC      := ${TEXT_OUTPUT_CLASS:.class=.java}
 
 DESCRIPTION_CLASS    := Description.class
-DESCRIPTION_EXEC     := ${DESCRIPTION_CLASS:.class=}
-DESCRIPTION_HDR      := ${DESCRIPTION_CLASS:.class=.h}
 DESCRIPTION_OBJ      := ${DESCRIPTION_CLASS:.class=.o}
 DESCRIPTION_SRC      := ${DESCRIPTION_CLASS:.class=.java}
 
 # This file is generated when Description.java is compiled and represents the
 # Descriptions enum defined in that class. The following definitions are used to
-# generate the header file.
+# generate the object file.
 
 DESCRIPTIONS_CLASS   := Description\$$Descriptions.class
-DESCRIPTIONS_EXEC    := ${DESCRIPTIONS_CLASS:.class=}
-DESCRIPTIONS_HDR     := ${DESCRIPTIONS_CLASS:.class=.h}
+DESCRIPTIONS_OBJ     := ${DESCRIPTIONS_CLASS:.class=.o}
 
 NATIONALITY_CLASS    := Nationality.class
-NATIONALITY_EXEC     := ${NATIONALITY_CLASS:.class=}
-NATIONALITY_HDR      := ${NATIONALITY_CLASS:.class=.h}
 NATIONALITY_OBJ      := ${NATIONALITY_CLASS:.class=.o}
 NATIONALITY_SRC      := ${NATIONALITY_CLASS:.class=.java}
 
 UNIT_TYPE_CLASS      := UnitType.class
-UNIT_TYPE_EXEC       := ${UNIT_TYPE_CLASS:.class=}
-UNIT_TYPE_HDR        := ${UNIT_TYPE_CLASS:.class=.h}
 UNIT_TYPE_OBJ        := ${UNIT_TYPE_CLASS:.class=.o}
 UNIT_TYPE_SRC        := ${UNIT_TYPE_CLASS:.class=.java}
 
 CLASSIFICATION_CLASS := Classification.class
-CLASSIFICATION_EXEC  := ${CLASSIFICATION_CLASS:.class=}
-CLASSIFICATION_HDR   := ${CLASSIFICATION_CLASS:.class=.h}
 CLASSIFICATION_OBJ   := ${CLASSIFICATION_CLASS:.class=.o}
 CLASSIFICATION_SRC   := ${CLASSIFICATION_CLASS:.class=.java}
 
 UNIT_CLASS           := Unit.class
-UNIT_EXEC            := ${UNIT_CLASS:.class=}
-UNIT_HDR             := ${UNIT_CLASS:.class=.h}
 UNIT_OBJ             := ${UNIT_CLASS:.class=.o}
 UNIT_SRC             := ${UNIT_CLASS:.class=.java}
 
 FIGHTING_CLASS       := Fighting.class
-FIGHTING_EXEC        := ${FIGHTING_CLASS:.class=}
-FIGHTING_HDR         := ${FIGHTING_CLASS:.class=.h}
 FIGHTING_OBJ         := ${FIGHTING_CLASS:.class=.o}
 FIGHTING_SRC         := ${FIGHTING_CLASS:.class=.java}
 
 MOBILE_CLASS         := Mobile.class
-MOBILE_EXEC          := ${MOBILE_CLASS:.class=}
-MOBILE_HDR           := ${MOBILE_CLASS:.class=.h}
 MOBILE_OBJ           := ${MOBILE_CLASS:.class=.o}
 MOBILE_SRC           := ${MOBILE_CLASS:.class=.java}
 
 INFANTRY_CLASS       := Infantry.class
-INFANTRY_EXEC        := ${INFANTRY_CLASS:.class=}
-INFANTRY_HDR         := ${INFANTRY_CLASS:.class=.h}
 INFANTRY_OBJ         := ${INFANTRY_CLASS:.class=.o}
 INFANTRY_SRC         := ${INFANTRY_CLASS:.class=.java}
 
 PERSONNEL_CLASS      := Personnel.class
-PERSONNEL_EXEC       := ${PERSONNEL_CLASS:.class=}
-PERSONNEL_HDR        := ${PERSONNEL_CLASS:.class=.h}
 PERSONNEL_OBJ        := ${PERSONNEL_CLASS:.class=.o}
 PERSONNEL_SRC        := ${PERSONNEL_CLASS:.class=.java}
 
 SQUAD_CLASS          := Squad.class
-SQUAD_EXEC           := ${SQUAD_CLASS:.class=}
-SQUAD_HDR            := ${SQUAD_CLASS:.class=.h}
 SQUAD_OBJ            := ${SQUAD_CLASS:.class=.o}
 SQUAD_SRC            := ${SQUAD_CLASS:.class=.java}
 
 LEADER_CLASS         := Leader.class
-LEADER_EXEC          := ${LEADER_CLASS:.class=}
-LEADER_HDR           := ${LEADER_CLASS:.class=.h}
 LEADER_OBJ           := ${LEADER_CLASS:.class=.o}
 LEADER_SRC           := ${LEADER_CLASS:.class=.java}
 
@@ -117,11 +92,7 @@ INF_CLASSES          := $(INFANTRY_CLASS) $(PERSONNEL_CLASS) $(SQUAD_CLASS) \
 
 ALL_CLASSES          := $(INTERFACES) $(SUPER_CLASSES) $(INF_CLASSES)
 
-GCJ_HEADER_FILES     := ${ALL_CLASSES:.class=.h} ${ENUMS:.class=.h}
-
 GCJ_OBJECT_FILES     := ${ALL_CLASSES:.class=.o}
-
-JAVA_SRC_FILES       := ${ALL_CLASSES:.class=.java}
 
 JAVA_CLASSES         := ${ALL_CLASSES:.class=}
 
@@ -182,6 +153,8 @@ $(TEXT_OUTPUT_OBJ): $(TEXT_OUTPUT_CLASS)
 $(DESCRIPTION_OBJ): $(DESCRIPTION_CLASS)
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(DESCRIPTION_CLASS) \
 	                   -o $(OBJ_SUB_DIRECTORY)/$(DESCRIPTION_OBJ)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(DESCRIPTIONS_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(DESCRIPTIONS_OBJ)
 
 $(NATIONALITY_OBJ): $(NATIONALITY_CLASS)
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(NATIONALITY_CLASS) \

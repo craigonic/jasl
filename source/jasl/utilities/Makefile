@@ -28,24 +28,16 @@ include $(JASL_BASE)/util/jasl.make
 # this package.
 
 MESSAGES_CLASS       := Messages.class
-MESSAGES_EXEC        := ${MESSAGES_CLASS:.class=}
-MESSAGES_HDR         := ${MESSAGES_CLASS:.class=.h}
 MESSAGES_OBJ         := ${MESSAGES_CLASS:.class=.o}
 MESSAGES_SRC         := ${MESSAGES_CLASS:.class=.java}
 
 DICE_CLASS           := Dice.class
-DICE_EXEC            := ${DICE_CLASS:.class=}
-DICE_HDR             := ${DICE_CLASS:.class=.h}
 DICE_OBJ             := ${DICE_CLASS:.class=.o}
 DICE_SRC             := ${DICE_CLASS:.class=.java}
 
 ALL_CLASSES          := $(MESSAGES_CLASS) $(DICE_CLASS)
 
-GCJ_HEADER_FILES     := ${ALL_CLASSES:.class=.h}
-
 GCJ_OBJECT_FILES     := ${ALL_CLASSES:.class=.o}
-
-JAVA_SRC_FILES       := ${ALL_CLASSES:.class=.java}
 
 JAVA_CLASSES         := ${ALL_CLASSES:.class=}
 
