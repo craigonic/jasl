@@ -5,7 +5,6 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  August 1999                               #
 #                                                                              #
-# $Id: Makefile,v 1.23 2010/12/04 06:32:33 craig Exp $
 ################################################################################
 
 # These entries are included to eliminate pointless searching for the files,
@@ -31,7 +30,6 @@ DRIVER_CNI_SRC     := ${DRIVER_CLASS:.class=.cpp}
 DRIVER_PERL_SRC    := ${DRIVER_CLASS:.class=.pl}
 DRIVER_PYTHON_SRC  := ${DRIVER_CLASS:.class=.py}
 DRIVER_EXEC        := ${DRIVER_CLASS:.class=}
-DRIVER_JAR         := ${DRIVER_CLASS:.class=.jar}
 DRIVER_MANIFEST    := ${DRIVER_CLASS:.class=.mf}
 DRIVER_OUT         := ${DRIVER_CLASS:.class=.out}
 DRIVER_SRC         := ${DRIVER_CLASS:.class=.java}
@@ -45,6 +43,12 @@ DRIVER_STATIC      := $(DRIVER_EXEC)_static
 
 DRIVER_CNI_DYNAMIC := $(DRIVER_EXEC)_cni_dynamic
 DRIVER_CNI_STATIC  := $(DRIVER_EXEC)_cni_static
+
+# The name of the jar archive containing the compiled .class files from within
+# the jasl package space, excluding those that are specific to a user interface
+# (e.g. Android). The file also includes the Driver.class for unit testing.
+
+JASL_JAR_ARCHIVE   := org.craigonic.jasl.jar
 
 # Name and file collection variables.
 
@@ -64,18 +68,16 @@ GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES)
 all: $(ALL_CLASSES)
 
 # Build both the java and native executable versions of all programs, along with
-# jar archive(s) of the java files. The object files will be removed as part of
-# the processing of the jar target(s) to prevent them from being included in the
-# archive(s).
+# a jar archive of the Java .class files.
 
 .PHONY : build_all
-build_all: gcj gcj_dynamic gcj_static build_cni_dynamic build_cni_static $(DRIVER_JAR)
+build_all: gcj gcj_dynamic gcj_static build_cni_dynamic build_cni_static $(JASL_JAR_ARCHIVE)
 
 # Build the jar archive(s) and remove all .class files in this directory and its
 # sub-directories.
 
 .PHONY : build_jar
-build_jar: $(DRIVER_JAR) clean_class clean_java
+build_jar: $(JASL_JAR_ARCHIVE) clean_class clean_java
 
 # Build the native executable version of all programs, removing all of the
 # intermediate files generated to build each one. These files are necessary for
@@ -121,8 +123,7 @@ build_cni_static: $(DRIVER_CNI_STATIC)
 
 .PHONY : obj
 obj:
-	$(MAKE) -C $(UTILITIES_PKG_PATH) obj
-	$(MAKE) -C $(COUNTERS_PKG_PATH) obj
+	$(MAKE) -C $(PROGRAM_NAME) $@
 
 # Build the native executable version of all programs, using the gcj compiler.
 # Note that use of this target requires that all of the .java files in the jasl
@@ -154,18 +155,18 @@ gcj_static: $(DRIVER_STATIC)
 # classes defined in the jasl directory and its sub-directories.
 
 $(DRIVER_CLASS): bin_directory
-	$(MAKE) -C $(UTILITIES_PKG_PATH)
-	$(MAKE) -C $(COUNTERS_PKG_PATH)
+	$(MAKE) -C $(PROGRAM_NAME)
 	$(JAVA_OPTIONS) $(DRIVER_SRC)
 
-# Create an executable jar archive of the Driver program. Execution of this
-# target will automatically remove any object files that exist in order to
-# prevent them from being included in the jar archive file.
+# Create an executable jar archive that includes all of the .class files
+# generated from the source files within the jasl package hierarchy, with the
+# exception of those exclusive to a specific user interface (e.g. Android). The
+# Driver program is also included for unit testing.
 
-$(DRIVER_JAR): clean_obj $(DRIVER_CLASS)
+$(JASL_JAR_ARCHIVE): $(DRIVER_CLASS)
 	@(cd $(BIN_PATH); \
 	  $(JAR_BUILD_CMD) $(SRC_PATH)/$(DRIVER_MANIFEST) \
-	                   $(DRIVER_JAR) $(DRIVER_CLASS) $(ALL_PACKAGES))
+	                   $(JASL_JAR_ARCHIVE) $(DRIVER_CLASS) $(ALL_PACKAGES))
 
 # Build the native executable versions of the Driver program, which is used to
 # test the classes defined in the jasl directory and its sub-directories.
@@ -201,7 +202,7 @@ $(DRIVER_STATIC): $(DRIVER_CLASS)
 # Options common to building both forms of the C++ version of the Driver
 # program.
 
-DRIVER_CNI_BUILD_OPTIONS := -I$(INCLUDE_PATH) -o $(BIN_PATH)/
+DRIVER_CNI_BUILD_OPTIONS := -I$(INCLUDE_PATH) -I$(CNI_HDR_PATH) -o $(BIN_PATH)/
 DRIVER_CNI_DYNAMIC_LIBS  := -lgcj -lstdc++
 
 # Build and link with the dynamic libraries.
@@ -250,8 +251,7 @@ clean_java:
 
 .PHONY : clean_obj
 clean_obj:
-	$(MAKE) -C $(UTILITIES_PKG_PATH) $@
-	$(MAKE) -C $(COUNTERS_PKG_PATH) $@
+	$(MAKE) -C $(PROGRAM_NAME) $@
 
 .PHONY : clean
 clean: clean_class clean_jar clean_gcj clean_gcj_dynamic clean_gcj_static \
@@ -263,7 +263,7 @@ clean_class:
 
 .PHONY : clean_jar
 clean_jar:
-	$(RM) $(BIN_PATH)/$(DRIVER_JAR)
+	$(RM) $(BIN_PATH)/$(JASL_JAR_ARCHIVE)
 
 .PHONY : clean_gcj
 clean_gcj:
@@ -311,8 +311,8 @@ run_test:
 test: $(BIN_PATH)/$(DRIVER_CLASS) run_test
 
 .PHONY : test_jar
-test_jar: TEST_EXEC := $(JAR_RUN_CMD) $(DRIVER_JAR)
-test_jar: $(BIN_PATH)/$(DRIVER_JAR) run_test
+test_jar: TEST_EXEC := $(JAR_RUN_CMD) $(JASL_JAR_ARCHIVE)
+test_jar: $(BIN_PATH)/$(JASL_JAR_ARCHIVE) run_test
 
 .PHONY : test_gcj
 test_gcj: TEST_EXEC := ./$(DRIVER_EXEC)
@@ -351,8 +351,6 @@ test_python: $(PYTHON_BIN_PATH)/$(DRIVER_EXEC)
 # color coding. After the files are generated, the htls program is used to link
 # the files together on an HTML page.
 
-HTLS_CFG_FILE := source.cfg
-
 .PHONY : docs_all
 docs_all:
 	@$(INSTALL_DIR) $(SRC_DOCS_PATH)
@@ -365,9 +363,8 @@ docs_all:
 	done
 	$(MAKE) -C $(CNI_DIRECTORY) $@
 	$(MAKE) -C $(SWIG_DIRECTORY) $@
-	$(MAKE) -C $(COUNTERS_PKG_PATH) $@
-	$(MAKE) -C $(UTILITIES_PKG_PATH) $@
-	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(SRC_DOCS_PATH)
+	$(MAKE) -C $(PROGRAM_NAME) $@
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
 
@@ -375,10 +372,8 @@ docs_all:
 clean_docs:
 	$(MAKE) -C $(CNI_DIRECTORY) $@
 	$(MAKE) -C $(SWIG_DIRECTORY) $@
-	$(MAKE) -C $(COUNTERS_PKG_PATH) $@
-	$(MAKE) -C $(UTILITIES_PKG_PATH) $@
+	$(MAKE) -C $(PROGRAM_NAME) $@
 	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
-	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_CFG_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs
