@@ -384,14 +384,15 @@ docs: docs_all clean_docs
 javadocs: docs_directory
 	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
 	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
-	                     $(UTILITIES_SRC_FILES)
+	                     $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create HTML documentation using gjdoc.
 
 .PHONY : gjdocs
 gjdocs: docs_directory
 	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
-	@$(GJDOC) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES)
+	@$(GJDOC) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
+	          $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create HTML documentation using doxygen.
 
@@ -423,7 +424,7 @@ all_docs: javadocs doxygen htags docs
 .PHONY : ctags
 ctags:
 	@$(CTAGS_BUILD_CMD) $(CNI_WRAPPER_SRC_FILES) $(COUNTERS_SRC_FILES) \
-	                    $(UTILITIES_SRC_FILES)
+	                    $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create another source file symbol index. This target generates a set of files,
 # which are stored in the gtags sub-directory, that allow command line queries

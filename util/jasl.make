@@ -235,7 +235,29 @@ CNI_UTILITIES_BASE_LIB_NAME   := $(CNI_PREFIX)-$(UTILITIES_BASE_LIB_NAME)
 CNI_UTILITIES_STATIC_LIB_NAME := $(LIB_PREFIX)$(CNI_UTILITIES_BASE_LIB_NAME).a
 CNI_UTILITIES_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_UTILITIES_STATIC_LIB_NAME)
 
-ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH)
+# ui "package" (really just a parent directory for component packages?)
+
+UI_PKG_NAME                   := ui
+# ui.data package.
+
+UI_DATA_PKG_NAME              := data
+
+UI_DATA_PKG_PATH              := $(PROGRAM_NAME)/$(UI_PKG_NAME)/$(UI_DATA_PKG_NAME)
+UI_DATA_OBJ_PATH              := $(SRC_PATH)/$(UI_DATA_PKG_PATH)
+UI_DATA_BIN_PATH              := $(BIN_PATH)/$(UI_DATA_PKG_PATH)
+UI_DATA_HDR_PATH              := $(INCLUDE_PATH)/$(UI_DATA_PKG_PATH)
+
+UI_DATA_SRC_FILES             := $(UI_DATA_PKG_PATH)/*.java
+UI_DATA_CLASS_FILES           := $(UI_DATA_BIN_PATH)/*.class
+UI_DATA_OBJ_FILES             := $(UI_DATA_OBJ_PATH)/$(OBJ_SUB_DIRECTORY)/*.o
+UI_DATA_HDR_FILES             := $(UI_DATA_HDR_PATH)/*.h
+
+UI_DATA_BASE_LIB_NAME         := $(PROGRAM_NAME)-$(UI_PKG_NAME)-$(UI_DATA_PKG_NAME)
+UI_DATA_STATIC_LIB_NAME       := $(LIB_PREFIX)$(UI_DATA_BASE_LIB_NAME).a
+UI_DATA_STATIC_LIB_PATH       := $(LIB_PATH)/$(UI_DATA_STATIC_LIB_NAME)
+
+ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH) \
+                                 $(UI_DATA_PKG_PATH)
 
 ## Miscellaneous programs.
 
