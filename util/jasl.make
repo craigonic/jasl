@@ -49,6 +49,15 @@ PYTHON_BIN_PATH    := $(BIN_PATH)/$(PYTHON_DIRECTORY)
 PYTHON_LIB_PATH    := $(LIB_PATH)/python
 
 ## Java, gcc and gcj compiler related settings.
+##
+## To compile the java files for use within an Android application, it is
+## (currently) necessary to set the source and target versions to 1.6. Set the
+## environment variables as indicated below to enable this capability. Note that
+## it is really only applicable when building the jar archive, since that is
+## what will actually be used.
+##
+##     export ANDROID_SOURCE_VERSION="-source 1.6"
+##     export ANDROID_TARGET_VERSION="-target 1.6"
 
 JAVA_COMPILER      := javac
 GCC_COMPILER       := gcc
@@ -61,8 +70,9 @@ OUTPUT_DIR_CMD     := -d $(BIN_PATH)
 JAVA_OPTIMIZE      := -O
 GCJ_OPTIMIZE       := -O3 -s -pipe
 
-JAVA_OPTIONS       := $(JAVA_COMPILER) $(JAVA_OPTIMIZE) $(OUTPUT_DIR_CMD) \
-                      $(CLASSPATH_CMD)
+JAVA_OPTIONS       := $(JAVA_COMPILER) $(JAVA_OPTIMIZE) \
+                      ${ANDROID_SOURCE_VERSION} ${ANDROID_TARGET_VERSION} \
+                      $(OUTPUT_DIR_CMD) $(CLASSPATH_CMD)
 
 GCC_BUILD_CMD      := $(GCC_COMPILER) $(GCJ_OPTIMIZE)
 GCC_COMPILE_CMD    := $(GCC_BUILD_CMD) -c
@@ -140,7 +150,7 @@ CNI_DOXYGEN_DEF_FILE := $(UTIL_PATH)/cni-doxygen.jasl
 # global (gtags and htags)
 
 GTAGS              := gtags
-GTAGS_FIND         := find . -type f -name "*.java"
+GTAGS_FIND         := find . -type f -name "*.java" | grep -v android
 GTAGS_OPTIONS      := -f -
 GTAGS_PATH         := $(SRC_PATH)/$(GTAGS)
 
@@ -176,13 +186,13 @@ CNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(CNI_WRAPPER_STATIC_LIB_NAME)
 COUNTERS_PKG_NAME            := counters
 
 COUNTERS_PKG_PATH            := $(PROGRAM_NAME)/$(COUNTERS_PKG_NAME)
-COUNTERS_OBJ_PATH            := ${JASL_BASE}/bin/$(COUNTERS_PKG_PATH)
+COUNTERS_OBJ_PATH            := $(SRC_PATH)/$(COUNTERS_PKG_PATH)
 COUNTERS_BIN_PATH            := $(BIN_PATH)/$(COUNTERS_PKG_PATH)
 COUNTERS_HDR_PATH            := $(INCLUDE_PATH)/$(COUNTERS_PKG_PATH)
 
 COUNTERS_SRC_FILES           := $(COUNTERS_PKG_PATH)/*.java
 COUNTERS_CLASS_FILES         := $(COUNTERS_BIN_PATH)/*.class
-COUNTERS_OBJ_FILES           := $(COUNTERS_OBJ_PATH)/*.o
+COUNTERS_OBJ_FILES           := $(COUNTERS_OBJ_PATH)/$(OBJ_SUB_DIRECTORY)/*.o
 COUNTERS_HDR_FILES           := $(COUNTERS_HDR_PATH)/*.h
 
 COUNTERS_BASE_LIB_NAME       := $(PROGRAM_NAME)-$(COUNTERS_PKG_NAME)
@@ -203,13 +213,13 @@ CNI_COUNTERS_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_COUNTERS_STATIC_LIB_NAME)
 UTILITIES_PKG_NAME           := utilities
 
 UTILITIES_PKG_PATH           := $(PROGRAM_NAME)/$(UTILITIES_PKG_NAME)
-UTILITIES_OBJ_PATH           := ${JASL_BASE}/bin/$(UTILITIES_PKG_PATH)
+UTILITIES_OBJ_PATH           := $(SRC_PATH)/$(UTILITIES_PKG_PATH)
 UTILITIES_BIN_PATH           := $(BIN_PATH)/$(UTILITIES_PKG_PATH)
 UTILITIES_HDR_PATH           := $(INCLUDE_PATH)/$(UTILITIES_PKG_PATH)
 
 UTILITIES_SRC_FILES          := $(UTILITIES_PKG_PATH)/*.java
 UTILITIES_CLASS_FILES        := $(UTILITIES_BIN_PATH)/*.class
-UTILITIES_OBJ_FILES          := $(UTILITIES_OBJ_PATH)/*.o
+UTILITIES_OBJ_FILES          := $(UTILITIES_OBJ_PATH)/$(OBJ_SUB_DIRECTORY)/*.o
 UTILITIES_HDR_FILES          := $(UTILITIES_HDR_PATH)/*.h
 
 UTILITIES_BASE_LIB_NAME      := $(PROGRAM_NAME)-$(UTILITIES_PKG_NAME)

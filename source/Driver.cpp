@@ -6,31 +6,27 @@
 //                                                                            //
 //              NOTE: This program is based on Advanced Squad Leader, which   //
 //                    was created by The Avalon Hill Game Company, and lives  //
-//                    on at <A HREF="http://www.multimanpublishing.com/ASL/asl.php">MultimanPublishing.com</A>.                           //
+//                    on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                           //
 //                                                                            //
-// Written By  : Craig R. Campbell  -  April 2007                             //
-//                                                                            //
-// $Id: Driver.cpp,v 1.2 2007/08/11 04:50:09 craig Exp $
+// Written By: Craig R. Campbell  -  April 2007                               //
 // ************************************************************************** //
 
 #include <stdio.h>
 
 #include <java/lang/Throwable.h> // For jthrowable.
 
-#include <cniWrapper.h>
-#include <jaslWrapper.h>
+#include "CniWrapper.h"
+#include "JaslErrorMessage.h"
+#include "jaslWrapper.h"
 
 static void printJavaString(jstring javaString)
 {
-    if (cniWrapper)
-    {
-        const char* convertedString = cniWrapper->stringToConstChar(javaString);
+    const char* convertedString = js2cc(javaString);
 
-        if (convertedString)
-        {
-            printf("%s\n",convertedString);
-            delete [] convertedString;
-        }
+    if (convertedString)
+    {
+        printf("%s\n",convertedString);
+        delete [] convertedString;
     }
 }
 
@@ -38,8 +34,8 @@ static void printExceptionMessage(jthrowable exception)
 {
     if (exception)
     {
-        printf("\nCaught: ");
-        printJavaString(exception->toString());
+        JaslErrorMessage jaslErrorMessage(exception);
+        printf("\nCaught: %s\n",jaslErrorMessage.text());
     }
 }
 
@@ -47,16 +43,6 @@ int main(int argc, char *argv[])
 {
     try
     {
-        // Create a CNI_WRAPPER object. This object is used to create and manage
-        // the connection and interaction with a Java Virtual Machine. It also
-        // provides access to the methods used to convert const char* strings to
-        // Java Strings and vice-versa. It must be deleted when the program is
-        // closed.
-
-        cniWrapper = new CNI_WRAPPER();
-
-        if (cniWrapper == NULL) return -1;
-
         // These items are used to set parameters requiring conversion from
         // const char* to String for use in generating the jasl::counters
         // objects below.
@@ -69,9 +55,9 @@ int main(int argc, char *argv[])
 
         // Create an instance of a German Leader.
 
-        nationality = cniWrapper->constCharToString("German");
-        identity    = cniWrapper->constCharToString("Lt. Fellbaum");
-        unitType    = cniWrapper->constCharToString("Leader");
+        nationality = cc2js("German");
+        identity    = cc2js("Lt. Fellbaum");
+        unitType    = cc2js("Leader");
 
         Leader* germanLeader = new Leader(nationality,identity,unitType,
                                           9,9,4,-1);
@@ -81,7 +67,7 @@ int main(int argc, char *argv[])
 
         if (germanLeader)
         {
-            const char* germanLeaderDetails = cniWrapper->stringToConstChar(germanLeader->toString());
+            const char* germanLeaderDetails = js2cc(germanLeader->toString());
 
             if (germanLeaderDetails)
             {
@@ -94,11 +80,11 @@ int main(int argc, char *argv[])
 
         // Create an instance of a Russian Squad.
 
-        nationality    = cniWrapper->constCharToString("Russian");
-        identity       = cniWrapper->constCharToString("A");
-        unitType       = cniWrapper->constCharToString("Guards");
-        firepower      = cniWrapper->constCharToString("6");
-        classification = cniWrapper->constCharToString("Elite");
+        nationality    = cc2js("Russian");
+        identity       = cc2js("A");
+        unitType       = cc2js("Guards");
+        firepower      = cc2js("6");
+        classification = cc2js("Elite");
 
         Squad* russianSquad = new Squad(nationality,identity,unitType,firepower,
                                         2,true,8,8,false,12,4,false,
@@ -109,7 +95,7 @@ int main(int argc, char *argv[])
 
         if (russianSquad)
         {
-            const char* russianSquadDetails = cniWrapper->stringToConstChar(russianSquad->toString());
+            const char* russianSquadDetails = js2cc(russianSquad->toString());
 
             if (russianSquadDetails)
             {
@@ -141,26 +127,26 @@ int main(int argc, char *argv[])
 
         Unit** UnitList = new Unit*[4];
 
-        nationality = cniWrapper->constCharToString("American");
-        identity    = cniWrapper->constCharToString("Sgt. Slaughter");
-        unitType    = cniWrapper->constCharToString("Ranger");
+        nationality = cc2js("American");
+        identity    = cc2js("Sgt. Slaughter");
+        unitType    = cc2js("Ranger");
 
         UnitList[0] = new Leader(nationality,identity,unitType,9,9,4,-1);
 
-        identity       = cniWrapper->constCharToString("X");
-        unitType       = cniWrapper->constCharToString("Squad");
-        firepower      = cniWrapper->constCharToString("6");
-        classification = cniWrapper->constCharToString("1st Line");
+        identity       = cc2js("X");
+        unitType       = cc2js("Squad");
+        firepower      = cc2js("6");
+        classification = cc2js("1st Line");
 
         UnitList[1] = new Squad(nationality,identity,unitType,firepower,6,false,
                                 6,6,false,11,4,false,classification,true,3);
 
-        identity = cniWrapper->constCharToString("Y");
+        identity = cc2js("Y");
 
         UnitList[2] = new Squad(nationality,identity,unitType,firepower,6,false,
                                 6,6,false,11,4,false,classification,true,3);
 
-        identity = cniWrapper->constCharToString("Z");
+        identity = cc2js("Z");
 
         UnitList[3] = new Squad(nationality,identity,unitType,firepower,6,false,
                                 6,6,false,11,4,false,classification,true,3);
@@ -200,8 +186,8 @@ int main(int argc, char *argv[])
         printf("\nNull nationality parameter:\n");
 
         nationality = NULL;
-        identity    = cniWrapper->constCharToString("5");
-        firepower   = cniWrapper->constCharToString("4");
+        identity    = cc2js("5");
+        firepower   = cc2js("4");
 
         try
         {
@@ -219,7 +205,7 @@ int main(int argc, char *argv[])
 
         printf("\nZero-length nationality parameter:\n");
 
-        nationality = cniWrapper->constCharToString("");
+        nationality = cc2js("");
 
         try
         {
@@ -237,7 +223,7 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid nationality parameter:\n");
 
-        nationality = cniWrapper->constCharToString("Mexican");
+        nationality = cc2js("Mexican");
 
         try
         {
@@ -255,7 +241,7 @@ int main(int argc, char *argv[])
 
         printf("\nNull identity parameter:\n");
 
-        nationality = cniWrapper->constCharToString("German");
+        nationality = cc2js("German");
         identity    = NULL;
 
         try
@@ -274,7 +260,7 @@ int main(int argc, char *argv[])
 
         printf("\nZero-length identity parameter:\n");
 
-        identity = cniWrapper->constCharToString("");
+        identity = cc2js("");
 
         try
         {
@@ -293,7 +279,7 @@ int main(int argc, char *argv[])
         printf("\nNull unitType parameter:\n");
 
         unitType = NULL;
-        identity = cniWrapper->constCharToString("5");
+        identity = cc2js("5");
 
         try
         {
@@ -311,7 +297,7 @@ int main(int argc, char *argv[])
 
         printf("\nZero-length unitType parameter:\n");
 
-        unitType = cniWrapper->constCharToString("");
+        unitType = cc2js("");
 
         try
         {
@@ -329,8 +315,8 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid nationality and unitType parameters:\n");
 
-        nationality = cniWrapper->constCharToString("British");
-        unitType    = cniWrapper->constCharToString("SS");
+        nationality = cc2js("British");
+        unitType    = cc2js("SS");
 
         try
         {
@@ -348,9 +334,9 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid description and unitType parameters:\n");
 
-        nationality    = cniWrapper->constCharToString("Russian");
-        unitType       = cniWrapper->constCharToString("Commissar");
-        classification = cniWrapper->constCharToString("Green");
+        nationality    = cc2js("Russian");
+        unitType       = cc2js("Commissar");
+        classification = cc2js("Green");
 
         try
         {
@@ -368,10 +354,10 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (less than 0) firepower parameter:\n");
 
-        nationality    = cniWrapper->constCharToString("German");
-        unitType       = cniWrapper->constCharToString("Squad");
-        firepower      = cniWrapper->constCharToString("-1");
-        classification = cniWrapper->constCharToString("1st Line");
+        nationality    = cc2js("German");
+        unitType       = cc2js("Squad");
+        firepower      = cc2js("-1");
+        classification = cc2js("1st Line");
 
         try
         {
@@ -387,7 +373,7 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid infantry firepower parameter:\n");
 
-        firepower = cniWrapper->constCharToString("88L");
+        firepower = cc2js("88L");
 
         try
         {
@@ -405,7 +391,7 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (less than 0) normal range parameter:\n");
 
-        firepower = cniWrapper->constCharToString("4");
+        firepower = cc2js("4");
 
         try
         {
@@ -423,7 +409,7 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (less than 0) morale parameter:\n");
 
-        classification = cniWrapper->constCharToString("Green");
+        classification = cc2js("Green");
 
         try
         {
@@ -521,7 +507,7 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
 
-        classification = cniWrapper->constCharToString("2nd Line");
+        classification = cc2js("2nd Line");
 
         try
         {
@@ -557,8 +543,8 @@ int main(int argc, char *argv[])
 
         printf("\nZero-length classification parameter:\n");
 
-        unitType       = cniWrapper->constCharToString("SS");
-        classification = cniWrapper->constCharToString("");
+        unitType       = cc2js("SS");
+        classification = cc2js("");
 
         try
         {
@@ -576,8 +562,8 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid classification parameter:\n");
 
-        identity       = cniWrapper->constCharToString("4A");
-        classification = cniWrapper->constCharToString("Bozos");
+        identity       = cc2js("4A");
+        classification = cc2js("Bozos");
 
         try
         {
@@ -595,8 +581,8 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (less than zero) Smoke Placement Exponent:\n");
 
-        identity       = cniWrapper->constCharToString("5");
-        classification = cniWrapper->constCharToString("2nd Line");
+        identity       = cc2js("5");
+        classification = cc2js("2nd Line");
 
         try
         {
@@ -638,9 +624,9 @@ int main(int argc, char *argv[])
         printf("\nTesting Exception handling during Leader creation:\n");
         printf("\nInvalid (less than minimum) modifier parameter:\n");
 
-        nationality = cniWrapper->constCharToString("British");
-        identity    = cniWrapper->constCharToString("Sgt. Powell");
-        unitType    = cniWrapper->constCharToString("Canadian");
+        nationality = cc2js("British");
+        identity    = cc2js("Sgt. Powell");
+        unitType    = cc2js("Canadian");
 
         try
         {
@@ -695,9 +681,4 @@ int main(int argc, char *argv[])
     {
         printExceptionMessage(t);
     }
-
-    // Free the CNI wrapper object, which will shut down the Java Virtual
-    // Machine.
-
-    if (cniWrapper) delete cniWrapper;
 }

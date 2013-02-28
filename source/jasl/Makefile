@@ -36,8 +36,8 @@ include $(JASL_BASE)/util/jasl.make
 .PHONY : clean_hdr
 .PHONY : clean_libs
 all obj hdr libs clean clean_java clean_obj clean_hdr clean_libs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 
 # Build either the shared or static libraries associated with each of the
 # sub-directories and install them, along with the necessary links (if
@@ -45,26 +45,26 @@ all obj hdr libs clean clean_java clean_obj clean_hdr clean_libs:
 
 .PHONY : dynamic_libs
 dynamic_libs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  dynamic_lib
 	$(MAKE) -C $(UTILITIES_PKG_NAME) dynamic_lib
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  dynamic_lib
 
 .PHONY : static_libs
 static_libs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  static_lib
 	$(MAKE) -C $(UTILITIES_PKG_NAME) static_lib
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  static_lib
 
 # Remove either the shared or static library files and links, if applicable,
 # from the library output directory.
 
 .PHONY : clean_dynamic_libs
 clean_dynamic_libs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  clean_dynamic_lib
 	$(MAKE) -C $(UTILITIES_PKG_NAME) clean_dynamic_lib
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  clean_dynamic_lib
 
 .PHONY : clean_static_libs
 clean_static_libs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  clean_static_lib
 	$(MAKE) -C $(UTILITIES_PKG_NAME) clean_static_lib
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  clean_static_lib
 
 # Create an HTML version of this file. It is converted using the
 # source-highlight program, which generates an "image" of the file with syntax
@@ -78,16 +78,16 @@ docs_all:
 	@$(INSTALL_DIR) $(JASL_DOCS_PATH)
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(JASL_DOCS_PATH)/$(MAKEFILE).html
 
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(JASL_DOCS_PATH)
 	@$(HTLS) $(JASL_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	@$(RM) $(JASL_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
