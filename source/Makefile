@@ -368,6 +368,12 @@ docs_all:
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
 
+	# This link is necessary in order for the "Source code" links in the
+	# Doxygen output to be able to open the files generated using
+	# source-highlight.
+
+	@$(LN) doc/source $(INSTALL_DIRECTORY)/share/$(PROGRAM_NAME)/source
+
 .PHONY : clean_docs
 clean_docs:
 	$(MAKE) -C $(CNI_DIRECTORY) $@
