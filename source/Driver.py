@@ -7,146 +7,112 @@
 #             The <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) <A HREF="http://gcc.gnu.org/onlinedocs/gcj/Invocation.html#Invocation">invocation</A> functions, which  #
 #             are required to use the Java classes, are initiated in this      #
 #             script by the <A HREF="swig/CniWrapper.swig.html">CniWrapper</A> module. This module also provides       #
-#             methods to convert a native string to or from a Java <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A>.     #
+#             methods to convert a native string to or from a Java <A HREF="http://java.sun.com/javase/7/docs/api/java/lang/String.html">String</A>.     #
 #                                                                              #
-# Written By : Craig R. Campbell  -  August 2008                               #
-#                                                                              #
-# $Id: Driver.py,v 1.3 2009/12/01 21:36:47 campbell Exp $
+# Written By: Craig R. Campbell  -  August 2008                                #
 ################################################################################
 
 import sys
-sys.path.append("/home/campbell/java/jasl/lib/python")
+sys.path.append("/home/campbell/jasl/lib/jasl/python")
 
 from CniWrapper import *
 from Counters   import *
 from Utilities  import *
 
-cni_wrapper = CNI_WRAPPER()
+# The following call is necessary only if either the js2cc() or cc2js() function
+# is NOT called (invoking either one will start the CniWrapper).
+
+#cni_wrapper = CniWrapper_instance()
 
 # Create an instance of a German Leader.
 
-germanLeader = Leader(cni_wrapper.constCharToString("German"),
-                      cni_wrapper.constCharToString("Lt. Fellbaum"),
-                      cni_wrapper.constCharToString("Leader"),9,9,4,-1)
+germanLeader = Leader(cc2js("German"),
+                      cc2js("Lt. Fellbaum"),
+                      cc2js("Leader"),9,9,4,-1)
 
 # Display all of the entered values for this instance using the toString()
 # method.
 
-print "Leader.toString() output:\n\n%s" % \
-      cni_wrapper.stringToConstChar(germanLeader.toString())
+print "Leader.toString() output:\n\n%s" % js2cc(germanLeader.toString())
 
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
 
 print "Leader class access methods and output :\n"
 
-print "\tgetDescription(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getDescription())
+print "\tgetDescription(): %s"     % js2cc(germanLeader.getDescription())
 
-print "\tcanSprayFire(): %d" % germanLeader.canSprayFire()
-print "\tgetFirepower(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getFirepower())
-print "\tgetIdentity(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getIdentity())
-print "\tgetNationality(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getNationality())
-print "\tgetNormalRange(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getNormalRange())
-print "\tgetPortageValue(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getPortageValue())
-print "\tgetUnitType(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getUnitType())
+print "\tcanSprayFire(): %d"       % germanLeader.canSprayFire()
+print "\tgetFirepower(): %s"       % js2cc(germanLeader.getFirepower())
+print "\tgetIdentity(): %s"        % js2cc(germanLeader.getIdentity())
+print "\tgetNationality(): %s"     % js2cc(germanLeader.getNationality())
+print "\tgetNormalRange(): %s"     % js2cc(germanLeader.getNormalRange())
+print "\tgetPortageValue(): %s"    % js2cc(germanLeader.getPortageValue())
+print "\tgetUnitType(): %s"        % js2cc(germanLeader.getUnitType())
 
-print "\tgetMovement(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getMovement())
-print "\tgetPortageCapacity(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getPortageCapacity())
-print "\tgetPortageLevel(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getPortageLevel())
+print "\tgetMovement(): %s"        % js2cc(germanLeader.getMovement())
+print "\tgetPortageCapacity(): %s" % js2cc(germanLeader.getPortageCapacity())
+print "\tgetPortageLevel(): %s"    % js2cc(germanLeader.getPortageLevel())
 
-print "\tcanSelfRally(): %d" % germanLeader.canSelfRally()
-print "\tgetBPV(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getBPV())
-print "\tgetBrokenMorale(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getBrokenMorale())
-print "\tgetELR(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getELR())
-print "\tgetMorale(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getMorale())
-print "\tgetStatus(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getStatus())
+print "\tcanSelfRally(): %d"       % germanLeader.canSelfRally()
+print "\tgetBPV(): %s"             % js2cc(germanLeader.getBPV())
+print "\tgetBrokenMorale(): %s"    % js2cc(germanLeader.getBrokenMorale())
+print "\tgetELR(): %s"             % js2cc(germanLeader.getELR())
+print "\tgetMorale(): %s"          % js2cc(germanLeader.getMorale())
+print "\tgetStatus(): %s"          % js2cc(germanLeader.getStatus())
 
-print "\tgetModifier(): %s" % \
-      cni_wrapper.stringToConstChar(germanLeader.getModifier())
+print "\tgetModifier(): %s"        % js2cc(germanLeader.getModifier())
 
 #print "\nConstant string test: %s" % \
-#      cni_wrapper.stringToConstChar(cvar.Leader_MODIFIER_LABEL)
+#      js2cc(cvar.Leader_MODIFIER_LABEL)
 
 # Create an instance of a Russian Squad.
 
-russianSquad = Squad(cni_wrapper.constCharToString("Russian"),
-                     cni_wrapper.constCharToString("A"),
-                     cni_wrapper.constCharToString("Guards"),
-                     cni_wrapper.constCharToString("6"),2,1,8,8,0,12,4,0,
-                     cni_wrapper.constCharToString("Elite"),1,0)
+russianSquad = Squad(cc2js("Russian"),
+                     cc2js("A"),
+                     cc2js("Guards"),
+                     cc2js("6"),2,1,8,8,0,12,4,0,
+                     cc2js("Elite"),1,0)
 
 # Display all of the entered values for this instance using the toString()
 # method.
 
-print "\nSquad.toString() output:\n\n%s" % \
-      cni_wrapper.stringToConstChar(russianSquad.toString())
+print "\nSquad.toString() output:\n\n%s" % js2cc(russianSquad.toString())
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
 
 print "Squad class access methods and output :\n"
 
-print "\tgetDescription(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getDescription())
+print "\tgetDescription(): %s"     % js2cc(russianSquad.getDescription())
 
-print "\tcanSprayFire(): %d" % russianSquad.canSprayFire()
-print "\tgetFirepower(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getFirepower())
-print "\tgetIdentity(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getIdentity())
-print "\tgetNationality(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getNationality())
-print "\tgetNormalRange(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getNormalRange())
-print "\tgetPortageValue(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getPortageValue())
-print "\tgetUnitType(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getUnitType())
+print "\tcanSprayFire(): %d"       % russianSquad.canSprayFire()
+print "\tgetFirepower(): %s"       % js2cc(russianSquad.getFirepower())
+print "\tgetIdentity(): %s"        % js2cc(russianSquad.getIdentity())
+print "\tgetNationality(): %s"     % js2cc(russianSquad.getNationality())
+print "\tgetNormalRange(): %s"     % js2cc(russianSquad.getNormalRange())
+print "\tgetPortageValue(): %s"    % js2cc(russianSquad.getPortageValue())
+print "\tgetUnitType(): %s"        % js2cc(russianSquad.getUnitType())
 
-print "\tgetMovement(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getMovement())
-print "\tgetPortageCapacity(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getPortageCapacity())
-print "\tgetPortageLevel(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getPortageLevel())
+print "\tgetMovement(): %s"        % js2cc(russianSquad.getMovement())
+print "\tgetPortageCapacity(): %s" % js2cc(russianSquad.getPortageCapacity())
+print "\tgetPortageLevel(): %s"    % js2cc(russianSquad.getPortageLevel())
 
-print "\tcanSelfRally(): %d" % russianSquad.canSelfRally()
-print "\tgetBPV(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getBPV())
-print "\tgetBrokenMorale(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getBrokenMorale())
-print "\tgetELR(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getELR())
-print "\tgetMorale(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getMorale())
-print "\tgetStatus(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getStatus())
+print "\tcanSelfRally(): %d"       % russianSquad.canSelfRally()
+print "\tgetBPV(): %s"             % js2cc(russianSquad.getBPV())
+print "\tgetBrokenMorale(): %s"    % js2cc(russianSquad.getBrokenMorale())
+print "\tgetELR(): %s"             % js2cc(russianSquad.getELR())
+print "\tgetMorale(): %s"          % js2cc(russianSquad.getMorale())
+print "\tgetStatus(): %s"          % js2cc(russianSquad.getStatus())
 
-print "\tgetClassification(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getClassification())
-print "\thasMaxELR(): %d" % russianSquad.hasMaxELR()
+print "\tgetClassification(): %s"  % js2cc(russianSquad.getClassification())
+print "\thasMaxELR(): %d"          % russianSquad.hasMaxELR()
 
-print "\tcanAssaultFire(): %d" % russianSquad.canAssaultFire()
-print "\tgetSPE(): %s" % \
-      cni_wrapper.stringToConstChar(russianSquad.getSPE())
+print "\tcanAssaultFire(): %d"     % russianSquad.canAssaultFire()
+print "\tgetSPE(): %s"             % js2cc(russianSquad.getSPE())
 
 #print "\nConstant string test: %s" % \
-#      cni_wrapper.stringToConstChar(cvar.Squad_CAN_ASSAULT_FIRE_LABEL)
+#      js2cc(cvar.Squad_CAN_ASSAULT_FIRE_LABEL)
 
 # Create an instance of a German Squad (that throws some exceptions).
 
@@ -155,11 +121,11 @@ print "\tgetSPE(): %s" % \
 print "\nTesting Exception handling during Squad creation:"
 print "\nNull nationality parameter:\n"
 
-#germanSquad = Squad(cni_wrapper.constCharToString(None),
-#                    cni_wrapper.constCharToString("5"),
-#                    cni_wrapper.constCharToString("Squad"),
-#                    cni_wrapper.constCharToString("4"),6,1,7,7,0,10,3,0,
-#                    cni_wrapper.constCharToString("1st Line"),0,1)
+#germanSquad = Squad(cc2js(None),
+#                    cc2js("5"),
+#                    cc2js("Squad"),
+#                    cc2js("4"),6,1,7,7,0,10,3,0,
+#                    cc2js("1st Line"),0,1)
 
 # Test the Dice class.
 
@@ -172,4 +138,4 @@ for i in (list(range(12))):
 #         " Colored: %d"  % dice.getColoredDieValue() + \
 #         " Combined: %2d" % dice.getCombinedResult()
 
-    print "%s" % (cni_wrapper.stringToConstChar(dice.toString()))
+    print "%s" % (js2cc(dice.toString()))
