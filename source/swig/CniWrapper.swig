@@ -9,8 +9,6 @@
 //                   languages (<A HREF="http://www.perl.org/">Perl</A> and <A HREF="http://www.python.org/">Python</A>).                             //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
-//                                                                            //
-// $Id: CniWrapper.swig,v 1.4 2008/10/10 23:08:45 campbell Exp $
 // ************************************************************************** //
 
 %module CniWrapper;
@@ -21,20 +19,29 @@
 #include <gcj/cni.h>
 %}
 
-// The stringToConstChar() method allocates memory to store the data copied from
-// the <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory to be freed in the wrapper
-// function after it creates the native data item to store the string.
+// The stringToConstChar() method and the js2cc() function allocate memory to
+// store the data copied from the <A HREF="http://java.sun.com/javase/7/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory
+// to be freed in the wrapper function after it creates the native data item to
+// store the string.
 
-%newobject CNI_WRAPPER::stringToConstChar(::java::lang::String* javaString);
+%newobject CniWrapper::stringToConstChar(::java::lang::String* javaString);
+%newobject js2cc(::java::lang::String* javaString);
 
-// The public interface of the <A HREF="../cni-wrapper/cniWrapper.h.html">CNI_WRAPPER</A> class.
+// The public interface of the <A HREF="../cni-wrapper/CniWrapper.h.html">CniWrapper</A> class.
 
-class CNI_WRAPPER
+class CniWrapper
 {
     public:
 
-        CNI_WRAPPER();
-        ~CNI_WRAPPER();
-        const char* stringToConstChar(::java::lang::String* javaString);
-        ::java::lang::String* constCharToString(const char* constCharString);
+        ~CniWrapper();
+        static CniWrapper* instance();
+        const char* stringToConstChar(::java::lang::String* javaString) const;
+        ::java::lang::String* constCharToString(const char* constCharString) const;
+
+    private:
+
+        CniWrapper();
 };
+
+extern const char* js2cc(::java::lang::String* javaString);
+extern const ::java::lang::String* cc2js(const char* constCharString);

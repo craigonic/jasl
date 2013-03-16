@@ -7,8 +7,6 @@
 //                  from the supported scripting languages (<A HREF="http://www.perl.org/">Perl</A> and <A HREF="http://www.python.org/">Python</A>). //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2009                              //
-//                                                                            //
-// $Id: Utilities.swig,v 1.1 2009/09/01 22:45:59 campbell Exp $
 // ************************************************************************** //
 
 %module Utilities;
@@ -18,7 +16,7 @@
 // contains typedef declarations to simplify the use of each class.
 
 %{
-#include "jaslWrapper.h"
+#include "jasl/cni/jaslWrapper.h"
 %}
 
 // Load the interface files associated with the public classes of the

@@ -5,7 +5,6 @@
 #                                                                              #
 # Written By : Craig R. Campbell  -  July 2008                                 #
 #                                                                              #
-# $Id: Makefile,v 1.10 2010/02/08 21:08:29 campbell Exp $
 ################################################################################
 
 # These entries are included to eliminate pointless searching for the files,
@@ -33,8 +32,8 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 
 # GCC compile commands with options specific to each target language.
 
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.10.0/i686-linux/CORE
-GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.6
+GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.14.2/i686-linux/CORE
+GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
 
 # GCC build/link options common to all libraries and target languages.
 
@@ -59,7 +58,7 @@ CNI_WRAPPER_LIBRARY_NAME := CniWrapper
 # Input file for SWIG.
 CNI_WRAPPER_SWIG_SRC_FILE := $(CNI_WRAPPER_LIBRARY_NAME).swig
 # CNI_WRAPPER class header file.
-CNI_WRAPPER_HDR := cniWrapper.h
+CNI_WRAPPER_HDR := CniWrapper.h
 # swig command output file.
 CNI_SWIG_WRAPPER_SRC := $(CNI_WRAPPER_LIBRARY_NAME)_wrap.cxx
 # Wrapper object file.
@@ -86,7 +85,7 @@ cni_python_src: $(CNI_WRAPPER_SWIG_SRC_FILE) python_bin_directory
 
 # Build the object (.o) file for the desired target language.
 
-CNI_COMMON_COMPILE_OPTIONS := -I$(INCLUDE_PATH) -include $(CNI_WRAPPER_HDR) \
+CNI_COMMON_COMPILE_OPTIONS := -I$(CNI_HDR_PATH) -include $(CNI_WRAPPER_HDR) \
                               $(CNI_SWIG_WRAPPER_SRC)
 
 .PHONY : cni_perl_obj
@@ -168,7 +167,7 @@ COUNTERS_LIBRARY_NAME := Counters
 # Input file for SWIG.
 COUNTERS_SWIG_SRC_FILE := $(COUNTERS_LIBRARY_NAME).swig
 # jasl-counters library header files.
-COUNTERS_HDR_FILES := -include jaslWrapper.h
+COUNTERS_HDR_FILES := -include jasl/cni/jaslWrapper.h
 # swig command output file.
 COUNTERS_SWIG_WRAPPER_SRC := $(COUNTERS_LIBRARY_NAME)_wrap.cxx
 # Wrapper object file.
@@ -278,7 +277,7 @@ UTILITIES_LIBRARY_NAME := Utilities
 # Input file for SWIG.
 UTILITIES_SWIG_SRC_FILE := $(UTILITIES_LIBRARY_NAME).swig
 # jasl-utilities library header files.
-UTILITIES_HDR_FILES := -include jaslWrapper.h
+UTILITIES_HDR_FILES := -include jasl/cni/jaslWrapper.h
 # swig command output file.
 UTILITIES_SWIG_WRAPPER_SRC := $(UTILITIES_LIBRARY_NAME)_wrap.cxx
 # Wrapper object file.

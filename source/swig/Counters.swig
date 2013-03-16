@@ -7,8 +7,6 @@
 //                 supported scripting languages (<A HREF="http://www.perl.org/">Perl</A> and <A HREF="http://www.python.org/">Python</A>).           //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
-//                                                                            //
-// $Id: Counters.swig,v 1.3 2009/11/19 20:47:42 campbell Exp $
 // ************************************************************************** //
 
 %module Counters;
@@ -18,7 +16,7 @@
 // contains typedef declarations to simplify the use of each class.
 
 %{
-#include "jaslWrapper.h"
+#include "jasl/cni/jaslWrapper.h"
 %}
 
 // Load the interface files associated with the public classes of the
