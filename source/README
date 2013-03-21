@@ -12,11 +12,10 @@ make clean_all
 (cd cni-wrapper;make clean_hdr clean_libs)
 (cd swig;make clean_libs)
 
-# Install the header files and build the libraries.
+# Build the libraries and install the header files.
 
-(cd cni-wrapper;make hdr libs)
-make
-(cd jasl;make hdr libs)
+(cd cni-wrapper;make libs hdr)
+(cd jasl;make libs hdr)
 
 # Build the wrapper libraries. Note that the Makefile may require editing to set
 # the correct path(s) for the Perl and/or Python headers.
