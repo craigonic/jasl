@@ -35,7 +35,11 @@ DICE_CLASS           := Dice.class
 DICE_OBJ             := ${DICE_CLASS:.class=.o}
 DICE_SRC             := ${DICE_CLASS:.class=.java}
 
-ALL_CLASSES          := $(MESSAGES_CLASS) $(DICE_CLASS)
+SERIALIZATION_CLASS  := Serialization.class
+SERIALIZATION_OBJ    := ${SERIALIZATION_CLASS:.class=.o}
+SERIALIZATION_SRC    := ${SERIALIZATION_CLASS:.class=.java}
+
+ALL_CLASSES          := $(MESSAGES_CLASS) $(DICE_CLASS) $(SERIALIZATION_CLASS)
 
 GCJ_OBJECT_FILES     := ${ALL_CLASSES:.class=.o}
 
@@ -54,6 +58,9 @@ $(MESSAGES_CLASS): bin_directory
 $(DICE_CLASS): $(MESSAGES_CLASS)
 	$(JAVA_OPTIONS) $(DICE_SRC)
 
+$(SERIALIZATION_CLASS): $(MESSAGES_CLASS)
+	$(JAVA_OPTIONS) $(SERIALIZATION_SRC)
+
 # Compile individual object files used to build a native executable with the gcj
 # compiler.
 
@@ -64,6 +71,10 @@ $(MESSAGES_OBJ): $(MESSAGES_CLASS)
 $(DICE_OBJ): $(DICE_CLASS)
 	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(DICE_CLASS) \
 	                  -o $(OBJ_SUB_DIRECTORY)/$(DICE_OBJ)
+
+$(SERIALIZATION_OBJ): $(SERIALIZATION_CLASS)
+	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(SERIALIZATION_CLASS) \
+	                  -o $(OBJ_SUB_DIRECTORY)/$(SERIALIZATION_OBJ)
 
 # Build all of the individual object files.
 
