@@ -14,6 +14,7 @@
 
 import jasl.counters.*;
 import jasl.utilities.Dice;
+import jasl.utilities.Serialization;
 
 public class Driver
 {
@@ -31,6 +32,24 @@ public class Driver
         System.out.println("Leader.toString() output:");
         System.out.println();
         System.out.print(germanLeader.toString());
+
+        // Serialize the Leader object, write the data to a file (Leader.ser),
+        // then deserialize the data into a new object.
+
+        germanLeader.setIdentity("Col. Klink");
+
+        Serialization.serializeToFile(germanLeader,"/tmp/Leader.ser");
+
+        Unit deserializedLeader =
+            (Unit)Serialization.deserializeFromFile("/tmp/Leader.ser");
+
+        // Display all of the entered values for the deserialized instance using
+        // the toString() method.
+
+        System.out.println();
+        System.out.println("(Deserialized) Leader.toString() output:");
+        System.out.println();
+        System.out.print(deserializedLeader.toString());
 
         // Create an instance of a Russian Squad.
 
