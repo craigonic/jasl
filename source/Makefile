@@ -57,7 +57,8 @@ ALL_CLASSES        := $(DRIVER_CLASS)
 JAVA_SRC_FILES     := ${ALL_CLASSES:.class=.java}
 JAVA_CLASSES       := ${ALL_CLASSES:.class=}
 
-GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES)
+GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES) \
+                      $(UI_DATA_OBJ_FILES)
 
 ## Build #######################################################################
 
@@ -187,13 +188,14 @@ $(DRIVER_EXEC): $(DRIVER_CLASS)
 $(DRIVER_DYNAMIC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_DYNAMIC) $(DRIVER_SRC) \
 	                 -L$(LIB_PATH) -l$(COUNTERS_BASE_LIB_NAME) \
-	                 -l$(UTILITIES_BASE_LIB_NAME)
+	                 -l$(UTILITIES_BASE_LIB_NAME) -l$(UI_DATA_BASE_LIB_NAME)
 
 # Build and link with the static libraries.
 
 $(DRIVER_STATIC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_STATIC) $(DRIVER_SRC) \
-	                 $(COUNTERS_STATIC_LIB_PATH) $(UTILITIES_STATIC_LIB_PATH)
+	                 $(COUNTERS_STATIC_LIB_PATH) \
+	                 $(UTILITIES_STATIC_LIB_PATH) $(UI_DATA_STATIC_LIB_PATH)
 
 # Build the C++ version of the Driver program, which uses the Compiled Native
 # Interface (CNI) wrapper, and is used to test the classes defined in the jasl
@@ -213,7 +215,8 @@ $(DRIVER_CNI_DYNAMIC): bin_directory
 	                 $(DRIVER_CNI_DYNAMIC_LIBS) \
 	                 -l$(CNI_WRAPPER_BASE_LIB_NAME) \
 	                 -l$(COUNTERS_BASE_LIB_NAME) \
-	                 -l$(UTILITIES_BASE_LIB_NAME)
+	                 -l$(UTILITIES_BASE_LIB_NAME) \
+	                 -l$(UI_DATA_BASE_LIB_NAME)
 
 # Build and link with the static libraries.
 
@@ -221,7 +224,9 @@ $(DRIVER_CNI_STATIC): bin_directory
 	$(GCC_BUILD_CMD) $(DRIVER_CNI_BUILD_OPTIONS)$(DRIVER_CNI_STATIC) \
 	                 $(DRIVER_CNI_SRC) $(DRIVER_CNI_DYNAMIC_LIBS) \
 	                 $(CNI_WRAPPER_STATIC_LIB_PATH) \
-	                 $(COUNTERS_STATIC_LIB_PATH) $(UTILITIES_STATIC_LIB_PATH)
+	                 $(COUNTERS_STATIC_LIB_PATH) \
+	                 $(UTILITIES_STATIC_LIB_PATH) \
+	                 $(UI_DATA_STATIC_LIB_PATH)
 
 ## Install #####################################################################
 
@@ -390,14 +395,15 @@ docs: docs_all clean_docs
 javadocs: docs_directory
 	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
 	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
-	                     $(UTILITIES_SRC_FILES)
+	                     $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create HTML documentation using gjdoc.
 
 .PHONY : gjdocs
 gjdocs: docs_directory
 	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
-	@$(GJDOC) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES)
+	@$(GJDOC) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
+	          $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create HTML documentation using doxygen.
 
@@ -429,7 +435,7 @@ all_docs: javadocs doxygen htags docs
 .PHONY : ctags
 ctags:
 	@$(CTAGS_BUILD_CMD) $(CNI_WRAPPER_SRC_FILES) $(COUNTERS_SRC_FILES) \
-	                    $(UTILITIES_SRC_FILES)
+	                    $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create another source file symbol index. This target generates a set of files,
 # which are stored in the gtags sub-directory, that allow command line queries
