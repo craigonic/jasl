@@ -124,7 +124,7 @@ public final class Side
 		units.add("7-0 Leader");
 		units.add("6+1 Leader");
 
-		if (nationality == Nationality.AMERICAN)
+		if (nationality.compareTo(Nationality.AMERICAN) == 0)
 		{
 			units.add("7-4-7 Squad");
 			units.add("6-6-7 Squad");
@@ -133,7 +133,7 @@ public final class Side
 			units.add("5-3-6 Squad");
 		}
 
-		if (nationality == Nationality.BRITISH)
+		if (nationality.compareTo(Nationality.BRITISH) == 0)
 		{
 			units.add("6-3-8 Squad");
 			units.add("4-5-8 Squad");
@@ -142,7 +142,7 @@ public final class Side
 			units.add("4-3-6 Squad");
 		}
 
-		if (nationality == Nationality.RUSSIAN)
+		if (nationality.compareTo(Nationality.RUSSIAN) == 0)
 		{
 			units.add("6-2-8 Squad");
 			units.add("4-5-8 Squad");
@@ -151,26 +151,26 @@ public final class Side
 			units.add("4-2-6 Squad");
 		}
 
-		if (nationality == Nationality.FRENCH)
+		if (nationality.compareTo(Nationality.FRENCH) == 0)
 		{
 			units.add("4-5-8 Squad");
 			units.add("4-5-7 Squad");
 			units.add("4-3-7 Squad");
 		}
 
-		if (nationality == Nationality.PARTISAN)
+		if (nationality.compareTo(Nationality.PARTISAN) == 0)
 		{
 			units.add("3-3-7 Squad");
 		}
 
-		if (nationality == Nationality.ALLIED_MINOR)
+		if (nationality.compareTo(Nationality.ALLIED_MINOR) == 0)
 		{
 			units.add("4-5-8 Squad");
 			units.add("4-5-7 Squad");
 			units.add("4-3-7 Squad");
 		}
 
-		if (nationality == Nationality.GERMAN)
+		if (nationality.compareTo(Nationality.GERMAN) == 0)
 		{
 			units.add("6-5-8 Squad");
 			units.add("8-3-8 Squad");
@@ -181,7 +181,7 @@ public final class Side
 			units.add("4-3-6 Squad");
 		}
 
-		if (nationality == Nationality.JAPANESE)
+		if (nationality.compareTo(Nationality.JAPANESE) == 0)
 		{
 			units.add("4-4-8 Squad");
 			units.add("4-4-7 Squad");
@@ -192,7 +192,7 @@ public final class Side
 			units.add("2-3-6 Squad");
 		}
 
-		if (nationality == Nationality.ITALIAN)
+		if (nationality.compareTo(Nationality.ITALIAN) == 0)
 		{
 			units.add("4-4-7 Squad");
 			units.add("3-4-7 Squad");
@@ -200,14 +200,14 @@ public final class Side
 			units.add("3-3-6 Squad");
 		}
 
-		if (nationality == Nationality.FINNISH)
+		if (nationality.compareTo(Nationality.FINNISH) == 0)
 		{
 			units.add("8-3-8 Squad");
 			units.add("6-4-8 Squad");
 			units.add("5-3-8 Squad");
 		}
 
-		if (nationality == Nationality.AXIS_MINOR)
+		if (nationality.compareTo(Nationality.AXIS_MINOR) == 0)
 		{
 			units.add("4-4-7 Squad");
 			units.add("3-4-7 Squad");

@@ -12,7 +12,11 @@
 
 package jasl.ui.data;
 
-import java.util.*; // For Map.
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * This is a singleton class used to provide overall management of an instance
@@ -42,9 +46,6 @@ public final class Game
 
 		_sides.put(Side.Sides.ALLIES,new Side(Side.Sides.ALLIES));
 		_sides.put(Side.Sides.AXIS,new Side(Side.Sides.AXIS));
-
-		_alliedPlayers.add("Add Player");
-		_axisPlayers.add("Add Player");
 	}
 
 	public static Game game()
@@ -87,7 +88,6 @@ public final class Game
 			                         _alliedPlayers : _axisPlayers;
 			list.clear();
 			list.addAll(_sides.get(side).playerList());
-			list.add("Add Player");
 
 			return true;
 		}
