@@ -11,8 +11,6 @@
 //             well as the combined result.                                   //
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
-//                                                                            //
-// $Id: Dice.java,v 1.13 2009/11/28 03:47:21 craig Exp $
 // ************************************************************************** //
 
 package jasl.utilities;
@@ -21,8 +19,8 @@ package jasl.utilities;
  * This is a utility class used to provide the simulated result(s) of rolling
  * one or two six sided dice.
  *
- * @version 1.13
- * @author Craig R. Campbell
+ * @version 2.0
+ * @author Copyright (C) 1999-2013 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Dice.html">Source code</A>
  */
 
@@ -153,7 +151,7 @@ public final class Dice
 
 	private int rollIt()
 	{
-		return (int)Math.ceil(Math.random()*MAX_ROLL);
+		return (int)Math.ceil(Math.random() * MAX_ROLL);
 	}
 
 	// Public access methods
@@ -162,7 +160,8 @@ public final class Dice
 	 * Display the value of each of the private data members that describe
 	 * the current instance. Each value is preceded by a label.
 	 *
-	 * @return a <CODE>String</CODE>.
+	 * @return a <CODE>String</CODE> describing the result of the last roll of
+	 * the dice.
 	 */
 
 	public String toString()
@@ -189,7 +188,7 @@ public final class Dice
 		returnString.append(Messages.formatTextString(WHITE_DIE_LABEL,
 		                    LABEL_WIDTH,true,false));
 
-		returnString.append(Messages.formatTextString(Integer.toString(getWhiteDieValue()),
+		returnString.append(Messages.formatTextString(Integer.toString(whiteDieValue()),
 		                    VALUE_WIDTH,false,false));
 
 		// Colored Die
@@ -197,7 +196,7 @@ public final class Dice
 		returnString.append(Messages.formatTextString(COLORED_DIE_LABEL,
 		                    LABEL_WIDTH,true,false));
 
-		returnString.append(Messages.formatTextString(Integer.toString(getColoredDieValue()),
+		returnString.append(Messages.formatTextString(Integer.toString(coloredDieValue()),
 		                    VALUE_WIDTH,false,false));
 
 		// Combined Result
@@ -205,7 +204,7 @@ public final class Dice
 		returnString.append(Messages.formatTextString(COMBINED_RESULT_LABEL,
 		                    LABEL_WIDTH,true,false));
 
-		returnString.append(Messages.formatTextString(Integer.toString(getCombinedResult()),
+		returnString.append(Messages.formatTextString(Integer.toString(combinedResult()),
 		                    VALUE_WIDTH,false,true));
 
 		// Return the completed string to calling program.
@@ -219,7 +218,7 @@ public final class Dice
 	 * @return an <CODE>int</CODE> specifying the white die value.
 	 */
 
-	public int getWhiteDieValue()
+	public int whiteDieValue()
 	{
 		return whiteDieValue;
 	}
@@ -230,7 +229,7 @@ public final class Dice
 	 * @return an <CODE>int</CODE> specifying the colored die value.
 	 */
 
-	public int getColoredDieValue()
+	public int coloredDieValue()
 	{
 		return coloredDieValue;
 	}
@@ -242,7 +241,7 @@ public final class Dice
 	 * values.
 	 */
 
-	public int getCombinedResult()
+	public int combinedResult()
 	{
 		return combinedResult;
 	}

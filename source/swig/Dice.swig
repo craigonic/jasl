@@ -10,8 +10,6 @@
 //                   file, not to build standalone libraries.                 //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
-//                                                                            //
-// $Id: Dice.swig,v 1.7 2009/11/18 16:50:47 campbell Exp $
 // ************************************************************************** //
 
 %module Dice;
@@ -36,9 +34,9 @@ class Dice
 
         // Access methods.
 
-        int                   getWhiteDieValue();
-        int                   getColoredDieValue();
-        int                   getCombinedResult();
+        int                   whiteDieValue();
+        int                   coloredDieValue();
+        int                   combinedResult();
 
         ::java::lang::String* toString();
 };
