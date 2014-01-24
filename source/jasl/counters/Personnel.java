@@ -80,10 +80,10 @@ abstract class Personnel extends Infantry implements Classification
 	// type being created.
 
 	protected Personnel(Descriptions description,Nationalities nationality,
-	                    UnitTypes unitType,int firepower,int normalRange,
-	                    int morale,int brokenMorale,boolean canSelfRally,
-	                    int basicPointValue,int experienceLevelRating,
-	                    boolean hasMaximumELR,
+	                    InfantryTypes unitType,int firepower,
+	                    int normalRange,int morale,int brokenMorale,
+	                    boolean canSelfRally,int basicPointValue,
+	                    int experienceLevelRating,boolean hasMaximumELR,
 	                    Classifications classification)
 	{
 		// Pass the first 10 parameters to the superclass constructor.

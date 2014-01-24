@@ -112,8 +112,8 @@ public final class Squad extends Personnel implements SprayingFire
 	 * @throws IllegalArgumentException in the case of an invalid argument.
 	 */
 
-	public Squad(Nationalities nationality,UnitTypes unitType,int firepower,
-	             int normalRange,int morale,int brokenMorale,
+	public Squad(Nationalities nationality,InfantryTypes unitType,
+	             int firepower,int normalRange,int morale,int brokenMorale,
 	             boolean canSelfRally,int basicPointValue,
 	             int experienceLevelRating,boolean hasMaximumELR,
 	             Classifications classification,boolean canAssaultFire,

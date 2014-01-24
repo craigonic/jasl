@@ -46,176 +46,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 
 	public static final String ELR_LABEL = "Experience Level Rating";
 
-	// Recognized Infantry unit types.
-
-	/**
-	 * Recognized unit type values for Infantry. These are used to identify
-	 * additional characteristics/abilities or a more specific nationality.
-	 */
-
-	public enum UnitTypes
-	{
-		/** <A NAME="_NONE_"></A>
-		 * Indicates that a more specific nationality, ability,
-		 * characteristic, etc. does not apply to an Infantry unit.
-		 */
-
-		NONE(""),
-
-		/** <A NAME="_PARATROOPS_"></A>
-		 * Indicates that a unit's more precise type or capability is
-		 * <B>Paratroops</B>. If this value is specified as the unitType
-		 * parameter for an object, the nationality parameter must be
-		 * <B>American</B>.
-		 *
-		 * @see Nationality.Nationalities#AMERICAN
-		 */
-
-		PARATROOPS("Paratroops"),
-
-		/** <A NAME="_AIRBORNE_"></A>
-		 * Indicates that a unit's more precise type or capability is
-		 * <B>Airborne</B>. If this value is specified as the unitType
-		 * parameter for an object, the nationality parameter must be
-		 * <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		AIRBORNE("Airborne"),
-
-		/** <A NAME="_ANZAC_"></A>
-		 * Indicates that a unit's more precise nationality is <B>ANZAC</B>. If
-		 * this value is specified as the unitType parameter for an
-		 * object, the nationality parameter must be <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		ANZAC("ANZAC"),
-
-		/** <A NAME="_CANADIAN_"></A>
-		 * Indicates that a unit's more precise nationality is <B>Canadian</B>.
-		 * If this value is specified as the unitType parameter for an
-		 * object, the nationality parameter must be <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		CANADIAN("Canadian"),
-
-		/** <A NAME="_FREE_FRENCH_"></A>
-		 * Indicates that a unit's more precise nationality is
-		 * <B>Free French</B>. If this value is specified as the unitType
-		 * parameter for an object, the nationality parameter must be
-		 * <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		FREE_FRENCH("Free French"),
-
-		/** <A NAME="_FREE_POLISH_"></A>
-		 * Indicates that a unit's more precise nationality is
-		 * <B>Free Polish</B>. If this value is specified as the unitType
-		 * parameter for an object, the nationality parameter must be
-		 * <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		FREE_POLISH("Free Polish"),
-
-		/** <A NAME="_GUARDSMEN_"></A>
-		 * Indicates that a unit's more precise type is <B>Guardsmen</B>. If
-		 * this value is specified as the unitType parameter for an
-		 * object, the nationality parameter must be <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		GUARDSMEN("Guardsmen"),
-
-		/** <A NAME="_GURKHA_"></A>
-		 * Indicates that a unit's more precise type or capability is
-		 * <B>Gurkha</B>. If this value is specified as the unitType parameter
-		 * for an object, the nationality parameter must be <B>British</B>.
-		 *
-		 * @see Nationality.Nationalities#BRITISH
-		 */
-
-		GURKHA("Gurkha"),
-
-		/** <A NAME="_SISSI_"></A>
-		 * Indicates that a unit's more precise type or capability is
-		 * <B>Sissi</B>. If this value is specified as the unitType parameter
-		 * for an object, the nationality parameter must be <B>FINNISH</B>.
-		 *
-		 * @see Nationality.Nationalities#FINNISH
-		 */
-
-		SISSI("Sissi"),
-
-		/** <A NAME="_ENGINEERS_"></A>
-		 * Indicates that a unit's more precise type or capability is
-		 * <B>Engineers</B>. If this value is specified as the unitType
-		 * parameter for an object, the nationality parameter must be
-		 * <B>German</B>.
-		 *
-		 * @see Nationality.Nationalities#GERMAN
-		 */
-
-		ENGINEERS("Engineers"),
-
-		/** <A NAME="_COMMISSAR_"></A>
-		 * Indicates that a unit's more precise type is <B>Commissar</B>. This
-		 * value may only be specified as the unitType parameter for a
-		 * <B>Leader</B> object. The nationality parameter must be
-		 * <B>Russian</B>.
-		 *
-		 * @see Nationality.Nationalities#RUSSIAN
-		 * @see Leader
-		 */
-
-		COMMISSAR("Commissar"),
-
-		/** <A NAME="_GUARDS_"></A>
-		 * Indicates that a unit's more precise type is <B>Guards</B>. If this
-		 * value is specified as the unitType parameter for an object,
-		 * the nationality parameter must be <B>Russian</B>.
-		 *
-		 * @see Nationality.Nationalities#RUSSIAN
-		 */
-
-		GUARDS("Guards");
-
-		// Private data members
-
-		// The label associated with the enum constant.
-
-		private final String label;
-
-		// Constructor
-
-		UnitTypes(String label)
-		{
-			this.label = label;
-		}
-
-		// Public access method
-
-		/**
-		 * Returns the label associated with the enum constant.
-		 *
-		 * @return the <CODE>String</CODE> associated with the constant.
-		 */
-
-		public String label()
-		{
-			return label;
-		}
-	}
-
 	// The following constants define the minimums and maximums for their
 	// corresponding attributes.
 
@@ -305,7 +135,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 	// type being created.
 
 	protected Infantry(Descriptions description,Nationalities nationality,
-	                   UnitTypes unitType,int movement,int portageCapacity,
+	                   InfantryTypes unitType,int movement,int portageCapacity,
 	                   int firepower,int normalRange,int morale,
 	                   int brokenMorale,boolean canSelfRally,
 	                   int portageValue,int basicPointValue,
@@ -322,22 +152,22 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 		// parent class, check the specified value against any of the
 		// other parameters that determine if it is valid or not.
 
-		if (((unitType == UnitTypes.PARATROOPS) &&
+		if (((unitType == InfantryTypes.PARATROOPS) &&
 		     (nationality != Nationalities.AMERICAN)) ||
-		    (((unitType == UnitTypes.AIRBORNE)    ||
-		      (unitType == UnitTypes.ANZAC)       ||
-		      (unitType == UnitTypes.CANADIAN)    ||
-		      (unitType == UnitTypes.FREE_FRENCH) ||
-		      (unitType == UnitTypes.FREE_POLISH) ||
-		      (unitType == UnitTypes.GUARDSMEN)   ||
-		      (unitType == UnitTypes.GURKHA))     &&
+		    (((unitType == InfantryTypes.AIRBORNE)    ||
+		      (unitType == InfantryTypes.ANZAC)       ||
+		      (unitType == InfantryTypes.CANADIAN)    ||
+		      (unitType == InfantryTypes.FREE_FRENCH) ||
+		      (unitType == InfantryTypes.FREE_POLISH) ||
+		      (unitType == InfantryTypes.GUARDSMEN)   ||
+		      (unitType == InfantryTypes.GURKHA))     &&
 		     (nationality != Nationalities.BRITISH))  ||
-		    ((unitType == UnitTypes.SISSI) &&
+		    ((unitType == InfantryTypes.SISSI) &&
 		     (nationality != Nationalities.FINNISH))  ||
-		    ((unitType == UnitTypes.ENGINEERS) &&
+		    ((unitType == InfantryTypes.ENGINEERS) &&
 		     (nationality != Nationalities.GERMAN))   ||
-		    (((unitType == UnitTypes.COMMISSAR) ||
-		      (unitType == UnitTypes.GUARDS)) &&
+		    (((unitType == InfantryTypes.COMMISSAR) ||
+		      (unitType == InfantryTypes.GUARDS)) &&
 		     (nationality != Nationalities.RUSSIAN)))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
@@ -346,7 +176,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 			                                   unitType.label());
 		}
 
-		if ((unitType == UnitTypes.COMMISSAR) &&
+		if ((unitType == InfantryTypes.COMMISSAR) &&
 		    (description != Descriptions.LEADER))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +

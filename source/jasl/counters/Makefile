@@ -72,6 +72,13 @@ UNIT_TYPE_CLASS      := UnitType.class
 UNIT_TYPE_OBJ        := ${UNIT_TYPE_CLASS:.class=.o}
 UNIT_TYPE_SRC        := ${UNIT_TYPE_CLASS:.class=.java}
 
+# This file is generated when UnitType.java is compiled and represents the
+# InfantryTypes enum defined in that class. The following definitions are used
+# to generate the object file.
+
+INFANTRY_TYPES_CLASS := UnitType\$$InfantryTypes.class
+INFANTRY_TYPES_OBJ   := ${INFANTRY_TYPES_CLASS:.class=.o}
+
 MOBILITY_CLASS       := Mobility.class
 MOBILITY_OBJ         := ${MOBILITY_CLASS:.class=.o}
 MOBILITY_SRC         := ${MOBILITY_CLASS:.class=.java}
@@ -122,13 +129,6 @@ MOBILE_SRC           := ${MOBILE_CLASS:.class=.java}
 INFANTRY_CLASS       := Infantry.class
 INFANTRY_OBJ         := ${INFANTRY_CLASS:.class=.o}
 INFANTRY_SRC         := ${INFANTRY_CLASS:.class=.java}
-
-# This file is generated when Infantry.java is compiled and represents the
-# UnitTypes enum defined in that class. The following definitions are used to
-# generate the object file.
-
-UNIT_TYPES_CLASS     := Infantry\$$UnitTypes.class
-UNIT_TYPES_OBJ       := ${UNIT_TYPES_CLASS:.class=.o}
 
 PERSONNEL_CLASS      := Personnel.class
 PERSONNEL_OBJ        := ${PERSONNEL_CLASS:.class=.o}
@@ -263,6 +263,8 @@ $(STATUS_OBJ): $(STATUS_CLASS)
 $(UNIT_TYPE_OBJ): $(UNIT_TYPE_CLASS)
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(UNIT_TYPE_CLASS) \
 	                   -o $(OBJ_SUB_DIRECTORY)/$(UNIT_TYPE_OBJ)
+	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(INFANTRY_TYPES_CLASS) \
+	                   -o $(OBJ_SUB_DIRECTORY)/$(INFANTRY_TYPES_OBJ)
 
 $(MOBILITY_OBJ): $(MOBILITY_CLASS)
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$(MOBILITY_CLASS) \

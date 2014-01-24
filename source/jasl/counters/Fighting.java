@@ -38,9 +38,10 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	// is intended for vehicles (Pz VIb, T-34/76, etc.) and weapons
 	// (FlaK 30, ATR, etc.) for more precise identification. Infantry units
 	// may have infantry designations such as SS, Gurkha, Paratroopers, etc.
-	// Examples of possible values for are found in the <A HREF="Infantry.html">Infantry.UnitTypes</A>
-	// enum. If one of these values is specified, it will be checked against
-	// the specified nationality and, in some cases, the description.
+	// Examples of possible values for are found in the
+	// <A HREF="UnitType.html">UnitType.InfantryTypes</A> enum. If one of these values is specified, it
+	// will be checked against the specified nationality and, in some cases,
+	// the description.
 	//
 	// This item may be empty, but not null.
 
@@ -199,7 +200,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	 * @return a <CODE>String</CODE> specifying the more precise description of the
 	 * unit's nationality, type, or capability.
 	 *
-	 * @see Infantry.UnitTypes
+	 * @see UnitType.InfantryTypes
 	 */
 
 	public final String unitType()

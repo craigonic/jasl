@@ -73,7 +73,7 @@ public final class Leader extends Infantry implements Leadership
 	 * @throws IllegalArgumentException in the case of an invalid argument.
 	 */
 
-	public Leader(Nationalities nationality,UnitTypes unitType,
+	public Leader(Nationalities nationality,InfantryTypes unitType,
 	              int morale,int brokenMorale,int experienceLevelRating,
 	              int modifier)
 	{

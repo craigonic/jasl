@@ -38,6 +38,176 @@ public interface UnitType
 
 	public static final String UNIT_TYPE_LABEL = "Unit Type";
 
+	// Recognized Infantry unit types.
+
+	/**
+	 * Recognized unit type values for Infantry. These are used to identify
+	 * additional characteristics/abilities or a more specific nationality.
+	 */
+
+	public enum InfantryTypes
+	{
+		/** <A NAME="_NONE_"></A>
+		 * Indicates that a more specific nationality, ability,
+		 * characteristic, etc. does not apply to an Infantry unit.
+		 */
+
+		NONE(""),
+
+		/** <A NAME="_PARATROOPS_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Paratroops</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>American</B>.
+		 *
+		 * @see Nationality.Nationalities#AMERICAN
+		 */
+
+		PARATROOPS("Paratroops"),
+
+		/** <A NAME="_AIRBORNE_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Airborne</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		AIRBORNE("Airborne"),
+
+		/** <A NAME="_ANZAC_"></A>
+		 * Indicates that a unit's more precise nationality is <B>ANZAC</B>. If
+		 * this value is specified as the unitType parameter for an
+		 * object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		ANZAC("ANZAC"),
+
+		/** <A NAME="_CANADIAN_"></A>
+		 * Indicates that a unit's more precise nationality is <B>Canadian</B>.
+		 * If this value is specified as the unitType parameter for an
+		 * object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		CANADIAN("Canadian"),
+
+		/** <A NAME="_FREE_FRENCH_"></A>
+		 * Indicates that a unit's more precise nationality is
+		 * <B>Free French</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		FREE_FRENCH("Free French"),
+
+		/** <A NAME="_FREE_POLISH_"></A>
+		 * Indicates that a unit's more precise nationality is
+		 * <B>Free Polish</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		FREE_POLISH("Free Polish"),
+
+		/** <A NAME="_GUARDSMEN_"></A>
+		 * Indicates that a unit's more precise type is <B>Guardsmen</B>. If
+		 * this value is specified as the unitType parameter for an
+		 * object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		GUARDSMEN("Guardsmen"),
+
+		/** <A NAME="_GURKHA_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Gurkha</B>. If this value is specified as the unitType parameter
+		 * for an object, the nationality parameter must be <B>British</B>.
+		 *
+		 * @see Nationality.Nationalities#BRITISH
+		 */
+
+		GURKHA("Gurkha"),
+
+		/** <A NAME="_SISSI_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Sissi</B>. If this value is specified as the unitType parameter
+		 * for an object, the nationality parameter must be <B>FINNISH</B>.
+		 *
+		 * @see Nationality.Nationalities#FINNISH
+		 */
+
+		SISSI("Sissi"),
+
+		/** <A NAME="_ENGINEERS_"></A>
+		 * Indicates that a unit's more precise type or capability is
+		 * <B>Engineers</B>. If this value is specified as the unitType
+		 * parameter for an object, the nationality parameter must be
+		 * <B>German</B>.
+		 *
+		 * @see Nationality.Nationalities#GERMAN
+		 */
+
+		ENGINEERS("Engineers"),
+
+		/** <A NAME="_COMMISSAR_"></A>
+		 * Indicates that a unit's more precise type is <B>Commissar</B>. This
+		 * value may only be specified as the unitType parameter for a
+		 * <B>Leader</B> object. The nationality parameter must be
+		 * <B>Russian</B>.
+		 *
+		 * @see Nationality.Nationalities#RUSSIAN
+		 * @see Leader
+		 */
+
+		COMMISSAR("Commissar"),
+
+		/** <A NAME="_GUARDS_"></A>
+		 * Indicates that a unit's more precise type is <B>Guards</B>. If this
+		 * value is specified as the unitType parameter for an object,
+		 * the nationality parameter must be <B>Russian</B>.
+		 *
+		 * @see Nationality.Nationalities#RUSSIAN
+		 */
+
+		GUARDS("Guards");
+
+		// Private data members
+
+		// The label associated with the enum constant.
+
+		private final String label;
+
+		// Constructor
+
+		InfantryTypes(String label)
+		{
+			this.label = label;
+		}
+
+		// Public access method
+
+		/**
+		 * Returns the label associated with the enum constant.
+		 *
+		 * @return the <CODE>String</CODE> associated with the constant.
+		 */
+
+		public String label()
+		{
+			return label;
+		}
+	}
+
 	// Access methods
 
 	/**
@@ -49,8 +219,6 @@ public interface UnitType
 	 *
 	 * @return a <CODE>String</CODE> specifying the more precise description of the
 	 * unit's nationality, type, or capability.
-	 *
-	 * @see Infantry.UnitTypes
 	 */
 
 	public abstract String unitType();
