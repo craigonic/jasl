@@ -198,14 +198,14 @@ public final class Messages
 			                                                 METHOD_NAME,
 			                                                 NULL_PARAMETER_MSG));
 		}
-
+/*
 		if (inputString.length() == 0)
 		{
 			throw new IllegalArgumentException(buildErrorMessage(CLASS_NAME,
 			                                                     METHOD_NAME,
 			                                                     ZERO_LENGTH_PARAMETER_MSG));
 		}
-
+*/
 		if (columnWidth < MIN_STRING_LENGTH)
 		{
 			throw new IllegalArgumentException(buildErrorMessage(CLASS_NAME,
