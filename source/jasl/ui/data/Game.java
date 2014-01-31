@@ -18,12 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import jasl.counters.Nationality;
+
 /**
  * This is a singleton class used to provide overall management of an instance
  * of the game.
  *
- * @version 1.0
- * @author Copyright (C) 2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 1.2
+ * @author Copyright (C) 2013-2014 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Game.html">Source code</A>
  */
 
@@ -65,13 +67,13 @@ public final class Game
 		if (!_setupComplete) _activeSide = side;
 	}
 
-	public ArrayList<String> nationalities(Side.Sides side)
+	public ArrayList<Nationality.Nationalities> nationalities(Side.Sides side)
 	{
 		return (Side.Sides.ALLIES == side) ?
 		       Side.alliedNationalities() : Side.axisNationalities();
 	}
 
-	public ArrayList<String> availableUnits(String nationality)
+	public ArrayList<String> availableUnits(Nationality.Nationalities nationality)
 	{
 		return Side.unitList(nationality);
 	}

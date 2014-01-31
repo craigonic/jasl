@@ -20,15 +20,16 @@ public class Driver
     {
         // Create an instance of a German Leader.
 
-        Leader germanLeader = new Leader("German","Lt. Fellbaum","Leader",9,9,
-                                         4,-1);
+        Leader germanLeader = new Leader(Nationality.Nationalities.GERMAN,
+                                         UnitType.InfantryTypes.NONE,
+                                         9,9,4,-1);
+
+        germanLeader.setIdentity("Lt. Fellbaum");
 
         // Display all of the entered values for this instance using the
         // toString() method.
 
-        System.out.println();
-        System.out.println("Leader.toString() output:");
-        System.out.println();
+        System.out.println("\nLeader.toString() output:\n");
         System.out.print(germanLeader.toString());
 
         // Serialize the Leader object, write the data to a file (Leader.ser),
@@ -44,128 +45,111 @@ public class Driver
         // Display all of the entered values for the deserialized instance using
         // the toString() method.
 
-        System.out.println();
-        System.out.println("(Deserialized) Leader.toString() output:");
-        System.out.println();
+        System.out.println("\n(Deserialized) Leader.toString() output:\n");
         System.out.print(deserializedLeader.toString());
 
         // Create an instance of a Russian Squad.
 
-        Squad russianSquad = new Squad(Nationality.RUSSIAN,"A",UnitType.GUARDS,
-                                       "6",2,true,8,8,false,12,4,false,
-                                       Classification.ELITE,true,0);
+        Squad russianSquad = new Squad(Nationality.Nationalities.RUSSIAN,
+                                       UnitType.InfantryTypes.GUARDS,
+                                       6,2,8,8,false,12,4,false,
+                                       Classification.Classifications.ELITE,
+                                       true,true,0);
+
+        russianSquad.setIdentity("A");
 
         // Display all of the entered values for this instance using the
         // toString() method.
 
-        System.out.println();
-        System.out.println("Squad.toString() output:");
-        System.out.println();
-        System.out.print(russianSquad.toString());
-        System.out.println();
+        System.out.println("\nSquad.toString() output:\n" +
+                           russianSquad.toString());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
 
-        System.out.println("Building Unit array with a Leader & 3 Squads");
-        System.out.println();
+        System.out.println("\nBuilding Unit array with a Leader & 3 Squads\n");
 
         Unit[] UnitList = new Unit[4];
 
-        UnitList[0] = new Leader("American","Sgt. Slaughter","Ranger",9,9,4,-1);
-        UnitList[1] = new Squad("American","X","Squad","6",6,false,6,6,false,
-                                11,4,false,Classification.FIRST_LINE,true,3);
-        UnitList[2] = new Squad("American","Y","Squad","6",6,false,6,6,false,
-                                11,4,false,Classification.FIRST_LINE,true,3);
-        UnitList[3] = new Squad("American","Z","Squad","6",6,false,6,6,false,
-                                11,4,false,Classification.FIRST_LINE,true,3);
+        UnitList[0] = new Leader(Nationality.Nationalities.AMERICAN,
+                                 UnitType.InfantryTypes.NONE,9,9,4,-1);
+
+        ((Leader)UnitList[0]).setIdentity("Sgt. Slaughter");
+
+        UnitList[1] = new Squad(Nationality.Nationalities.AMERICAN,
+                                UnitType.InfantryTypes.NONE,
+                                6,6,6,6,false,11,4,false,
+                                Classification.Classifications.FIRST_LINE,
+                                true,false,3);
+
+        ((Squad)UnitList[1]).setIdentity("X");
+
+        UnitList[2] = new Squad(Nationality.Nationalities.AMERICAN,
+                                UnitType.InfantryTypes.NONE,
+                                6,6,6,6,false,11,4,false,
+                                Classification.Classifications.FIRST_LINE,
+                                true,false,3);
+
+        ((Squad)UnitList[2]).setIdentity("Y");
+
+        UnitList[3] = new Squad(Nationality.Nationalities.AMERICAN,
+                                UnitType.InfantryTypes.NONE,
+                                6,6,6,6,false,11,4,false,
+                                Classification.Classifications.FIRST_LINE,
+                                true,false,3);
+
+        ((Squad)UnitList[3]).setIdentity("Z");
 
         System.out.println("Displaying Unit array with a Leader & 3 Squads");
 
+        Leader leaderObject = null;
+        Squad  squadObject  = null;
+
         for (int i = 0; i < 4; i++)
         {
-            System.out.println();
-            System.out.println("UnitList[" + i + "]:");
-            System.out.println();
-            System.out.println(UnitList[i].getDescription());
-            System.out.println(UnitList[i].getIdentity());
-            System.out.println(UnitList[i].getUnitType());
-            System.out.println(UnitList[i].getMovement());
-            System.out.println(UnitList[i].getStatus());
+            System.out.println("\nUnitList[" + i + "]:");
+
+            if (Description.Descriptions.LEADER.label() == UnitList[i].description())
+            {
+                leaderObject = (Leader)UnitList[i];
+
+                System.out.println("\n" + leaderObject.description() +
+                                   "\n" + leaderObject.identity() +
+                                   "\n" + leaderObject.unitType() +
+                                   "\n" + leaderObject.movement() +
+                                   "\n" + leaderObject.status());
+            }
+
+            if (Description.Descriptions.SQUAD.label() == UnitList[i].description())
+            {
+                squadObject = (Squad)UnitList[i];
+
+                System.out.println("\n" + squadObject.description() +
+                                   "\n" + squadObject.identity() +
+                                   "\n" + squadObject.unitType() +
+                                   "\n" + squadObject.movement() +
+                                   "\n" + squadObject.status());
+            }
         }
 
         // Create an instance of a German Squad (that throws some exceptions).
 
-        // NULL Nationality
+        System.out.println("\nTesting Exception handling during Squad creation:\n");
 
-        System.out.println();
-        System.out.println("Testing Exception handling during Squad creation:");
-        System.out.println();
-        System.out.println("Null nationality parameter:");
-        System.out.println();
-
-        Squad germanSquad = null;
-
-        try
-        {
-            germanSquad = new Squad(null,"5","Squad","4",6,true,7,7,
-                                    false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
-        }
-
-        catch (NullPointerException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Blank Nationality
-
-        System.out.println();
-        System.out.println("Zero-length nationality parameter:");
-        System.out.println();
-
-        try
-        {
-            germanSquad = new Squad("","5","Squad","4",6,false,7,7,
-                                    false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
-        }
-
-        catch (IllegalArgumentException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Invalid Nationality
-
-        System.out.println();
-        System.out.println("Invalid nationality parameter:");
-        System.out.println();
-
-        try
-        {
-            germanSquad = new Squad("Mexican","5","Squad","4",6,true,7,
-                                    7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
-        }
-
-        catch (IllegalArgumentException e)
-        {
-            System.out.println("Caught: " + e);
-        }
+        squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                UnitType.InfantryTypes.NONE,
+                                4,6,7,7,false,10,3,false,
+                                Classification.Classifications.FIRST_LINE,
+                                true,false,0);
 
         // Null Identity
 
-        System.out.println();
-        System.out.println("Null identity parameter:");
-        System.out.println();
+        System.out.println("\nNull identity parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,null,"Squad","4",6,
-                                    false,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
+            squadObject.setIdentity(null);
         }
 
         catch (NullPointerException e)
@@ -175,15 +159,11 @@ public class Driver
 
         // Blank Identity
 
-        System.out.println();
-        System.out.println("Zero-length identity parameter:");
-        System.out.println();
+        System.out.println("\nZero-length identity parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"","Squad","4",6,
-                                    true,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
+            squadObject.setIdentity("");
         }
 
         catch (IllegalArgumentException e)
@@ -191,35 +171,17 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Null unitType
+        // Incompatible nationality and unitType
 
-        System.out.println();
-        System.out.println("Null unitType parameter:");
-        System.out.println();
+        System.out.println("\nIncompatible nationality and unitType parameters:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5",null,"4",6,
-                                    false,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
-        }
-
-        catch (NullPointerException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Blank unitType
-
-        System.out.println();
-        System.out.println("Zero-length unitType parameter:");
-        System.out.println();
-
-        try
-        {
-            germanSquad = new Squad(Nationality.GERMAN,"5","","4",6,true,
-                                    7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
+            squadObject = new Squad(Nationality.Nationalities.BRITISH,
+                                    UnitType.InfantryTypes.ENGINEERS,
+                                    4,6,7,7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -227,38 +189,17 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Invalid nationality and unitType
+        // Incompatible description and unitType
 
-        System.out.println();
-        System.out.println("Invalid nationality and unitType parameters:");
-        System.out.println();
+        System.out.println("\nIncompatible description and unitType parameters:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.BRITISH,"5","SS","4",6,
-                                    false,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
-        }
-
-        catch (IllegalArgumentException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Invalid description and unitType
-
-        System.out.println();
-        System.out.println("Invalid description and unitType parameters:");
-        System.out.println();
-
-        Squad commissarSquad = null;
-
-        try
-        {
-            commissarSquad = new Squad(Nationality.RUSSIAN,"5",
-                                       UnitType.COMMISSAR,"4",6,true,7,7,
-                                       false,10,3,false,
-                                       Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.RUSSIAN,
+                                    UnitType.InfantryTypes.COMMISSAR,
+                                    4,4,7,7,false,10,3,false,
+                                    Classification.Classifications.GREEN,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -268,15 +209,15 @@ public class Driver
 
         // Invalid Firepower
 
-        System.out.println();
-        System.out.println("Invalid (less than 0) firepower parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (less than 0) firepower parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","-1",6,
-                                    false,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    -1,6,7,7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -284,15 +225,15 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        System.out.println();
-        System.out.println("Invalid infantry firepower parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (greater than maximum) firepower parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","88L",
-                                    6,true,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    11,6,7,7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -302,15 +243,15 @@ public class Driver
 
         // Invalid Range
 
-        System.out.println();
-        System.out.println("Invalid (less than 0) normal range parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (less than 0) normal range parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",
-                                    -255,false,7,7,false,10,3,false,
-                                    Classification.FIRST_LINE,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,-255,7,7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -320,15 +261,15 @@ public class Driver
 
         // Invalid Morale (Minimum)
 
-        System.out.println();
-        System.out.println("Invalid (less than 0) morale parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (less than 0) morale parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    false,-1,7,false,10,3,false,
-                                    Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,-1,7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -338,15 +279,15 @@ public class Driver
 
         // Invalid Morale (Maximum)
 
-        System.out.println();
-        System.out.println("Invalid (greater than maximum) morale parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (greater than maximum) morale parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    true,11,7,false,10,3,false,
-                                    Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,11,7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -356,15 +297,15 @@ public class Driver
 
         // Invalid Broken Morale (Minimum)
 
-        System.out.println();
-        System.out.println("Invalid (less than 0) broken morale parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (less than 0) broken morale parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    false,7,-7,false,10,3,false,
-                                    Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,-7,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -374,16 +315,15 @@ public class Driver
 
         // Invalid Broken Morale (Maximum)
 
-        System.out.println();
-        System.out.println("Invalid (greater than maximum) broken morale " +
-                           "parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (greater than maximum) broken morale parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    true,7,17,false,10,3,false,
-                                    Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,17,false,10,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -393,15 +333,15 @@ public class Driver
 
         // Invalid Basic Point Value (BPV)
 
-        System.out.println();
-        System.out.println("Invalid (less than zero) Basic Point Value (BPV):");
-        System.out.println();
+        System.out.println("\nInvalid (less than zero) Basic Point Value (BPV):\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    false,7,7,true,-1,3,false,
-                                    Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,7,false,-1,3,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -411,15 +351,15 @@ public class Driver
 
         // Invalid Experience Level Rating (Minimum)
 
-        System.out.println();
-        System.out.println("Invalid (less than zero) Experience Level Rating (ELR):");
-        System.out.println();
+        System.out.println("\nInvalid (less than zero) Experience Level Rating (ELR):\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    true,7,7,true,10,-1,false,
-                                    Classification.GREEN,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,7,false,10,-1,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -429,15 +369,15 @@ public class Driver
 
         // Invalid Experience Level Rating (Maximum)
 
-        System.out.println();
-        System.out.println("Invalid (greater than maximum) Experience Level Rating (ELR):");
-        System.out.println();
+        System.out.println("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    false,7,7,true,10,6,false,
-                                    Classification.SECOND_LINE,false,1);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,7,false,10,6,false,
+                                    Classification.Classifications.FIRST_LINE,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -445,51 +385,17 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Null Classification
+        // Incompatible Classification
 
-        System.out.println();
-        System.out.println("Null classification parameter:");
-        System.out.println();
+        System.out.println("\nIncompatible classification parameter:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    true,7,7,true,10,3,false,null,false,1);
-        }
-
-        catch (NullPointerException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Blank Classification
-
-        System.out.println();
-        System.out.println("Zero-length classification parameter:");
-        System.out.println();
-
-        try
-        {
-            germanSquad = new Squad(Nationality.GERMAN,"5","SS","4",6,
-                                    true,7,7,true,10,3,false,"",false,1);
-        }
-
-        catch (IllegalArgumentException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Invalid Classification
-
-        System.out.println();
-        System.out.println("Invalid classification parameter:");
-        System.out.println();
-
-        try
-        {
-            germanSquad = new Squad(Nationality.GERMAN,"4A","SS","4",6,
-                                    false,7,7,false,10,3,false,"Bozos",
-                                    false,1);
+            squadObject = new Squad(Nationality.Nationalities.ITALIAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,7,false,10,3,false,
+                                    Classification.Classifications.SS,
+                                    true,false,0);
         }
 
         catch (IllegalArgumentException e)
@@ -499,15 +405,15 @@ public class Driver
 
         // Invalid Smoke Placement Exponent (Minimum)
 
-        System.out.println();
-        System.out.println("Invalid (less than zero) Smoke Placement Exponent:");
-        System.out.println();
+        System.out.println("\nInvalid (less than zero) Smoke Placement Exponent:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    true,7,7,true,10,3,false,
-                                    Classification.SECOND_LINE,false,-4);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,7,false,10,3,false,
+                                    Classification.Classifications.SECOND_LINE,
+                                    true,false,-4);
         }
 
         catch (IllegalArgumentException e)
@@ -517,15 +423,15 @@ public class Driver
 
         // Invalid Smoke Placement Exponent (Maximum)
 
-        System.out.println();
-        System.out.println("Invalid (greater than maximum) Smoke Placement Exponent:");
-        System.out.println();
+        System.out.println("\nInvalid (greater than maximum) Smoke Placement Exponent:\n");
 
         try
         {
-            germanSquad = new Squad(Nationality.GERMAN,"5","Squad","4",6,
-                                    true,7,7,true,10,3,false,
-                                    Classification.SECOND_LINE,false,4);
+            squadObject = new Squad(Nationality.Nationalities.GERMAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    4,6,7,7,false,10,3,false,
+                                    Classification.Classifications.SECOND_LINE,
+                                    true,false,4);
         }
 
         catch (IllegalArgumentException e)
@@ -538,20 +444,16 @@ public class Driver
         //       exceptions have been tested above as part of the creation of a
         //       Squad.
 
-        System.out.println();
-        System.out.println("Testing Exception handling during Leader creation:");
-        System.out.println();
-        System.out.println("Invalid (less than minimum) modifier parameter:");
-        System.out.println();
+        System.out.println("\nTesting Exception handling during Leader creation:\n");
+        System.out.println("Invalid (less than minimum) modifier parameter:\n");
 
         // Invalid Modifier (Minimum)
 
-        Leader Grandpa = null;
-
         try
         {
-            Grandpa = new Leader(Nationality.BRITISH,"Sgt. Powell",
-                                 UnitType.CANADIAN,10,10,5,-4);
+            leaderObject = new Leader(Nationality.Nationalities.BRITISH,
+                                      UnitType.InfantryTypes.CANADIAN,
+                                      10,10,5,-4);
         }
 
         catch (IllegalArgumentException e)
@@ -559,16 +461,15 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        System.out.println();
-        System.out.println("Invalid (greater than maximum) modifier parameter:");
-        System.out.println();
+        System.out.println("\nInvalid (greater than maximum) modifier parameter:\n");
 
         // Invalid Modifier (Maximum)
 
         try
         {
-            Grandpa = new Leader(Nationality.BRITISH,"Sgt. Powell",
-                                 UnitType.CANADIAN,10,10,5,4);
+            leaderObject = new Leader(Nationality.Nationalities.BRITISH,
+                                      UnitType.InfantryTypes.CANADIAN,
+                                      10,10,5,4);
         }
 
         catch (IllegalArgumentException e)
@@ -578,9 +479,7 @@ public class Driver
 
         // Test the Dice class.
 
-        System.out.println();
-        System.out.println("Testing the execution of the Dice class:");
-        System.out.println();
+        System.out.println("\nTesting the execution of the Dice class:\n");
 
         Dice theDice;
 
@@ -592,8 +491,7 @@ public class Driver
 
                 // Show the results.
 
-                System.out.print(theDice.toString());
-                System.out.println();
+                System.out.print(theDice.toString() + "\n");
             }
 
             catch (IllegalStateException e)
@@ -604,25 +502,26 @@ public class Driver
 
         // Test the Game class.
 
-        System.out.println("Testing the operations of the Game class:");
-        System.out.println();
+        System.out.println("Testing the operations of the Game class:\n");
 
-        Game.game().addPlayer(Side.Sides.ALLIES,"Tudi",Nationality.AMERICAN,1);
-        Game.game().addPlayer(Side.Sides.AXIS,"Craig",Nationality.GERMAN,1);
+        Game.game().addPlayer(Side.Sides.ALLIES,"Pixie",
+                              Nationality.Nationalities.AMERICAN.label(),1);
+        Game.game().addPlayer(Side.Sides.AXIS,"Buddy",
+                              Nationality.Nationalities.GERMAN.label(),1);
 
-        Player tudi  = Game.game().player(Side.Sides.ALLIES,"Tudi");
+        Player alliedPlayer = Game.game().player(Side.Sides.ALLIES,"Pixie");
 
-        tudi.addUnit("9-1 Leader");
-        tudi.addUnit("7-4-7 Squad");
-        tudi.addUnit("7-4-7 Squad");
-        tudi.addUnit("7-4-7 Squad");
+        alliedPlayer.addUnit("9-1 Leader");
+        alliedPlayer.addUnit("7-4-7 Squad");
+        alliedPlayer.addUnit("7-4-7 Squad");
+        alliedPlayer.addUnit("7-4-7 Squad");
 
-        Player craig = Game.game().player(Side.Sides.AXIS,"Craig");
+        Player axisPlayer = Game.game().player(Side.Sides.AXIS,"Buddy");
 
-        craig.addUnit("8-1 Leader");
-        craig.addUnit("6-5-8 Squad");
-        craig.addUnit("6-5-8 Squad");
-        craig.addUnit("6-5-8 Squad");
+        axisPlayer.addUnit("8-1 Leader");
+        axisPlayer.addUnit("6-5-8 Squad");
+        axisPlayer.addUnit("6-5-8 Squad");
+        axisPlayer.addUnit("6-5-8 Squad");
 
         System.out.print(Game.game().toText());
         System.out.println();

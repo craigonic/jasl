@@ -19,8 +19,8 @@ import jasl.counters.Nationality;
 /**
  * This is a ...
  *
- * @version 1.0
- * @author Copyright (C) 2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 1.2
+ * @author Copyright (C) 2013-2014 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Side.html">Source code</A>
  */
 
@@ -84,34 +84,34 @@ public final class Side
 		_players = new LinkedHashMap<String,Player>();
 	}
 
-	public static ArrayList<String> alliedNationalities()
+	public static ArrayList<Nationality.Nationalities> alliedNationalities()
 	{
-		ArrayList<String> nationalities = new ArrayList<String>();
+		ArrayList<Nationality.Nationalities> nationalities = new ArrayList<Nationality.Nationalities>();
 
-		nationalities.add(Nationality.AMERICAN);
-		nationalities.add(Nationality.BRITISH);
-		nationalities.add(Nationality.RUSSIAN);
-		nationalities.add(Nationality.FRENCH);
-		nationalities.add(Nationality.PARTISAN);
-		nationalities.add(Nationality.ALLIED_MINOR);
+		nationalities.add(Nationality.Nationalities.AMERICAN);
+		nationalities.add(Nationality.Nationalities.BRITISH);
+		nationalities.add(Nationality.Nationalities.RUSSIAN);
+		nationalities.add(Nationality.Nationalities.FRENCH);
+		nationalities.add(Nationality.Nationalities.PARTISAN);
+		nationalities.add(Nationality.Nationalities.ALLIED_MINOR);
 
 		return nationalities;
 	}
 
-	public static ArrayList<String> axisNationalities()
+	public static ArrayList<Nationality.Nationalities> axisNationalities()
 	{
-		ArrayList<String> nationalities = new ArrayList<String>();
+		ArrayList<Nationality.Nationalities> nationalities = new ArrayList<Nationality.Nationalities>();
 
-		nationalities.add(Nationality.GERMAN);
-		nationalities.add(Nationality.JAPANESE);
-		nationalities.add(Nationality.ITALIAN);
-		nationalities.add(Nationality.FINNISH);
-		nationalities.add(Nationality.AXIS_MINOR);
+		nationalities.add(Nationality.Nationalities.GERMAN);
+		nationalities.add(Nationality.Nationalities.JAPANESE);
+		nationalities.add(Nationality.Nationalities.ITALIAN);
+		nationalities.add(Nationality.Nationalities.FINNISH);
+		nationalities.add(Nationality.Nationalities.AXIS_MINOR);
 
 		return nationalities;
 	}
 
-	public static ArrayList<String> unitList(String nationality)
+	public static ArrayList<String> unitList(Nationality.Nationalities nationality)
 	{
 		ArrayList<String> units = new ArrayList<String>();
 
@@ -124,7 +124,7 @@ public final class Side
 		units.add("7-0 Leader");
 		units.add("6+1 Leader");
 
-		if (nationality.compareTo(Nationality.AMERICAN) == 0)
+		if (Nationality.Nationalities.AMERICAN == nationality)
 		{
 			units.add("7-4-7 Squad");
 			units.add("6-6-7 Squad");
@@ -133,7 +133,7 @@ public final class Side
 			units.add("5-3-6 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.BRITISH) == 0)
+		if (Nationality.Nationalities.BRITISH == nationality)
 		{
 			units.add("6-3-8 Squad");
 			units.add("4-5-8 Squad");
@@ -142,7 +142,7 @@ public final class Side
 			units.add("4-3-6 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.RUSSIAN) == 0)
+		if (Nationality.Nationalities.RUSSIAN == nationality)
 		{
 			units.add("6-2-8 Squad");
 			units.add("4-5-8 Squad");
@@ -151,26 +151,26 @@ public final class Side
 			units.add("4-2-6 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.FRENCH) == 0)
+		if (Nationality.Nationalities.FRENCH == nationality)
 		{
 			units.add("4-5-8 Squad");
 			units.add("4-5-7 Squad");
 			units.add("4-3-7 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.PARTISAN) == 0)
+		if (Nationality.Nationalities.PARTISAN == nationality)
 		{
 			units.add("3-3-7 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.ALLIED_MINOR) == 0)
+		if (Nationality.Nationalities.ALLIED_MINOR == nationality)
 		{
 			units.add("4-5-8 Squad");
 			units.add("4-5-7 Squad");
 			units.add("4-3-7 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.GERMAN) == 0)
+		if (Nationality.Nationalities.GERMAN == nationality)
 		{
 			units.add("6-5-8 Squad");
 			units.add("8-3-8 Squad");
@@ -181,7 +181,7 @@ public final class Side
 			units.add("4-3-6 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.JAPANESE) == 0)
+		if (Nationality.Nationalities.JAPANESE == nationality)
 		{
 			units.add("4-4-8 Squad");
 			units.add("4-4-7 Squad");
@@ -192,7 +192,7 @@ public final class Side
 			units.add("2-3-6 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.ITALIAN) == 0)
+		if (Nationality.Nationalities.ITALIAN == nationality)
 		{
 			units.add("4-4-7 Squad");
 			units.add("3-4-7 Squad");
@@ -200,14 +200,14 @@ public final class Side
 			units.add("3-3-6 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.FINNISH) == 0)
+		if (Nationality.Nationalities.FINNISH == nationality)
 		{
 			units.add("8-3-8 Squad");
 			units.add("6-4-8 Squad");
 			units.add("5-3-8 Squad");
 		}
 
-		if (nationality.compareTo(Nationality.AXIS_MINOR) == 0)
+		if (Nationality.Nationalities.AXIS_MINOR == nationality)
 		{
 			units.add("4-4-7 Squad");
 			units.add("3-4-7 Squad");
@@ -253,13 +253,13 @@ public final class Side
 
 		returnString.append("\tNationalities:\t");
 
-		ArrayList<String> nationalities = (Side.Sides.ALLIES == _side) ?
-		                                  alliedNationalities() :
-		                                  axisNationalities();
+		ArrayList<Nationality.Nationalities> nationalities =
+			(Side.Sides.ALLIES == _side) ?
+			alliedNationalities() : axisNationalities();
 
-		for (String nationality : nationalities)
+		for (Nationality.Nationalities nationality : nationalities)
 		{
-			returnString.append("\"" + nationality + "\" ");
+			returnString.append("\"" + nationality.label() + "\" ");
 		}
 
 		returnString.append("\n\n");
