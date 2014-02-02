@@ -68,7 +68,7 @@ GCJ_CLASSPATH_CMD  := --classpath=$(BIN_PATH)
 OUTPUT_DIR_CMD     := -d $(BIN_PATH)
 
 JAVA_OPTIMIZE      := -O
-GCJ_OPTIMIZE       := -O3 -s -pipe
+GCJ_OPTIMIZE       := -O3 -s -pipe -fPIC
 
 JAVA_OPTIONS       := $(JAVA_COMPILER) $(JAVA_OPTIMIZE) \
                       ${ANDROID_SOURCE_VERSION} ${ANDROID_TARGET_VERSION} \
