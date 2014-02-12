@@ -19,6 +19,10 @@
 #include "JaslErrorMessage.h"
 #include "jaslWrapper.h"
 
+#include "jasl/counters/Mobile.h"
+
+typedef jasl::counters::Mobile Mobile;
+
 static void printJavaString(jstring javaString)
 {
     const char* convertedString = js2cc(javaString);
@@ -41,32 +45,31 @@ static void printExceptionMessage(jthrowable exception)
 
 int main(int argc, char *argv[])
 {
+    // This is only necessary if an attempt is made to create an object BEFORE a
+    // a call is made that starts the CniWrapper (e.g. a call to cc2js()).
+
+//  CniWrapper* cniWrapper = CniWrapper::instance();
+
     try
     {
-        // These items are used to set parameters requiring conversion from
-        // const char* to String for use in generating the jasl::counters
-        // objects below.
+        // These items are used to set parameters that require conversion /
+        // initialization from a (static) enum value.
 
-        jstring nationality    = NULL;
-        jstring identity       = NULL;
-        jstring unitType       = NULL;
-        jstring firepower      = NULL;
-        jstring classification = NULL;
+        Nationalities*   nationality    = Nationalities::valueOf(cc2js("GERMAN"));
+        InfantryTypes*   unitType       = InfantryTypes::valueOf(cc2js("NONE"));
+        Classifications* classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
         // Create an instance of a German Leader.
 
-        nationality = cc2js("German");
-        identity    = cc2js("Lt. Fellbaum");
-        unitType    = cc2js("Leader");
-
-        Leader* germanLeader = new Leader(nationality,identity,unitType,
-                                          9,9,4,-1);
+        Leader* germanLeader = new Leader(nationality,unitType,9,9,4,-1);
 
         // Display all of the entered values for this instance using the
         // toString() method.
 
         if (germanLeader)
         {
+            germanLeader->setIdentity(cc2js("Lt. Fellbaum"));
+
             const char* germanLeaderDetails = js2cc(germanLeader->toString());
 
             if (germanLeaderDetails)
@@ -76,25 +79,50 @@ int main(int argc, char *argv[])
                 delete [] germanLeaderDetails;
                 germanLeaderDetails = NULL;
             }
+
+            // Serialize the Leader object, write the data to a file
+            // (Leader.ser), then deserialize the data into a new object.
+
+            germanLeader->setIdentity(cc2js("Col. Klink"));
+
+            jstring serializationFile = cc2js("/tmp/Leader.ser");
+
+            Serialization::serializeToFile(germanLeader,serializationFile);
+
+            Unit* deserializedLeader =
+                (Unit*)Serialization::deserializeFromFile(serializationFile);
+
+            // Display all of the entered values for the deserialized instance
+            // using the toString() method.
+
+            germanLeaderDetails = js2cc(deserializedLeader->toString());
+
+            if (germanLeaderDetails)
+            {
+                printf("(Deserialized) Leader.toString() output:\n\n%s\n",
+                       germanLeaderDetails);
+                delete [] germanLeaderDetails;
+                germanLeaderDetails = NULL;
+            }
         }
 
         // Create an instance of a Russian Squad.
 
-        nationality    = cc2js("Russian");
-        identity       = cc2js("A");
-        unitType       = cc2js("Guards");
-        firepower      = cc2js("6");
-        classification = cc2js("Elite");
+        nationality    = Nationalities::valueOf(cc2js("RUSSIAN"));
+        unitType       = InfantryTypes::valueOf(cc2js("GUARDS"));
+        classification = Classifications::valueOf(cc2js("ELITE"));
 
-        Squad* russianSquad = new Squad(nationality,identity,unitType,firepower,
-                                        2,true,8,8,false,12,4,false,
-                                        classification,true,0);
+        Squad* russianSquad = new Squad(nationality,unitType,
+                                        6,2,8,8,false,12,4,false,
+                                        classification,true,true,0);
 
         // Display all of the entered values for this instance using the
         // toString() method.
 
         if (russianSquad)
         {
+            russianSquad->setIdentity(cc2js("A"));
+
             const char* russianSquadDetails = js2cc(russianSquad->toString());
 
             if (russianSquadDetails)
@@ -127,29 +155,28 @@ int main(int argc, char *argv[])
 
         Unit** UnitList = new Unit*[4];
 
-        nationality = cc2js("American");
-        identity    = cc2js("Sgt. Slaughter");
-        unitType    = cc2js("Ranger");
+        nationality    = Nationalities::valueOf(cc2js("AMERICAN"));
+        unitType       = InfantryTypes::valueOf(cc2js("NONE"));
+        classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
-        UnitList[0] = new Leader(nationality,identity,unitType,9,9,4,-1);
+        UnitList[0] = new Leader(nationality,unitType,9,9,4,-1);
 
-        identity       = cc2js("X");
-        unitType       = cc2js("Squad");
-        firepower      = cc2js("6");
-        classification = cc2js("1st Line");
+        ((Leader*)UnitList[0])->setIdentity(cc2js("Sgt. Slaughter"));
 
-        UnitList[1] = new Squad(nationality,identity,unitType,firepower,6,false,
-                                6,6,false,11,4,false,classification,true,3);
+        UnitList[1] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
+                                classification,true,false,3);
 
-        identity = cc2js("Y");
+        ((Squad*)UnitList[1])->setIdentity(cc2js("X"));
 
-        UnitList[2] = new Squad(nationality,identity,unitType,firepower,6,false,
-                                6,6,false,11,4,false,classification,true,3);
+        UnitList[2] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
+                                classification,true,false,3);
 
-        identity = cc2js("Z");
+        ((Squad*)UnitList[2])->setIdentity(cc2js("Y"));
 
-        UnitList[3] = new Squad(nationality,identity,unitType,firepower,6,false,
-                                6,6,false,11,4,false,classification,true,3);
+        UnitList[3] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
+                                classification,true,false,3);
+
+        ((Squad*)UnitList[3])->setIdentity(cc2js("Z"));
 
         printf("Displaying Unit array with a Leader & 3 Squads\n");
 
@@ -159,11 +186,11 @@ int main(int argc, char *argv[])
             {
                 printf("\nUnitList[%d]:\n\n",i);
 
-                printJavaString(UnitList[i]->getDescription());
-                printJavaString(UnitList[i]->getIdentity());
-                printJavaString(UnitList[i]->getUnitType());
-                printJavaString(UnitList[i]->getMovement());
-                printJavaString(UnitList[i]->getStatus());
+                printJavaString(((Mobile*)UnitList[i])->description());
+                printJavaString(((Mobile*)UnitList[i])->identity());
+                printJavaString(((Mobile*)UnitList[i])->unitType());
+                printf("%d\n",((Mobile*)UnitList[i])->movement());
+                printJavaString(((Mobile*)UnitList[i])->status());
             }
 
             else printf("UnitList[%d] is NULL\n",i);
@@ -178,77 +205,22 @@ int main(int argc, char *argv[])
 
         // Create an instance of a German Squad (that throws some exceptions).
 
-        Squad* germanSquad = NULL;
-
-        // NULL Nationality
-
         printf("\nTesting Exception handling during Squad creation:\n");
-        printf("\nNull nationality parameter:\n");
 
-        nationality = NULL;
-        identity    = cc2js("5");
-        firepower   = cc2js("4");
+        nationality    = Nationalities::valueOf(cc2js("GERMAN"));
+        unitType       = InfantryTypes::valueOf(cc2js("NONE"));
+        classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
-        try
-        {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,
-                                    6,true,7,7,false,10,3,false,classification,
-                                    false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
-
-        // Blank Nationality
-
-        printf("\nZero-length nationality parameter:\n");
-
-        nationality = cc2js("");
-
-        try
-        {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,false,10,3,false,classification,
-                                    false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
-
-        // Invalid Nationality
-
-        printf("\nInvalid nationality parameter:\n");
-
-        nationality = cc2js("Mexican");
-
-        try
-        {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,false,10,3,false,classification,
-                                    false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
+        Squad* squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+                                 classification,true,false,0);
 
         // Null Identity
 
         printf("\nNull identity parameter:\n");
 
-        nationality = cc2js("German");
-        identity    = NULL;
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,false,10,3,false,classification,
-                                    false,1);
+            squad->setIdentity(NULL);
         }
 
         catch (jthrowable t)
@@ -260,13 +232,9 @@ int main(int argc, char *argv[])
 
         printf("\nZero-length identity parameter:\n");
 
-        identity = cc2js("");
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,false,10,3,false,classification,
-                                    false,1);
+            squad->setIdentity(cc2js(""));
         }
 
         catch (jthrowable t)
@@ -274,18 +242,17 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Null unitType
+        // Incompatible nationality and unitType
 
-        printf("\nNull unitType parameter:\n");
-
-        unitType = NULL;
-        identity = cc2js("5");
+        printf("\nIncompatible nationality and unitType parameters:\n");
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,false,10,3,false,classification,
-                                    false,1);
+            nationality    = Nationalities::valueOf(cc2js("BRITISH"));
+            unitType       = InfantryTypes::valueOf(cc2js("ENGINEERS"));
+
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -293,17 +260,18 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Blank unitType
+        nationality    = Nationalities::valueOf(cc2js("RUSSIAN"));
+        unitType       = InfantryTypes::valueOf(cc2js("COMMISSAR"));
+        classification = Classifications::valueOf(cc2js("GREEN"));
 
-        printf("\nZero-length unitType parameter:\n");
+        // Incompatible description and unitType
 
-        unitType = cc2js("");
+        printf("\nIncompatible description and unitType parameters:\n");
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,4,7,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -311,59 +279,18 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Invalid nationality and unitType
-
-        printf("\nInvalid nationality and unitType parameters:\n");
-
-        nationality = cc2js("British");
-        unitType    = cc2js("SS");
-
-        try
-        {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,false,10,3,false,classification,
-                                    false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
-
-        // Invalid description and unitType
-
-        printf("\nInvalid description and unitType parameters:\n");
-
-        nationality    = cc2js("Russian");
-        unitType       = cc2js("Commissar");
-        classification = cc2js("Green");
-
-        try
-        {
-            russianSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                     true,7,7,false,10,3,false,classification,
-                                     false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
+        nationality    = Nationalities::valueOf(cc2js("GERMAN"));
+        unitType       = InfantryTypes::valueOf(cc2js("NONE"));
+        classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
         // Invalid Firepower
 
         printf("\nInvalid (less than 0) firepower parameter:\n");
 
-        nationality    = cc2js("German");
-        unitType       = cc2js("Squad");
-        firepower      = cc2js("-1");
-        classification = cc2js("1st Line");
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,-1,6,7,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -371,15 +298,12 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        printf("\nInvalid infantry firepower parameter:\n");
-
-        firepower = cc2js("88L");
+        printf("\nInvalid (greater than maximum) firepower parameter:\n");
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,11,6,7,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -391,13 +315,10 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (less than 0) normal range parameter:\n");
 
-        firepower = cc2js("4");
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,
-                                    -255,false,7,7,false,10,3,false,
-                                    classification,false,1);
+            squad = new Squad(nationality,unitType,4,-255,7,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -409,13 +330,10 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (less than 0) morale parameter:\n");
 
-        classification = cc2js("Green");
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,-1,7,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,-1,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -429,9 +347,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,11,7,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,11,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -445,9 +362,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,-7,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,7,-7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -461,9 +377,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,17,false,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,7,17,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -477,9 +392,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,true,-1,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,7,7,false,-1,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -493,9 +407,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,true,10,-1,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,-1,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -507,13 +420,10 @@ int main(int argc, char *argv[])
 
         printf("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
 
-        classification = cc2js("2nd Line");
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,true,10,6,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,6,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -521,17 +431,17 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Null Classification
+        nationality    = Nationalities::valueOf(cc2js("ITALIAN"));
+        classification = Classifications::valueOf(cc2js("SS"));
 
-        printf("\nNull classification parameter:\n");
+        // Incompatible Classification
 
-        classification = NULL;
+        printf("\nIncompatible classification parameter:\n");
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,true,10,3,false,classification,
-                                    false,1);
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+                              classification,true,false,0);
         }
 
         catch (jthrowable t)
@@ -539,56 +449,17 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Blank Classification
-
-        printf("\nZero-length classification parameter:\n");
-
-        unitType       = cc2js("SS");
-        classification = cc2js("");
-
-        try
-        {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,true,10,3,false,classification,
-                                    false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
-
-        // Invalid Classification
-
-        printf("\nInvalid classification parameter:\n");
-
-        identity       = cc2js("4A");
-        classification = cc2js("Bozos");
-
-        try
-        {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    false,7,7,false,10,3,false,classification,
-                                    false,1);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
+        nationality    = Nationalities::valueOf(cc2js("GERMAN"));
+        classification = Classifications::valueOf(cc2js("SECOND_LINE"));
 
         // Invalid Smoke Placement Exponent (Minimum)
 
         printf("\nInvalid (less than zero) Smoke Placement Exponent:\n");
 
-        identity       = cc2js("5");
-        classification = cc2js("2nd Line");
-
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,true,10,3,false,classification,
-                                    false,-4);
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+                              classification,true,false,-4);
         }
 
         catch (jthrowable t)
@@ -602,9 +473,8 @@ int main(int argc, char *argv[])
 
         try
         {
-            germanSquad = new Squad(nationality,identity,unitType,firepower,6,
-                                    true,7,7,true,10,3,false,classification,
-                                    false,4);
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+                              classification,true,false,4);
         }
 
         catch (jthrowable t)
@@ -617,20 +487,20 @@ int main(int argc, char *argv[])
         //       exceptions have been tested above as part of the creation of a
         //       Squad.
 
+        printf("\nTesting Exception handling during Leader creation:\n");
+
         Leader* Grandpa = NULL;
+
+        nationality    = Nationalities::valueOf(cc2js("BRITISH"));
+        unitType       = InfantryTypes::valueOf(cc2js("CANADIAN"));
 
         // Invalid Modifier (Minimum)
 
-        printf("\nTesting Exception handling during Leader creation:\n");
         printf("\nInvalid (less than minimum) modifier parameter:\n");
-
-        nationality = cc2js("British");
-        identity    = cc2js("Sgt. Powell");
-        unitType    = cc2js("Canadian");
 
         try
         {
-            Grandpa = new Leader(nationality,identity,unitType,10,10,5,-4);
+            Grandpa = new Leader(nationality,unitType,10,10,5,-4);
         }
 
         catch (jthrowable t)
@@ -644,7 +514,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Grandpa = new Leader(nationality,identity,unitType,10,10,5,4);
+            Grandpa = new Leader(nationality,unitType,10,10,5,4);
         }
 
         catch (jthrowable t)
@@ -666,9 +536,9 @@ int main(int argc, char *argv[])
             if (theDice)
             {
 //              printf("White: %d Colored: %d Combined: %2d\n",
-//                     theDice->getWhiteDieValue(),
-//                     theDice->getColoredDieValue(),
-//                     theDice->getCombinedResult());
+//                     theDice->whiteDieValue(),
+//                     theDice->coloredDieValue(),
+//                     theDice->combinedResult());
 
                 printJavaString(theDice->toString());
             }
@@ -681,4 +551,37 @@ int main(int argc, char *argv[])
     {
         printExceptionMessage(t);
     }
+
+    // Test the Game class.
+
+    printf("Testing the operations of the Game class:\n\n");
+
+    Sides*  alliedSide = Sides::valueOf(cc2js("ALLIES"));
+    jstring pixie      = cc2js("Pixie");
+    jstring american   = Nationalities::valueOf(cc2js("AMERICAN"))->label();
+
+    Sides*  axisSide   = Sides::valueOf(cc2js("AXIS"));
+    jstring buddy      = cc2js("Buddy");
+    jstring german     = Nationalities::valueOf(cc2js("GERMAN"))->label();
+
+    Game::game()->addPlayer(alliedSide,pixie,american,1);
+    Game::game()->addPlayer(axisSide,buddy,german,1);
+
+    Player* alliedPlayer = Game::game()->player(alliedSide,pixie);
+
+    alliedPlayer->addUnit(cc2js("9-1 Leader"));
+    alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
+    alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
+    alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
+
+    Player* axisPlayer = Game::game()->player(axisSide,buddy);
+
+    axisPlayer->addUnit(cc2js("8-1 Leader"));
+    axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+    axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+    axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+
+    printJavaString(Game::game()->toText());
+
+//  delete cniWrapper; // See note about this at the beginning of this function.
 }
