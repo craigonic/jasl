@@ -61,14 +61,14 @@ public class Driver
         // Display all of the entered values for this instance using the
         // toString() method.
 
-        System.out.println("\nSquad.toString() output:\n" +
+        System.out.println("\nSquad.toString() output:\n\n" +
                            russianSquad.toString());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
 
-        System.out.println("\nBuilding Unit array with a Leader & 3 Squads\n");
+        System.out.println("Building Unit array with a Leader & 3 Squads\n");
 
         Unit[] UnitList = new Unit[4];
 
@@ -135,7 +135,7 @@ public class Driver
 
         // Create an instance of a German Squad (that throws some exceptions).
 
-        System.out.println("\nTesting Exception handling during Squad creation:\n");
+        System.out.println("\nTesting Exception handling during Squad creation:");
 
         squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                 UnitType.InfantryTypes.NONE,
@@ -445,9 +445,10 @@ public class Driver
         //       Squad.
 
         System.out.println("\nTesting Exception handling during Leader creation:\n");
-        System.out.println("Invalid (less than minimum) modifier parameter:\n");
 
         // Invalid Modifier (Minimum)
+
+        System.out.println("Invalid (less than minimum) modifier parameter:\n");
 
         try
         {
@@ -461,9 +462,9 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        System.out.println("\nInvalid (greater than maximum) modifier parameter:\n");
-
         // Invalid Modifier (Maximum)
+
+        System.out.println("\nInvalid (greater than maximum) modifier parameter:\n");
 
         try
         {
