@@ -32,7 +32,8 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 
 # GCC compile commands with options specific to each target language.
 
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.14.2/i686-linux/CORE
+#GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.14.2/i686-linux/CORE
+GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.18.0/x86_64-linux-thread-multi/CORE
 GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
 
 # GCC build/link options common to all libraries and target languages.
@@ -407,7 +408,6 @@ clean_all: clean clean_libs
 # generates an "image" of the file with syntax color coding.
 
 SWIG_DOCS_PATH := $(SRC_DOCS_PATH)/$(SWIG_DIRECTORY)
-HTLS_CFG_FILE  := $(SWIG_DIRECTORY).cfg
 
 .PHONY : docs_all
 docs_all:
@@ -416,13 +416,12 @@ docs_all:
 	@for i in `ls *.swig` ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(SWIG_DOCS_PATH)/$$i.html ;\
 	done
-	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(HTLS_CFG_FILE) $(SWIG_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SWIG_DOCS_PATH)
 	@$(HTLS) $(SWIG_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
 	@$(RM) $(SWIG_DOCS_PATH)/$(HTLS_HEADER_FILE)
-	@$(RM) $(SWIG_DOCS_PATH)/$(HTLS_CFG_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs
