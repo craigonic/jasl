@@ -24,11 +24,21 @@ from Utilities  import *
 
 #cni_wrapper = CniWrapper_instance()
 
+# A call to the valueOf() method of each of the following enums is necessary in
+# order to use the constants associated with the type/object directly.
+
+nationality    = Nationalities_valueOf(cc2js("AMERICAN"))
+unitType       = InfantryTypes_valueOf(cc2js("NONE"))
+classification = Classifications_valueOf(cc2js("GREEN"));
+state          = States_valueOf(cc2js("NORMAL"));
+
 # Create an instance of a German Leader.
 
-germanLeader = Leader(cc2js("German"),
-                      cc2js("Lt. Fellbaum"),
-                      cc2js("Leader"),9,9,4,-1)
+germanLeader = Leader(cvar.Nationalities_GERMAN,
+                      cvar.InfantryTypes_NONE,
+                      9,9,4,-1)
+
+germanLeader.setIdentity(cc2js("Lt. Fellbaum"));
 
 # Display all of the entered values for this instance using the toString()
 # method.
@@ -40,39 +50,37 @@ print "Leader.toString() output:\n\n%s" % js2cc(germanLeader.toString())
 
 print "Leader class access methods and output :\n"
 
-print "\tgetDescription(): %s"     % js2cc(germanLeader.getDescription())
+print "\tdescription(): %s"           % js2cc(germanLeader.description())
 
-print "\tcanSprayFire(): %d"       % germanLeader.canSprayFire()
-print "\tgetFirepower(): %s"       % js2cc(germanLeader.getFirepower())
-print "\tgetIdentity(): %s"        % js2cc(germanLeader.getIdentity())
-print "\tgetNationality(): %s"     % js2cc(germanLeader.getNationality())
-print "\tgetNormalRange(): %s"     % js2cc(germanLeader.getNormalRange())
-print "\tgetPortageValue(): %s"    % js2cc(germanLeader.getPortageValue())
-print "\tgetUnitType(): %s"        % js2cc(germanLeader.getUnitType())
+print "\tidentity(): %s"              % js2cc(germanLeader.identity())
+print "\tnationality(): %s"           % js2cc(germanLeader.nationality())
+print "\tstatus(): %s"                % js2cc(germanLeader.status())
+print "\tunitType(): %s"              % js2cc(germanLeader.unitType())
 
-print "\tgetMovement(): %s"        % js2cc(germanLeader.getMovement())
-print "\tgetPortageCapacity(): %s" % js2cc(germanLeader.getPortageCapacity())
-print "\tgetPortageLevel(): %s"    % js2cc(germanLeader.getPortageLevel())
+print "\tmovement(): %d"              % germanLeader.movement()
+print "\tportageCapacity(): %d"       % germanLeader.portageCapacity()
+print "\tportageLevel(): %d"          % germanLeader.portageLevel()
 
-print "\tcanSelfRally(): %d"       % germanLeader.canSelfRally()
-print "\tgetBPV(): %s"             % js2cc(germanLeader.getBPV())
-print "\tgetBrokenMorale(): %s"    % js2cc(germanLeader.getBrokenMorale())
-print "\tgetELR(): %s"             % js2cc(germanLeader.getELR())
-print "\tgetMorale(): %s"          % js2cc(germanLeader.getMorale())
-print "\tgetStatus(): %s"          % js2cc(germanLeader.getStatus())
+print "\tbasicPointValue(): %d"       % germanLeader.basicPointValue()
+print "\tbrokenMorale(): %d"          % germanLeader.brokenMorale()
+print "\tcanSelfRally(): %d"          % germanLeader.canSelfRally()
+print "\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating()
+print "\tfirepower(): %s"             % js2cc(germanLeader.firepower())
+print "\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent()
+print "\tmorale(): %d"                % germanLeader.morale()
+print "\tnormalRange(): %d"           % germanLeader.normalRange()
+print "\tportageValue(): %d"          % germanLeader.portageValue()
 
-print "\tgetModifier(): %s"        % js2cc(germanLeader.getModifier())
-
-#print "\nConstant string test: %s" % \
-#      js2cc(cvar.Leader_MODIFIER_LABEL)
+print "\tmodifier(): %d"              % germanLeader.modifier()
 
 # Create an instance of a Russian Squad.
 
-russianSquad = Squad(cc2js("Russian"),
-                     cc2js("A"),
-                     cc2js("Guards"),
-                     cc2js("6"),2,1,8,8,0,12,4,0,
-                     cc2js("Elite"),1,0)
+russianSquad = Squad(cvar.Nationalities_RUSSIAN,
+                     cvar.InfantryTypes_GUARDS,
+                     6,2,8,8,0,12,4,0,
+                     cvar.Classifications_ELITE,1,1,0)
+
+russianSquad.setIdentity(cc2js("A"));
 
 # Display all of the entered values for this instance using the toString()
 # method.
@@ -84,35 +92,33 @@ print "\nSquad.toString() output:\n\n%s" % js2cc(russianSquad.toString())
 
 print "Squad class access methods and output :\n"
 
-print "\tgetDescription(): %s"     % js2cc(russianSquad.getDescription())
+print "\tdescription(): %s"            % js2cc(russianSquad.description())
 
-print "\tcanSprayFire(): %d"       % russianSquad.canSprayFire()
-print "\tgetFirepower(): %s"       % js2cc(russianSquad.getFirepower())
-print "\tgetIdentity(): %s"        % js2cc(russianSquad.getIdentity())
-print "\tgetNationality(): %s"     % js2cc(russianSquad.getNationality())
-print "\tgetNormalRange(): %s"     % js2cc(russianSquad.getNormalRange())
-print "\tgetPortageValue(): %s"    % js2cc(russianSquad.getPortageValue())
-print "\tgetUnitType(): %s"        % js2cc(russianSquad.getUnitType())
+print "\tidentity(): %s"               % js2cc(russianSquad.identity())
+print "\tnationality(): %s"            % js2cc(russianSquad.nationality())
+print "\tstatus(): %s"                 % js2cc(russianSquad.status())
+print "\tunitType(): %s"               % js2cc(russianSquad.unitType())
 
-print "\tgetMovement(): %s"        % js2cc(russianSquad.getMovement())
-print "\tgetPortageCapacity(): %s" % js2cc(russianSquad.getPortageCapacity())
-print "\tgetPortageLevel(): %s"    % js2cc(russianSquad.getPortageLevel())
+print "\tmovement(): %d"               % russianSquad.movement()
+print "\tportageCapacity(): %d"        % russianSquad.portageCapacity()
+print "\tportageLevel(): %d"           % russianSquad.portageLevel()
 
-print "\tcanSelfRally(): %d"       % russianSquad.canSelfRally()
-print "\tgetBPV(): %s"             % js2cc(russianSquad.getBPV())
-print "\tgetBrokenMorale(): %s"    % js2cc(russianSquad.getBrokenMorale())
-print "\tgetELR(): %s"             % js2cc(russianSquad.getELR())
-print "\tgetMorale(): %s"          % js2cc(russianSquad.getMorale())
-print "\tgetStatus(): %s"          % js2cc(russianSquad.getStatus())
+print "\tbasicPointValue(): %d"        % russianSquad.basicPointValue()
+print "\tbrokenMorale(): %d"           % russianSquad.brokenMorale()
+print "\tcanSelfRally(): %d"           % russianSquad.canSelfRally()
+print "\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating()
+print "\tfirepower(): %s"              % js2cc(russianSquad.firepower())
+print "\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent()
+print "\tmorale(): %d"                 % russianSquad.morale()
+print "\tnormalRange(): %d"            % russianSquad.normalRange()
+print "\tportageValue(): %d"           % russianSquad.portageValue()
 
-print "\tgetClassification(): %s"  % js2cc(russianSquad.getClassification())
-print "\thasMaxELR(): %d"          % russianSquad.hasMaxELR()
+print "\tclassification(): %s"         % js2cc(russianSquad.classification())
+print "\thasMaximumELR(): %d"          % russianSquad.hasMaximumELR()
 
-print "\tcanAssaultFire(): %d"     % russianSquad.canAssaultFire()
-print "\tgetSPE(): %s"             % js2cc(russianSquad.getSPE())
-
-#print "\nConstant string test: %s" % \
-#      js2cc(cvar.Squad_CAN_ASSAULT_FIRE_LABEL)
+print "\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire()
+print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
+print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
 
 # Create an instance of a German Squad (that throws some exceptions).
 
@@ -134,8 +140,8 @@ print "Testing the execution of the Dice class:\n"
 for i in (list(range(12))):
     dice = Dice()
 
-#   print "Access methods test - White: %d" % dice.getWhiteDieValue() + \
-#         " Colored: %d"  % dice.getColoredDieValue() + \
-#         " Combined: %2d" % dice.getCombinedResult()
+#   print "Access methods test - White: %d" % dice.whiteDieValue() + \
+#         " Colored: %d"  % dice.coloredDieValue() + \
+#         " Combined: %2d" % dice.combinedResult()
 
     print "%s" % (js2cc(dice.toString()))

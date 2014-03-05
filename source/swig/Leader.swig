@@ -10,8 +10,6 @@
 //                     interface file, not to build standalone libraries.     //
 //                                                                            //
 // Written By: Craig R. Campbell  -  November 2009                            //
-//                                                                            //
-// $Id: Leader.swig,v 1.1 2009/11/19 20:46:14 campbell Exp $
 // ************************************************************************** //
 
 %module Leader;
@@ -32,56 +30,54 @@ class Leader
 
         // Constructor.
 
-        Leader(::java::lang::String* nationality,::java::lang::String* identity,
-               ::java::lang::String* unitType,int morale,int brokenMorale,
-               int experienceLevelRating,int modifier);
+        Leader(::jasl::counters::Nationality$Nationalities* nationality,
+               ::jasl::counters::UnitType$InfantryTypes* unitType,
+               int morale,int brokenMorale,int experienceLevelRating,
+               int modifier);
 
         // Method declarations. See the indicated class documentation for more
         // details on the operation of each one.
 
         // <A HREF="../jasl/counters/Unit.html">Unit</A>.
 
-        ::java::lang::String* getDescription();
+        ::java::lang::String* description();
 
         // <A HREF="../jasl/counters/Fighting.html">Fighting</A>.
 
-        bool                  canSprayFire();
-        ::java::lang::String* getFirepower();
-        ::java::lang::String* getIdentity();
-        ::java::lang::String* getNationality();
-        ::java::lang::String* getNormalRange();
-        ::java::lang::String* getPortageValue();
-        ::java::lang::String* getUnitType();
+        ::java::lang::String* identity();
+        ::java::lang::String* nationality();
+        ::java::lang::String* status();
+        ::java::lang::String* unitType();
 
+        bool                  clearStatus(::jasl::counters::Status$States* state);
         void                  setIdentity(::java::lang::String* newIdentity);
-        void                  setStatus(int newStatus);
+        bool                  setStatus(::jasl::counters::Status$States* state);
 
         // <A HREF="../jasl/counters/Mobile.html">Mobile</A>.
 
-        ::java::lang::String* getMovement();
-        ::java::lang::String* getPortageCapacity();
-        ::java::lang::String* getPortageLevel();
+        int                   movement();
+        int                   portageCapacity();
+        int                   portageLevel();
+
+        void                  setPortageLevel(int portageLevel);
 
         // <A HREF="../jasl/counters/Infantry.html">Infantry</A>.
 
+        int                   basicPointValue();
+        int                   brokenMorale();
         bool                  canSelfRally();
-        ::java::lang::String* getBPV();
-        ::java::lang::String* getBrokenMorale();
-        ::java::lang::String* getELR();
-        ::java::lang::String* getMorale();
-        ::java::lang::String* getStatus();
+        int                   experienceLevelRating();
+        ::java::lang::String* firepower();
+        int                   firepowerEquivalent();
+        int                   morale();
+        int                   normalRange();
+        int                   portageValue();
 
         bool                  check(int modifier);
         bool                  restore(bool isLeaderPresent,int modifier);
 
         // <A HREF="../jasl/counters/Leader.html">Leader</A>.
 
-        ::java::lang::String* getModifier();
+        int                   modifier();
         ::java::lang::String* toString();
-
-        // Constants.
-
-%immutable;
-
-        static ::java::lang::String* MODIFIER_LABEL;
 };

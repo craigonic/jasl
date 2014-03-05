@@ -28,12 +28,21 @@ use Utilities;
 
 #my $cni_wrapper = CniWrapper::CniWrapper::instance();
 
+# A call to the valueOf() method of each of the following enums is necessary in
+# order to use the constants associated with the type/object directly.
+
+$nationality = Counters::Nationalities::valueOf(CniWrapper::cc2js("AMERICAN"));
+$unitType = Counters::InfantryTypes::valueOf(CniWrapper::cc2js("NONE"));
+$classification = Counters::Classifications::valueOf(CniWrapper::cc2js("GREEN"));
+$state = Counters::States::valueOf(CniWrapper::cc2js("NORMAL"));
+
 # Create an instance of a German Leader.
 
-$germanLeader = new Counters::Leader(CniWrapper::cc2js("German"),
-                                     CniWrapper::cc2js("Lt. Fellbaum"),
-                                     CniWrapper::cc2js("Leader"),
+$germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
+                                     $Counters::InfantryTypes_NONE,
                                      9,9,4,-1);
+
+$germanLeader->setIdentity(CniWrapper::cc2js("Lt. Fellbaum"));
 
 # Display all of the entered values for this instance using the toString()
 # method.
@@ -46,57 +55,44 @@ printf("Leader.toString() output:\n\n%s\n",
 
 printf("Leader class access methods and output :\n");
 
-printf("\n\tgetDescription(): %s\n",
-       CniWrapper::js2cc($germanLeader->getDescription()));
+printf("\n\tdescription(): %s\n",
+       CniWrapper::js2cc($germanLeader->description()));
 
-printf("\tcanSprayFire(): %d\n",$germanLeader->canSprayFire());
-printf("\tgetFirepower(): %s\n",
-       CniWrapper::js2cc($germanLeader->getFirepower()));
-printf("\tgetIdentity(): %s\n",
-       CniWrapper::js2cc($germanLeader->getIdentity()));
-printf("\tgetNationality(): %s\n",
-       CniWrapper::js2cc($germanLeader->getNationality()));
-printf("\tgetNormalRange(): %s\n",
-       CniWrapper::js2cc($germanLeader->getNormalRange()));
-printf("\tgetPortageValue(): %s\n",
-       CniWrapper::js2cc($germanLeader->getPortageValue()));
-printf("\tgetUnitType(): %s\n",
-       CniWrapper::js2cc($germanLeader->getUnitType()));
+printf("\tidentity(): %s\n",
+       CniWrapper::js2cc($germanLeader->identity()));
+printf("\tnationality(): %s\n",
+       CniWrapper::js2cc($germanLeader->nationality()));
+printf("\tstatus(): %s\n",
+       CniWrapper::js2cc($germanLeader->status()));
+printf("\tunitType(): %s\n",
+       CniWrapper::js2cc($germanLeader->unitType()));
 
-printf("\tgetMovement(): %s\n",
-       CniWrapper::js2cc($germanLeader->getMovement()));
-printf("\tgetPortageCapacity(): %s\n",
-       CniWrapper::js2cc($germanLeader->getPortageCapacity()));
-printf("\tgetPortageLevel(): %s\n",
-       CniWrapper::js2cc($germanLeader->getPortageLevel()));
+printf("\tmovement(): %d\n",$germanLeader->movement());
+printf("\tportageCapacity(): %d\n",$germanLeader->portageCapacity());
+printf("\tportageLevel(): %d\n",$germanLeader->portageLevel());
 
+printf("\tbasicPointValue(): %d\n",$germanLeader->basicPointValue());
+printf("\tbrokenMorale(): %d\n",$germanLeader->brokenMorale());
 printf("\tcanSelfRally(): %d\n",$germanLeader->canSelfRally());
-printf("\tgetBPV(): %s\n",
-       CniWrapper::js2cc($germanLeader->getBPV()));
-printf("\tgetBrokenMorale(): %s\n",
-       CniWrapper::js2cc($germanLeader->getBrokenMorale()));
-printf("\tgetELR(): %s\n",
-       CniWrapper::js2cc($germanLeader->getELR()));
-printf("\tgetMorale(): %s\n",
-       CniWrapper::js2cc($germanLeader->getMorale()));
-printf("\tgetStatus(): %s\n",
-       CniWrapper::js2cc($germanLeader->getStatus()));
+printf("\texperienceLevelRating(): %d\n",
+       $germanLeader->experienceLevelRating());
+printf("\tfirepower(): %s\n",
+       CniWrapper::js2cc($germanLeader->firepower()));
+printf("\tfirepowerEquivalent(): %d\n",$germanLeader->firepowerEquivalent());
+printf("\tmorale(): %d\n",$germanLeader->morale());
+printf("\tnormalRange(): %d\n",$germanLeader->normalRange());
+printf("\tportageValue(): %d\n",$germanLeader->portageValue());
 
-printf("\tgetModifier(): %s\n",
-       CniWrapper::js2cc($germanLeader->getModifier()));
-
-#printf("\nConstant string test: %s\n",
-#       CniWrapper::js2cc($Counters::Leader::MODIFIER_LABEL));
+printf("\tmodifier(): %d\n",$germanLeader->modifier());
 
 # Create an instance of a Russian Squad.
 
-$russianSquad = new Counters::Squad(CniWrapper::cc2js("Russian"),
-                                    CniWrapper::cc2js("A"),
-                                    CniWrapper::cc2js("Guards"),
-                                    CniWrapper::cc2js("6"),2,1,8,
-                                    8,0,12,4,0,
-                                    CniWrapper::cc2js("Elite"),
-                                    1,0);
+$russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
+                                    $Counters::InfantryTypes::GUARDS,
+                                    6,2,8,8,0,12,4,0,
+                                    $Counters::Classifications::ELITE,1,1,0);
+
+$russianSquad->setIdentity(CniWrapper::cc2js("A"));
 
 # Display all of the entered values for this instance using the toString()
 # method.
@@ -109,52 +105,41 @@ printf("\nSquad.toString() output:\n\n%s\n",
 
 printf("Squad class access methods and output :\n");
 
-printf("\n\tgetDescription(): %s\n",
-       CniWrapper::js2cc($russianSquad->getDescription()));
+printf("\n\tdescription(): %s\n",
+       CniWrapper::js2cc($russianSquad->description()));
 
-printf("\tcanSprayFire(): %d\n",$russianSquad->canSprayFire());
-printf("\tgetFirepower(): %s\n",
-       CniWrapper::js2cc($russianSquad->getFirepower()));
-printf("\tgetIdentity(): %s\n",
-       CniWrapper::js2cc($russianSquad->getIdentity()));
-printf("\tgetNationality(): %s\n",
-       CniWrapper::js2cc($russianSquad->getNationality()));
-printf("\tgetNormalRange(): %s\n",
-       CniWrapper::js2cc($russianSquad->getNormalRange()));
-printf("\tgetPortageValue(): %s\n",
-       CniWrapper::js2cc($russianSquad->getPortageValue()));
-printf("\tgetUnitType(): %s\n",
-       CniWrapper::js2cc($russianSquad->getUnitType()));
+printf("\tidentity(): %s\n",
+       CniWrapper::js2cc($russianSquad->identity()));
+printf("\tnationality(): %s\n",
+       CniWrapper::js2cc($russianSquad->nationality()));
+printf("\tstatus(): %s\n",
+       CniWrapper::js2cc($russianSquad->status()));
+printf("\tunitType(): %s\n",
+       CniWrapper::js2cc($russianSquad->unitType()));
 
-printf("\tgetMovement(): %s\n",
-       CniWrapper::js2cc($russianSquad->getMovement()));
-printf("\tgetPortageCapacity(): %s\n",
-       CniWrapper::js2cc($russianSquad->getPortageCapacity()));
-printf("\tgetPortageLevel(): %s\n",
-       CniWrapper::js2cc($russianSquad->getPortageLevel()));
+printf("\tmovement(): %d\n",$russianSquad->movement());
+printf("\tportageCapacity(): %d\n",$russianSquad->portageCapacity());
+printf("\tportageLevel(): %d\n",$russianSquad->portageLevel());
 
+printf("\tbasicPointValue(): %d\n",$russianSquad->basicPointValue());
+printf("\tbrokenMorale(): %d\n",$russianSquad->brokenMorale());
 printf("\tcanSelfRally(): %d\n",$russianSquad->canSelfRally());
-printf("\tgetBPV(): %s\n",
-       CniWrapper::js2cc($russianSquad->getBPV()));
-printf("\tgetBrokenMorale(): %s\n",
-       CniWrapper::js2cc($russianSquad->getBrokenMorale()));
-printf("\tgetELR(): %s\n",
-       CniWrapper::js2cc($russianSquad->getELR()));
-printf("\tgetMorale(): %s\n",
-       CniWrapper::js2cc($russianSquad->getMorale()));
-printf("\tgetStatus(): %s\n",
-       CniWrapper::js2cc($russianSquad->getStatus()));
+printf("\texperienceLevelRating(): %d\n",
+       $russianSquad->experienceLevelRating());
+printf("\tfirepower(): %s\n",
+       CniWrapper::js2cc($russianSquad->firepower()));
+printf("\tfirepowerEquivalent(): %d\n",$russianSquad->firepowerEquivalent());
+printf("\tmorale(): %d\n",$russianSquad->morale());
+printf("\tnormalRange(): %d\n",$russianSquad->normalRange());
+printf("\tportageValue(): %d\n",$russianSquad->portageValue());
 
-printf("\tgetClassification(): %s\n",
-       CniWrapper::js2cc($russianSquad->getClassification()));
-printf("\thasMaxELR(): %d\n",$russianSquad->hasMaxELR());
-
+printf("\tclassification(): %s\n",
+       CniWrapper::js2cc($russianSquad->classification()));
+printf("\thasMaximumELR(): %d\n",$russianSquad->hasMaximumELR());
 printf("\tcanAssaultFire(): %d\n",$russianSquad->canAssaultFire());
-printf("\tgetSPE(): %s\n",
-       CniWrapper::js2cc($russianSquad->getSPE()));
-
-#printf("\nConstant string test: %s\n",
-#       CniWrapper::js2cc($Counters::Squad::CAN_ASSAULT_FIRE_LABEL));
+printf("\tcanSprayFire(): %d\n",$russianSquad->canSprayFire());
+printf("\tsmokePlacementExponent(): %d\n",
+       $russianSquad->smokePlacementExponent());
 
 # Create an instance of a German Squad (that throws some exceptions).
 
@@ -183,9 +168,9 @@ for ($i = 0;$i < 12;$i++)
     $theDice = new Utilities::Dice();
 
 #   printf("Access methods test - White: %d Colored: %d Combined: %2d\n",
-#          $theDice->getWhiteDieValue(),
-#          $theDice->getColoredDieValue(),
-#          $theDice->getCombinedResult());
+#          $theDice->whiteDieValue(),
+#          $theDice->coloredDieValue(),
+#          $theDice->combinedResult());
 
     printf("%s\n",CniWrapper::js2cc($theDice->toString()));
 }
