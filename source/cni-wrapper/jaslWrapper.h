@@ -14,6 +14,7 @@
 #include "jasl/counters/Classification$Classifications.h"
 #include "jasl/counters/Nationality$Nationalities.h"
 #include "jasl/counters/UnitType$InfantryTypes.h"
+#include "jasl/counters/Status$States.h"
 
 #include "jasl/counters/Unit.h"
 #include "jasl/counters/Leader.h"
@@ -48,6 +49,13 @@ typedef jasl::counters::Nationality$Nationalities Nationalities;
  */
 
 typedef jasl::counters::UnitType$InfantryTypes InfantryTypes;
+
+/**
+ * \typedef jasl::counters::Status$States States
+ * \brief Shorthand declaration for the <A HREF="../../source/jasl/counters/Status.html">States</A> enum.
+ */
+
+typedef jasl::counters::Status$States States;
 
 /**
  * \typedef jasl::counters::Unit Unit
