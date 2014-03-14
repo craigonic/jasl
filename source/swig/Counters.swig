@@ -19,12 +19,22 @@
 #include "jasl/cni/jaslWrapper.h"
 %}
 
+// This file allows the text from a Java exception to be included in a message
+// shown by a scripting language.
+
+%include java-exception.swig
+
 // Load the interface files associated with the public classes and enums of the
 // <B>jasl.counters</B> package.
+
+// Enums.
 
 %include Classifications.swig // <A HREF="Classifications.swig.html">Classifications</A>
 %include InfantryTypes.swig   // <A HREF="InfantryTypes.swig.html">InfantryTypes</A>
 %include Nationalities.swig   // <A HREF="Nationalities.swig.html">Nationalities</A>
 %include States.swig          // <A HREF="States.swig.html">States</A>
+
+// Classes.
+
 %include Leader.swig          // <A HREF="Leader.swig.html">Leader</A>
 %include Squad.swig           // <A HREF="Squad.swig.html">Squad</A>

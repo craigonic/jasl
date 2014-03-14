@@ -22,6 +22,10 @@
 
 %apply SWIGTYPE* DISOWN { Leader* };
 
+// Add support for catching Java exceptions thrown by the constructor.
+
+%exception Leader JAVA_EXCEPTION
+
 // The public interface of the <A HREF="../jasl/counters/Leader.html">Leader</A> class.
 
 class Leader

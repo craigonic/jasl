@@ -22,6 +22,10 @@
 
 %apply SWIGTYPE* DISOWN { Squad* };
 
+// Add support for catching Java exceptions thrown by the constructor.
+
+%exception Squad JAVA_EXCEPTION
+
 // The public interface of the <A HREF="../jasl/counters/Squad.html">Squad</A> class.
 
 class Squad
