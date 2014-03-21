@@ -47,7 +47,7 @@ $germanLeader->setIdentity(CniWrapper::cc2js("Lt. Fellbaum"));
 # Display all of the entered values for this instance using the toString()
 # method.
 
-printf("Leader.toString() output:\n\n%s\n",
+printf("\nLeader.toString() output:\n\n%s\n",
        CniWrapper::js2cc($germanLeader->toString()));
 
 # Display the output of all of the access methods declared for the Leader class
@@ -143,22 +143,236 @@ printf("\tsmokePlacementExponent(): %d\n",
 
 # Create an instance of a German Squad (that throws some exceptions).
 
-# NULL Nationality
-
 printf("\nTesting Exception handling during Squad creation:\n");
-printf("\nNull nationality parameter:\n");
 
-#$germanSquad = new Counters::Squad(CniWrapper::cc2js(undef),
-#                                   CniWrapper::cc2js("5"),
-#                                   CniWrapper::cc2js("Squad"),
-#                                   CniWrapper::cc2js("4"),6,1,7,7,
-#                                   0,10,3,0,
-#                                   CniWrapper::cc2js("1st Line"),
-#                                   0,1);
+$nationality    = $Counters::Nationalities::BRITISH;
+$unitType       = $Counters::InfantryTypes::ENGINEERS;
+$classification = $Counters::Classifications::FIRST_LINE;
 
-#printf("Squad.toString() output:\n\n%s\n",
-#       CniWrapper::js2cc($germanSquad->toString()));
+# Incompatible nationality and unitType
 
+printf("\nIncompatible nationality and unitType parameters:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+$nationality    = $Counters::Nationalities::RUSSIAN;
+$unitType       = $Counters::InfantryTypes::COMMISSAR;
+$classification = $Counters::Classifications::GREEN;
+
+# Incompatible description and unitType
+
+printf("\nIncompatible description and unitType parameters:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,4,7,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+$nationality    = $Counters::Nationalities::GERMAN;
+$unitType       = $Counters::InfantryTypes::NONE;
+$classification = $Counters::Classifications::FIRST_LINE;
+
+# Invalid Firepower
+
+printf("\nInvalid (less than 0) firepower parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,-1,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+printf("\nInvalid (greater than maximum) firepower parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,11,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Range
+
+printf("\nInvalid (less than 0) normal range parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,-255,7,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Morale (Minimum)
+
+printf("\nInvalid (less than 0) morale parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,-1,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Morale (Maximum)
+
+printf("\nInvalid (greater than maximum) morale parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,11,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Broken Morale (Minimum)
+
+printf("\nInvalid (less than 0) broken morale parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,-7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Broken Morale (Maximum)
+
+printf("\nInvalid (greater than maximum) broken morale parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,17,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Basic Point Value (BPV)
+
+printf("\nInvalid (less than zero) Basic Point Value (BPV):\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,-1,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Experience Level Rating (Minimum)
+
+printf("\nInvalid (less than zero) Experience Level Rating (ELR):\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,-1,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Experience Level Rating (Maximum)
+
+printf("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,6,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+$nationality    = $Counters::Nationalities::ITALIAN;
+$classification = $Counters::Classifications::SS;
+
+# Incompatible Classification
+
+printf("\nIncompatible classification parameter:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+$nationality    = $Counters::Nationalities::GERMAN;
+$classification = $Counters::Classifications::SECOND_LINE;
+
+# Invalid Smoke Placement Exponent (Minimum)
+
+printf("\nInvalid (less than zero) Smoke Placement Exponent:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,-4);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Smoke Placement Exponent (Maximum)
+
+printf("\nInvalid (greater than maximum) Smoke Placement Exponent:\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,4);
+};
+
+printException($@) if (!defined($status));
+
+# Create an instance of a Canadian Leader (that throws an exception).
+# NOTE: It is only necessary to test the modifier, since all the other
+#       exceptions have been tested above as part of the creation of a Squad.
+
+printf("\nTesting Exception handling during Leader creation:\n");
+
+$nationality    = $Counters::Nationalities::BRITISH;
+$unitType       = $Counters::InfantryTypes::CANADIAN;
+
+# Invalid Modifier (Minimum)
+
+printf("\nInvalid (less than minimum) modifier parameter:\n");
+
+$status = eval
+{
+    $leader = new Counters::Leader($nationality,$unitType,10,10,5,-4);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid Modifier (Maximum)
+
+printf("\nInvalid (greater than maximum) modifier parameter:\n");
+
+$status = eval
+{
+    $leader = new Counters::Leader($nationality,$unitType,10,10,5,4);
+};
+
+printException($@) if (!defined($status));
+
+# Test the Dice class.
 # Test the Dice class.
 
 printf("\nTesting the execution of the Dice class:\n\n");
@@ -173,4 +387,20 @@ for ($i = 0;$i < 12;$i++)
 #          $theDice->combinedResult());
 
     printf("%s\n",CniWrapper::js2cc($theDice->toString()));
+}
+
+################################################################################
+# printException - a subroutine to do just what its name says. In this case, it
+#                  is used to modify an exception message to match the output of
+#                  the other test programs.
+################################################################################
+
+sub printException
+{
+    local($inputString) = @_;
+
+    $inputString =~ s/ValueError/Caught:/;
+    $inputString =~ s/ at .*\.pm line \d+\.//;
+
+    printf("\n%s",$inputString);
 }

@@ -29,8 +29,8 @@ from Utilities  import *
 
 nationality    = Nationalities_valueOf(cc2js("AMERICAN"))
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
-classification = Classifications_valueOf(cc2js("GREEN"));
-state          = States_valueOf(cc2js("NORMAL"));
+classification = Classifications_valueOf(cc2js("GREEN"))
+state          = States_valueOf(cc2js("NORMAL"))
 
 # Create an instance of a German Leader.
 
@@ -38,12 +38,12 @@ germanLeader = Leader(cvar.Nationalities_GERMAN,
                       cvar.InfantryTypes_NONE,
                       9,9,4,-1)
 
-germanLeader.setIdentity(cc2js("Lt. Fellbaum"));
+germanLeader.setIdentity(cc2js("Lt. Fellbaum"))
 
 # Display all of the entered values for this instance using the toString()
 # method.
 
-print "Leader.toString() output:\n\n%s" % js2cc(germanLeader.toString())
+print "\nLeader.toString() output:\n\n%s" % js2cc(germanLeader.toString())
 
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
@@ -80,7 +80,7 @@ russianSquad = Squad(cvar.Nationalities_RUSSIAN,
                      6,2,8,8,0,12,4,0,
                      cvar.Classifications_ELITE,1,1,0)
 
-russianSquad.setIdentity(cc2js("A"));
+russianSquad.setIdentity(cc2js("A"))
 
 # Display all of the entered values for this instance using the toString()
 # method.
@@ -120,22 +120,198 @@ print "\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire()
 print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
 print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
 
+# Simple function to prepend "Caught: " to the beginning of an exception message
+# returned by the tests below. This is done primarily to modify the output to
+# match that of the other test programs.
+
+def printException(detail):
+    print "\nCaught: %s" % detail
+
 # Create an instance of a German Squad (that throws some exceptions).
 
-# NULL Nationality
-
 print "\nTesting Exception handling during Squad creation:"
-print "\nNull nationality parameter:\n"
 
-#germanSquad = Squad(cc2js(None),
-#                    cc2js("5"),
-#                    cc2js("Squad"),
-#                    cc2js("4"),6,1,7,7,0,10,3,0,
-#                    cc2js("1st Line"),0,1)
+nationality    = cvar.Nationalities_BRITISH
+unitType       = cvar.InfantryTypes_ENGINEERS
+classification = cvar.Classifications_FIRST_LINE
+
+# Incompatible nationality and unitType
+
+print "\nIncompatible nationality and unitType parameters:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+nationality    = cvar.Nationalities_RUSSIAN
+unitType       = cvar.InfantryTypes_COMMISSAR
+classification = cvar.Classifications_GREEN
+
+# Incompatible description and unitType
+
+print "\nIncompatible description and unitType parameters:"
+
+try:
+    squad = Squad(nationality,unitType,4,4,7,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+nationality    = cvar.Nationalities_GERMAN
+unitType       = cvar.InfantryTypes_NONE
+classification = cvar.Classifications_FIRST_LINE
+
+# Invalid Firepower
+
+print "\nInvalid (less than 0) firepower parameter:"
+
+try:
+    squad = Squad(nationality,unitType,-1,6,7,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+print "\nInvalid (greater than maximum) firepower parameter:"
+
+try:
+    squad = Squad(nationality,unitType,11,6,7,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Range
+
+print "\nInvalid (less than 0) normal range parameter:"
+
+try:
+    squad = Squad(nationality,unitType,4,-255,7,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Morale (Minimum)
+
+print "\nInvalid (less than 0) morale parameter:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,-1,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Morale (Maximum)
+
+print "\nInvalid (greater than maximum) morale parameter:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,11,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Broken Morale (Minimum)
+
+print "\nInvalid (less than 0) broken morale parameter:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,-7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Broken Morale (Maximum)
+
+print "\nInvalid (greater than maximum) broken morale parameter:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,17,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Basic Point Value (BPV)
+
+print "\nInvalid (less than zero) Basic Point Value (BPV):"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,-1,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Experience Level Rating (Minimum)
+
+print "\nInvalid (less than zero) Experience Level Rating (ELR):"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,10,-1,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Experience Level Rating (Maximum)
+
+print "\nInvalid (greater than maximum) Experience Level Rating (ELR):"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,10,6,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+nationality    = cvar.Nationalities_ITALIAN
+classification = cvar.Classifications_SS
+
+# Incompatible Classification
+
+print "\nIncompatible classification parameter:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,0)
+except ValueError as detail:
+    printException(detail)
+
+nationality    = cvar.Nationalities_GERMAN
+classification = cvar.Classifications_SECOND_LINE
+
+# Invalid Smoke Placement Exponent (Minimum)
+
+print "\nInvalid (less than zero) Smoke Placement Exponent:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,-4)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Smoke Placement Exponent (Maximum)
+
+print "\nInvalid (greater than maximum) Smoke Placement Exponent:"
+
+try:
+    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,4)
+except ValueError as detail:
+    printException(detail)
+
+# Create an instance of a Canadian Leader (that throws an exception).
+# NOTE: It is only necessary to test the modifier, since all the other
+#       exceptions have been tested above as part of the creation of a Squad.
+
+print "\nTesting Exception handling during Leader creation:"
+
+nationality    = cvar.Nationalities_BRITISH
+unitType       = cvar.InfantryTypes_CANADIAN
+
+# Invalid Modifier (Minimum)
+
+print "\nInvalid (less than minimum) modifier parameter:"
+
+try:
+    leader = Leader(nationality,unitType,10,10,5,-4)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Modifier (Maximum)
+
+print "\nInvalid (greater than maximum) modifier parameter:"
+
+try:
+    leader = Leader(nationality,unitType,10,10,5,4)
+except ValueError as detail:
+    printException(detail)
 
 # Test the Dice class.
 
-print "Testing the execution of the Dice class:\n"
+print "\nTesting the execution of the Dice class:\n"
 
 for i in (list(range(12))):
     dice = Dice()
