@@ -304,11 +304,12 @@ clean_python:
 # previously saved result (Driver.out).
 
 TEST_EXEC := $(JAVA_RUN_CMD) $(DRIVER_EXEC)
+EXEC_PATH := $(BIN_PATH)
 
 .PHONY : run_test
 run_test:
 	@$(DATE) > $(DRIVER_TEST)
-	@(cd $(BIN_PATH); $(TEST_EXEC) >> $(SRC_PATH)/$(DRIVER_TEST))
+	@(cd $(EXEC_PATH); $(TEST_EXEC) >> $(SRC_PATH)/$(DRIVER_TEST))
 	@-$(DIFF) $(DRIVER_OUT) $(DRIVER_TEST)
 	@$(RM) $(DRIVER_TEST)
 
@@ -341,13 +342,13 @@ test_cni_static: $(BIN_PATH)/$(DRIVER_CNI_STATIC) run_test
 
 .PHONY : test_perl
 test_perl: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH):$(PERL_LIB_PATH) ./$(DRIVER_EXEC)"
-test_perl: $(PERL_BIN_PATH)/$(DRIVER_EXEC)
-	@(cd $(PERL_BIN_PATH); $(TEST_EXEC))
+test_perl: EXEC_PATH := $(PERL_BIN_PATH)
+test_perl: $(PERL_BIN_PATH)/$(DRIVER_EXEC) run_test
 
 .PHONY : test_python
 test_python: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH):$(PYTHON_LIB_PATH) python ./$(DRIVER_EXEC)"
-test_python: $(PYTHON_BIN_PATH)/$(DRIVER_EXEC)
-	@(cd $(PYTHON_BIN_PATH); $(TEST_EXEC))
+test_python: EXEC_PATH := $(PYTHON_BIN_PATH)
+test_python: $(PYTHON_BIN_PATH)/$(DRIVER_EXEC) run_test
 
 ## Documentation ###############################################################
 
