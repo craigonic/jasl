@@ -24,6 +24,11 @@
 
 %include java-exception.swig
 
+// This file adds inline functions used to cast jasl derived class object
+// pointers to and from java::lang::Object*.
+
+%include counters-obj-cast.swig
+
 // Load the interface files associated with the public classes and enums of the
 // <B>jasl.counters</B> package.
 
@@ -38,3 +43,4 @@
 
 %include Leader.swig          // <A HREF="Leader.swig.html">Leader</A>
 %include Squad.swig           // <A HREF="Squad.swig.html">Squad</A>
+%include Unit.swig            // <A HREF="Unit.swig.html">Unit</A>

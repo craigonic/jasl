@@ -19,8 +19,8 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 2.0
- * @author Copyright (C) 1998-2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 2.1
+ * @author Copyright (C) 1998-2014 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
@@ -34,7 +34,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	private Descriptions _description;
 
-	// Constructor.
+	// Constructors.
 
 	// During the instantiation of derived concrete classes the parameter
 	// is passed up the inheritance tree from the constructor of the object
@@ -44,6 +44,12 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	{
 		_description = description;
 	}
+
+	// This declaration is redundant for Java and C++ usage, but it is
+	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
+	// used by <A HREF="http://www.swig.org/">SWIG</A> to build bindings for scripting languages.
+
+	protected Unit() {}
 
 	// Public access methods
 

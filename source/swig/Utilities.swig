@@ -22,4 +22,5 @@
 // Load the interface files associated with the public classes of the
 // <B>jasl.utilities</B> package.
 
-%include Dice.swig // <A HREF="Dice.swig.html">Dice</A>
+%include Dice.swig          // <A HREF="Dice.swig.html">Dice</A>
+%include Serialization.swig // <A HREF="Serialization.swig.html">Serialization</A>
