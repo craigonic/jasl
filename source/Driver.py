@@ -48,30 +48,46 @@ print "\nLeader.toString() output:\n\n%s" % js2cc(germanLeader.toString())
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
 
-print "Leader class access methods and output :\n"
+#print "Leader class access methods and output :\n"
 
-print "\tdescription(): %s"           % js2cc(germanLeader.description())
+#print "\tdescription(): %s"           % js2cc(germanLeader.description())
 
-print "\tidentity(): %s"              % js2cc(germanLeader.identity())
-print "\tnationality(): %s"           % js2cc(germanLeader.nationality())
-print "\tstatus(): %s"                % js2cc(germanLeader.status())
-print "\tunitType(): %s"              % js2cc(germanLeader.unitType())
+#print "\tidentity(): %s"              % js2cc(germanLeader.identity())
+#print "\tnationality(): %s"           % js2cc(germanLeader.nationality())
+#print "\tstatus(): %s"                % js2cc(germanLeader.status())
+#print "\tunitType(): %s"              % js2cc(germanLeader.unitType())
 
-print "\tmovement(): %d"              % germanLeader.movement()
-print "\tportageCapacity(): %d"       % germanLeader.portageCapacity()
-print "\tportageLevel(): %d"          % germanLeader.portageLevel()
+#print "\tmovement(): %d"              % germanLeader.movement()
+#print "\tportageCapacity(): %d"       % germanLeader.portageCapacity()
+#print "\tportageLevel(): %d"          % germanLeader.portageLevel()
 
-print "\tbasicPointValue(): %d"       % germanLeader.basicPointValue()
-print "\tbrokenMorale(): %d"          % germanLeader.brokenMorale()
-print "\tcanSelfRally(): %d"          % germanLeader.canSelfRally()
-print "\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating()
-print "\tfirepower(): %s"             % js2cc(germanLeader.firepower())
-print "\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent()
-print "\tmorale(): %d"                % germanLeader.morale()
-print "\tnormalRange(): %d"           % germanLeader.normalRange()
-print "\tportageValue(): %d"          % germanLeader.portageValue()
+#print "\tbasicPointValue(): %d"       % germanLeader.basicPointValue()
+#print "\tbrokenMorale(): %d"          % germanLeader.brokenMorale()
+#print "\tcanSelfRally(): %d"          % germanLeader.canSelfRally()
+#print "\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating()
+#print "\tfirepower(): %s"             % js2cc(germanLeader.firepower())
+#print "\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent()
+#print "\tmorale(): %d"                % germanLeader.morale()
+#print "\tnormalRange(): %d"           % germanLeader.normalRange()
+#print "\tportageValue(): %d"          % germanLeader.portageValue()
 
-print "\tmodifier(): %d"              % germanLeader.modifier()
+#print "\tmodifier(): %d"              % germanLeader.modifier()
+
+# Serialize the Leader object, write the data to a file (Leader.ser), then
+# deserialize the data into a new object.
+
+germanLeader.setIdentity(cc2js("Col. Klink"))
+
+serializationFile = cc2js("/tmp/Leader.ser");
+
+Serialization_serializeToFile(toObject(germanLeader),serializationFile);
+
+unit = fromObject(Serialization_deserializeFromFile(serializationFile));
+
+# Display all of the entered values for the deserialized instance using the
+# toString() method.
+
+print "(Deserialized) Leader.toString() output:\n\n%s" % js2cc(unit.toString())
 
 # Create an instance of a Russian Squad.
 
@@ -85,40 +101,40 @@ russianSquad.setIdentity(cc2js("A"))
 # Display all of the entered values for this instance using the toString()
 # method.
 
-print "\nSquad.toString() output:\n\n%s" % js2cc(russianSquad.toString())
+print "Squad.toString() output:\n\n%s" % js2cc(russianSquad.toString())
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
 
-print "Squad class access methods and output :\n"
+#print "Squad class access methods and output :\n"
 
-print "\tdescription(): %s"            % js2cc(russianSquad.description())
+#print "\tdescription(): %s"            % js2cc(russianSquad.description())
 
-print "\tidentity(): %s"               % js2cc(russianSquad.identity())
-print "\tnationality(): %s"            % js2cc(russianSquad.nationality())
-print "\tstatus(): %s"                 % js2cc(russianSquad.status())
-print "\tunitType(): %s"               % js2cc(russianSquad.unitType())
+#print "\tidentity(): %s"               % js2cc(russianSquad.identity())
+#print "\tnationality(): %s"            % js2cc(russianSquad.nationality())
+#print "\tstatus(): %s"                 % js2cc(russianSquad.status())
+#print "\tunitType(): %s"               % js2cc(russianSquad.unitType())
 
-print "\tmovement(): %d"               % russianSquad.movement()
-print "\tportageCapacity(): %d"        % russianSquad.portageCapacity()
-print "\tportageLevel(): %d"           % russianSquad.portageLevel()
+#print "\tmovement(): %d"               % russianSquad.movement()
+#print "\tportageCapacity(): %d"        % russianSquad.portageCapacity()
+#print "\tportageLevel(): %d"           % russianSquad.portageLevel()
 
-print "\tbasicPointValue(): %d"        % russianSquad.basicPointValue()
-print "\tbrokenMorale(): %d"           % russianSquad.brokenMorale()
-print "\tcanSelfRally(): %d"           % russianSquad.canSelfRally()
-print "\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating()
-print "\tfirepower(): %s"              % js2cc(russianSquad.firepower())
-print "\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent()
-print "\tmorale(): %d"                 % russianSquad.morale()
-print "\tnormalRange(): %d"            % russianSquad.normalRange()
-print "\tportageValue(): %d"           % russianSquad.portageValue()
+#print "\tbasicPointValue(): %d"        % russianSquad.basicPointValue()
+#print "\tbrokenMorale(): %d"           % russianSquad.brokenMorale()
+#print "\tcanSelfRally(): %d"           % russianSquad.canSelfRally()
+#print "\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating()
+#print "\tfirepower(): %s"              % js2cc(russianSquad.firepower())
+#print "\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent()
+#print "\tmorale(): %d"                 % russianSquad.morale()
+#print "\tnormalRange(): %d"            % russianSquad.normalRange()
+#print "\tportageValue(): %d"           % russianSquad.portageValue()
 
-print "\tclassification(): %s"         % js2cc(russianSquad.classification())
-print "\thasMaximumELR(): %d"          % russianSquad.hasMaximumELR()
+#print "\tclassification(): %s"         % js2cc(russianSquad.classification())
+#print "\thasMaximumELR(): %d"          % russianSquad.hasMaximumELR()
 
-print "\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire()
-print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
-print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
+#print "\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire()
+#print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
+#print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
 
 # Simple function to prepend "Caught: " to the beginning of an exception message
 # returned by the tests below. This is done primarily to modify the output to
@@ -129,7 +145,7 @@ def printException(detail):
 
 # Create an instance of a German Squad (that throws some exceptions).
 
-print "\nTesting Exception handling during Squad creation:"
+print "Testing Exception handling during Squad creation:"
 
 nationality    = cvar.Nationalities_BRITISH
 unitType       = cvar.InfantryTypes_ENGINEERS
