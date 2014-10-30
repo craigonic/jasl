@@ -506,9 +506,9 @@ public class Driver
         System.out.println("Testing the operations of the Game class:\n");
 
         Game.game().addPlayer(Side.Sides.ALLIES,"Pixie",
-                              Nationality.Nationalities.AMERICAN.label(),1);
+                              Nationality.Nationalities.AMERICAN,1);
         Game.game().addPlayer(Side.Sides.AXIS,"Buddy",
-                              Nationality.Nationalities.GERMAN.label(),1);
+                              Nationality.Nationalities.GERMAN,1);
 
         Player alliedPlayer = Game.game().player(Side.Sides.ALLIES,"Pixie");
 

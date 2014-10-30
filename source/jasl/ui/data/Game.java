@@ -24,7 +24,7 @@ import jasl.counters.Nationality;
  * This is a singleton class used to provide overall management of an instance
  * of the game.
  *
- * @version 1.2
+ * @version 1.3
  * @author Copyright (C) 2013-2014 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Game.html">Source code</A>
  */
@@ -80,7 +80,7 @@ public final class Game
 
 	public boolean addPlayer(Side.Sides side,
 	                         String name,
-	                         String nationality,
+	                         Nationality.Nationalities nationality,
 	                         int entryTurn)
 	{
 		if ((!_setupComplete) &&

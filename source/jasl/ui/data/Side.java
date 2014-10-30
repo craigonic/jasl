@@ -19,7 +19,7 @@ import jasl.counters.Nationality;
 /**
  * This is a ...
  *
- * @version 1.2
+ * @version 1.3
  * @author Copyright (C) 2013-2014 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Side.html">Source code</A>
  */
@@ -217,7 +217,9 @@ public final class Side
 		return units;
 	}
 
-	public boolean addPlayer(String name,String nationality,int entryTurn)
+	public boolean addPlayer(String name,
+	                         Nationality.Nationalities nationality,
+	                         int entryTurn)
 	{
 		if (!_players.containsKey(name))
 		{

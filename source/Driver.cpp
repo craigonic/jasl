@@ -556,13 +556,13 @@ int main(int argc, char *argv[])
 
     printf("Testing the operations of the Game class:\n\n");
 
-    Sides*  alliedSide = Sides::valueOf(cc2js("ALLIES"));
-    jstring pixie      = cc2js("Pixie");
-    jstring american   = Nationalities::valueOf(cc2js("AMERICAN"))->label();
+    Sides*  alliedSide      = Sides::valueOf(cc2js("ALLIES"));
+    jstring pixie           = cc2js("Pixie");
+    Nationalities* american = Nationalities::valueOf(cc2js("AMERICAN"));
 
-    Sides*  axisSide   = Sides::valueOf(cc2js("AXIS"));
-    jstring buddy      = cc2js("Buddy");
-    jstring german     = Nationalities::valueOf(cc2js("GERMAN"))->label();
+    Sides*  axisSide      = Sides::valueOf(cc2js("AXIS"));
+    jstring buddy         = cc2js("Buddy");
+    Nationalities* german = Nationalities::valueOf(cc2js("GERMAN"));
 
     Game::game()->addPlayer(alliedSide,pixie,american,1);
     Game::game()->addPlayer(axisSide,buddy,german,1);
