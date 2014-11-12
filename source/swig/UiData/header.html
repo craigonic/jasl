@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<TITLE>UiData</TITLE>
+</HEAD>
+<H1>UiData</H1>
+<HR>
+<H2>Building the wrapper libraries and their associated modules</H2>
+The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
+this directory is listed below. The output files are written to or removed from
+<B><I><A HREF="../../source.html#JASL_BASE">$JASL_BASE</A></I>/lib/{scripting language name (lower case)}</B>
+for the libraries or the sub-directories of <B><I>$JASL_BASE</I>/bin</B>,
+associated with their scripting language below, for the module files.
+<P>
+<UL>
+<LI><TT><A HREF="http://www.perl.org/">perl</A></TT> - <B><I>perljASL</I></B>
+<LI><TT><A HREF="http://www.python.org/">python</A></TT> - <B><I>pyjASL</I></B>
+</UL>
+<P>
+<I>
+The following targets are used to build and clean the libraries and module files
+necessary to access the <A HREF="../../jasl/ui/data/data.html">UiData</A>
+library using the scripting language name (<U>perl</U> or <U>python</U>)
+included in the target name.
+</I>
+<P>
+<LI><TT>{language name}_src</TT> - uses <TT><U>swig</U></TT> to generate the
+library source file (<I>UiData_wrap.cxx</I>). If successful, it also creates the
+module file, placing it in the directory noted above.
+<P>
+<LI><TT>{language name}_obj</TT> - executes the actions defined for the
+<TT>{language name}_src</TT> target and then uses <TT><U>gcc</U></TT> to compile
+the generated source file into an object (.o) file.
+<P>
+<LI><TT>{language name}_lib</TT> - executes the actions defined for the
+<TT>{language name}_obj</TT> target and then uses the object (.o) file to
+generate a shared library (<I>UiData.so</I>) in the directory noted above.
+<P>
+<LI><TT>clean_src</TT> - deletes the library source file
+(<I>UiData_wrap.cxx</I>).
+<LI><TT>clean_obj</TT> - deletes the library object file (<I>UiData_wrap.o</I>).
+<P>
+<LI><TT>clean_{language name}</TT> - executes the actions defined for the
+<TT>clean_{language name}_module</TT> and <TT>clean_{language name}_lib</TT>
+targets.
+<P>
+<LI><TT>clean_{language name}_module</TT> - deletes the module file(s) from the
+directory noted above.
+<LI><TT>clean_{language name}_lib</TT> - deletes the library from the directory
+noted above.
+<P>
+<I>
+The following targets are used to build and clean all of the libraries and files
+referenced above, using combinations of the targets associated with them, and
+the indicated documentation.
+</I>
+<P>
+<LI><I>none</I> or <TT>libs</TT> - executes the actions defined for each
+<TT>{language name}_lib</TT> target, followed by the <TT>clean</TT> target.
+<P>
+<LI><TT>clean_all</TT> - executes the actions defined for the <TT>clean</TT> and
+<TT>clean_libs</TT> targets.
+<P>
+<LI><TT>clean</TT> - executes the actions defined for the <TT>clean_src</TT> and
+<TT>clean_obj</TT> targets.
+<LI><TT>clean_libs</TT> - executes the actions defined for each
+<TT>clean_{language name}</TT> target.
+<P>
+<LI><TT>docs</TT> - generates an HTML version of each interface file and the
+<U>Makefile</U> using
+<TT><A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html#Top>source-highlight</A></TT>,
+placing the output files in
+<B><I>$JASL_BASE</I>/share/jasl/doc/source/swig/<A HREF=index.html>UiData</A></B>.
+This file, <B>UiData.html</B>, is also generated, and includes links to all of
+the HTML files.
+</UL>
+<HR>
+<A HREF="http://vim.sourceforge.net/"><img src="../../vim.png" align="right" BORDER=0></A>
