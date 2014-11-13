@@ -17,6 +17,7 @@ sys.path.append("/home/campbell/jasl/lib/jasl/python")
 
 from CniWrapper import *
 from Counters   import *
+from UiData     import *
 from Utilities  import *
 
 # The following call is necessary only if either the js2cc() or cc2js() function
@@ -27,16 +28,14 @@ from Utilities  import *
 # A call to the valueOf() method of each of the following enums is necessary in
 # order to use the constants associated with the type/object directly.
 
-nationality    = Nationalities_valueOf(cc2js("AMERICAN"))
+nationality    = Nationalities_valueOf(cc2js("GERMAN"))
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
-classification = Classifications_valueOf(cc2js("GREEN"))
+classification = Classifications_valueOf(cc2js("ELITE"))
 state          = States_valueOf(cc2js("NORMAL"))
 
 # Create an instance of a German Leader.
 
-germanLeader = Leader(cvar.Nationalities_GERMAN,
-                      cvar.InfantryTypes_NONE,
-                      9,9,4,-1)
+germanLeader = Leader(nationality,unitType,9,9,4,-1)
 
 germanLeader.setIdentity(cc2js("Lt. Fellbaum"))
 
@@ -91,10 +90,10 @@ print "(Deserialized) Leader.toString() output:\n\n%s" % js2cc(unit.toString())
 
 # Create an instance of a Russian Squad.
 
-russianSquad = Squad(cvar.Nationalities_RUSSIAN,
-                     cvar.InfantryTypes_GUARDS,
-                     6,2,8,8,0,12,4,0,
-                     cvar.Classifications_ELITE,1,1,0)
+nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
+unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
+
+russianSquad = Squad(nationality,unitType,6,2,8,8,0,12,4,0,classification,1,1,0)
 
 russianSquad.setIdentity(cc2js("A"))
 
@@ -136,6 +135,45 @@ print "Squad.toString() output:\n\n%s" % js2cc(russianSquad.toString())
 #print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
 #print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
 
+# Create an array of Unit objects. These will be used to reference a Leader
+# instance and several Squad instances. These class types are derived from Unit.
+
+print "Building Unit array with a Leader & 3 Squads\n";
+
+unitList = []
+
+nationality    = Nationalities_valueOf(cc2js("AMERICAN"))
+unitType       = InfantryTypes_valueOf(cc2js("NONE"))
+classification = Classifications_valueOf(cc2js("FIRST_LINE"))
+
+unitList.append(Leader(nationality,unitType,9,9,4,-1))
+
+unitList[0].setIdentity(cc2js("Sgt. Slaughter"))
+
+unitList.append(Squad(nationality,unitType,6,6,6,6,0,11,4,0,
+                      classification,1,1,0))
+unitList.append(Squad(nationality,unitType,6,6,6,6,0,11,4,0,
+                      classification,1,1,0))
+unitList.append(Squad(nationality,unitType,6,6,6,6,0,11,4,0,
+                      classification,1,1,0))
+
+unitList[1].setIdentity(cc2js("X"))
+unitList[2].setIdentity(cc2js("Y"))
+unitList[3].setIdentity(cc2js("Z"))
+
+print "Displaying Unit array with a Leader & 3 Squads"
+
+for unitIndex in xrange(4):
+    print "\nUnitList[%d]:" % unitIndex
+
+    unit = unitList[unitIndex]
+
+    print "\n%s" % js2cc(unit.description())
+    print "%s"   % js2cc(unit.identity())
+    print "%s"   % js2cc(unit.unitType())
+    print "%s"   % unit.movement()
+    print "%s"   % js2cc(unit.status())
+
 # Simple function to prepend "Caught: " to the beginning of an exception message
 # returned by the tests below. This is done primarily to modify the output to
 # match that of the other test programs.
@@ -145,11 +183,10 @@ def printException(detail):
 
 # Create an instance of a German Squad (that throws some exceptions).
 
-print "Testing Exception handling during Squad creation:"
+print "\nTesting Exception handling during Squad creation:"
 
-nationality    = cvar.Nationalities_BRITISH
-unitType       = cvar.InfantryTypes_ENGINEERS
-classification = cvar.Classifications_FIRST_LINE
+nationality = Nationalities_valueOf(cc2js("BRITISH"))
+unitType    = InfantryTypes_valueOf(cc2js("ENGINEERS"))
 
 # Incompatible nationality and unitType
 
@@ -160,9 +197,9 @@ try:
 except ValueError as detail:
     printException(detail)
 
-nationality    = cvar.Nationalities_RUSSIAN
-unitType       = cvar.InfantryTypes_COMMISSAR
-classification = cvar.Classifications_GREEN
+nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
+unitType       = InfantryTypes_valueOf(cc2js("COMMISSAR"))
+classification = Classifications_valueOf(cc2js("GREEN"))
 
 # Incompatible description and unitType
 
@@ -173,9 +210,9 @@ try:
 except ValueError as detail:
     printException(detail)
 
-nationality    = cvar.Nationalities_GERMAN
-unitType       = cvar.InfantryTypes_NONE
-classification = cvar.Classifications_FIRST_LINE
+nationality    = Nationalities_valueOf(cc2js("GERMAN"))
+unitType       = InfantryTypes_valueOf(cc2js("NONE"))
+classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
 # Invalid Firepower
 
@@ -265,8 +302,8 @@ try:
 except ValueError as detail:
     printException(detail)
 
-nationality    = cvar.Nationalities_ITALIAN
-classification = cvar.Classifications_SS
+nationality    = Nationalities_valueOf(cc2js("ITALIAN"))
+classification = Classifications_valueOf(cc2js("SS"))
 
 # Incompatible Classification
 
@@ -277,8 +314,8 @@ try:
 except ValueError as detail:
     printException(detail)
 
-nationality    = cvar.Nationalities_GERMAN
-classification = cvar.Classifications_SECOND_LINE
+nationality    = Nationalities_valueOf(cc2js("GERMAN"))
+classification = Classifications_valueOf(cc2js("SECOND_LINE"))
 
 # Invalid Smoke Placement Exponent (Minimum)
 
@@ -304,8 +341,8 @@ except ValueError as detail:
 
 print "\nTesting Exception handling during Leader creation:"
 
-nationality    = cvar.Nationalities_BRITISH
-unitType       = cvar.InfantryTypes_CANADIAN
+nationality = Nationalities_valueOf(cc2js("BRITISH"))
+unitType    = InfantryTypes_valueOf(cc2js("CANADIAN"))
 
 # Invalid Modifier (Minimum)
 
@@ -337,3 +374,43 @@ for i in (list(range(12))):
 #         " Combined: %2d" % dice.combinedResult()
 
     print "%s" % (js2cc(dice.toString()))
+
+# Test the Game class.
+
+print "Testing the operations of the Game class:";
+
+allies           = Sides_valueOf(cc2js("ALLIES"))
+nationality      = Nationalities_valueOf(cc2js("AMERICAN"))
+alliedPlayerName = cc2js("Pixie")
+
+game = Game_game();
+
+game.addPlayer(allies,alliedPlayerName,nationality,1)
+
+axis           = Sides_valueOf(cc2js("AXIS"))
+nationality    = Nationalities_valueOf(cc2js("GERMAN"))
+axisPlayerName = cc2js("Buddy")
+
+game.addPlayer(axis,axisPlayerName,nationality,1)
+
+alliedPlayer = game.player(allies,alliedPlayerName)
+
+leader = cc2js("9-1 Leader")
+squad  = cc2js("7-4-7 Squad")
+
+alliedPlayer.addUnit(leader);
+alliedPlayer.addUnit(squad);
+alliedPlayer.addUnit(squad);
+alliedPlayer.addUnit(squad);
+
+axisPlayer = game.player(axis,axisPlayerName)
+
+leader = cc2js("8-1 Leader")
+squad  = cc2js("6-5-8 Squad")
+
+axisPlayer.addUnit(leader);
+axisPlayer.addUnit(squad);
+axisPlayer.addUnit(squad);
+axisPlayer.addUnit(squad);
+
+print "\n%s" % js2cc(game.toText());

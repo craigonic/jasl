@@ -21,6 +21,7 @@
 
 use CniWrapper;
 use Counters;
+use UiData;
 use Utilities;
 
 # The following call is necessary only if either the js2cc() or cc2js() function
@@ -160,9 +161,51 @@ printf("Squad.toString() output:\n\n%s\n",
 #printf("\tsmokePlacementExponent(): %d\n",
 #       $russianSquad->smokePlacementExponent());
 
+# Create an array of Unit objects. These will be used to reference a Leader
+# instance and several Squad instances. These class types are derived from Unit.
+
+printf("Building Unit array with a Leader & 3 Squads\n");
+
+@unitList = ();
+
+$nationality    = $Counters::Nationalities::AMERICAN;
+$unitType       = $Counters::InfantryTypes::NONE;
+$classification = $Counters::Classifications::FIRST_LINE;
+
+push @unitList,new Counters::Leader($nationality,$unitType,9,9,4,-1);
+
+$unitList[0]->setIdentity(CniWrapper::cc2js("Sgt. Slaughter"));
+
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
+
+$unitList[1]->setIdentity(CniWrapper::cc2js("X"));
+$unitList[2]->setIdentity(CniWrapper::cc2js("Y"));
+$unitList[3]->setIdentity(CniWrapper::cc2js("Z"));
+
+printf("\nDisplaying Unit array with a Leader & 3 Squads\n");
+
+$unitIndex = 0;
+
+foreach $unit (@unitList)
+{
+    printf("\nUnitList[%d]:\n",$unitIndex++);
+
+    printf("\n%s\n%s\n%s\n%s\n%s\n",
+           CniWrapper::js2cc($unit->description()),
+           CniWrapper::js2cc($unit->identity()),
+           CniWrapper::js2cc($unit->unitType()),
+           $unit->movement(),
+           CniWrapper::js2cc($unit->status()));
+}
+
 # Create an instance of a German Squad (that throws some exceptions).
 
-printf("Testing Exception handling during Squad creation:\n");
+printf("\nTesting Exception handling during Squad creation:\n");
 
 $nationality    = $Counters::Nationalities::BRITISH;
 $unitType       = $Counters::InfantryTypes::ENGINEERS;
@@ -392,7 +435,6 @@ $status = eval
 printException($@) if (!defined($status));
 
 # Test the Dice class.
-# Test the Dice class.
 
 printf("\nTesting the execution of the Dice class:\n\n");
 
@@ -407,6 +449,46 @@ for ($i = 0;$i < 12;$i++)
 
     printf("%s\n",CniWrapper::js2cc($theDice->toString()));
 }
+
+# Test the Game class.
+
+printf("Testing the operations of the Game class:\n");
+
+$allies           = UiData::Sides::valueOf(CniWrapper::cc2js("ALLIES"));
+$nationality      = $Counters::Nationalities::AMERICAN;
+$alliedPlayerName = CniWrapper::cc2js("Pixie");
+
+$game = UiData::Game::game();
+
+$game->addPlayer($allies,$alliedPlayerName,$nationality,1);
+
+$axis           = $UiData::Sides::AXIS;
+$nationality    = $Counters::Nationalities::GERMAN;
+$axisPlayerName = CniWrapper::cc2js("Buddy");
+
+$game->addPlayer($axis,$axisPlayerName,$nationality,1);
+
+$alliedPlayer = $game->player($allies,$alliedPlayerName);
+
+$leader = CniWrapper::cc2js("9-1 Leader");
+$squad  = CniWrapper::cc2js("7-4-7 Squad");
+
+$alliedPlayer->addUnit($leader);
+$alliedPlayer->addUnit($squad);
+$alliedPlayer->addUnit($squad);
+$alliedPlayer->addUnit($squad);
+
+$axisPlayer = $game->player($axis,$axisPlayerName);
+
+$leader = CniWrapper::cc2js("8-1 Leader");
+$squad  = CniWrapper::cc2js("6-5-8 Squad");
+
+$axisPlayer->addUnit($leader);
+$axisPlayer->addUnit($squad);
+$axisPlayer->addUnit($squad);
+$axisPlayer->addUnit($squad);
+
+printf("\n%s\n",CniWrapper::js2cc($game->toText()));
 
 ################################################################################
 # printException - a subroutine to do just what its name says. In this case, it
