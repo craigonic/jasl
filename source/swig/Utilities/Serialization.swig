@@ -1,7 +1,7 @@
 // ************************************************************************** //
 // Serialization.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is //
 //                      used to generate shared libraries that link to the    //
-//                      library created for the <A HREF="../jasl/utilities/utilities.html">package</A> containing this       //
+//                      library created for the <A HREF="../../jasl/utilities/utilities.html">package</A> containing this       //
 //                      class. These libraries, along with the other files    //
 //                      that are generated, allow the methods of this class   //
 //                      to be accessed from the supported scripting languages //
@@ -16,7 +16,7 @@
 
 %module Serialization;
 
-// The public interface of the <A HREF="../jasl/utilities/Serialization.html">Serialization</A> class.
+// The public interface of the <A HREF="../../jasl/utilities/Serialization.html">Serialization</A> class.
 
 class Serialization
 {
