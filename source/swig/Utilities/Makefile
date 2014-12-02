@@ -1,6 +1,6 @@
 ################################################################################
 # Makefile - This make parameter file is used to build wrapper libraries for   #
-#            the jasl.ui.data package using SWIG. These libraries interact     #
+#            the jasl.utilities package using SWIG. These libraries interact   #
 #            with the corresponding jASL library, allowing the public classes  #
 #            to be used in scripting languages.                                #
 #                                                                              #
@@ -98,8 +98,6 @@ python_obj: python_src
 # Build the library for the desired target language.
 
 COMMON_BUILD_OPTIONS := $(GCC_COMMON_BUILD_OPTIONS) \
-                        -l$(UI_DATA_BASE_LIB_NAME) \
-                        -l$(COUNTERS_BASE_LIB_NAME) \
                         -l$(UTILITIES_BASE_LIB_NAME) \
                         $(SWIG_WRAPPER_OBJ)
 
