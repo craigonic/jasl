@@ -1,6 +1,6 @@
 // ************************************************************************** //
 // CniWrapper.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is    //
-//                   used to generate libraries that link to the <A HREF="../cni-wrapper/cni-wrapper.html">cni-wrapper</A>  //
+//                   used to generate libraries that link to the <A HREF="../../cni-wrapper/cni-wrapper.html">cni-wrapper</A>  //
 //                   library. These libraries, along with the other files     //
 //                   that are generated, are used to create, manage, and      //
 //                   close a JVM (<A HREF="http://java.sun.com/">Java</A> Virtual Machine). The JVM is required  //
@@ -27,7 +27,7 @@
 %newobject CniWrapper::stringToConstChar(::java::lang::String* javaString);
 %newobject js2cc(::java::lang::String* javaString);
 
-// The public interface of the <A HREF="../cni-wrapper/CniWrapper.h.html">CniWrapper</A> class.
+// The public interface of the <A HREF="../../cni-wrapper/CniWrapper.h.html">CniWrapper</A> class.
 
 class CniWrapper
 {
