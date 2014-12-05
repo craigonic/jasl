@@ -20,7 +20,7 @@
 %}
 
 // The stringToConstChar() method and the js2cc() function allocate memory to
-// store the data copied from the <A HREF="http://java.sun.com/javase/7/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory
+// store the data copied from the <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory
 // to be freed in the wrapper function after it creates the native data item to
 // store the string.
 
