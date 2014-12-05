@@ -24,6 +24,7 @@ scripting language name (<U>perl</U> or <U>python</U>) included in the target
 name.
 </I>
 <P>
+<UL>
 <LI><TT>{language name}_src</TT> - uses <TT><U>swig</U></TT> to generate the
 library source file (<I>Counters_wrap.cxx</I>). If successful, it also creates
 the module file(s), placing each in the directory noted above.
@@ -49,13 +50,17 @@ targets.
 directory noted above.
 <LI><TT>clean_{language name}_lib</TT> - deletes the library from the directory
 noted above.
+</UL>
 <P>
 <I>
 The following targets are used to build and clean all of the libraries and files
 referenced above, using combinations of the targets associated with them, and
-the indicated documentation.
+the indicated documentation. They are also referenced by the
+<A HREF=../Makefile.html>Makefile</A> in the parent directory during recursive
+cleans and builds.
 </I>
 <P>
+<UL>
 <LI><I>none</I> or <TT>libs</TT> - executes the actions defined for each
 <TT>{language name}_lib</TT> target, followed by the <TT>clean</TT> target.
 <P>

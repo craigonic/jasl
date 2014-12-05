@@ -19,14 +19,15 @@ associated with their scripting language below, for the module files.
 <I>
 The following targets are used to build and clean the libraries and module files
 necessary to access the
-<A HREF="../../jasl/utilities/utilities.html">Utilities</A> library using the
-scripting language name (<U>perl</U> or <U>python</U>) included in the target
-name.
+<A HREF="../../jasl/utilities/utilities.html">jasl-utilities</A> library using
+the scripting language name (<U>perl</U> or <U>python</U>) included in the
+target name.
 </I>
 <P>
+<UL>
 <LI><TT>{language name}_src</TT> - uses <TT><U>swig</U></TT> to generate the
 library source file (<I>Utilities_wrap.cxx</I>). If successful, it also creates
-the module file, placing it in the directory noted above.
+the module file(s), placing each in the directory noted above.
 <P>
 <LI><TT>{language name}_obj</TT> - executes the actions defined for the
 <TT>{language name}_src</TT> target and then uses <TT><U>gcc</U></TT> to compile
@@ -34,7 +35,7 @@ the generated source file into an object (.o) file.
 <P>
 <LI><TT>{language name}_lib</TT> - executes the actions defined for the
 <TT>{language name}_obj</TT> target and then uses the object (.o) file to
-generate a shared library (<I>Utilities.so</I>) in the directory noted above.
+generate a shared library (<I>[_]Utilities.so</I>) in the directory noted above.
 <P>
 <LI><TT>clean_src</TT> - deletes the library source file
 (<I>Utilities_wrap.cxx</I>).
@@ -49,13 +50,17 @@ targets.
 directory noted above.
 <LI><TT>clean_{language name}_lib</TT> - deletes the library from the directory
 noted above.
+</UL>
 <P>
 <I>
 The following targets are used to build and clean all of the libraries and files
 referenced above, using combinations of the targets associated with them, and
-the indicated documentation.
+the indicated documentation. They are also referenced by the
+<A HREF=../Makefile.html>Makefile</A> in the parent directory during recursive
+cleans and builds.
 </I>
 <P>
+<UL>
 <LI><I>none</I> or <TT>libs</TT> - executes the actions defined for each
 <TT>{language name}_lib</TT> target, followed by the <TT>clean</TT> target.
 <P>
