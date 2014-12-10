@@ -35,8 +35,7 @@ static const char* js2cc(::java::lang::String* javaString)
 
         if (newCharString)
         {
-            JvGetStringUTFRegion(javaString,0,javaStringLength,
-                         newCharString);
+            JvGetStringUTFRegion(javaString,0,javaStringLength,newCharString);
 
             newCharString[javaStringLength] = '\0';
 
