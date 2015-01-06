@@ -238,6 +238,7 @@ CNI_UTILITIES_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_UTILITIES_STATIC_LIB_NAME)
 # ui "package" (really just a parent directory for component packages?)
 
 UI_PKG_NAME                   := ui
+
 # ui.data package.
 
 UI_DATA_PKG_NAME              := data
@@ -307,10 +308,28 @@ lib_directory:
 obj_sub_directory:
 	$(INSTALL_DIR) $(OBJ_SUB_DIRECTORY)
 
-## These targets are for the destination directories of the module files
-## associated with the libraries for each scripting language. The files are
-## actually generated in the swig directory, but the targets are defined here
-## for use in installing the scripts that use the libraries.
+## Build variables used in generating wrapper libraries with SWIG.
+
+# Command and target language specific options.
+
+SWIG_CMD := swig -c++
+SWIG_PERL_CMD := $(SWIG_CMD) -perl -outdir $(PERL_BIN_PATH)
+SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
+
+# GCC compile commands with options specific to each target language.
+
+#GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.14.2/i686-linux/CORE
+GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.18.0/x86_64-linux-thread-multi/CORE
+GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
+
+# GCC build/link options common to all libraries and target languages.
+
+GCC_COMMON_BUILD_OPTIONS := -lgcj -lstdc++ -L$(LIB_PATH)
+
+# Destination directories of the module files associated with the libraries for
+# each scripting language. The files are actually generated in sub-directories
+# of the swig directory, but the targets are defined here for use in installing
+# the scripts that use the libraries.
 
 .PHONY : perl_bin_directory
 perl_bin_directory:
@@ -319,3 +338,15 @@ perl_bin_directory:
 .PHONY : python_bin_directory
 python_bin_directory:
 	$(INSTALL_DIR) $(PYTHON_BIN_PATH)
+
+# Output directories for the Perl and Python libraries. The targets for the
+# language module files, which are stored in sub-directories of bin, are defined
+# above.
+
+.PHONY : perl_lib_directory
+perl_lib_directory:
+	$(INSTALL_DIR) $(PERL_LIB_PATH)
+
+.PHONY : python_lib_directory
+python_lib_directory:
+	$(INSTALL_DIR) $(PYTHON_LIB_PATH)

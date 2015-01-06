@@ -23,36 +23,6 @@ default : libs
 
 include $(JASL_BASE)/util/jasl.make
 
-## Build variables used in generating all of the wrapper libraries.
-
-# SWIG command and target language specific options.
-
-SWIG_CMD := swig -c++
-SWIG_PERL_CMD := $(SWIG_CMD) -perl -outdir $(PERL_BIN_PATH)
-SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
-
-# GCC compile commands with options specific to each target language.
-
-#GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.14.2/i686-linux/CORE
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.18.0/x86_64-linux-thread-multi/CORE
-GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
-
-# GCC build/link options common to all libraries and target languages.
-
-GCC_COMMON_BUILD_OPTIONS := -lgcj -lstdc++ -L$(LIB_PATH)
-
-## Targets to create the output directories for the Perl and Python libraries.
-## The targets for the language module files, which are stored in
-## sub-directories of bin, are defined in jasl.make
-
-.PHONY : perl_lib_directory
-perl_lib_directory:
-	$(INSTALL_DIR) $(PERL_LIB_PATH)
-
-.PHONY : python_lib_directory
-python_lib_directory:
-	$(INSTALL_DIR) $(PYTHON_LIB_PATH)
-
 # The library/module name
 LIBRARY_NAME := Counters
 # Input file for SWIG.
