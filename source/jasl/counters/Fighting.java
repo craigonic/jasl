@@ -20,8 +20,8 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 2.0
- * @author Copyright (C) 1998-2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 2.1
+ * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
 
@@ -51,7 +51,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	// single alphanumeric character. It is also used to store the full name
 	// for <A HREF="Leader.html">Leader</A>s and Heroes.
 
-	private String _identity;
+	private String _identity = "";
 
 	// This variable contains the current status of the derived object of
 	// this class. The status values are defined in the <A HREF="Status.html">Status.States</A> enum.
@@ -257,38 +257,19 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	/**
 	 * Set a new identity for a unit.
 	 *
-	 * @param newIdentity the new identity.
+	 * If a null or zero length parameter is specified, the current setting
+	 * will be cleared.
 	 *
-	 * @throws NullPointerException in the case of a null identity
-	 * @throws IllegalArgumentException in the case of a zero length identity
+	 * @param newIdentity the new identity.
 	 *
 	 * @see #identity
 	 */
 
 	public final void setIdentity(String newIdentity)
 	{
-		// Define local constants.
-
-		String METHOD_NAME = "setIdentity";
-
-		// Check the parameters received and throw the appropriate
-		// exception if necessary.
-
-		if (newIdentity == null)
-		{
-			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                          METHOD_NAME,
-			                                                          Messages.NULL_PARAMETER_MSG));
-		}
-
-		if (newIdentity.length() == 0)
-		{
-			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                              METHOD_NAME,
-			                                                              Messages.ZERO_LENGTH_PARAMETER_MSG));
-		}
-
-		_identity = newIdentity;
+		_identity =
+			((null == newIdentity) || (0 == newIdentity.length())) ?
+			"" : newIdentity;
 	}
 
 	/**
