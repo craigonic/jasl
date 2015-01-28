@@ -4,8 +4,6 @@
 //                 classes more directly associated with the game itself.     //
 //                                                                            //
 // Written By: Craig R. Campbell  -  January 2009                             //
-//                                                                            //
-// $Id: Messages.java,v 1.2 2009/11/25 06:58:08 craig Exp $
 // ************************************************************************** //
 
 package jasl.utilities;
@@ -14,8 +12,8 @@ package jasl.utilities;
  * This class provides static methods used to generate messages for use in
  * exception and text output.
  *
- * @version 1.2
- * @author Craig R. Campbell
+ * @version 1.3
+ * @author Copyright (C) 2009-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Messages.html">Source code</A>
  */
 
@@ -167,8 +165,6 @@ public final class Messages
 	 * Example - <CODE>Description  : </CODE>
 	 *
 	 * @throws NullPointerException in the case of a null input string
-	 * @throws IllegalArgumentException in the case of a zero length input
-	 * string
 	 * @throws IllegalArgumentException in the case of a column width that
 	 * is less than 2
 	 */
@@ -198,14 +194,7 @@ public final class Messages
 			                                                 METHOD_NAME,
 			                                                 NULL_PARAMETER_MSG));
 		}
-/*
-		if (inputString.length() == 0)
-		{
-			throw new IllegalArgumentException(buildErrorMessage(CLASS_NAME,
-			                                                     METHOD_NAME,
-			                                                     ZERO_LENGTH_PARAMETER_MSG));
-		}
-*/
+
 		if (columnWidth < MIN_STRING_LENGTH)
 		{
 			throw new IllegalArgumentException(buildErrorMessage(CLASS_NAME,
