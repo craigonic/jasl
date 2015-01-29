@@ -43,8 +43,6 @@ $germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
                                      $Counters::InfantryTypes_NONE,
                                      9,9,4,-1);
 
-$germanLeader->setIdentity(CniWrapper::cc2js("Lt. Fellbaum"));
-
 # Display all of the entered values for this instance using the toString()
 # method.
 

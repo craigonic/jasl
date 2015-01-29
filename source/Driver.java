@@ -24,8 +24,6 @@ public class Driver
                                          UnitType.InfantryTypes.NONE,
                                          9,9,4,-1);
 
-        germanLeader.setIdentity("Lt. Fellbaum");
-
         // Display all of the entered values for this instance using the
         // toString() method.
 
@@ -145,28 +143,24 @@ public class Driver
 
         // Null Identity
 
-        System.out.println("\nNull identity parameter:\n");
-
         try
         {
             squadObject.setIdentity(null);
         }
 
-        catch (NullPointerException e)
+        catch (Exception e) // No longer expected.
         {
             System.out.println("Caught: " + e);
         }
 
         // Blank Identity
 
-        System.out.println("\nZero-length identity parameter:\n");
-
         try
         {
             squadObject.setIdentity("");
         }
 
-        catch (IllegalArgumentException e)
+        catch (Exception e) // No longer expected.
         {
             System.out.println("Caught: " + e);
         }

@@ -68,8 +68,6 @@ int main(int argc, char *argv[])
 
         if (germanLeader)
         {
-            germanLeader->setIdentity(cc2js("Lt. Fellbaum"));
-
             const char* germanLeaderDetails = js2cc(germanLeader->toString());
 
             if (germanLeaderDetails)
@@ -216,28 +214,24 @@ int main(int argc, char *argv[])
 
         // Null Identity
 
-        printf("\nNull identity parameter:\n");
-
         try
         {
             squad->setIdentity(NULL);
         }
 
-        catch (jthrowable t)
+        catch (jthrowable t) // No longer expected.
         {
             printExceptionMessage(t);
         }
 
         // Blank Identity
 
-        printf("\nZero-length identity parameter:\n");
-
         try
         {
             squad->setIdentity(cc2js(""));
         }
 
-        catch (jthrowable t)
+        catch (jthrowable t) // No longer expected.
         {
             printExceptionMessage(t);
         }
