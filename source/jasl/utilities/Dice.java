@@ -19,8 +19,8 @@ package jasl.utilities;
  * This is a utility class used to provide the simulated result(s) of rolling
  * one or two six sided dice.
  *
- * @version 2.0
- * @author Copyright (C) 1999-2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 3.0
+ * @author Copyright (C) 1999-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Dice.html">Source code</A>
  */
 
@@ -164,7 +164,7 @@ public final class Dice
 	 * the dice.
 	 */
 
-	public String toString()
+	public String toText()
 	{
 		// Define local constants.
 

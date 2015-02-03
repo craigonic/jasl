@@ -25,10 +25,10 @@ public class Driver
                                          9,9,4,-1);
 
         // Display all of the entered values for this instance using the
-        // toString() method.
+        // toText() method.
 
-        System.out.println("\nLeader.toString() output:\n");
-        System.out.print(germanLeader.toString());
+        System.out.println("\nLeader.toText() output:\n");
+        System.out.print(germanLeader.toText());
 
         // Serialize the Leader object, write the data to a file (Leader.ser),
         // then deserialize the data into a new object.
@@ -41,10 +41,10 @@ public class Driver
             (Unit)Serialization.deserializeFromFile("/tmp/Leader.ser");
 
         // Display all of the entered values for the deserialized instance using
-        // the toString() method.
+        // the toText() method.
 
-        System.out.println("\n(Deserialized) Leader.toString() output:\n");
-        System.out.print(deserializedLeader.toString());
+        System.out.println("\n(Deserialized) Leader.toText() output:\n");
+        System.out.print(deserializedLeader.toText());
 
         // Create an instance of a Russian Squad.
 
@@ -57,10 +57,10 @@ public class Driver
         russianSquad.setIdentity("A");
 
         // Display all of the entered values for this instance using the
-        // toString() method.
+        // toText() method.
 
-        System.out.println("\nSquad.toString() output:\n\n" +
-                           russianSquad.toString());
+        System.out.println("\nSquad.toText() output:\n\n" +
+                           russianSquad.toText());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
@@ -486,7 +486,7 @@ public class Driver
 
                 // Show the results.
 
-                System.out.print(theDice.toString() + "\n");
+                System.out.print(theDice.toText() + "\n");
             }
 
             catch (IllegalStateException e)

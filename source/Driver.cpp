@@ -64,15 +64,15 @@ int main(int argc, char *argv[])
         Leader* germanLeader = new Leader(nationality,unitType,9,9,4,-1);
 
         // Display all of the entered values for this instance using the
-        // toString() method.
+        // toText() method.
 
         if (germanLeader)
         {
-            const char* germanLeaderDetails = js2cc(germanLeader->toString());
+            const char* germanLeaderDetails = js2cc(germanLeader->toText());
 
             if (germanLeaderDetails)
             {
-                printf("\nLeader.toString() output:\n\n%s\n",
+                printf("\nLeader.toText() output:\n\n%s\n",
                        germanLeaderDetails);
                 delete [] germanLeaderDetails;
                 germanLeaderDetails = NULL;
@@ -91,13 +91,13 @@ int main(int argc, char *argv[])
                 (Unit*)Serialization::deserializeFromFile(serializationFile);
 
             // Display all of the entered values for the deserialized instance
-            // using the toString() method.
+            // using the toText() method.
 
-            germanLeaderDetails = js2cc(deserializedLeader->toString());
+            germanLeaderDetails = js2cc(deserializedLeader->toText());
 
             if (germanLeaderDetails)
             {
-                printf("(Deserialized) Leader.toString() output:\n\n%s\n",
+                printf("(Deserialized) Leader.toText() output:\n\n%s\n",
                        germanLeaderDetails);
                 delete [] germanLeaderDetails;
                 germanLeaderDetails = NULL;
@@ -115,17 +115,17 @@ int main(int argc, char *argv[])
                                         classification,true,true,0);
 
         // Display all of the entered values for this instance using the
-        // toString() method.
+        // toText() method.
 
         if (russianSquad)
         {
             russianSquad->setIdentity(cc2js("A"));
 
-            const char* russianSquadDetails = js2cc(russianSquad->toString());
+            const char* russianSquadDetails = js2cc(russianSquad->toText());
 
             if (russianSquadDetails)
             {
-                printf("Squad.toString() output:\n\n%s\n",russianSquadDetails);
+                printf("Squad.toText() output:\n\n%s\n",russianSquadDetails);
                 delete [] russianSquadDetails;
                 russianSquadDetails = NULL;
             }
@@ -534,7 +534,7 @@ int main(int argc, char *argv[])
 //                     theDice->coloredDieValue(),
 //                     theDice->combinedResult());
 
-                printJavaString(theDice->toString());
+                printJavaString(theDice->toText());
             }
 
             else printf("New Dice object generation failed\n");

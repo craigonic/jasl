@@ -19,7 +19,7 @@ package jasl.counters;
  * operation on a String member variable within the implementing class.
  *
  * @version 2.0
- * @author Copyright (C) 2006-2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/UnitType.html">Source code</A>
  */
 
@@ -28,7 +28,7 @@ public interface UnitType
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying a more
-	// specific description of a <A HREF="Fighting.html">Fighting</A> unit using an objects toString()
+	// specific description of a <A HREF="Fighting.html">Fighting</A> unit using an objects toText()
 	// method.
 
 	/**

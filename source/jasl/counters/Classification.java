@@ -21,7 +21,7 @@ package jasl.counters;
  * implementing class.
  *
  * @version 2.0
- * @author Copyright (C) 2006-2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Classification.html">Source code</A>
  */
 
@@ -30,7 +30,7 @@ public interface Classification
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the
-	// classification of a <A HREF="Personnel.html">Personnel</A> unit using an objects toString()
+	// classification of a <A HREF="Personnel.html">Personnel</A> unit using an objects toText()
 	// method.
 
 	/**

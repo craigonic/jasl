@@ -20,7 +20,7 @@ package jasl.counters;
  * variable within the implementing class.
  *
  * @version 1.0
- * @author Copyright (C) 2011 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2011-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/SprayingFire.html">Source code</A>
  */
 
@@ -29,7 +29,7 @@ public interface SprayingFire
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying whether or
-	// not a <A HREF="Unit.html">Unit</A> has this capability using an objects toString() method.
+	// not a <A HREF="Unit.html">Unit</A> has this capability using an objects toText() method.
 
 	/**
 	 * Provides a label indicating if a unit has spray fire capability :

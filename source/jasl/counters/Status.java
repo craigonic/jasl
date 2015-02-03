@@ -20,7 +20,7 @@ package jasl.counters;
  * class.
  *
  * @version 1.0
- * @author Copyright (C) 2011-2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2011-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Status.html">Source code</A>
  */
 
@@ -29,7 +29,7 @@ public interface Status
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the status
-	// of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
+	// of a <A HREF="Unit.html">Unit</A> using an objects toText() method.
 
 	/**
 	 * Provides a label for a unit's status : <B>Status</B>

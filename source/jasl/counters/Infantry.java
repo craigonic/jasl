@@ -20,8 +20,8 @@ import jasl.utilities.Messages;
  * infantry units. It is intended strictly as a superclass, not to be
  * instantiated directly.
  *
- * @version 2.0
- * @author Copyright (C) 1998-2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 3.0
+ * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
 
@@ -31,7 +31,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 
 	// The following constants are provided primarily for use in displaying
 	// the value returned by their corresponding access methods in the <A HREF="Unit.html">Unit</A>
-	// objects toString() method.
+	// objects toText() method.
 
 	/**
 	 * Provides a label for a unit's basic point value : <B>Basic Point Value</B>
@@ -280,13 +280,13 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	public String toString()
+	public String toText()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the string defined in the parent class
 		// version of this method.
 
-		StringBuffer returnString = new StringBuffer(super.toString());
+		StringBuffer returnString = new StringBuffer(super.toText());
 
 		// Add the information describing the data stored in this class
 		// instance.

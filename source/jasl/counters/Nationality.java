@@ -20,7 +20,7 @@ package jasl.counters;
  * implementing class.
  *
  * @version 2.0
- * @author Copyright (C) 2006-2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Nationality.html">Source code</A>
  */
 
@@ -29,7 +29,7 @@ public interface Nationality
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the
-	// nationality of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
+	// nationality of a <A HREF="Unit.html">Unit</A> using an objects toText() method.
 
 	/**
 	 * Provides a label for a unit's nationality : <B>Nationality</B>

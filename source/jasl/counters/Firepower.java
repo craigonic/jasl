@@ -20,7 +20,7 @@ package jasl.counters;
  * implementing class.
  *
  * @version 1.0
- * @author Copyright (C) 2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2012-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Firepower.html">Source code</A>
  */
 
@@ -30,7 +30,7 @@ public interface Firepower
 
 	// The following constants are provided primarily for use in displaying
 	// the values returned by the access methods in the output of a <A HREF="Unit.html">Unit</A>
-	// objects toString() method.
+	// objects toText() method.
 
 	/**
 	 * Provides a label for a unit's firepower : <B>Firepower</B>

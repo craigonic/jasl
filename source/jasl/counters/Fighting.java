@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 2.1
+ * @version 3.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -123,13 +123,13 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	public String toString()
+	public String toText()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the string defined in the parent class
 		// version of this method.
 
-		StringBuffer returnString = new StringBuffer(super.toString());
+		StringBuffer returnString = new StringBuffer(super.toText());
 
 		// Add the information describing the data stored in this class
 		// instance.

@@ -20,7 +20,7 @@ package jasl.counters;
  * implementing class.
  *
  * @version 1.0
- * @author Copyright (C) 2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2012-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leadership.html">Source code</A>
  */
 
@@ -29,7 +29,7 @@ public interface Leadership
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the
-	// modifier associated with a <A HREF="Leader.html">Leader</A> using an objects toString() method.
+	// modifier associated with a <A HREF="Leader.html">Leader</A> using an objects toText() method.
 
 	/**
 	 * Provides a label for a leaders modifier value : <B>Modifier</B>

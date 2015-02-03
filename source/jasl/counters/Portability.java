@@ -19,7 +19,7 @@ package jasl.counters;
  * operation on an integer member variable within the implementing class.
  *
  * @version 1.0
- * @author Copyright (C) 2012 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2012-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Portability.html">Source code</A>
  */
 
@@ -28,7 +28,7 @@ public interface Portability
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the portage
-	// value of a <A HREF="Unit.html">Unit</A> using an objects toString() method.
+	// value of a <A HREF="Unit.html">Unit</A> using an objects toText() method.
 
 	/**
 	 * Provides a label for a unit's portage value : <B>Portage Value</B>

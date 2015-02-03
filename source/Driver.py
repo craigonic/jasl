@@ -37,10 +37,9 @@ state          = States_valueOf(cc2js("NORMAL"))
 
 germanLeader = Leader(nationality,unitType,9,9,4,-1)
 
-# Display all of the entered values for this instance using the toString()
-# method.
+# Display all of the entered values for this instance using the toText() method.
 
-print "\nLeader.toString() output:\n\n%s" % js2cc(germanLeader.toString())
+print "\nLeader.toText() output:\n\n%s" % js2cc(germanLeader.toText())
 
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
@@ -82,9 +81,9 @@ Serialization_serializeToFile(toObject(germanLeader),serializationFile);
 unit = fromObject(Serialization_deserializeFromFile(serializationFile));
 
 # Display all of the entered values for the deserialized instance using the
-# toString() method.
+# toText() method.
 
-print "(Deserialized) Leader.toString() output:\n\n%s" % js2cc(unit.toString())
+print "(Deserialized) Leader.toText() output:\n\n%s" % js2cc(unit.toText())
 
 # Create an instance of a Russian Squad.
 
@@ -95,10 +94,9 @@ russianSquad = Squad(nationality,unitType,6,2,8,8,0,12,4,0,classification,1,1,0)
 
 russianSquad.setIdentity(cc2js("A"))
 
-# Display all of the entered values for this instance using the toString()
-# method.
+# Display all of the entered values for this instance using the toText() method.
 
-print "Squad.toString() output:\n\n%s" % js2cc(russianSquad.toString())
+print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
@@ -371,7 +369,7 @@ for i in (list(range(12))):
 #         " Colored: %d"  % dice.coloredDieValue() + \
 #         " Combined: %2d" % dice.combinedResult()
 
-    print "%s" % (js2cc(dice.toString()))
+    print "%s" % (js2cc(dice.toText()))
 
 # Test the Game class.
 

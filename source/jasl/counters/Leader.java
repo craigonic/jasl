@@ -18,8 +18,8 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 2.0
- * @author Copyright (C) 1998-2013 Craig R. Campbell (craigonic@gmail.com)
+ * @version 3.0
+ * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
 
@@ -118,13 +118,13 @@ public final class Leader extends Infantry implements Leadership
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	public String toString()
+	public String toText()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the string defined in the parent class
 		// version of this method.
 
-		StringBuffer returnString = new StringBuffer(super.toString());
+		StringBuffer returnString = new StringBuffer(super.toText());
 
 		// Add the information describing the data stored in this class
 		// instance.

@@ -12,15 +12,16 @@
 
 package jasl.counters;
 
-import java.io.*; // For Serializable
+import java.io.Serializable;
+
 import jasl.utilities.Messages;
 
 /**
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 2.1
- * @author Copyright (C) 1998-2014 Craig R. Campbell (craigonic@gmail.com)
+ * @version 3.0
+ * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
@@ -62,7 +63,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
 
-	public String toString()
+	public String toText()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the values that define the header (since

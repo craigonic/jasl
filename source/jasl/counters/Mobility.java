@@ -20,7 +20,7 @@ package jasl.counters;
  * implementing class.
  *
  * @version 1.0
- * @author Copyright (C) 2012-2013 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2012-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Mobility.html">Source code</A>
  */
 
@@ -30,7 +30,7 @@ public interface Mobility
 
 	// The following constants are provided primarily for use in displaying
 	// the output of the access methods in the output of a <A HREF="Unit.html">Unit</A> objects
-	// toString() method.
+	// toText() method.
 
 	/**
 	 * Provides a label for a unit's movement allowance : <B>Movement</B>

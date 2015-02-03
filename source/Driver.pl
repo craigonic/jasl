@@ -43,11 +43,10 @@ $germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
                                      $Counters::InfantryTypes_NONE,
                                      9,9,4,-1);
 
-# Display all of the entered values for this instance using the toString()
-# method.
+# Display all of the entered values for this instance using the toText() method.
 
-printf("\nLeader.toString() output:\n\n%s\n",
-       CniWrapper::js2cc($germanLeader->toString()));
+printf("\nLeader.toText() output:\n\n%s\n",
+       CniWrapper::js2cc($germanLeader->toText()));
 
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
@@ -98,10 +97,10 @@ $unit =
     Counters::fromObject(Utilities::Serialization::deserializeFromFile($serializationFile));
 
 # Display all of the entered values for the deserialized instance using the
-# toString() method.
+# toText() method.
 
-printf("(Deserialized) Leader.toString() output:\n\n%s\n",
-       CniWrapper::js2cc($unit->toString()));
+printf("(Deserialized) Leader.toText() output:\n\n%s\n",
+       CniWrapper::js2cc($unit->toText()));
 
 # Create an instance of a Russian Squad.
 
@@ -112,11 +111,10 @@ $russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
 
 $russianSquad->setIdentity(CniWrapper::cc2js("A"));
 
-# Display all of the entered values for this instance using the toString()
-# method.
+# Display all of the entered values for this instance using the toText() method.
 
-printf("Squad.toString() output:\n\n%s\n",
-       CniWrapper::js2cc($russianSquad->toString()));
+printf("Squad.toText() output:\n\n%s\n",
+       CniWrapper::js2cc($russianSquad->toText()));
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
@@ -445,7 +443,7 @@ for ($i = 0;$i < 12;$i++)
 #          $theDice->coloredDieValue(),
 #          $theDice->combinedResult());
 
-    printf("%s\n",CniWrapper::js2cc($theDice->toString()));
+    printf("%s\n",CniWrapper::js2cc($theDice->toText()));
 }
 
 # Test the Game class.

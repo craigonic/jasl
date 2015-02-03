@@ -12,7 +12,7 @@ package jasl.utilities;
  * This class provides static methods used to generate messages for use in
  * exception and text output.
  *
- * @version 1.3
+ * @version 1.4
  * @author Copyright (C) 2009-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Messages.html">Source code</A>
  */
@@ -74,15 +74,6 @@ public final class Messages
 
 	public static final String INVALID_PARAMETER_MSG =
 		"Invalid parameter(s) received : ";
-
-	/**
-	 * A label used to indicate that an exception occurred in a toString()
-	 * method :
-	 * <B>(toString) - </B>
-	 */
-
-	public static final String TO_STRING_LABEL =
-		"(toString) - ";
 
 	// Private symbolic constants
 
@@ -147,7 +138,7 @@ public final class Messages
 	/**
 	 * Create a formatted version of an input string by appending spaces as
 	 * necessary to make the length equal to a specific value. This function
-	 * is used primarily to create the tabular output for the toString()
+	 * is used primarily to create the tabular output for the toText()
 	 * method. The last character in the returned string will always be a
 	 * space.
 	 *
