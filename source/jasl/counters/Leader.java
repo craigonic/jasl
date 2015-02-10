@@ -18,7 +18,7 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
@@ -108,12 +108,13 @@ public final class Leader extends Infantry implements Leadership
 
 	/**
 	 * Display the value of each of the private data members that describe
-	 * the current instance. All of the members, beginning with the
-	 * top-level class (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this
-	 * level, are appended to the returned string. Each value is preceded by
-	 * a label defined in this class or the interface associated with the
-	 * item. There are no more than two values, including labels, in each
-	 * line of output.
+	 * the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label defined in this
+	 * class or the interface associated with the item. There are no more
+	 * than two values, including labels, in each line of output.
 	 *
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
@@ -143,7 +144,44 @@ public final class Leader extends Infantry implements Leadership
 	}
 
 	/**
-	 * Return the dice roll modifier (DRM) of a Leader.
+	 * Return an abbreviated description, including attributes, of a leader.
+	 *
+	 * The text includes the morale, modifier, and counter type. If an
+	 * identity is set, it will also be included, shown in parentheses.
+	 *
+	 * @return a <CODE>String</CODE> specifying a simple description of the leader.
+	 */
+
+	public String toString()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the morale level of the leader.
+
+		StringBuffer returnString =
+			new StringBuffer(Integer.toString(morale()));
+
+		// For positive modifier values, add the correct "sign".
+
+		if (_modifier > 0)  returnString.append("+");
+		if (0 == _modifier) returnString.append("-");
+
+		// Add the modifier value and the counter type.
+
+		returnString.append(Integer.toString(_modifier) + " ");
+		returnString.append(description());
+
+		// If the identity has been set, add it to the end of the
+		// string, in parentheses.
+
+		appendIdentity(returnString);
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Return the dice roll modifier (DRM) of a leader.
 	 *
 	 * @return an <CODE>int</CODE> specifying the modifier value.
 	 */

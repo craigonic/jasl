@@ -21,7 +21,7 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
@@ -124,12 +124,13 @@ abstract class Personnel extends Infantry implements Classification
 
 	/**
 	 * Display the value of each of the private data members that describe
-	 * the current instance. All of the members, beginning with the
-	 * top-level class (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this
-	 * level, are appended to the returned string. Each value is preceded by
-	 * a label defined in this class or the interface associated with the
-	 * item. There are no more than two values, including labels, in each
-	 * line of output.
+	 * the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label defined in this
+	 * class or the interface associated with the item. There are no more
+	 * than two values, including labels, in each line of output.
 	 *
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
@@ -171,11 +172,46 @@ abstract class Personnel extends Infantry implements Classification
 	}
 
 	/**
-	 * Indicate if a MMC inherently has the maximum experience level rating.
+	 * Return an abbreviated description, including attributes, of a unit.
+	 *
+	 * The text includes the firepower, range, morale, and counter type. If
+	 * an identity is set, it will also be included, shown in parentheses.
+	 *
+	 * @return a <CODE>String</CODE> specifying a simple description of the unit.
+	 */
+
+	public String toString()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the basic attributes of the unit.
+
+		StringBuffer returnString =
+			new StringBuffer(firepower() + "-" +
+			                 Integer.toString(normalRange()) + "-" +
+			                 Integer.toString(morale()));
+
+		// Add the counter type.
+
+		returnString.append(" " + description());
+
+		// If the identity has been set, add it to the end of the
+		// string, in parentheses.
+
+		appendIdentity(returnString);
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Indicate if a unit inherently has the maximum experience level
+	 * rating.
+	 *
 	 * This is used to determine how a unit is replaced. It is indicated on
 	 * the physical counter by an underscored morale value.
 	 *
-	 * @return a <CODE>boolean</CODE> indicating if the MMC has this attribute.
+	 * @return a <CODE>boolean</CODE> indicating if the unit has this attribute.
 	 */
 
 	public final boolean hasMaximumELR()
@@ -184,9 +220,10 @@ abstract class Personnel extends Infantry implements Classification
 	}
 
 	/**
-	 * Return the classification of a unit. This is indicated on the
-	 * front of the physical counter by an alphanumeric character in the
-	 * upper right corner.
+	 * Return the classification of a unit.
+	 *
+	 * This is indicated on the front of the physical counter by an
+	 * alphanumeric character in the upper right corner.
 	 *
 	 * @return a <CODE>String</CODE> specifying the unit classification.
 	 */

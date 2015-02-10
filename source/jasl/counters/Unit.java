@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
@@ -56,9 +56,11 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	/**
 	 * Display the value of each of the private data members that describe
-	 * the current instance. Each value is preceded by a label defined in
-	 * this class or the interface associated with the item. There are no
-	 * more than two values, including labels, in each line of output.
+	 * the current instance.
+	 *
+	 * Each value is preceded by a label defined in this class or the
+	 * interface associated with the item. There are no more than two
+	 * values, including labels, in each line of output.
 	 *
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
@@ -85,6 +87,25 @@ public abstract class Unit implements Serializable, TextOutput, Description
 		// Return the completed string to calling program.
 
 		return returnString.toString();
+	}
+
+	// The toString() method implementation is included here for the same
+	// reason as the empty constructor above.
+
+	/**
+	 * Return an abbreviated description, which may include attributes, of a
+	 * unit.
+	 *
+	 * This method overrides the parent implementation, and it is intended
+	 * that derived public classes provide their own version. If not, this
+	 * one will return the same value as description().
+	 *
+	 * @return a <CODE>String</CODE> specifying a simple description of the unit.
+	 */
+
+	public String toString()
+	{
+		return description();
 	}
 
 	/**

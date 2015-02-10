@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -113,12 +113,13 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	/**
 	 * Display the value of each of the private data members that describe
-	 * the current instance. All of the members, beginning with the
-	 * top-level class (<B><A HREF="Unit.html">Unit</A></B>) and continuing down the hierarchy to this
-	 * level, are appended to the returned string. Each value is preceded by
-	 * a label defined in this class or the interface associated with the
-	 * item. There are no more than two values, including labels, in each
-	 * line of output.
+	 * the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label defined in this
+	 * class or the interface associated with the item. There are no more
+	 * than two values, including labels, in each line of output.
 	 *
 	 * @return a multi-line tabular <CODE>String</CODE>, 80 characters wide.
 	 */
@@ -191,11 +192,12 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	}
 
 	/**
-	 * Return the formal / specific type of a unit. This provides more
-	 * accurate identification and application of attributes associated with
-	 * specific unit types. For example, it may specify vehicle names
-	 * (Pz VIb, T-34/76, etc.) as well as special infantry designations
-	 * (Gurkha, Paratroopers, etc.).
+	 * Return the formal / specific type of a unit.
+	 *
+	 * This provides for more accurate identification and application of the
+	 * attributes associated with specific unit types. For example, it may
+	 * specify vehicle names (Pz VIb, T-34/76, etc.) as well as special
+	 * infantry designations (Gurkha, Paratroopers, etc.).
 	 *
 	 * @return a <CODE>String</CODE> specifying the more precise description of the
 	 * unit's nationality, type, or capability.
@@ -209,9 +211,10 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	}
 
 	/**
-	 * Return the identity of a unit. This is typically a single
-	 * alphanumeric character, but it may also be a full name (e.g. for
-	 * leaders and heroes).
+	 * Return the identity of a unit.
+	 *
+	 * This is typically a single alphanumeric character, but it may also be
+	 * a full name (e.g. for leaders and heroes).
 	 *
 	 * The default setting is an empty string.
 	 *
@@ -312,5 +315,25 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		}
 
 		return false;
+	}
+
+	// Other methods
+
+	/**
+	 * Add the identity setting, in parentheses, to the specified buffer.
+	 *
+	 * This method is intended for use by the toString() implementation in
+	 * derived public classes. The StringBuffer is modified only if it is
+	 * <B>not</B> null <B>and</B> an identity value has been set (i.e. it is not empty).
+	 *
+	 * @param stringBuffer the item that the identity is to be appended to.
+	 */
+
+	protected final void appendIdentity(StringBuffer stringBuffer)
+	{
+		if ((null != stringBuffer) && (_identity.length() > 0))
+		{
+			stringBuffer.append(" (" + _identity + ")");
+		}
 	}
 }
