@@ -41,5 +41,7 @@ class Unit
         // Access methods.
 
         ::java::lang::String* description();
+
+        ::java::lang::String* toText();
         ::java::lang::String* toString();
 };

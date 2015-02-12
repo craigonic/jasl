@@ -83,5 +83,7 @@ class Leader
         // <A HREF="../../jasl/counters/Leader.html">Leader</A>.
 
         int                   modifier();
+
+        ::java::lang::String* toText();
         ::java::lang::String* toString();
 };

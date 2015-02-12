@@ -38,5 +38,5 @@ class Dice
         int                   coloredDieValue();
         int                   combinedResult();
 
-        ::java::lang::String* toString();
+        ::java::lang::String* toText();
 };

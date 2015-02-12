@@ -92,5 +92,7 @@ class Squad
         bool                  canAssaultFire();
         bool                  canSprayFire();
         int                   smokePlacementExponent();
+
+        ::java::lang::String* toText();
         ::java::lang::String* toString();
 };
