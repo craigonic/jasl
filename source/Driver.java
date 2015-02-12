@@ -30,6 +30,12 @@ public class Driver
         System.out.println("\nLeader.toText() output:\n");
         System.out.print(germanLeader.toText());
 
+        // Display an abbreviated description of this instance using the
+        // toString() method.
+
+        System.out.println("\nLeader.toString() output:\n");
+        System.out.println(germanLeader.toString());
+
         // Serialize the Leader object, write the data to a file (Leader.ser),
         // then deserialize the data into a new object.
 
@@ -45,6 +51,12 @@ public class Driver
 
         System.out.println("\n(Deserialized) Leader.toText() output:\n");
         System.out.print(deserializedLeader.toText());
+
+        // Display an abbreviated description of the deserialized instance using
+        // the toString() method.
+
+        System.out.println("\n(Deserialized) Leader.toString() output:\n");
+        System.out.println(deserializedLeader.toString());
 
         // Create an instance of a Russian Squad.
 
@@ -62,11 +74,17 @@ public class Driver
         System.out.println("\nSquad.toText() output:\n\n" +
                            russianSquad.toText());
 
+        // Display an abbreviated description of this instance using the
+        // toString() method.
+
+        System.out.println("Squad.toString() output:\n\n" +
+                           russianSquad.toString());
+
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
 
-        System.out.println("Building Unit array with a Leader & 3 Squads\n");
+        System.out.println("\nBuilding Unit array with a Leader & 3 Squads\n");
 
         Unit[] UnitList = new Unit[4];
 
@@ -106,7 +124,8 @@ public class Driver
 
         for (int i = 0; i < 4; i++)
         {
-            System.out.println("\nUnitList[" + i + "]:");
+            System.out.println("\nUnitList[" + i + "]:\t" +
+                               UnitList[i].toString());
 
             if (Description.Descriptions.LEADER.label() == UnitList[i].description())
             {

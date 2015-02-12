@@ -41,6 +41,11 @@ germanLeader = Leader(nationality,unitType,9,9,4,-1)
 
 print "\nLeader.toText() output:\n\n%s" % js2cc(germanLeader.toText())
 
+# Display an abbreviated description of this instance using the toString()
+# method.
+
+print "Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString())
+
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
 
@@ -85,6 +90,11 @@ unit = fromObject(Serialization_deserializeFromFile(serializationFile));
 
 print "(Deserialized) Leader.toText() output:\n\n%s" % js2cc(unit.toText())
 
+# Display an abbreviated description of the deserialized instance using the
+# toString() method.
+
+print "(Deserialized) Leader.toString() output:\n\n%s\n" % js2cc(unit.toString())
+
 # Create an instance of a Russian Squad.
 
 nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
@@ -97,6 +107,11 @@ russianSquad.setIdentity(cc2js("A"))
 # Display all of the entered values for this instance using the toText() method.
 
 print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
+
+# Display an abbreviated description of this instance using the toString()
+# method.
+
+print "Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString())
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
@@ -160,9 +175,9 @@ unitList[3].setIdentity(cc2js("Z"))
 print "Displaying Unit array with a Leader & 3 Squads"
 
 for unitIndex in xrange(4):
-    print "\nUnitList[%d]:" % unitIndex
-
     unit = unitList[unitIndex]
+
+    print "\nUnitList[%d]:\t%s" % (unitIndex,js2cc(unit.toString()))
 
     print "\n%s" % js2cc(unit.description())
     print "%s"   % js2cc(unit.identity())

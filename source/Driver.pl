@@ -48,6 +48,12 @@ $germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
 printf("\nLeader.toText() output:\n\n%s\n",
        CniWrapper::js2cc($germanLeader->toText()));
 
+# Display an abbreviated description of this instance using the toString()
+# method.
+
+printf("Leader.toString() output:\n\n%s\n\n",
+       CniWrapper::js2cc($germanLeader->toString()));
+
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
 
@@ -102,6 +108,12 @@ $unit =
 printf("(Deserialized) Leader.toText() output:\n\n%s\n",
        CniWrapper::js2cc($unit->toText()));
 
+# Display an abbreviated description of the deserialized instance using the
+# toString() method.
+
+printf("(Deserialized) Leader.toString() output:\n\n%s\n\n",
+       CniWrapper::js2cc($unit->toString()));
+
 # Create an instance of a Russian Squad.
 
 $russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
@@ -115,6 +127,12 @@ $russianSquad->setIdentity(CniWrapper::cc2js("A"));
 
 printf("Squad.toText() output:\n\n%s\n",
        CniWrapper::js2cc($russianSquad->toText()));
+
+# Display an abbreviated description of this instance using the toString()
+# method.
+
+printf("Squad.toString() output:\n\n%s\n\n",
+       CniWrapper::js2cc($russianSquad->toString()));
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
@@ -189,7 +207,8 @@ $unitIndex = 0;
 
 foreach $unit (@unitList)
 {
-    printf("\nUnitList[%d]:\n",$unitIndex++);
+    printf("\nUnitList[%d]:\t%s\n",
+           $unitIndex++,CniWrapper::js2cc($unit->toString()));
 
     printf("\n%s\n%s\n%s\n%s\n%s\n",
            CniWrapper::js2cc($unit->description()),

@@ -78,6 +78,18 @@ int main(int argc, char *argv[])
                 germanLeaderDetails = NULL;
             }
 
+            // Display an abbreviated description of this instance using the
+            // toString() method.
+
+            germanLeaderDetails = js2cc(germanLeader->toString());
+
+            if (germanLeaderDetails)
+            {
+                printf("Leader.toString() output:\n\n%s\n\n",germanLeaderDetails);
+                delete [] germanLeaderDetails;
+                germanLeaderDetails = NULL;
+            }
+
             // Serialize the Leader object, write the data to a file
             // (Leader.ser), then deserialize the data into a new object.
 
@@ -98,6 +110,19 @@ int main(int argc, char *argv[])
             if (germanLeaderDetails)
             {
                 printf("(Deserialized) Leader.toText() output:\n\n%s\n",
+                       germanLeaderDetails);
+                delete [] germanLeaderDetails;
+                germanLeaderDetails = NULL;
+            }
+
+            // Display an abbreviated description of the deserialized instance
+            // using the toString() method.
+
+            germanLeaderDetails = js2cc(deserializedLeader->toString());
+
+            if (germanLeaderDetails)
+            {
+                printf("(Deserialized) Leader.toString() output:\n\n%s\n\n",
                        germanLeaderDetails);
                 delete [] germanLeaderDetails;
                 germanLeaderDetails = NULL;
@@ -126,6 +151,18 @@ int main(int argc, char *argv[])
             if (russianSquadDetails)
             {
                 printf("Squad.toText() output:\n\n%s\n",russianSquadDetails);
+                delete [] russianSquadDetails;
+                russianSquadDetails = NULL;
+            }
+
+            // Display an abbreviated description of this instance using the
+            // toString() method.
+
+            russianSquadDetails = js2cc(russianSquad->toString());
+
+            if (russianSquadDetails)
+            {
+                printf("Squad.toString() output:\n\n%s\n\n",russianSquadDetails);
                 delete [] russianSquadDetails;
                 russianSquadDetails = NULL;
             }
@@ -182,7 +219,11 @@ int main(int argc, char *argv[])
         {
             if (UnitList[i])
             {
-                printf("\nUnitList[%d]:\n\n",i);
+                const char* toStringOutput = js2cc(UnitList[i]->toString());
+
+                printf("\nUnitList[%d]:\t%s\n\n",i,toStringOutput);
+
+                if (toStringOutput) delete [] toStringOutput;
 
                 printJavaString(((Mobile*)UnitList[i])->description());
                 printJavaString(((Mobile*)UnitList[i])->identity());
