@@ -1,10 +1,10 @@
-Wed Nov 12 09:24:56 PST 2014
+Wed Feb 11 13:21:17 PST 2015
 
-Leader.toString() output:
+Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
-Identity          : Lt. Fellbaum     
+Identity          :                  
 Status            : Normal                                                      
 Movement          : 6                
 Portage Capacity  : 1                Portage Level           : 0                
@@ -16,7 +16,11 @@ Portage Value     : 0
 Basic Point Value : 0                Experience Level Rating : 4                
 Modifier          : -1               
 
-(Deserialized) Leader.toString() output:
+Leader.toString() output:
+
+9-1 Leader
+
+(Deserialized) Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
@@ -32,7 +36,11 @@ Portage Value     : 0
 Basic Point Value : 0                Experience Level Rating : 4                
 Modifier          : -1               
 
-Squad.toString() output:
+(Deserialized) Leader.toString() output:
+
+9-1 Leader (Col. Klink)
+
+Squad.toText() output:
 
 Description       : Squad            
 Nationality       : Russian          Unit Type               : Guards           
@@ -50,11 +58,15 @@ Has Maximum ELR ? : No               Classification          : Elite
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
 Smoke Placement Ex: 0                
 
+Squad.toString() output:
+
+6-2-8 Squad (A)
+
 Building Unit array with a Leader & 3 Squads
 
 Displaying Unit array with a Leader & 3 Squads
 
-UnitList[0]:
+UnitList[0]:	9-1 Leader (Sgt. Slaughter)
 
 Leader
 Sgt. Slaughter
@@ -62,7 +74,7 @@ Sgt. Slaughter
 6
 Normal
 
-UnitList[1]:
+UnitList[1]:	6-6-6 Squad (X)
 
 Squad
 X
@@ -70,7 +82,7 @@ X
 4
 Normal
 
-UnitList[2]:
+UnitList[2]:	6-6-6 Squad (Y)
 
 Squad
 Y
@@ -78,7 +90,7 @@ Y
 4
 Normal
 
-UnitList[3]:
+UnitList[3]:	6-6-6 Squad (Z)
 
 Squad
 Z
@@ -87,14 +99,6 @@ Z
 Normal
 
 Testing Exception handling during Squad creation:
-
-Null identity parameter:
-
-Caught: java.lang.NullPointerException: Fighting(setIdentity) - Null parameter received.
-
-Zero-length identity parameter:
-
-Caught: java.lang.IllegalArgumentException: Fighting(setIdentity) - Invalid parameter received (zero length).
 
 Incompatible nationality and unitType parameters:
 
@@ -168,29 +172,29 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parame
 
 Testing the execution of the Dice class:
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
+White Die         : 1    Colored Die       : 5    Combined Result   : 6    
 
-White Die         : 3    Colored Die       : 4    Combined Result   : 7    
+White Die         : 2    Colored Die       : 6    Combined Result   : 8    
 
-White Die         : 4    Colored Die       : 5    Combined Result   : 9    
+White Die         : 2    Colored Die       : 6    Combined Result   : 8    
+
+White Die         : 5    Colored Die       : 1    Combined Result   : 6    
 
 White Die         : 3    Colored Die       : 3    Combined Result   : 6    
-
-White Die         : 3    Colored Die       : 3    Combined Result   : 6    
-
-White Die         : 6    Colored Die       : 2    Combined Result   : 8    
 
 White Die         : 5    Colored Die       : 4    Combined Result   : 9    
 
-White Die         : 1    Colored Die       : 6    Combined Result   : 7    
+White Die         : 6    Colored Die       : 4    Combined Result   : 10   
 
-White Die         : 6    Colored Die       : 1    Combined Result   : 7    
+White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+
+White Die         : 5    Colored Die       : 1    Combined Result   : 6    
+
+White Die         : 3    Colored Die       : 3    Combined Result   : 6    
 
 White Die         : 6    Colored Die       : 6    Combined Result   : 12   
 
-White Die         : 1    Colored Die       : 4    Combined Result   : 5    
-
-White Die         : 6    Colored Die       : 6    Combined Result   : 12   
+White Die         : 2    Colored Die       : 1    Combined Result   : 3    
 
 Testing the operations of the Game class:
 
