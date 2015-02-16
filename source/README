@@ -47,7 +47,7 @@ make test_python
 # Build all of the documentation. This requires a network connection for
 # javadoc to work correctly.
 
-make all_docs
+make -k all_docs
 
 # Update the ctags file.
 
