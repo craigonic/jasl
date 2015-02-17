@@ -128,7 +128,7 @@ HTLS_HEADER_FILE   := header.html
 
 JAVADOC_COMPILER   := javadoc
 JAVADOCS_PATH      := $(DOCS_PATH)/javadocs
-JAVADOCS_LINK      := -link http://java.sun.com/javase/7/docs/api
+JAVADOCS_LINK      := -link http://java.sun.com/javase/8/docs/api
 JAVADOC_OPTIONS    := -version -author -package -nodeprecatedlist -use \
                       -breakiterator
 JAVADOC_TITLE      := -windowtitle "jASL Programming Documentation"
