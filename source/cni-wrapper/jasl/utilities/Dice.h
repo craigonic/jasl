@@ -26,6 +26,10 @@ namespace jasl
  * in <A HREF="http://java.sun.com/">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>. It also interacts with the
  * <A HREF="../../CniWrapper.h.html">CniWrapper</A>, which provides a JVM to execute the library code, as well as
  * string conversion methods.
+ *
+ * @version 1.0
+ * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @see <A HREF="../../../source/cni-wrapper/jasl/utilities/Dice.h.html">Source code</A>
  */
 
 class Dice
@@ -45,7 +49,7 @@ class Dice
 		 * \brief Destructor.
 		 *
 		 * The destructor frees the memory associated with the string
-		 * returned by the toString() method. The "wrapped" object is
+		 * returned by the toText() method. The "wrapped" object is
 		 * freed through garbage collection by the virtual machine
 		 * managed by the CniWrapper.
 		 */
@@ -81,7 +85,7 @@ class Dice
 		 * OBJECT.</B>
 		 */
 
-		const char* toString();
+		const char* toText();
 
 	private:
 
@@ -97,9 +101,9 @@ class Dice
 		 * The text representation of the attributes and current state
 		 * for this Dice instance.
 		 *
-		 * This item references a copy of a Java String, converted to
-		 * the indicated type using the js2cc() function. The copy is
-		 * generated during the initial call to the toString() method.
+		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>, converted to
+		 * the indicated type using the <A HREF="../../CniWrapper.h.html#_JS2CC_">js2cc</A>() function. The copy is
+		 * generated during the initial call to the toText() method.
 		 * Subsequent calls only return the generated copy. The memory
 		 * associated with it is freed in the destructor.
 		 */
@@ -168,13 +172,13 @@ extern int combinedResult(Dice* dice);
 /**
  * \brief Return a text representation of the current state of the Dice.
  *
- * This function calls the <A HREF="#_TO_STRING_">toString</A>() method of the indicated object.
+ * This function calls the <A HREF="#_TO_STRING_">toText</A>() method of the indicated object.
  *
  * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
  * OF THE DESTRUCTION OF THE Dice OBJECT.</B>
  */
 
-extern const char* toString(Dice* dice);
+extern const char* toText(Dice* dice);
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -31,29 +31,29 @@ Dice::~Dice()
 
 int Dice::whiteDieValue() const
 {
-	return _dice->getWhiteDieValue();
+	return _dice->whiteDieValue();
 }
 
 // coloredDieValue: Return the result of rolling the colored die.
 
 int Dice::coloredDieValue() const
 {
-	return _dice->getColoredDieValue();
+	return _dice->coloredDieValue();
 }
 
 // combinedResult: Return the result of combining the values of the two dice.
 
 int Dice::combinedResult() const
 {
-	return _dice->getCombinedResult();
+	return _dice->combinedResult();
 }
 
-// toString: Return a text representation of the attributes and current state of
-//           this Dice.
+// toText: Return a text representation of the attributes and current state of
+//         this Dice.
 
-const char* Dice::toString()
+const char* Dice::toText()
 {
-	if (_dump == 0) _dump = js2cc(_dice->toString());
+	if (0 == _dump) _dump = js2cc(_dice->toText());
 
 	return _dump;
 }
@@ -99,9 +99,9 @@ int combinedResult(Dice* dice)
 	return (dice) ? dice->combinedResult() : 0;
 }
 
-// toString: Return a text representation of the current state of the Dice.
+// toText: Return a text representation of the current state of the Dice.
 
-const char* toString(Dice* dice)
+const char* toText(Dice* dice)
 {
-	return (dice) ? dice->toString() : 0;
+	return (dice) ? dice->toText() : 0;
 }
