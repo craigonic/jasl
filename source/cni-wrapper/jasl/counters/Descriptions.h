@@ -15,6 +15,10 @@
  *
  * This enum provides a subset of the functionality of its namesake, which is
  * implemented in <A HREF="http://java.sun.com/">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>.
+ *
+ * @version 0.1
+ * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @see <A HREF="../../../source/cni-wrapper/jasl/counters/Descriptions.h.html">Source code</A>
  */
 
 typedef enum
