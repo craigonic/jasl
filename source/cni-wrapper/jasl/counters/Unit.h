@@ -10,6 +10,8 @@
 #ifndef CNI_UNIT_H
 #define CNI_UNIT_H
 
+#include "Descriptions.h"
+
 #ifdef __cplusplus
 namespace jasl
 {
@@ -26,6 +28,10 @@ namespace jasl
  * in <A HREF="http://java.sun.com/">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>. It also interacts with the
  * <A HREF="../../CniWrapper.h.html">CniWrapper</A> and <A HREF="../../JaslErrorMessage.h.html">JaslErrorMessage</A> classes, which are used both to enable Java
  * support and keep it "behind the scenes".
+ *
+ * @version 0.2
+ * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @see <A HREF="../../../source/cni-wrapper/jasl/counters/Unit.h.html">Source code</A>
  */
 
 class Unit
@@ -43,7 +49,16 @@ class Unit
 
 		const char* description();
 
-		/** <A NAME="_TO_STRING_"></A>
+		/** <A NAME="_DESCRIPTION_TYPE_"></A>
+		 * \brief Return the basic type of this Unit.
+		 *
+		 * The returned value is the <A HREF="Descriptions.h.html">constant</A> associated with the
+		 * description() string.
+		 */
+
+		Descriptions descriptionType();
+
+		/** <A NAME="_TO_TEXT_"></A>
 		 * \brief Return a text representation of the attributes and
 		 * current state of this Unit.
 		 *
@@ -51,6 +66,17 @@ class Unit
 		 * member defined for the concrete class type. <B>IT SHOULD NOT BE
 		 * DELETED, AS THIS OCCURS AS PART OF THE DESTRUCTION OF THE
 		 * OBJECT.</B>
+		 */
+
+		const char* toText();
+
+		/** <A NAME="_TO_STRING_"></A>
+		 * \brief Return an abbreviated description, which may include
+		 * attributes, of this Unit.
+		 *
+		 * The returned string includes data specific to the concrete
+		 * class type. <B>IT SHOULD NOT BE DELETED, AS THIS OCCURS AS PART
+		 * OF THE DESTRUCTION OF THE OBJECT.</B>
 		 */
 
 		const char* toString();
@@ -91,8 +117,8 @@ class Unit
 		/**
 		 * The description setting for this Unit instance.
 		 *
-		 * This item references a copy of a Java <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A>, converted to
-		 * the indicated type using the js2cc() function. The copy is
+		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>, converted to
+		 * the indicated type using the <A HREF="../../CniWrapper.h.html#_JS2CC_">js2cc</A>() function. The copy is
 		 * generated during the initial call to the description()
 		 * method. Subsequent calls return this item. The memory is
 		 * freed in the destructor.
@@ -106,13 +132,27 @@ class Unit
 		 *
 		 * This item references a copy of a Java String, converted to
 		 * the indicated type using the js2cc() function. The copy is
+		 * generated during the each call to the toText() method.
+		 * Subsequent calls destroy the old string, create a new one,
+		 * and return it. The memory for the results of the last call to
+		 * toText() is freed in the destructor.
+		 */
+
+		const char* _dump;
+
+		/**
+		 * The abbreviated description, which may include attributes, of
+		 * this Unit.
+		 *
+		 * This item references a copy of a Java String, converted to
+		 * the indicated type using the js2cc() function. The copy is
 		 * generated during the each call to the toString() method.
 		 * Subsequent calls destroy the old string, create a new one,
 		 * and return it. The memory for the results of the last call to
 		 * toString() is freed in the destructor.
 		 */
 
-		const char* _dump;
+		const char* _label;
 
 		// Disable the generation of a copy constructor, and "="
 		// operator.
@@ -148,7 +188,29 @@ extern "C" {
 extern const char* description(Unit* unit);
 
 /**
+ * \brief Return the basic type of the specified Unit.
+ *
+ * This function calls the <A HREF="#_DESCRIPTION_TYPE_">descriptionType</A>() method of the indicated object. If
+ * the Unit pointer argument is NULL, the first element of the Descriptions enum
+ * will be returned.
+ */
+
+extern Descriptions descriptionType(Unit* unit);
+
+/**
  * \brief Return a text representation of the attributes and current state of
+ * the specified Unit.
+ *
+ * This function calls the <A HREF="#_TO_TEXT_">toText</A>() method of the indicated object.
+ *
+ * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
+ * OF THE DESTRUCTION OF THE Unit OBJECT.</B>
+ */
+
+extern const char* toText(Unit* unit);
+
+/**
+ * \brief Return an abbreviated description, which may include attributes, of
  * the specified Unit.
  *
  * This function calls the <A HREF="#_TO_STRING_">toString</A>() method of the indicated object.

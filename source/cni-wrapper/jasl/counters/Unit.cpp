@@ -8,6 +8,7 @@
  */
 
 #include "jasl/cni/CniWrapper.h"
+#include "jasl/counters/Description$Descriptions.h"
 #include "jasl/counters/Unit.h"
 
 #include "Unit.h"
@@ -15,7 +16,7 @@
 // Constructor.
 
 Unit::Unit() :
-	_unit(0),_description(0),_dump(0)
+	_unit(0),_description(0),_dump(0),_label(0)
 {
 }
 
@@ -25,30 +26,50 @@ Unit::~Unit()
 {
 	delete [] _description;
 	delete [] _dump;
+	delete [] _label;
 }
 
 // description: Return the description of this Unit.
 
 const char* Unit::description()
 {
-	if (_description == 0)
+	if (0 == _description)
 	{
-		_description = js2cc(_unit->getDescription());
+		_description = js2cc(_unit->description());
 	}
 
 	return _description;
 }
 
-// toString: Return a text representation of the attributes and current state of
+// description: Return the basic type of this Unit.
+
+Descriptions Unit::descriptionType()
+{
+	return Descriptions(jasl::counters::Description$Descriptions::valueOf(_unit->description())->ordinal());
+}
+
+// toText: Return a text representation of the attributes and current state of
+//         this Unit.
+
+const char* Unit::toText()
+{
+	if (_dump) delete [] _dump;
+
+	_dump = js2cc(_unit->toText());
+
+	return _dump;
+}
+
+// toString: Return an abbreviated description, which may include attributes, of
 //           this Unit.
 
 const char* Unit::toString()
 {
-	if (_dump) delete [] _dump;
+	if (_label) delete [] _label;
 
-	_dump = js2cc(_unit->toString());
+	_label = js2cc(_unit->toString());
 
-	return _dump;
+	return _label;
 }
 
 /******************************************************************************/
@@ -63,7 +84,22 @@ const char* description(Unit* unit)
 	return (unit) ? unit->description() : 0;
 }
 
-// toString: Return a text representation of the attributes and current state of
+// descriptionType: Return the basic type of the specified Unit.
+
+Descriptions descriptionType(Unit* unit)
+{
+	return (unit) ? unit->descriptionType() : Descriptions(0);
+}
+
+// toText: Return a text representation of the attributes and current state of
+//         the specified Unit.
+
+const char* toText(Unit* unit)
+{
+	return (unit) ? unit->toText() : 0;
+}
+
+// toString: Return an abbreviated description, which may include attributes, of
 //           the specified Unit.
 
 const char* toString(Unit* unit)
