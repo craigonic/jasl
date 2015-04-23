@@ -17,7 +17,7 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Squad counter.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Squad.html">Source code</A>
  */
@@ -206,6 +206,48 @@ public final class Squad extends Personnel implements SprayingFire
 		returnString.append(Messages.formatTextString(Integer.toString(smokePlacementExponent()),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Display the JSON representation each of the private data members that
+	 * describe the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label (key) defined in
+	 * this class or the interface associated with the item. Entries at each
+	 * level are successively indented to provide hierarchical formatting of
+	 * the output.
+	 *
+	 * @return a <CODE>String</CODE> containing the JSON data.
+	 */
+
+	public String toJSON()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the string defined in the parent class
+		// version of this method.
+
+		StringBuffer returnString = new StringBuffer(super.toJSON());
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		String INDENT = "      ";
+
+		returnString.append(INDENT +
+		                    buildJSONPair(CAN_ASSAULT_FIRE_LABEL,canAssaultFire()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(CAN_SPRAY_FIRE_LABEL,canSprayFire()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(SMOKE_PLACEMENT_EXP_LABEL,smokePlacementExponent()) +
+		                    JSON_OBJECT_END);
 
 		// Return the completed string to calling program.
 

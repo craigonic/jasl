@@ -21,7 +21,7 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 4.0
+ * @version 5.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
@@ -198,6 +198,45 @@ abstract class Personnel extends Infantry implements Classification
 		// string, in parentheses.
 
 		appendIdentity(returnString);
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Display the JSON representation each of the private data members that
+	 * describe the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label (key) defined in
+	 * this class or the interface associated with the item. Entries at each
+	 * level are successively indented to provide hierarchical formatting of
+	 * the output.
+	 *
+	 * @return a <CODE>String</CODE> containing the JSON data.
+	 */
+
+	public String toJSON()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the string defined in the parent class
+		// version of this method.
+
+		StringBuffer returnString = new StringBuffer(super.toJSON());
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		String INDENT = "     ";
+
+		returnString.append(INDENT +
+		                    buildJSONPair(HAS_MAXIMUM_ELR_LABEL,hasMaximumELR()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(CLASSIFICATION_LABEL,classification()) +
+		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
 

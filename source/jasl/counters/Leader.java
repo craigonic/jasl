@@ -18,7 +18,7 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 4.0
+ * @version 5.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
@@ -174,6 +174,42 @@ public final class Leader extends Infantry implements Leadership
 		// string, in parentheses.
 
 		appendIdentity(returnString);
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Display the JSON representation each of the private data members that
+	 * describe the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label (key) defined in
+	 * this class or the interface associated with the item. Entries at each
+	 * level are successively indented to provide hierarchical formatting of
+	 * the output.
+	 *
+	 * @return a <CODE>String</CODE> containing the JSON data.
+	 */
+
+	public String toJSON()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the string defined in the parent class
+		// version of this method.
+
+		StringBuffer returnString = new StringBuffer(super.toJSON());
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		String INDENT = "     ";
+
+		returnString.append(INDENT +
+		                    buildJSONPair(MODIFIER_LABEL,modifier()) +
+		                    JSON_OBJECT_END);
 
 		// Return the completed string to calling program.
 

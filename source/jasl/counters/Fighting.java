@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 4.0
+ * @version 5.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -66,10 +66,8 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	// This constant is used as part of the error messages (see below) that
 	// are generated when an exception is thrown.
 
-	private static final String CLASS_NAME = "Fighting";
-
 	private static final String nullPointerError =
-		Messages.buildErrorMessage(CLASS_NAME,Messages.CONSTRUCTOR,
+		Messages.buildErrorMessage("Fighting",Messages.CONSTRUCTOR,
 		                           Messages.NULL_PARAMETER_MSG);
 
 	// Constructor
@@ -174,6 +172,51 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		returnString.append(Messages.formatTextString(status(),
 		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
 		                                              false,true));
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Display the JSON representation each of the private data members that
+	 * describe the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label (key) defined in
+	 * this class or the interface associated with the item. Entries at each
+	 * level are successively indented to provide hierarchical formatting of
+	 * the output.
+	 *
+	 * @return a <CODE>String</CODE> containing the JSON data.
+	 */
+
+	public String toJSON()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the string defined in the parent class
+		// version of this method.
+
+		StringBuffer returnString = new StringBuffer(super.toJSON());
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		String INDENT = "  ";
+
+		returnString.append(INDENT +
+		                    buildJSONPair(NATIONALITY_LABEL,nationality()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(UNIT_TYPE_LABEL,unitType()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(IDENTITY_LABEL,identity()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(STATUS_LABEL,status()) +
+		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
 

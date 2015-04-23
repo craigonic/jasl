@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * infantry units. It is intended strictly as a superclass, not to be
  * instantiated directly.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
@@ -380,6 +380,66 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 		returnString.append(Messages.formatTextString(Integer.toString(experienceLevelRating()),
 		                                              FOURTH_COLUMN_VALUE_WIDTH,
 		                                              false,true));
+
+		// Return the completed string to calling program.
+
+		return returnString.toString();
+	}
+
+	/**
+	 * Display the JSON representation each of the private data members that
+	 * describe the current instance.
+	 *
+	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
+	 * continuing down the hierarchy to this level, are appended to the
+	 * returned string. Each value is preceded by a label (key) defined in
+	 * this class or the interface associated with the item. Entries at each
+	 * level are successively indented to provide hierarchical formatting of
+	 * the output.
+	 *
+	 * @return a <CODE>String</CODE> containing the JSON data.
+	 */
+
+	public String toJSON()
+	{
+		// Create a buffer to store the string to be returned,
+		// initializing it with the string defined in the parent class
+		// version of this method.
+
+		StringBuffer returnString = new StringBuffer(super.toJSON());
+
+		// Add the information describing the data stored in this class
+		// instance.
+
+		String INDENT = "    ";
+
+		returnString.append(INDENT +
+		                    buildJSONPair(FIREPOWER_LABEL,firepower()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(FIREPOWER_EQUIV_LABEL,firepowerEquivalent()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(NORMAL_RANGE_LABEL,normalRange()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(MORALE_LABEL,morale()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(BROKEN_MORALE_LABEL,brokenMorale()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(CAN_SELF_RALLY_LABEL,canSelfRally()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(PORTAGE_VALUE_LABEL,portageValue()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(BPV_LABEL,basicPointValue()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    buildJSONPair(ELR_LABEL,experienceLevelRating()) +
+		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
 
