@@ -86,4 +86,5 @@ class Leader
 
         ::java::lang::String* toText();
         ::java::lang::String* toString();
+        ::java::lang::String* toJSON();
 };
