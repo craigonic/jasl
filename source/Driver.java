@@ -58,6 +58,12 @@ public class Driver
         System.out.println("\n(Deserialized) Leader.toString() output:\n");
         System.out.println(deserializedLeader.toString());
 
+        // Display all of the entered values for the deserialized instance using
+        // the toJSON() method.
+
+        System.out.println("\n(Deserialized) Leader.toJSON() output:\n");
+        System.out.println(deserializedLeader.toJSON());
+
         // Create an instance of a Russian Squad.
 
         Squad russianSquad = new Squad(Nationality.Nationalities.RUSSIAN,
@@ -79,6 +85,12 @@ public class Driver
 
         System.out.println("Squad.toString() output:\n\n" +
                            russianSquad.toString());
+
+        // Display all of the entered values for this instance using the
+        // toJSON() method.
+
+        System.out.println("\nSquad.toJSON() output:\n\n" +
+                           russianSquad.toJSON());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are

@@ -127,6 +127,19 @@ int main(int argc, char *argv[])
                 delete [] germanLeaderDetails;
                 germanLeaderDetails = NULL;
             }
+
+            // Display all of the entered values for the deserialized instance
+            // using the toJSON() method.
+
+            germanLeaderDetails = js2cc(deserializedLeader->toJSON());
+
+            if (germanLeaderDetails)
+            {
+                printf("(Deserialized) Leader.toJSON() output:\n\n%s\n\n",
+                       germanLeaderDetails);
+                delete [] germanLeaderDetails;
+                germanLeaderDetails = NULL;
+            }
         }
 
         // Create an instance of a Russian Squad.
@@ -163,6 +176,18 @@ int main(int argc, char *argv[])
             if (russianSquadDetails)
             {
                 printf("Squad.toString() output:\n\n%s\n\n",russianSquadDetails);
+                delete [] russianSquadDetails;
+                russianSquadDetails = NULL;
+            }
+
+            // Display an abbreviated description of this instance using the
+            // toJSON() method.
+
+            russianSquadDetails = js2cc(russianSquad->toJSON());
+
+            if (russianSquadDetails)
+            {
+                printf("Squad.toJSON() output:\n\n%s\n\n",russianSquadDetails);
                 delete [] russianSquadDetails;
                 russianSquadDetails = NULL;
             }

@@ -95,6 +95,11 @@ print "(Deserialized) Leader.toText() output:\n\n%s" % js2cc(unit.toText())
 
 print "(Deserialized) Leader.toString() output:\n\n%s\n" % js2cc(unit.toString())
 
+# Display all of the entered values for the deserialized instance using the
+# toJSON() method.
+
+print "(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(unit.toJSON())
+
 # Create an instance of a Russian Squad.
 
 nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
@@ -112,6 +117,10 @@ print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
 # method.
 
 print "Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString())
+
+# Display all of the entered values for this instance using the toJSON() method.
+
+print "Squad.toJSON() output:\n\n%s\n" % js2cc(russianSquad.toJSON())
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.

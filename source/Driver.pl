@@ -114,6 +114,12 @@ printf("(Deserialized) Leader.toText() output:\n\n%s\n",
 printf("(Deserialized) Leader.toString() output:\n\n%s\n\n",
        CniWrapper::js2cc($unit->toString()));
 
+# Display all of the entered values for the deserialized instance using the
+# toJSON() method.
+
+printf("(Deserialized) Leader.toJSON() output:\n\n%s\n\n",
+       CniWrapper::js2cc($unit->toJSON()));
+
 # Create an instance of a Russian Squad.
 
 $russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
@@ -133,6 +139,11 @@ printf("Squad.toText() output:\n\n%s\n",
 
 printf("Squad.toString() output:\n\n%s\n\n",
        CniWrapper::js2cc($russianSquad->toString()));
+
+# Display all of the entered values for this instance using the toJSON() method.
+
+printf("Squad.toJSON() output:\n\n%s\n\n",
+       CniWrapper::js2cc($russianSquad->toJSON()));
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
