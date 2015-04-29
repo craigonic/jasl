@@ -16,7 +16,7 @@
 // Constructor.
 
 Unit::Unit() :
-	_unit(0),_description(0),_dump(0),_label(0)
+	_unit(0),_description(0),_dump(0),_label(0),_json(0)
 {
 }
 
@@ -27,6 +27,7 @@ Unit::~Unit()
 	delete [] _description;
 	delete [] _dump;
 	delete [] _label;
+	delete [] _json;
 }
 
 // description: Return the description of this Unit.
@@ -72,6 +73,18 @@ const char* Unit::toString()
 	return _label;
 }
 
+// toJSON: Return a JSON representation of the attributes and current state of
+//         this Unit.
+
+const char* Unit::toJSON()
+{
+	if (_json) delete [] _json;
+
+	_json = js2cc(_unit->toJSON());
+
+	return _json;
+}
+
 /******************************************************************************/
 
 // These functions are intended for use by C programs to access Unit objects,
@@ -105,4 +118,12 @@ const char* toText(Unit* unit)
 const char* toString(Unit* unit)
 {
 	return (unit) ? unit->toString() : 0;
+}
+
+// toJSON: Return a JSON representation of the attributes and current state of
+//         the specified Unit.
+
+const char* toJSON(Unit* unit)
+{
+	return (unit) ? unit->toJSON() : 0;
 }

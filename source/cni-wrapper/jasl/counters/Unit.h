@@ -29,7 +29,7 @@ namespace jasl
  * <A HREF="../../CniWrapper.h.html">CniWrapper</A> and <A HREF="../../JaslErrorMessage.h.html">JaslErrorMessage</A> classes, which are used both to enable Java
  * support and keep it "behind the scenes".
  *
- * @version 0.2
+ * @version 0.3
  * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/cni-wrapper/jasl/counters/Unit.h.html">Source code</A>
  */
@@ -80,6 +80,18 @@ class Unit
 		 */
 
 		const char* toString();
+
+		/** <A NAME="_TO_JSON_"></A>
+		 * \brief Return a JSON representation of the attributes and
+		 * current state of this Unit.
+		 *
+		 * The returned string includes a label (key) and value for each
+		 * data member defined for the concrete class type. <B>IT SHOULD
+		 * NOT BE DELETED, AS THIS OCCURS AS PART OF THE DESTRUCTION OF
+		 * THE OBJECT.</B>
+		 */
+
+		const char* toJSON();
 
 	protected:
 
@@ -154,6 +166,20 @@ class Unit
 
 		const char* _label;
 
+		/**
+		 * The JSON representation of the attributes and current state
+		 * for this Unit instance.
+		 *
+		 * This item references a copy of a Java String, converted to
+		 * the indicated type using the js2cc() function. The copy is
+		 * generated during the each call to the toJSON() method.
+		 * Subsequent calls destroy the old string, create a new one,
+		 * and return it. The memory for the results of the last call to
+		 * toJSON() is freed in the destructor.
+		 */
+
+		const char* _json;
+
 		// Disable the generation of a copy constructor, and "="
 		// operator.
 
@@ -220,6 +246,18 @@ extern const char* toText(Unit* unit);
  */
 
 extern const char* toString(Unit* unit);
+
+/**
+ * \brief Return a JSON representation of the attributes and current state of
+ * the specified Unit.
+ *
+ * This function calls the <A HREF="#_TO_JSON_">toJSON</A>() method of the indicated object.
+ *
+ * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
+ * OF THE DESTRUCTION OF THE Unit OBJECT.</B>
+ */
+
+extern const char* toJSON(Unit* unit);
 #ifdef __cplusplus
 }
 #endif // __cplusplus
