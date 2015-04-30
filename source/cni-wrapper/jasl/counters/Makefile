@@ -31,7 +31,7 @@ UNIT_OBJ   := ${UNIT_SRC:.cpp=.o}
 
 CPP_FILES  := $(UNIT_SRC)
 
-ENUM_FILES := Descriptions.h
+ENUM_FILES := Descriptions.h Nationalities.h InfantryTypes.h Classifications.h
 
 HDR_FILES  := ${CPP_FILES:.cpp=.h} $(ENUM_FILES)
 OBJ_FILES  := ${CPP_FILES:.cpp=.o}
@@ -60,7 +60,7 @@ hdr: $(HDR_FILES)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(CNI_COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).2
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).3
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
