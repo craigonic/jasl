@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * infantry units. It is intended strictly as a superclass, not to be
  * instantiated directly.
  *
- * @version 4.0
+ * @version 4.1
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
@@ -135,9 +135,9 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 	// type being created.
 
 	protected Infantry(Descriptions description,Nationalities nationality,
-	                   InfantryTypes unitType,int movement,int portageCapacity,
-	                   int firepower,int normalRange,int morale,
-	                   int brokenMorale,boolean canSelfRally,
+	                   InfantryTypes unitType,int movement,
+	                   int portageCapacity,int firepower,int normalRange,
+	                   int morale,int brokenMorale,boolean canSelfRally,
 	                   int portageValue,int basicPointValue,
 	                   int experienceLevelRating)
 	{
@@ -145,7 +145,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 		// any exceptions are thrown, assume that they will be caught
 		// and handled by the program creating the object.
 
-		super(description,nationality,unitType.label(),movement,
+		super(description,nationality,unitType.toString(),movement,
 		      portageCapacity);
 
 		// Since the unitType is ultimately stored as a string in a
@@ -171,18 +171,18 @@ abstract class Infantry extends Mobile implements Firepower, Morale, Portability
 		     (nationality != Nationalities.RUSSIAN)))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
-			                                   nationality.label() +
+			                                   nationality.toString() +
 			                                   Messages.AND_SEPARATOR +
-			                                   unitType.label());
+			                                   unitType.toString());
 		}
 
 		if ((unitType == InfantryTypes.COMMISSAR) &&
 		    (description != Descriptions.LEADER))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
-			                                   description.label() +
+			                                   description.toString() +
 			                                   Messages.AND_SEPARATOR +
-			                                   unitType.label());
+			                                   unitType.toString());
 		}
 
 		// Check the value of each remaining parameter and copy the

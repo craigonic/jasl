@@ -19,7 +19,7 @@ package jasl.counters;
  * intended for operation on an integer member variable within the implementing
  * class.
  *
- * @version 1.0
+ * @version 2.0
  * @author Copyright (C) 2011-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Status.html">Source code</A>
  */
@@ -72,19 +72,19 @@ public interface Status
 
 		// The label associated with the enum constant.
 
-		private final String label;
+		private final String _label;
 
 		// The value associated with the enum constant. This value
 		// should represent a single bit in a 32-bit integer.
 
-		private final int value;
+		private final int _value;
 
 		// Constructor
 
 		States(String label,int value)
 		{
-			this.label = label;
-			this.value = value;
+			_label = label;
+			_value = value;
 		}
 
 		// Public access methods
@@ -95,9 +95,9 @@ public interface Status
 		 * @return the <CODE>String</CODE> associated with the enum element.
 		 */
 
-		public String label()
+		public String toString()
 		{
-			return label;
+			return _label;
 		}
 
 		/**
@@ -108,7 +108,7 @@ public interface Status
 
 		public int value()
 		{
-			return value;
+			return _value;
 		}
 	}
 

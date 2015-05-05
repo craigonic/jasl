@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.0
+ * @version 5.1
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
@@ -175,7 +175,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	public final String description()
 	{
-		return _description.label();
+		return _description.toString();
 	}
 
 	// Other methods

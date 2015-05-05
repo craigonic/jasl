@@ -20,7 +20,7 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 5.0
+ * @version 5.1
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -231,7 +231,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final String nationality()
 	{
-		return _nationality.label();
+		return _nationality.toString();
 	}
 
 	/**
@@ -282,7 +282,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final String status()
 	{
-		return States.NORMAL.label();
+		return States.NORMAL.toString();
 	}
 
 	/**

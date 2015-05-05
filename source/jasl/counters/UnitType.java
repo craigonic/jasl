@@ -18,7 +18,7 @@ package jasl.counters;
  * associated with the unit type of <A HREF="Fighting.html">Fighting</A> units. The method is intended for
  * operation on a String member variable within the implementing class.
  *
- * @version 2.0
+ * @version 3.0
  * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/UnitType.html">Source code</A>
  */
@@ -185,13 +185,13 @@ public interface UnitType
 
 		// The label associated with the enum constant.
 
-		private final String label;
+		private final String _label;
 
 		// Constructor
 
 		InfantryTypes(String label)
 		{
-			this.label = label;
+			_label = label;
 		}
 
 		// Public access method
@@ -202,9 +202,9 @@ public interface UnitType
 		 * @return the <CODE>String</CODE> associated with the constant.
 		 */
 
-		public String label()
+		public String toString()
 		{
-			return label;
+			return _label;
 		}
 	}
 

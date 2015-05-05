@@ -26,8 +26,8 @@ import jasl.utilities.Messages;
  * he or she commands, and the turn that they enter the game, as well as the
  * ability to add, delete, and access the individual <A HREF="../../counters/Unit.html">Unit</A>s.
  *
- * @version 1.1
- * @author Copyright (C) 2013-2014 Craig R. Campbell (craigonic@gmail.com)
+ * @version 1.2
+ * @author Copyright (C) 2013-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Player.html">Source code</A>
  */
 
@@ -183,7 +183,7 @@ public final class Player
 
 	public String nationality()
 	{
-		return _nationality.label();
+		return _nationality.toString();
 	}
 
 	/**

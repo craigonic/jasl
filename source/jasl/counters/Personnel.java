@@ -21,7 +21,7 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.0
+ * @version 5.1
  * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
@@ -112,9 +112,9 @@ abstract class Personnel extends Infantry implements Classification
 		    (nationality    != Nationalities.GERMAN))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
-			                                   nationality.label() +
+			                                   nationality.toString() +
 			                                   Messages.AND_SEPARATOR +
-			                                   classification.label());
+			                                   classification.toString());
 		}
 
 		_classification = classification;
@@ -269,6 +269,6 @@ abstract class Personnel extends Infantry implements Classification
 
 	public final String classification()
 	{
-		return _classification.label();
+		return _classification.toString();
 	}
 }

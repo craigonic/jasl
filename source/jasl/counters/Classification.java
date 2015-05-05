@@ -20,7 +20,7 @@ package jasl.counters;
  * method is intended for operation on a String member variable within the
  * implementing class.
  *
- * @version 2.0
+ * @version 3.0
  * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Classification.html">Source code</A>
  */
@@ -93,13 +93,13 @@ public interface Classification
 
 		// The label associated with the enum constant.
 
-		private final String label;
+		private final String _label;
 
 		// Constructor
 
 		Classifications(String label)
 		{
-			this.label = label;
+			_label = label;
 		}
 
 		// Public access method
@@ -110,9 +110,9 @@ public interface Classification
 		 * @return the <CODE>String</CODE> associated with the constant.
 		 */
 
-		public String label()
+		public String toString()
 		{
-			return label;
+			return _label;
 		}
 	}
 

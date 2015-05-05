@@ -19,8 +19,8 @@ import jasl.counters.Nationality;
 /**
  * This is a ...
  *
- * @version 1.3
- * @author Copyright (C) 2013-2014 Craig R. Campbell (craigonic@gmail.com)
+ * @version 1.4
+ * @author Copyright (C) 2013-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Side.html">Source code</A>
  */
 
@@ -261,7 +261,7 @@ public final class Side
 
 		for (Nationality.Nationalities nationality : nationalities)
 		{
-			returnString.append("\"" + nationality.label() + "\" ");
+			returnString.append("\"" + nationality.toString() + "\" ");
 		}
 
 		returnString.append("\n\n");

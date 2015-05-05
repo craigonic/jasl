@@ -139,7 +139,7 @@ public class Driver
             System.out.println("\nUnitList[" + i + "]:\t" +
                                UnitList[i].toString());
 
-            if (Description.Descriptions.LEADER.label() == UnitList[i].description())
+            if (Description.Descriptions.LEADER.toString() == UnitList[i].description())
             {
                 leaderObject = (Leader)UnitList[i];
 
@@ -150,7 +150,7 @@ public class Driver
                                    "\n" + leaderObject.status());
             }
 
-            if (Description.Descriptions.SQUAD.label() == UnitList[i].description())
+            if (Description.Descriptions.SQUAD.toString() == UnitList[i].description())
             {
                 squadObject = (Squad)UnitList[i];
 
