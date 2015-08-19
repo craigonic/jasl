@@ -15,9 +15,9 @@
 
 #include <java/lang/Throwable.h> // For jthrowable.
 
-#include "CniWrapper.h"
-#include "JaslErrorMessage.h"
-#include "jaslWrapper.h"
+#include "jasl/cni/CniWrapper.h"
+#include "jasl/cni/JaslErrorMessage.h"
+#include "jasl/cni/jaslWrapper.h"
 
 #include "jasl/counters/Mobile.h"
 
