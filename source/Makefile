@@ -26,7 +26,9 @@ include $(JASL_BASE)/util/jasl.make
 # the Driver program.
 
 DRIVER_CLASS       := Driver.class
-DRIVER_CNI_SRC     := ${DRIVER_CLASS:.class=.cpp}
+DRIVER_CPP_SRC     := ${DRIVER_CLASS:.class=.cpp}
+DRIVER_CXX_SRC     := ${DRIVER_CLASS:.class=.cxx}
+DRIVER_C_SRC       := ${DRIVER_CLASS:.class=.c}
 DRIVER_PERL_SRC    := ${DRIVER_CLASS:.class=.pl}
 DRIVER_PYTHON_SRC  := ${DRIVER_CLASS:.class=.py}
 DRIVER_EXEC        := ${DRIVER_CLASS:.class=}
@@ -41,8 +43,14 @@ DRIVER_TEST        := ${DRIVER_CLASS:.class=.test}
 DRIVER_DYNAMIC     := $(DRIVER_EXEC)_dynamic
 DRIVER_STATIC      := $(DRIVER_EXEC)_static
 
-DRIVER_CNI_DYNAMIC := $(DRIVER_EXEC)_cni_dynamic
-DRIVER_CNI_STATIC  := $(DRIVER_EXEC)_cni_static
+DRIVER_CPP_DYNAMIC := $(DRIVER_EXEC)_cpp_dynamic
+DRIVER_CPP_STATIC  := $(DRIVER_EXEC)_cpp_static
+
+DRIVER_CXX_DYNAMIC := $(DRIVER_EXEC)_cxx_dynamic
+DRIVER_CXX_STATIC  := $(DRIVER_EXEC)_cxx_static
+
+DRIVER_C_DYNAMIC   := $(DRIVER_EXEC)_c_dynamic
+DRIVER_C_STATIC    := $(DRIVER_EXEC)_c_static
 
 # The name of the jar archive containing the compiled .class files from within
 # the jasl package space, excluding those that are specific to a user interface
@@ -72,7 +80,9 @@ all: $(ALL_CLASSES)
 # a jar archive of the Java .class files. Clean up the object files at then end.
 
 .PHONY : build_all
-build_all: gcj gcj_dynamic gcj_static build_cni_dynamic build_cni_static $(JASL_JAR_ARCHIVE) clean_obj
+build_all: gcj gcj_dynamic gcj_static build_cpp_dynamic build_cpp_static \
+           build_cxx_dynamic build_cxx_static build_c_dynamic build_c_static \
+           $(JASL_JAR_ARCHIVE) clean_obj
 
 # Build the jar archive(s) and remove all .class files in this directory and its
 # sub-directories.
@@ -107,15 +117,47 @@ build_gcj_static: gcj_static clean_class clean_java
 # all programs, using the gcc compiler and linking with the cni-wrapper dynamic
 # library and one or more of the jasl dynamic libraries in $(LIB_PATH).
 
-.PHONY : build_cni_dynamic
-build_cni_dynamic: $(DRIVER_CNI_DYNAMIC)
+.PHONY : build_cpp_dynamic
+build_cpp_dynamic: $(DRIVER_CPP_DYNAMIC)
 
 # Build the native executable version, specifically the C++ source file(s) for
 # all programs, using the gcc compiler and linking with the cni-wrapper static
 # library and one or more of the jasl static libraries in $(LIB_PATH).
 
-.PHONY : build_cni_static
-build_cni_static: $(DRIVER_CNI_STATIC)
+.PHONY : build_cpp_static
+build_cpp_static: $(DRIVER_CPP_STATIC)
+
+# Build the native executable version, specifically the C++ source file(s) for
+# all programs that use the wrapper API, using the gcc compiler and linking with
+# the cni-wrapper dynamic library, one or more of the jasl dynamic libraries,
+# and the dynamic wrapper libraries, all of which are found in $(LIB_PATH).
+
+.PHONY : build_cxx_dynamic
+build_cxx_dynamic: $(DRIVER_CXX_DYNAMIC)
+
+# Build the native executable version, specifically the C++ source file(s) for
+# all programs that use the wrapper API, using the gcc compiler and linking with
+# the cni-wrapper static library, one or more of the jasl static libraries,
+# and the static wrapper libraries, all of which are found in $(LIB_PATH).
+
+.PHONY : build_cxx_static
+build_cxx_static: $(DRIVER_CXX_STATIC)
+
+# Build the native executable version, specifically the C source file(s) for all
+# programs that use the wrapper API, using the gcc compiler and linking with the
+# cni-wrapper dynamic library, one or more of the jasl dynamic libraries, and
+# the dynamic wrapper libraries, all of which are found in $(LIB_PATH).
+
+.PHONY : build_c_dynamic
+build_c_dynamic: $(DRIVER_C_DYNAMIC)
+
+# Build the native executable version, specifically the C source file(s) for all
+# programs that use the wrapper API, using the gcc compiler and linking with the
+# cni-wrapper static library, one or more of the jasl static libraries, and the
+# static wrapper libraries, all of which are found in $(LIB_PATH).
+
+.PHONY : build_c_static
+build_c_static: $(DRIVER_C_STATIC)
 
 # Build the .o files in each subdirectory. These are used to build the native
 # executable(s). Note that use of this target requires that all of the .java
@@ -201,18 +243,18 @@ $(DRIVER_STATIC): $(DRIVER_CLASS)
 # Interface (CNI) wrapper, and is used to test the classes defined in the jasl
 # directory and its sub-directories.
 
-# Options common to building both forms of the C++ version of the Driver
-# program.
+# Options common to building both forms (using shared or static libraries) of
+# the C/C++ versions of the Driver program.
 
-DRIVER_CNI_BUILD_OPTIONS := -I$(INCLUDE_PATH) -I$(CNI_HDR_PATH) -o $(BIN_PATH)/
-DRIVER_CNI_DYNAMIC_LIBS  := -lgcj -lstdc++
+DRIVER_CPP_BUILD_OPTIONS := -I$(INCLUDE_PATH) -o $(BIN_PATH)/
+DRIVER_CPP_DYNAMIC_LIBS  := -lgcj -lstdc++
 
 # Build and link with the dynamic libraries.
 
-$(DRIVER_CNI_DYNAMIC): bin_directory
-	$(GCC_BUILD_CMD) $(DRIVER_CNI_BUILD_OPTIONS)$(DRIVER_CNI_DYNAMIC) \
-	                 $(DRIVER_CNI_SRC) -L$(LIB_PATH) \
-	                 $(DRIVER_CNI_DYNAMIC_LIBS) \
+$(DRIVER_CPP_DYNAMIC): bin_directory
+	$(GCC_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CPP_DYNAMIC) \
+	                 $(DRIVER_CPP_SRC) -L$(LIB_PATH) \
+	                 $(DRIVER_CPP_DYNAMIC_LIBS) \
 	                 -l$(CNI_WRAPPER_BASE_LIB_NAME) \
 	                 -l$(COUNTERS_BASE_LIB_NAME) \
 	                 -l$(UTILITIES_BASE_LIB_NAME) \
@@ -220,13 +262,49 @@ $(DRIVER_CNI_DYNAMIC): bin_directory
 
 # Build and link with the static libraries.
 
-$(DRIVER_CNI_STATIC): bin_directory
-	$(GCC_BUILD_CMD) $(DRIVER_CNI_BUILD_OPTIONS)$(DRIVER_CNI_STATIC) \
-	                 $(DRIVER_CNI_SRC) $(DRIVER_CNI_DYNAMIC_LIBS) \
+$(DRIVER_CPP_STATIC): bin_directory
+	$(GCC_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CPP_STATIC) \
+	                 $(DRIVER_CPP_SRC) $(DRIVER_CPP_DYNAMIC_LIBS) \
 	                 $(CNI_WRAPPER_STATIC_LIB_PATH) \
 	                 $(COUNTERS_STATIC_LIB_PATH) \
 	                 $(UTILITIES_STATIC_LIB_PATH) \
 	                 $(UI_DATA_STATIC_LIB_PATH)
+
+# Build and link with the dynamic (CNI) wrapper libraries.
+
+$(DRIVER_CXX_DYNAMIC): bin_directory
+	$(GCC_BUILD_CMD) -std=c++11 \
+	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_DYNAMIC) \
+	                 $(DRIVER_CXX_SRC) -L$(LIB_PATH) \
+	                 $(DRIVER_CPP_DYNAMIC_LIBS) \
+	                 -l$(CNI_WRAPPER_BASE_LIB_NAME) \
+	                 -l$(UTILITIES_BASE_LIB_NAME) \
+	                 -l$(CNI_UTILITIES_BASE_LIB_NAME)
+
+$(DRIVER_C_DYNAMIC): bin_directory
+	$(GCC_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_C_DYNAMIC) \
+	                 $(DRIVER_C_SRC) -L$(LIB_PATH) \
+	                 $(DRIVER_CPP_DYNAMIC_LIBS) \
+	                 -l$(CNI_WRAPPER_BASE_LIB_NAME) \
+	                 -l$(UTILITIES_BASE_LIB_NAME) \
+	                 -l$(CNI_UTILITIES_BASE_LIB_NAME)
+
+# Build and link with the static (CNI) wrapper libraries.
+
+$(DRIVER_CXX_STATIC): bin_directory
+	$(GCC_BUILD_CMD) -std=c++11 \
+	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_STATIC) \
+	                 $(DRIVER_CXX_SRC) $(DRIVER_CPP_DYNAMIC_LIBS) \
+	                 $(CNI_WRAPPER_STATIC_LIB_PATH) \
+	                 $(CNI_UTILITIES_STATIC_LIB_PATH) \
+	                 $(UTILITIES_STATIC_LIB_PATH)
+
+$(DRIVER_C_STATIC): bin_directory
+	$(GCC_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_C_STATIC) \
+	                 $(DRIVER_C_SRC) $(DRIVER_CPP_DYNAMIC_LIBS) \
+	                 $(CNI_WRAPPER_STATIC_LIB_PATH) \
+	                 $(CNI_UTILITIES_STATIC_LIB_PATH) \
+	                 $(UTILITIES_STATIC_LIB_PATH)
 
 ## Install #####################################################################
 
@@ -260,7 +338,8 @@ clean_obj:
 
 .PHONY : clean
 clean: clean_class clean_jar clean_gcj clean_gcj_dynamic clean_gcj_static \
-       clean_cni_dynamic clean_cni_static clean_perl clean_python
+       clean_cpp_dynamic clean_cpp_static clean_cxx_dynamic clean_cxx_static \
+       clean_c_dynamic clean_c_static clean_perl clean_python
 
 .PHONY : clean_class
 clean_class:
@@ -282,13 +361,29 @@ clean_gcj_dynamic:
 clean_gcj_static:
 	$(RM) $(BIN_PATH)/$(DRIVER_STATIC)
 
-.PHONY : clean_cni_dynamic
-clean_cni_dynamic:
-	$(RM) $(BIN_PATH)/$(DRIVER_CNI_DYNAMIC)
+.PHONY : clean_cpp_dynamic
+clean_cpp_dynamic:
+	$(RM) $(BIN_PATH)/$(DRIVER_CPP_DYNAMIC)
 
-.PHONY : clean_cni_static
-clean_cni_static:
-	$(RM) $(BIN_PATH)/$(DRIVER_CNI_STATIC)
+.PHONY : clean_cpp_static
+clean_cpp_static:
+	$(RM) $(BIN_PATH)/$(DRIVER_CPP_STATIC)
+
+.PHONY : clean_cxx_dynamic
+clean_cxx_dynamic:
+	$(RM) $(BIN_PATH)/$(DRIVER_CXX_DYNAMIC)
+
+.PHONY : clean_cxx_static
+clean_cxx_static:
+	$(RM) $(BIN_PATH)/$(DRIVER_CXX_STATIC)
+
+.PHONY : clean_c_dynamic
+clean_c_dynamic:
+	$(RM) $(BIN_PATH)/$(DRIVER_C_DYNAMIC)
+
+.PHONY : clean_c_static
+clean_c_static:
+	$(RM) $(BIN_PATH)/$(DRIVER_C_STATIC)
 
 .PHONY : clean_perl
 clean_perl:
@@ -332,13 +427,29 @@ test_gcj_dynamic: $(BIN_PATH)/$(DRIVER_DYNAMIC) run_test
 test_gcj_static: TEST_EXEC := ./$(DRIVER_STATIC)
 test_gcj_static: $(BIN_PATH)/$(DRIVER_STATIC) run_test
 
-.PHONY : test_cni_dynamic
-test_cni_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_CNI_DYNAMIC)"
-test_cni_dynamic: $(BIN_PATH)/$(DRIVER_CNI_DYNAMIC) run_test
+.PHONY : test_cpp_dynamic
+test_cpp_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_CPP_DYNAMIC)"
+test_cpp_dynamic: $(BIN_PATH)/$(DRIVER_CPP_DYNAMIC) run_test
 
-.PHONY : test_cni_static
-test_cni_static: TEST_EXEC := ./$(DRIVER_CNI_STATIC)
-test_cni_static: $(BIN_PATH)/$(DRIVER_CNI_STATIC) run_test
+.PHONY : test_cpp_static
+test_cpp_static: TEST_EXEC := ./$(DRIVER_CPP_STATIC)
+test_cpp_static: $(BIN_PATH)/$(DRIVER_CPP_STATIC) run_test
+
+.PHONY : test_cxx_dynamic
+test_cxx_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_CXX_DYNAMIC)"
+test_cxx_dynamic: $(BIN_PATH)/$(DRIVER_CXX_DYNAMIC) run_test
+
+.PHONY : test_cxx_static
+test_cxx_static: TEST_EXEC := ./$(DRIVER_CXX_STATIC)
+test_cxx_static: $(BIN_PATH)/$(DRIVER_CXX_STATIC) run_test
+
+.PHONY : test_c_dynamic
+test_c_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_C_DYNAMIC)"
+test_c_dynamic: $(BIN_PATH)/$(DRIVER_C_DYNAMIC) run_test
+
+.PHONY : test_c_static
+test_c_static: TEST_EXEC := ./$(DRIVER_C_STATIC)
+test_c_static: $(BIN_PATH)/$(DRIVER_C_STATIC) run_test
 
 .PHONY : test_perl
 test_perl: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH):$(PERL_LIB_PATH) ./$(DRIVER_EXEC)"
@@ -361,7 +472,9 @@ test_python: $(PYTHON_BIN_PATH)/$(DRIVER_EXEC) run_test
 docs_all:
 	@$(INSTALL_DIR) $(SRC_DOCS_PATH)
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(SRC_DOCS_PATH)/$(MAKEFILE).html
-	@$(CAT) $(DRIVER_CNI_SRC) | $(CPP2HTML) --title="$(DRIVER_CNI_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_CNI_SRC).html
+	@$(CAT) $(DRIVER_CPP_SRC) | $(CPP2HTML) --title="$(DRIVER_CPP_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_CPP_SRC).html
+	@$(CAT) $(DRIVER_CXX_SRC) | $(CPP2HTML) --title="$(DRIVER_CXX_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_CXX_SRC).html
+	@$(CAT) $(DRIVER_C_SRC) | $(CPP2HTML) --title="$(DRIVER_C_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_C_SRC).html
 	@$(CAT) $(DRIVER_PERL_SRC) | $(PERL2HTML) --title="$(DRIVER_PERL_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_PERL_SRC).html
 	@$(CAT) $(DRIVER_PYTHON_SRC) | $(PYTHON2HTML) --title="$(DRIVER_PYTHON_SRC)" | $(SED_CONV_CMD) > $(SRC_DOCS_PATH)/$(DRIVER_PYTHON_SRC).html
 	@for i in $(JAVA_CLASSES) ; do \
