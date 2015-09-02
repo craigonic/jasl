@@ -41,7 +41,7 @@ int main(int argc,char *argv[])
 //                 theDice->coloredDieValue(),
 //                 theDice->combinedResult());
 
-            printf("%s\n",theDice->toText());
+            printf("%s\n",theDice->toText().c_str());
         }
 
         else printf("New Dice object generation failed\n");

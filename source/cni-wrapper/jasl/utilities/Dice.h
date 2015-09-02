@@ -2,7 +2,7 @@
  * \file Dice.h
  *
  * This file declares a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in <A HREF="http://java.sun.com/">Java</A>.
+ * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
  *
  * Written By: Craig R. Campbell  -  November 2010
  */
@@ -11,6 +11,9 @@
 #define CNI_DICE_H
 
 #ifdef __cplusplus
+#include <memory>
+#include <string>
+
 namespace jasl
 {
 	namespace utilities
@@ -23,16 +26,16 @@ namespace jasl
  * \brief <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
  *
  * This class is used to simplify access to its namesake, which is implemented
- * in <A HREF="http://java.sun.com/">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>. It also interacts with the
+ * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>. It also interacts with the
  * <A HREF="../../CniWrapper.h.html">CniWrapper</A>, which provides a JVM to execute the library code, as well as
  * string conversion methods.
  *
- * @version 1.0
+ * @version 2.0
  * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/cni-wrapper/jasl/utilities/Dice.h.html">Source code</A>
  */
 
-class Dice
+class Dice final
 {
 	public:
 
@@ -48,13 +51,17 @@ class Dice
 		/**
 		 * \brief Destructor.
 		 *
-		 * The destructor frees the memory associated with the string
-		 * returned by the toText() method. The "wrapped" object is
-		 * freed through garbage collection by the virtual machine
-		 * managed by the CniWrapper.
+		 * The "wrapped" object is freed through garbage collection by
+		 * the virtual machine managed by the CniWrapper.
 		 */
 
-		~Dice();
+		~Dice() = default;
+
+		// Disable the generation of a copy constructor, and "="
+		// operator.
+
+		Dice(Dice& dice) = delete;
+		Dice& operator=(const Dice& dice) = delete;
 
 		/** <A NAME="_WHITE_DIE_VALUE_"></A>
 		 * \brief Return the result of rolling the white die.
@@ -77,15 +84,13 @@ class Dice
 
 		/** <A NAME="_TO_STRING_"></A>
 		 * \brief Return a text representation of the attributes and
-		 * current state of this Dice.
+		 * current state of this Dice instance.
 		 *
 		 * The returned string includes a label and value for each data
-		 * member defined for the concrete class type. <B>IT SHOULD NOT BE
-		 * DELETED, AS THIS OCCURS AS PART OF THE DESTRUCTION OF THE
-		 * OBJECT.</B>
+		 * member defined for the Dice class.
 		 */
 
-		const char* toText();
+		const std::string& toText();
 
 	private:
 
@@ -104,17 +109,10 @@ class Dice
 		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>, converted to
 		 * the indicated type using the <A HREF="../../CniWrapper.h.html#_JS2CC_">js2cc</A>() function. The copy is
 		 * generated during the initial call to the toText() method.
-		 * Subsequent calls only return the generated copy. The memory
-		 * associated with it is freed in the destructor.
+		 * Subsequent calls only return the generated copy.
 		 */
 
-		const char* _dump;
-
-		// Disable the generation of a copy constructor, and "="
-		// operator.
-
-		Dice(const Dice& dice);
-		Dice& operator=(const Dice& dice);
+		std::unique_ptr<std::string> _dump;
 };
 #else
 /******************************************************************************/
@@ -137,7 +135,7 @@ extern "C" {
  * \brief Create an instance of a Dice object, which automatically rolls them.
  */
 
-extern Dice* rollDice();
+extern Dice* rollDice(void);
 
 /**
  * \brief Free the memory associated with the specified object.

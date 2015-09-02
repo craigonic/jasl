@@ -2,7 +2,7 @@
  * \file Dice.cpp
  *
  * This file defines a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in <A HREF="http://java.sun.com/">Java</A>.
+ * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
  *
  * Written By: Craig R. Campbell  -  December 2010
  */
@@ -15,16 +15,8 @@
 // Constructor.
 
 Dice::Dice() :
-	_dice(new jasl::utilities::Dice()),
-	_dump(0)
+	_dice(new jasl::utilities::Dice())
 {
-}
-
-// Destructor.
-
-Dice::~Dice()
-{
-	delete [] _dump;
 }
 
 // whiteDieValue: Return the result of rolling the white die.
@@ -51,11 +43,18 @@ int Dice::combinedResult() const
 // toText: Return a text representation of the attributes and current state of
 //         this Dice.
 
-const char* Dice::toText()
+const std::string& Dice::toText()
 {
-	if (0 == _dump) _dump = js2cc(_dice->toText());
+	if (nullptr == _dump)
+	{
+		const char* toTextOutput = js2cc(_dice->toText());
 
-	return _dump;
+		_dump = std::unique_ptr<std::string>(new std::string(toTextOutput));
+
+		delcc(toTextOutput);
+	}
+
+	return *_dump;
 }
 
 /******************************************************************************/
@@ -66,7 +65,7 @@ const char* Dice::toText()
 // rollDice: Create an instance of a Dice object, which automatically rolls
 //           them.
 
-Dice* rollDice()
+Dice* rollDice(void)
 {
 	return new Dice();
 }
@@ -103,5 +102,5 @@ int combinedResult(Dice* dice)
 
 const char* toText(Dice* dice)
 {
-	return (dice) ? dice->toText() : 0;
+	return (dice) ? dice->toText().c_str() : nullptr;
 }

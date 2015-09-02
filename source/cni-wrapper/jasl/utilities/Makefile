@@ -38,7 +38,7 @@ SRC_FILES := $(HDR_FILES) $(CPP_FILES)
 # Compile individual object files.
 
 $(DICE_OBJ): $(DICE_HDR) $(DICE_SRC)
-	$(GCC_COMPILE_CMD) -I$(INCLUDE_PATH) $(DICE_SRC) \
+	$(GCC_COMPILE_CMD) -std=c++11  -I$(INCLUDE_PATH) $(DICE_SRC) \
 	                   -o $(OBJ_SUB_DIRECTORY)/$(DICE_OBJ)
 
 # Build all of the object files.
@@ -57,8 +57,8 @@ hdr: $(HDR_FILES)
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(CNI_UTILITIES_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
-DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).1
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).3
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
