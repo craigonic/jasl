@@ -525,6 +525,7 @@ gjdocs: docs_directory
 doxygen: docs_directory
 	@$(RM_RECURSIVE) $(DOXYGEN_DOC_PATH)
 	@$(DOXYGEN) $(DOXYGEN_DEF_FILE)
+	$(MAKE) -C $(CNI_DIRECTORY) $@
 
 # Create HTML documentation using htags.
 
