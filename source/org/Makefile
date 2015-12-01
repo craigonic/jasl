@@ -26,22 +26,30 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and class files in/of/for
 # this package.
 
-ORG_JSON_SRC_FILES    := JSONException.java JSONTokener.java JSONObject.java \
-                         JSONStringer.java JSONString.java JSONWriter.java   \
-                         JSONArray.java
+ORG_JSON_SRC_FILES     := JSONArray.java JSONObject.java JSONStringer.java \
+                          JSONTokener.java JSONException.java              \
+                          JSONString.java JSONWriter.java
 
-ORG_JSON_OBJ_FILES    := ${ORG_JSON_SRC_FILES:.java=.o}
-ORG_JSON_CLASS_FILES  := ${ORG_JSON_SRC_FILES:.java=.class}
+ORG_JSON_OBJ_FILES     := ${ORG_JSON_SRC_FILES:.java=.o}
 
-ORG_JSON_PATH         := org/json
-ORG_JSON_BIN_PATH     := $(BIN_PATH)/$(ORG_JSON_PATH)
-ORG_JSON_INCLUDE_PATH := $(INCLUDE_PATH)/$(ORG_JSON_PATH)
+ORG_JSON_PATH          := org/json
+ORG_JSON_BIN_PATH      := $(BIN_PATH)/$(ORG_JSON_PATH)
+ORG_JSON_INCLUDE_PATH  := $(INCLUDE_PATH)/$(ORG_JSON_PATH)
+
+ORG_JSON_JAR_ARCHIVE   := org.json.jar
 
 # Build all of the individual class files.
 
 .PHONY : all
 all: bin_directory
 	@(cd json;$(JAVA_OPTIONS) $(ORG_JSON_SRC_FILES))
+
+# Create a jar archive containing all of the .class files generated from the
+# source files selected from the json sub-directory (ORG_JSON_SRC_FILES).
+
+.PHONY : jar
+jar: all
+	@(cd $(BIN_PATH);jar cf $(ORG_JSON_JAR_ARCHIVE) $(ORG_JSON_PATH))
 
 # Build all of the individual object files.
 
@@ -50,6 +58,10 @@ all: bin_directory
 
 .PHONY : obj
 obj: obj_sub_directory $(ORG_JSON_OBJ_FILES)
+	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONObject\$$1.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/JSONObject\$$1.o
+	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONObject\$$Null.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/JSONObject\$$Null.o
 
 # Build all of the individual header files.
 
@@ -95,6 +107,10 @@ clean: clean_java clean_obj
 clean_java:
 	$(RM) $(ORG_JSON_BIN_PATH)/*.class
 
+.PHONY : clean_jar
+clean_jar:
+	$(RM) $(BIN_PATH)/$(ORG_JSON_JAR_ARCHIVE)
+
 .PHONY : clean_obj
 clean_obj:
 	$(RM_RECURSIVE) $(OBJ_SUB_DIRECTORY)
@@ -118,3 +134,15 @@ clean_dynamic_lib:
 .PHONY : clean_static_lib
 clean_static_lib:
 	$(RM) $(LIB_PATH)/$(STATIC_LIB_FILENAME)
+
+# A reference implementation for using JSON in Java must be "cloned" into the
+# json sub-directory. The following targets are used to get the code and refresh
+# the local copy of the (git) repository.
+
+.PHONY : clone
+clone:
+	@git clone https://github.com/douglascrockford/JSON-java.git json
+
+.PHONY : refresh
+refresh:
+	@(cd json;git pull)
