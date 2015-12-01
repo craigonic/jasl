@@ -7,14 +7,17 @@ cd $JASL_BASE/source
 
 # Clean everything.
 
+(cd cni-wrapper;make clean_hdr clean_libs)
+(cd org;make clean clean_jar clean_hdr clean_libs)
 make clean_all
 (cd jasl;make clean_hdr clean_libs)
-(cd cni-wrapper;make clean_hdr clean_libs)
+(cd cni-wrapper/jasl;make clean_hdr clean_libs)
 (cd swig;make clean_all)
 
 # Build the libraries and install the header files.
 
 (cd cni-wrapper;make libs hdr)
+(cd org;make jar libs hdr)
 (cd jasl;make libs hdr)
 (cd cni-wrapper/jasl;make libs hdr)
 
