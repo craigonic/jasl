@@ -23,15 +23,15 @@ recursive cleans and builds.
 <UL>
 <LI><I>none</I> or <TT>all</TT> - compiles all the source files using
 <TT>
-<A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javac.html>javac</A></TT>,
+<A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/javac.html#BHCBDCJI>javac</A></TT>,
 placing the bytecode (.class) files in the directory noted above.
-<LI><TT>obj</TT> - compiles all the source files using
+<LI><TT>obj</TT> - compiles all the bytecode (.class) files using
 <TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>,
 placing the object (.o) files in the directory noted above.<BR>
 <LI><TT>hdr</TT> - generates a
 <A HREF=http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI>CNI</A>
-header (.h) file from each source file using <TT><U>gjavah</U></TT>, placing the
-output files in the directory noted above.
+header (.h) file from each bytecode (.class) file using <TT><U>gjavah</U></TT>,
+placing the output files in the directory noted above.
 <LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
 then uses the object (.o) files to generate shared and static libraries, as well
 as the necessary links, in the directory noted above. Upon completion, the
@@ -41,20 +41,19 @@ as the necessary links, in the directory noted above. Upon completion, the
 <LI><I>filename</I><TT>.class</TT> - compiles <TT>filename.java</TT> into a
 bytecode file using <TT><U>javac</U></TT>, placing <TT>filename.class</TT> in
 the directory noted above.
-<LI><I>filename</I><TT>.o</TT> - compiles <TT>filename.java</TT> into an object
+<LI><I>filename</I><TT>.o</TT> - compiles <TT>filename.class</TT> into an object
 file using <TT><U>gcj</U></TT>, placing <TT>filename.o</TT> in the directory
 noted above.
 <P>
 <LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
 and <TT>clean_obj</TT> targets.
-<LI><TT>clean_java</TT> - removes the directory noted above that contains the
-bytecode (.class) files.
+<LI><TT>clean_java</TT> - deletes the bytecode (.class) files in the directory
+noted above.
 <LI><TT>clean_obj</TT> - removes the directory noted above that contains the
 object (.o) files.
 <P>
-<LI><TT>clean_hdr</TT> - removes the directory noted above that contains the
-generated header (.h) files.
-<P>
+<LI><TT>clean_hdr</TT> - deletes the generated header (.h) files in the
+directory noted above.
 <LI><TT>clean_libs</TT> - deletes the shared and static library files, as well
 as the associated links, in the directory noted above.
 <P>

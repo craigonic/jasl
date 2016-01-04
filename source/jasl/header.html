@@ -25,15 +25,16 @@ where the actual execution takes place.
 <LI><I>none</I> or <TT>all</TT> - compiles all the source files in each
 sub-directory using
 <TT>
-<A HREF=http://java.sun.com/javase/6/docs/technotes/tools/solaris/javac.html>javac</A></TT>,
+<A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/javac.html#BHCBDCJI>javac</A></TT>,
 placing the bytecode (.class) files in the corresponding directory noted above.
-<LI><TT>obj</TT> - compiles all the source files generated in each sub-directory
-using <TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>,
+<LI><TT>obj</TT> - compiles all the bytecode (.class) files generated in each
+sub-directory using
+<TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>,
 placing the object (.o) files in the corresponding directory noted above.<BR>
 <LI><TT>hdr</TT> - generates a
 <A HREF=http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI>CNI</A>
-header (.h) file from each source file using <TT><U>gjavah</U></TT>, placing the
-output files in the corresponding directory noted above.
+header (.h) file from each bytecode (.class) file using <TT><U>gjavah</U></TT>,
+placing the output files in the corresponding directory noted above.
 <LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
 then uses the object (.o) files to generate shared and static libraries, as well
 as the necessary links, in the directory noted above. Upon completion, the
@@ -42,14 +43,13 @@ object (.o) files.
 <P>
 <LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
 and <TT>clean_obj</TT> targets.
-<LI><TT>clean_java</TT> - removes each of the directories noted above that
-contain bytecode (.class) files.
+<LI><TT>clean_java</TT> - deletes the bytecode (.class) files in each of the
+directories noted above.
 <LI><TT>clean_obj</TT> - removes each of the directories noted above that
 contain object (.o) files.
 <P>
-<LI><TT>clean_hdr</TT> - removes each of the directories noted above that
-contain the generated header (.h) files.
-<P>
+<LI><TT>clean_hdr</TT> - deletes the generated header (.h) files in each of the
+directories noted above.
 <LI><TT>clean_libs</TT> - deletes the shared and static library files, as well
 as the associated links, in the directory noted above.
 <P>

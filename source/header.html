@@ -23,9 +23,9 @@ is installed.
 referred to as <B><I>$JASL_BASE</I></B> in this document. An environment
 variable with this name is necessary for
 <TT><A HREF=http://www.gnu.org/software/make/manual/make.html>make</A></TT>
-to work properly. It can be set using the following command:
+to work properly. It can be set using a command similar to the following:
 <UL>
-<TT>export JASL_BASE=/home/craig/java/jasl</TT>
+<TT>export JASL_BASE=/home/craig/jasl</TT>
 </UL>
 <LI><I>Optional. </I>
 <A HREF=http://gcc.gnu.org/java/>GCJ</A> (4.3.2 or higher). It is used to build
@@ -65,7 +65,7 @@ The function of each target defined in the <A HREF=Makefile.html>Makefile</A> is
 described below. The executables, object files, and scripts are written or
 copied to (and deleted from) the output directory (<B><I>$JASL_BASE</I>/bin</B>)
 and its sub-directories. All of the libraries referenced are found in
-<B><I>$JASL_BASE/lib</I></B> and its sub-directories.
+<B><I>$JASL_BASE/lib/jasl</I></B> and its sub-directories.
 <UL>
 <LI><I>none</I> or <TT>all</TT> - compiles all of the .java source files using
 <TT><A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/javac.html#BHCBDCJI>javac</A></TT>,
@@ -79,9 +79,7 @@ and <TT>build_jar</TT> targets.
 <P>
 <LI><TT>build_jar</TT> - create an executable
 <TT><A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/jar.html#BGBFFFGG>jar</A></TT>
-archive of the jASL program. This target will delete the object (.o) files in
-the sub-directories of the output directory (see <TT>clean_obj</TT>) to prevent
-them from being included in the archive.
+archive of the jASL program.
 <P>
 <LI><TT>build_gcj</TT> - executes the actions defined for the <TT>gcj</TT>
 target. Upon completion, the <TT>clean_obj</TT>, <TT>clean_class</TT>, and
@@ -127,11 +125,9 @@ executable(s) have a "_c_dynamic" suffix and are placed in the output directory.
 <TT>build_c_dynamic</TT> target, except the linking is with the appropriate
 <I>static</I> libraries and each output filename ends with "_c_static".
 <P>
-<LI><TT>obj</TT> - compiles all of the .java source files in each sub-directory
-using <TT><U>gcj</U></TT>, placing the object (.o) files in the matching
-sub-directory of the output directory. The java bytecode (.class) files for each
-source file are also generated and placed in the appropriate location as a
-result of the execution of this target.
+<LI><TT>obj</TT> - compiles all of the .class files generated within the
+<TT><U>jasl</U></TT> <I>source</I> hierarchy using <TT><U>gcj</U></TT>, placing
+the object (.o) files in corresponding .obj sub-directories.
 <LI><TT>gcj</TT> - executes the actions defined for the <TT>obj</TT> target and
 then builds native executable(s), linked with the individual object (.o) files,
 using <TT><U>gcj</U></TT>. The file(s) are placed in the output directory.
@@ -155,14 +151,14 @@ sub-directories of the output directory.</I>
 <LI><TT>python</TT> - <B><I>pyjASL</I></B>
 <P>
 <I>The </I><TT>clean</TT><I> targets remove the specified files from the output
-directory and/or its sub-directories.</I>
+directory and/or its sub-directories unless otherwise noted.</I>
 <LI><TT>clean_all</TT> - executes the actions defined for the
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
 <LI><TT>clean_java</TT> - all of the java bytecode (.class) files in the
 <TT><U>jasl</U></TT> sub-directory hierarchy.
-<LI><TT>clean_obj</TT> - all of the object (.o) files in the
-<TT><U>jasl</U></TT> sub-directory hierarchy.
+<LI><TT>clean_obj</TT> - all of the .obj directories within the
+<TT><U>jasl</U></TT> <I>source</I> hierarchy.
 <P>
 <LI><TT>clean</TT> - executes the actions defined for each of the
 <TT>clean_xxx</TT> targets defined below.
