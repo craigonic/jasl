@@ -150,7 +150,7 @@ CNI_DOXYGEN_DEF_FILE := $(UTIL_PATH)/cni-doxygen.jasl
 # global (gtags and htags)
 
 GTAGS              := gtags
-GTAGS_FIND         := find . -type f -name "*.java" | grep -v android
+GTAGS_FIND         := find $(PROGRAM_NAME) -type f -name "*.java" | grep -v android
 GTAGS_OPTIONS      := -f -
 GTAGS_PATH         := $(SRC_PATH)/$(GTAGS)
 

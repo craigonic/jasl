@@ -112,7 +112,8 @@ INPUT                  = ../source
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.java
 RECURSIVE              = YES
-EXCLUDE                = Driver.java
+EXCLUDE                = Driver.java \
+                         org
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        =
