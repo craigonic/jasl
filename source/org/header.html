@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<TITLE>org.json</TITLE>
+</HEAD>
+<H1><A HREF="http://www.json.org/java/index.html">org.json</A></H1>
+<HR>
+<H2>Building this package</H2>
+The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
+this directory is listed below. The files are written to or removed from their
+respective output directory as follows:
+<UL>
+<LI>Bytecode (.class) files -
+<B><I><A HREF="../source.html#JASL_BASE">$JASL_BASE</A></I>/bin/org/json</B>
+<LI>Object (.o) files - <B>.obj</B>
+<LI>Header (.h) files - <B><I>$JASL_BASE</I>/include/org/json</B>
+<LI>Library files and links - <B><I>$JASL_BASE</I>/lib/jasl</B>
+</UL>
+<UL>
+<LI><I>none</I> or <TT>all</TT> - compiles selected source files in the
+<B>json</B> sub-directory using
+<TT>
+<A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/javac.html#BHCBDCJI>javac</A></TT>,
+placing the bytecode (.class) files in the directory noted above.
+<LI><TT>jar</TT> - create an executable
+<TT><A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/jar.html#BGBFFFGG>jar</A></TT>
+archive containing the bytecode (.class) files generated with the <TT>all</TT>
+target.
+<LI><TT>obj</TT> - compiles bytecode (.class) files using
+<TT><A HREF=http://gcc.gnu.org/java/compile.html>gcj</A></TT>,
+placing the object (.o) files in the directory noted above.
+<LI><TT>hdr</TT> - generates a
+<A HREF=http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI>CNI</A>
+header (.h) file from each bytecode (.class) file using <TT><U>gjavah</U></TT>,
+placing the output files in the directory noted above.
+<LI><TT>libs</TT> - executes the actions defined for the <TT>obj</TT> target and
+then uses the object (.o) files to generate shared and static libraries, as well
+as the necessary links, in the directory noted above. Upon completion, the
+<TT>clean_obj</TT> target is used to remove the directory containing the object
+(.o) files.
+<P>
+<LI><TT>clean</TT> - executes the actions defined for the <TT>clean_java</TT>
+and <TT>clean_obj</TT> targets.
+<LI><TT>clean_java</TT> - deletes the bytecode (.class) files in the directory
+noted above.
+<LI><TT>clean_obj</TT> - removes the directory noted above that contains the
+object (.o) files.
+<P>
+<LI><TT>clean_jar</TT> - removes the <TT><U>jar</U></TT> archive.
+<LI><TT>clean_hdr</TT> - deletes the generated header (.h) files in the
+directory noted above.
+<LI><TT>clean_libs</TT> - deletes the shared and static library files, as well
+as the associated links, in the directory noted above.
+<P>
+<LI><TT>docs</TT> - generates an HTML version of the <U>Makefile</U> using
+<TT><A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html#Top>source-highlight</A></TT>,
+placing the output file in
+<B><I>$JASL_BASE</I>/share/jasl/doc/source/<A HREF=index.html>org</A></B>.
+This file, <B>org.html</B>, is also generated, and includes links to all of the
+HTML files.
+<P>
+<I>The following targets are used to get and update a reference
+<A HREF=https://github.com/douglascrockford/JSON-java>implementation</A> of a
+JSON package in Java. It is "cloned" into the <B>json</B> sub-directory.</I>
+<LI><TT>clone</TT> - create a local copy of the source repository.
+<LI><TT>refresh</TT> - get the latest updates.
+</UL>
+<HR>
+<A HREF="http://vim.sourceforge.net/"><img src="../vim.png" align="right" BORDER=0></A>
