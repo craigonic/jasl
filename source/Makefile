@@ -483,6 +483,7 @@ docs_all:
 	$(MAKE) -C $(CNI_DIRECTORY) $@
 	$(MAKE) -C $(SWIG_DIRECTORY) $@
 	$(MAKE) -C $(PROGRAM_NAME) $@
+	$(MAKE) -C org $@
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
@@ -498,6 +499,7 @@ clean_docs:
 	$(MAKE) -C $(CNI_DIRECTORY) $@
 	$(MAKE) -C $(SWIG_DIRECTORY) $@
 	$(MAKE) -C $(PROGRAM_NAME) $@
+	$(MAKE) -C org $@
 	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs

@@ -135,6 +135,28 @@ clean_dynamic_lib:
 clean_static_lib:
 	$(RM) $(LIB_PATH)/$(STATIC_LIB_FILENAME)
 
+# Create an HTML version of this file. It is converted using the
+# source-highlight program, which generates an "image" of the file with syntax
+# color coding. After the file is generated, the htls program is used to link it
+# to the files in the sub-directories on an HTML page.
+
+ORG_JSON_DOCS_PATH := $(SRC_DOCS_PATH)/org
+
+.PHONY : docs_all
+docs_all:
+	@$(INSTALL_DIR) $(ORG_JSON_DOCS_PATH)
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(ORG_JSON_DOCS_PATH)/$(MAKEFILE).html
+
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(ORG_JSON_DOCS_PATH)
+	@$(HTLS) $(ORG_JSON_DOCS_PATH)
+
+.PHONY : clean_docs
+clean_docs:
+	@$(RM) $(ORG_JSON_DOCS_PATH)/$(HTLS_HEADER_FILE)
+
+.PHONY : docs
+docs: docs_all clean_docs
+
 # A reference implementation for using JSON in Java must be "cloned" into the
 # json sub-directory. The following targets are used to get the code and refresh
 # the local copy of the (git) repository.
