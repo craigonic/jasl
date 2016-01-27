@@ -1,0 +1,114 @@
+{
+	"name":"The Guards Counterattack",
+	"turns":5,
+	"starting side":0,
+	"sides":
+	[
+		{
+			"side":0,
+			"Experience Level Rating":3,
+			"SAN":6,
+			"formations":
+			[
+				{
+					"name":"308th Rifle Division",
+					"units":
+					[
+						{
+							"Description":"Leader",
+							"Nationality":"Russian",
+							"Unit Type":"",
+							"Morale":9,
+							"Broken Morale":9,
+							"Modifier":0
+						},
+						{
+							"Description":"Squad",
+							"Nationality":"Russian",
+							"Unit Type":"",
+							"Firepower":4,
+							"Normal Range":4,
+							"Morale":7,
+							"Broken Morale":7,
+							"Can Self Rally ?":false,
+							"Basic Point Value":7,
+							"Has Maximum ELR ?":false,
+							"Classification":"1st Line",
+							"Can Assault Fire ?":false,
+							"Can Spray Fire ?":false,
+							"Smoke Placement Exponent":0
+						}
+					]
+				},
+				{
+					"name":"2nd Battalion, 37th Guards Division",
+					"units":
+					[
+						{
+							"Description":"Leader",
+							"Nationality":"Russian",
+							"Unit Type":"",
+							"Morale":10,
+							"Broken Morale":10,
+							"Modifier":-2
+						},
+						{
+							"Description":"Squad",
+							"Nationality":"Russian",
+							"Unit Type":"Guards",
+							"Firepower":6,
+							"Normal Range":2,
+							"Morale":8,
+							"Broken Morale":8,
+							"Can Self Rally ?":false,
+							"Basic Point Value":12,
+							"Has Maximum ELR ?":false,
+							"Classification":"Elite",
+							"Can Assault Fire ?":true,
+							"Can Spray Fire ?":true,
+							"Smoke Placement Exponent":0
+						}
+					]
+				}
+			]
+		},
+		{
+			"side":1,
+			"Experience Level Rating":4,
+			"SAN":6,
+			"formations":
+			[
+				{
+					"name":"Company H, 389th Infantry Regiment",
+					"units":
+					[
+						{
+							"Description":"Leader",
+							"Nationality":"German",
+							"Unit Type":"",
+							"Morale":9,
+							"Broken Morale":9,
+							"Modifier":-1
+						},
+						{
+							"Description":"Squad",
+							"Nationality":"German",
+							"Unit Type":"",
+							"Firepower":4,
+							"Normal Range":6,
+							"Morale":7,
+							"Broken Morale":7,
+							"Can Self Rally ?":false,
+							"Basic Point Value":8,
+							"Has Maximum ELR ?":false,
+							"Classification":"1st Line",
+							"Can Assault Fire ?":false,
+							"Can Spray Fire ?":true,
+							"Smoke Placement Exponent":1
+						}
+					]
+				}
+			]
+		}
+	]
+}
