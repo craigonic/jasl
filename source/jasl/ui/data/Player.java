@@ -5,8 +5,8 @@
 //               jASL.                                                        //
 //                                                                            //
 //               NOTE: This program is based on Advanced Squad Leader, which  //
-//                     was created by The Avalon Hill Player Company, and     //
-//                     lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                    //
+//                     was created by The Avalon Hill Game Company, and lives //
+//                     on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                          //
 //                                                                            //
 // Written By: Craig R. Campbell  -  February 2013                            //
 // ************************************************************************** //
