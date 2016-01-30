@@ -27,79 +27,31 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and class files in/of/for
 # this package.
 
-GAME_CLASS           := Game.class
-GAME_OBJ             := ${GAME_CLASS:.class=.o}
-GAME_SRC             := ${GAME_CLASS:.class=.java}
+JASL_UI_DATA_SRC_FILES := Position.java Stack.java Player.java Side.java \
+                          Game.java Scenario.java
 
-SIDE_CLASS           := Side.class
-SIDE_OBJ             := ${SIDE_CLASS:.class=.o}
-SIDE_SRC             := ${SIDE_CLASS:.class=.java}
+GCJ_OBJECT_FILES       := ${JASL_UI_DATA_SRC_FILES:.java=.o}
 
-# This file is generated when Side.java is compiled and represents the Sides
-# enum defined in that class. The following definitions are used to generate the
-# object file.
-
-SIDES_CLASS          := Side\$$Sides.class
-SIDES_OBJ            := ${SIDES_CLASS:.class=.o}
-
-PLAYER_CLASS         := Player.class
-PLAYER_OBJ           := ${PLAYER_CLASS:.class=.o}
-PLAYER_SRC           := ${PLAYER_CLASS:.class=.java}
-
-HEX_CLASS            := Hex.class
-HEX_OBJ              := ${HEX_CLASS:.class=.o}
-HEX_SRC              := ${HEX_CLASS:.class=.java}
-
-ALL_CLASSES          := $(GAME_CLASS) $(SIDE_CLASS) $(PLAYER_CLASS) $(HEX_CLASS)
-
-GCJ_OBJECT_FILES     := ${ALL_CLASSES:.class=.o}
-
-JAVA_CLASSES         := ${ALL_CLASSES:.class=}
+JAVA_CLASSES           := ${JASL_UI_DATA_SRC_FILES:.java=}
 
 # Build all of the individual class files.
 
+%.class: %.java
+	$(JAVA_OPTIONS) $^
+
 .PHONY : all
-all: $(ALL_CLASSES)
-
-# Compile the individual Java classes in this package.
-
-$(GAME_CLASS): $(SIDE_CLASS)
-	$(JAVA_OPTIONS) $(GAME_SRC)
-
-$(SIDE_CLASS): $(PLAYER_CLASS)
-	$(JAVA_OPTIONS) $(SIDE_SRC)
-
-$(PLAYER_CLASS): $(HEX_CLASS)
-	$(JAVA_OPTIONS) $(PLAYER_SRC)
-
-$(HEX_CLASS): bin_directory
-	$(JAVA_OPTIONS) $(HEX_SRC)
-
-# Compile individual object files used to build a native executable with the gcj
-# compiler.
-
-$(GAME_OBJ): $(GAME_CLASS)
-	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/$(GAME_CLASS) \
-	                   -o $(OBJ_SUB_DIRECTORY)/$(GAME_OBJ)
-
-$(SIDE_OBJ): $(SIDE_CLASS)
-	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/$(SIDE_CLASS) \
-	                   -o $(OBJ_SUB_DIRECTORY)/$(SIDE_OBJ)
-	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/$(SIDES_CLASS) \
-	                   -o $(OBJ_SUB_DIRECTORY)/$(SIDES_OBJ)
-
-$(PLAYER_OBJ): $(PLAYER_CLASS)
-	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/$(PLAYER_CLASS) \
-	                   -o $(OBJ_SUB_DIRECTORY)/$(PLAYER_OBJ)
-
-$(HEX_OBJ): $(HEX_CLASS)
-	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/$(HEX_CLASS) \
-	                   -o $(OBJ_SUB_DIRECTORY)/$(HEX_OBJ)
+all: bin_directory
+	$(JAVA_OPTIONS) $(JASL_UI_DATA_SRC_FILES)
 
 # Build all of the individual object files.
 
+%.o: %.class
+	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/$^ -o $(OBJ_SUB_DIRECTORY)/$@
+
 .PHONY : obj
-obj: obj_sub_directory $(GCJ_OBJECT_FILES)
+obj: bin_directory obj_sub_directory $(GCJ_OBJECT_FILES)
+	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/Side\$$Sides.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/Side\$$Sides.o
 
 # Build all of the individual header files.
 
@@ -112,7 +64,7 @@ hdr: include_directory
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(UI_DATA_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).3
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).4
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
@@ -134,7 +86,8 @@ dynamic_lib: lib_directory obj
 static_lib: lib_directory obj
 	$(AR) $(UI_DATA_STATIC_LIB_PATH) $(LOCAL_OBJ_FILES)
 
-# Remove all of the .class and/or object files from the binary output directory.
+# Remove all of the .class and/or object files from the their respective output
+# directory.
 
 .PHONY : clean
 clean: clean_java clean_obj
