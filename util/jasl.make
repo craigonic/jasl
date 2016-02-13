@@ -128,7 +128,7 @@ HTLS_HEADER_FILE   := header.html
 
 JAVADOC_COMPILER   := javadoc
 JAVADOCS_PATH      := $(DOCS_PATH)/javadocs
-JAVADOCS_LINK      := -link http://java.sun.com/javase/8/docs/api
+JAVADOCS_LINK      := -link http://docs.oracle.com/javase/8/docs/api
 JAVADOC_OPTIONS    := -version -author -package -nodeprecatedlist -use \
                       -breakiterator
 JAVADOC_TITLE      := -windowtitle "jASL Programming Documentation"
@@ -318,7 +318,7 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 
 # GCC compile commands with options specific to each target language.
 
-#GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.14.2/i686-linux/CORE
+#GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.18.2/i686-linux/CORE
 GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.18.0/x86_64-linux-thread-multi/CORE
 GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
 
