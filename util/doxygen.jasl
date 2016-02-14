@@ -113,7 +113,8 @@ INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.java
 RECURSIVE              = YES
 EXCLUDE                = Driver.java \
-                         org
+                         org \
+                         jasl/ui/android
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        =

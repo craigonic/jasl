@@ -105,7 +105,8 @@ print "(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(unit.toJSON())
 nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
 unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
 
-russianSquad = Squad(nationality,unitType,6,2,8,8,0,12,4,0,classification,1,1,0)
+russianSquad = Squad(nationality,unitType,6,2,8,8,False,12,4,False,
+                     classification,True,True,0)
 
 russianSquad.setIdentity(cc2js("A"))
 
@@ -170,12 +171,12 @@ unitList.append(Leader(nationality,unitType,9,9,4,-1))
 
 unitList[0].setIdentity(cc2js("Sgt. Slaughter"))
 
-unitList.append(Squad(nationality,unitType,6,6,6,6,0,11,4,0,
-                      classification,1,1,0))
-unitList.append(Squad(nationality,unitType,6,6,6,6,0,11,4,0,
-                      classification,1,1,0))
-unitList.append(Squad(nationality,unitType,6,6,6,6,0,11,4,0,
-                      classification,1,1,0))
+unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
+                      classification,True,True,0))
+unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
+                      classification,True,True,0))
+unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
+                      classification,True,True,0))
 
 unitList[1].setIdentity(cc2js("X"))
 unitList[2].setIdentity(cc2js("Y"))
@@ -213,7 +214,8 @@ unitType    = InfantryTypes_valueOf(cc2js("ENGINEERS"))
 print "\nIncompatible nationality and unitType parameters:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -226,7 +228,8 @@ classification = Classifications_valueOf(cc2js("GREEN"))
 print "\nIncompatible description and unitType parameters:"
 
 try:
-    squad = Squad(nationality,unitType,4,4,7,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,4,7,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -239,14 +242,16 @@ classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 print "\nInvalid (less than 0) firepower parameter:"
 
 try:
-    squad = Squad(nationality,unitType,-1,6,7,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,-1,6,7,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
 print "\nInvalid (greater than maximum) firepower parameter:"
 
 try:
-    squad = Squad(nationality,unitType,11,6,7,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,11,6,7,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -255,7 +260,8 @@ except ValueError as detail:
 print "\nInvalid (less than 0) normal range parameter:"
 
 try:
-    squad = Squad(nationality,unitType,4,-255,7,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,-255,7,7,False,10,3,False,
+                  classification,True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -264,7 +270,8 @@ except ValueError as detail:
 print "\nInvalid (less than 0) morale parameter:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,-1,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,-1,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -273,7 +280,8 @@ except ValueError as detail:
 print "\nInvalid (greater than maximum) morale parameter:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,11,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,11,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -282,7 +290,8 @@ except ValueError as detail:
 print "\nInvalid (less than 0) broken morale parameter:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,-7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,-7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -291,7 +300,8 @@ except ValueError as detail:
 print "\nInvalid (greater than maximum) broken morale parameter:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,17,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,17,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -300,7 +310,8 @@ except ValueError as detail:
 print "\nInvalid (less than zero) Basic Point Value (BPV):"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,-1,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,7,False,-1,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -309,7 +320,8 @@ except ValueError as detail:
 print "\nInvalid (less than zero) Experience Level Rating (ELR):"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,10,-1,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,-1,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -318,7 +330,8 @@ except ValueError as detail:
 print "\nInvalid (greater than maximum) Experience Level Rating (ELR):"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,10,6,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,6,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -330,7 +343,8 @@ classification = Classifications_valueOf(cc2js("SS"))
 print "\nIncompatible classification parameter:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,0)
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+                  True,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -342,7 +356,8 @@ classification = Classifications_valueOf(cc2js("SECOND_LINE"))
 print "\nInvalid (less than zero) Smoke Placement Exponent:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,-4)
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+                  True,False,-4)
 except ValueError as detail:
     printException(detail)
 
@@ -351,7 +366,8 @@ except ValueError as detail:
 print "\nInvalid (greater than maximum) Smoke Placement Exponent:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,0,10,3,0,classification,1,0,4)
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+                  True,False,4)
 except ValueError as detail:
     printException(detail)
 
