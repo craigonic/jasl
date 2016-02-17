@@ -22,12 +22,12 @@ import jasl.utilities.Messages;
 
 /**
  * This class is used to provide data management for a player during a jASL
- * session. This includes the player's name, the nationality of the units that
- * he or she commands, and the turn that they enter the game, as well as the
- * ability to add, delete, and access the individual <A HREF="../../counters/Unit.html">Unit</A>s.
+ * session. It includes the player's name, the nationality of the majority of
+ * the <A HREF="../../counters/Unit.html">Unit</A>s under his or her control, and the turn that he or she enters the
+ * game, as well as the ability to add, delete, and access individual Units.
  *
  * @version 1.2
- * @author Copyright (C) 2013-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @author Copyright (C) 2013-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Player.html">Source code</A>
  */
 
@@ -40,21 +40,24 @@ public final class Player
 
 	private String _name;
 
-	// This variable contains the nationality of the units managed by the
-	// player (e.g. "American" or "German").
+	// This variable contains the nationality (e.g. "American" or "German")
+	// of the majority of the <A HREF="../../counters/Unit.html">Unit</A>s that the player controls. It is intended
+	// primarily for informational use, since a player could potentially
+	// control items (counters) with no nationality or a nationality
+	// associated with the other "side" (e.g. captured items).
 
 	private Nationality.Nationalities _nationality;
 
 	// This variable is used to store the turn number that the player (and
 	// the units he or she manages) will enter the game. It must be greater
-	// than zero and less than <B>TBD</B>.
+	// than zero.
 
 	private int _entryTurn;
 
 	// This variable is used to store the units managed by the player. The
 	// list is updated using the addUnit() and deleteUnit() methods. The
 	// labels associated with the units are available through unitList() and
-	// unit() may be used to access individual <A HREF="../../counters/Unit.html">Unit</A> objects.
+	// unit() may be used to access individual Unit objects.
 
 	private ArrayList<String> _unitList;
 
@@ -74,17 +77,16 @@ public final class Player
 	private static final String invalidArgumentError =
 		Messages.buildErrorMessage(CLASS_NAME,Messages.CONSTRUCTOR,
 		                           Messages.INVALID_PARAMETER_MSG);
-
 	// Constructor
 
 	/**
 	 * Construct a new <CODE>Player</CODE>.
 	 *
-	 * @param name the name of the player.
-	 * @param nationality the nationality of the units managed by the
-	 * player. Example - <B><A HREF="../../counters/Nationality.html#_GERMAN_">GERMAN</A></B>
-	 * @param entryTurn the turn when the units managed by the player enter
-	 * the game.
+	 * @param name the name of the player
+	 * @param nationality the nationality of the majority of the units
+	 * that the player controls. Example - <B><A HREF="../../counters/Nationality.html#_GERMAN_">GERMAN</A></B>
+	 * @param entryTurn the turn when the units initially managed by the
+	 * player enter the game.
 	 * Example - <B>1</B>
 	 *
 	 * @throws NullPointerException in the case of a null name argument.
@@ -132,24 +134,13 @@ public final class Player
 	// Public access methods
 
 	/**
-	 * Return the name of the player.
-	 *
-	 * @return a <CODE>String</CODE> specifying the player's name.
-	 */
-
-	public String toString()
-	{
-		return _name;
-	}
-
-	/**
-	 * Return a text representation of the attributes of the player.
+	 * Return a text representation of the attributes of a player.
 	 *
 	 * The output includes the labels associated with the units managed by
 	 * the player.
 	 *
-	 * @return a multi-line <CODE>String</CODE> specifying the current
-	 * settings of an instance of this type.
+	 * @return a multi-line <CODE>String</CODE> specifying the current settings of an
+	 * instance of this type.
 	 *
 	 * @see #unitList
 	 */
@@ -176,9 +167,21 @@ public final class Player
 	}
 
 	/**
-	 * Return the nationality of the units managed by the player.
+	 * Return the name of a player.
 	 *
-	 * @return a <CODE>String</CODE> specifying the nationality of the player's units.
+	 * @return a <CODE>String</CODE> specifying the player's name.
+	 */
+
+	public String toString()
+	{
+		return _name;
+	}
+
+	/**
+	 * Return the nationality of the majority of the units that a player
+	 * controls.
+	 *
+	 * @return a <CODE>String</CODE> specifying the nationality.
 	 */
 
 	public String nationality()
@@ -187,10 +190,10 @@ public final class Player
 	}
 
 	/**
-	 * Return the turn that the units managed by the player will enter the
-	 * game.
+	 * Return the turn that the units initially managed by a player will
+	 * enter the game.
 	 *
-	 * @return an <CODE>int</CODE> specifying the entry turn of the player's units.
+	 * @return an <CODE>int</CODE> specifying the entry turn.
 	 */
 
 	public int entryTurn()
@@ -199,10 +202,7 @@ public final class Player
 	}
 
 	/**
-	 * Return one of the units managed by the player.
-	 *
-	 * Units that are being managed by the one specified (i.e. portaged)
-	 * will be included (i.e. accessible from the returned object).
+	 * Return one of the units managed by a player.
 	 *
 	 * @param index the (zero-based) index of the <A HREF="../../counters/Unit.html">Unit</A> to be accessed
 	 *
@@ -234,11 +234,7 @@ public final class Player
 	}
 
 	/**
-	 * Return a list of descriptions of the units managed by the player.
-	 *
-	 * Units that are being managed by another (i.e. portaged) will <B>not</B>
-	 * appear in the list. A '+' will be appended to the label associated
-	 * with the unit responsible for them.
+	 * Return a list of descriptions of the units managed by a player.
 	 *
 	 * @return a <CODE>List</CODE> of String items specifying the labels associated with
 	 * the player's units.
@@ -252,13 +248,11 @@ public final class Player
 	// Public update methods
 
 	/**
-	 * Place a new unit under the player's command.
+	 * Place a new unit under a player's command.
 	 *
 	 * @param unit the <A HREF="../../counters/Unit.html">Unit</A> to be added
 	 *
 	 * @throws NullPointerException in the case of a null object.
-	 * @throws IllegalArgumentException in the case where the unit's
-	 * nationality does not match the one associated with the player.
 	 */
 
 	public void addUnit(String unit)
@@ -269,19 +263,12 @@ public final class Player
 			                                                          "addUnit",
 			                                                          Messages.NULL_PARAMETER_MSG));
 		}
-/*
-		if (0 != nationality().compareTo(unit.nationality()))
-		{
-			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                              "addUnit",
-			                                                              "Incompatible unit and player nationality."));
-		}
-*/
+
 		_unitList.add(unit);
 	}
 
 	/**
-	 * Remove a unit under the player's command.
+	 * Remove a unit under a player's command.
 	 *
 	 * If the unit to be removed is currently managing (i.e. portaging)
 	 * other Units (e.g. support weapons), those items will be placed back
