@@ -28,7 +28,7 @@ include $(JASL_BASE)/util/jasl.make
 # this package.
 
 JASL_UI_DATA_SRC_FILES := Position.java Stack.java Player.java Side.java \
-                          Game.java Scenario.java
+                          Phase.java Game.java Scenario.java
 
 GCJ_OBJECT_FILES       := ${JASL_UI_DATA_SRC_FILES:.java=.o}
 
@@ -52,6 +52,8 @@ all: bin_directory
 obj: bin_directory obj_sub_directory $(GCJ_OBJECT_FILES)
 	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/Side\$$Sides.class \
 	                   -o $(OBJ_SUB_DIRECTORY)/Side\$$Sides.o
+	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/Phase\$$Phases.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/Phase\$$Phases.o
 
 # Build all of the individual header files.
 
