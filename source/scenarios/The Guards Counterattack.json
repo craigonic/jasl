@@ -23,6 +23,15 @@
 							"Modifier":0
 						},
 						{
+							"Description":"Leader",
+							"Nationality":"Russian",
+							"Unit Type":"",
+							"Morale":9,
+							"Broken Morale":9,
+							"Modifier":-1
+						},
+						{
+							"copies":9,
 							"Description":"Squad",
 							"Nationality":"Russian",
 							"Unit Type":"",
@@ -53,6 +62,7 @@
 							"Modifier":-2
 						},
 						{
+							"copies":12,
 							"Description":"Squad",
 							"Nationality":"Russian",
 							"Unit Type":"Guards",
@@ -88,9 +98,35 @@
 							"Unit Type":"",
 							"Morale":9,
 							"Broken Morale":9,
+							"Modifier":-2
+						},
+						{
+							"Description":"Leader",
+							"Nationality":"German",
+							"Unit Type":"",
+							"Morale":9,
+							"Broken Morale":9,
 							"Modifier":-1
 						},
 						{
+							"copies":2,
+							"Description":"Leader",
+							"Nationality":"German",
+							"Unit Type":"",
+							"Morale":8,
+							"Broken Morale":8,
+							"Modifier":-1
+						},
+						{
+							"Description":"Leader",
+							"Nationality":"German",
+							"Unit Type":"",
+							"Morale":8,
+							"Broken Morale":8,
+							"Modifier":0
+						},
+						{
+							"copies":13,
 							"Description":"Squad",
 							"Nationality":"German",
 							"Unit Type":"",
