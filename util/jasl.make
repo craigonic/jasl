@@ -23,6 +23,7 @@ INSTALL_DIRECTORY  := ${JASL_BASE}
 
 BIN_PATH           := $(INSTALL_DIRECTORY)/bin
 DOCS_PATH          := $(INSTALL_DIRECTORY)/share/$(PROGRAM_NAME)/doc
+DATA_PATH          := $(INSTALL_DIRECTORY)/share/$(PROGRAM_NAME)/data
 INCLUDE_PATH       := $(INSTALL_DIRECTORY)/include
 LIB_PATH           := $(INSTALL_DIRECTORY)/lib/$(PROGRAM_NAME)
 
@@ -115,6 +116,7 @@ SRC_DOCS_PATH      := $(DOCS_PATH)/source
 SRC_HIGHLIGHT_CMD  := source-highlight --doc --tab=4 --ctags=''
 CPP2HTML           := $(SRC_HIGHLIGHT_CMD) --src-lang=cpp
 JAVA2HTML          := $(SRC_HIGHLIGHT_CMD) --src-lang=java
+JSON2HTML          := $(SRC_HIGHLIGHT_CMD) --src-lang=json
 MAKE2HTML          := $(SRC_HIGHLIGHT_CMD) --src-lang=makefile
 PERL2HTML          := $(SRC_HIGHLIGHT_CMD) --src-lang=perl
 PYTHON2HTML        := $(SRC_HIGHLIGHT_CMD) --src-lang=python
@@ -259,6 +261,16 @@ UI_DATA_STATIC_LIB_PATH       := $(LIB_PATH)/$(UI_DATA_STATIC_LIB_NAME)
 
 ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH) \
                                  $(UI_DATA_PKG_PATH)
+## Scenarios
+
+SCENARIOS_DIRECTORY           := scenarios
+SCENARIO_FILES                := *.json
+
+SCENARIOS_DATA_PATH           := $(DATA_PATH)/$(SCENARIOS_DIRECTORY)
+SCENARIO_DATA_FILES           := $(SCENARIOS_DATA_PATH)/$(SCENARIO_FILES)
+
+SCENARIOS_SRC_PATH            := $(SRC_PATH)/$(SCENARIOS_DIRECTORY)
+SCENARIO_SRC_FILES            := $(SCENARIOS_SRC_PATH)/$(SCENARIO_FILES)
 
 ## Miscellaneous programs.
 

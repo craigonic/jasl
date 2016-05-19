@@ -82,7 +82,7 @@ all: $(ALL_CLASSES)
 .PHONY : build_all
 build_all: gcj gcj_dynamic gcj_static build_cpp_dynamic build_cpp_static \
            build_cxx_dynamic build_cxx_static build_c_dynamic build_c_static \
-           $(JASL_JAR_ARCHIVE) clean_obj
+           $(JASL_JAR_ARCHIVE) clean_obj scenarios
 
 # Build the jar archive(s) and remove all .class files in this directory and its
 # sub-directories.
@@ -206,10 +206,11 @@ $(DRIVER_CLASS): bin_directory
 # exception of those exclusive to a specific user interface (e.g. Android). The
 # Driver program is also included for unit testing.
 
-$(JASL_JAR_ARCHIVE): $(DRIVER_CLASS)
+$(JASL_JAR_ARCHIVE): $(DRIVER_CLASS) jar_scenarios
 	@(cd $(BIN_PATH); \
 	  $(JAR_BUILD_CMD) $(SRC_PATH)/$(DRIVER_MANIFEST) \
-	                   $(JASL_JAR_ARCHIVE) $(DRIVER_CLASS) $(ALL_PACKAGES))
+	                   $(JASL_JAR_ARCHIVE) $(DRIVER_CLASS) $(ALL_PACKAGES) \
+	                   $(SCENARIOS_DIRECTORY)/$(SCENARIO_FILES))
 
 # Build the native executable versions of the Driver program, which is used to
 # test the classes defined in the jasl directory and its sub-directories.
@@ -402,7 +403,7 @@ TEST_EXEC := $(JAVA_RUN_CMD) $(DRIVER_EXEC)
 EXEC_PATH := $(BIN_PATH)
 
 .PHONY : run_test
-run_test:
+run_test: test_scenario
 	@$(DATE) > $(DRIVER_TEST)
 	@(cd $(EXEC_PATH); $(TEST_EXEC) >> $(SRC_PATH)/$(DRIVER_TEST))
 	@-$(DIFF) $(DRIVER_OUT) $(DRIVER_TEST)
@@ -484,6 +485,7 @@ docs_all:
 	$(MAKE) -C $(SWIG_DIRECTORY) $@
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
+	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
@@ -500,6 +502,7 @@ clean_docs:
 	$(MAKE) -C $(SWIG_DIRECTORY) $@
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
+	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
 	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
@@ -543,6 +546,43 @@ htags: global
 # in the same directory as javadoc.
 
 all_docs: javadocs doxygen htags docs
+
+## Scenarios ###################################################################
+
+# Copy the scenario files to their appropriate location in the share hierarchy.
+
+.PHONY : scenarios
+scenarios:
+	$(MAKE) -C $(SCENARIOS_DIRECTORY)
+
+# Install or provide access to the specified scenario file, which is used by the
+# Driver program.
+
+TEST_SCENARIO_PATH := ../bin/$(SCENARIOS_DIRECTORY)
+
+# Create a sub-directory of the bin output directory and copy the test scenario
+# file to it. This target is used by the build_jar target to ensure that the
+# data is included in the jar archive.
+
+.PHONY : jar_scenarios
+jar_scenarios: clean_test_scenario
+	@$(INSTALL_DIR) $(TEST_SCENARIO_PATH)
+	@$(INSTALL_STD_FILE) $(SCENARIO_SRC_FILES) $(TEST_SCENARIO_PATH)
+
+# Create a symbolic link to the test scenario file, which is located in the
+# share hierarchy (installed by the scenarios target). This target is used by
+# the test targets.
+
+.PHONY : test_scenario
+test_scenario: clean_test_scenario
+	@$(LN) $(SCENARIOS_DATA_PATH) $(TEST_SCENARIO_PATH)
+
+# Remove either the directory and its contents OR the link, either of which is
+# created in one of the two targets above.
+
+.PHONY : clean_test_scenario
+clean_test_scenario:
+	@$(RM_RECURSIVE) $(TEST_SCENARIO_PATH)
 
 ## Miscellaneous ###############################################################
 

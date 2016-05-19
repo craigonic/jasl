@@ -13,6 +13,7 @@ make clean_all
 (cd jasl;make clean_hdr clean_libs)
 (cd cni-wrapper/jasl;make clean_hdr clean_libs)
 (cd swig;make clean_all)
+(cd scenarios;make clean)
 
 # Build the libraries and install the header files.
 
@@ -27,7 +28,7 @@ make clean_all
 make clean_all
 (cd swig;make libs)
 
-# Build all the executables.
+# Build all the executables and install the scenarios.
 
 make build_all
 
@@ -38,8 +39,8 @@ make perl python
 
 # Test everything.
 
-make test
 make test_jar
+make test
 make test_gcj
 make test_gcj_dynamic
 make test_gcj_static

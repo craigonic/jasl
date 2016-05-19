@@ -242,6 +242,11 @@ sub head
 
 				$dir_page =~ s|.*/||;
 
+				# Replace any spaces found in the filename with "%20". Otherwise
+				# the link won't work when clicked upon.
+
+				$dir_page =~ s| |%20|g;
+
 				# Verify that the title does not match the directory name.
 				# If it does, we assume that the <dirname>.html file, which is
 				# generated automatically, does not contain the contents of a
@@ -278,6 +283,11 @@ sub head
 				# and use it to create a relative link.
 
 				$dir_page =~ s|.*/||;
+
+				# Replace any spaces found in the filename with "%20". Otherwise
+				# the link won't work when clicked upon.
+
+				$dir_page =~ s| |%20|g;
 
 				print INDEXPAGE "$title Index</title>\n</head>",
 				"<body>\n<h1><A HREF=$dir_page>$title</A> Index</h1>\n";
@@ -419,6 +429,11 @@ sub htls
 
 			$path = substr($path,$root_length + 1);
 
+			# Replace any spaces found in the filename with "%20". Otherwise the
+			# link won't work when clicked upon.
+
+			$path =~ s| |%20|g;
+
 			# Display the link.
 
 			print INDEXPAGE "${indent}<LI><A HREF=$path>$title</A>";
@@ -503,6 +518,11 @@ sub htls
 			}
 		}
 
+		# Replace any spaces found in the filename with "%20". Otherwise the
+		# link won't work when clicked upon.
+
+		$relative_path =~ s| |%20|g;
+
 		# If the -d option was specified, create a link to the directory,
 
 		if ($d) 
@@ -518,6 +538,11 @@ sub htls
 		elsif ((-f $html_page) && (!($fp)))
 		{
 			$html_page =~ s|.*/||;
+
+			# Replace any spaces found in the filename with "%20". Otherwise the
+			# link won't work when clicked upon.
+
+			$html_page =~ s| |%20|g;
 
 			print INDEXPAGE "${indent}<LI><A HREF=$relative_path/$html_page><B>$title</B></A>\n";
 			print INDEXPAGE "\n" if ($htgrep);
@@ -843,6 +868,11 @@ sub GenerateHTMLPages
 
 			&OpenHTMLFile($output_file,"a");
 
+			# Replace any spaces found in the filename with "%20". Otherwise the
+			# link won't work when clicked upon.
+
+			$entry =~ s| |%20|g;
+
 			# Display the link to the file. If the $subdir variable is set
 			# the program will indent the output and add the subdirectory
 			# name to the link so that it works properly. Otherwise, the
@@ -851,6 +881,11 @@ sub GenerateHTMLPages
 
 			if ($subdir)
 			{
+				# Replace any spaces found in the filename with "%20". Otherwise
+				# the link won't work when clicked upon.
+
+				$subdir_path =~ s| |%20|g;
+
 				print HTMLPAGE "<UL>\n";
 				print HTMLPAGE "<LI><A HREF=$subdir_path/$entry>$title</A>\n";
 			}
@@ -958,6 +993,11 @@ sub GenerateHTMLPages
 			print HTMLPAGE "<UL>\n";
 		}
 
+		# Preserve this for use as a label. Assume at this point that it doesn't
+		# have any spaces in it.
+
+		$relative_path_name = $relative_path;
+
 		if ((-f $header_file) || (-f $html_page))
 		{
 			if (-f $header_file)
@@ -985,6 +1025,13 @@ sub GenerateHTMLPages
 
 		    $html_page =~ s|.*/||;
 
+			# Replace any spaces found in file names/paths with "%20". Otherwise
+			# a link won't work when clicked upon.
+
+			$subdir_path   =~ s| |%20|g;
+			$relative_path =~ s| |%20|g;
+			$html_page     =~ s| |%20|g;
+
 			# Create the link to the directory. If the $empty variable is set
 			# the subdirectory contains header.html only. If the $subdir
 			# variable is set the program will add the subdirectory name to the
@@ -1002,7 +1049,7 @@ sub GenerateHTMLPages
 
 				else
 				{
-					print HTMLPAGE "<LI><A NAME=$relative_path></A><B>$title</B>\n";
+					print HTMLPAGE "<LI><A NAME=$relative_path_name></A><B>$title</B>\n";
 				}
 			}
 
@@ -1014,7 +1061,7 @@ sub GenerateHTMLPages
 
 			else
 			{
-				print HTMLPAGE "<LI><A NAME=$relative_path></A><A HREF=$relative_path/$html_page><B>$title</B></A>\n";
+				print HTMLPAGE "<LI><A NAME=$relative_path_name></A><A HREF=$relative_path/$html_page><B>$title</B></A>\n";
 			}
 
 			# Descend into this directory to display direct links to the 
@@ -1122,7 +1169,7 @@ sub GenerateHTMLPages
 
 			else
 			{
-				print HTMLPAGE "<LI><A NAME=$relative_path></A><B>$title</B>\n";
+				print HTMLPAGE "<LI><A NAME=$relative_path_name></A><B>$title</B>\n";
 			}
 		}
 

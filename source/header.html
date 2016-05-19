@@ -75,7 +75,7 @@ The java bytecode files in each sub-directory are also generated.
 <TT>gcj_dynamic</TT>, <TT>gcj_static</TT>, <TT>build_cpp_dynamic</TT>,
 <TT>build_cpp_static</TT>, <TT>build_cxx_dynamic</TT>,
 <TT>build_cxx_static</TT>, <TT>build_c_dynamic</TT>, <TT>build_c_static</TT>,
-and <TT>build_jar</TT> targets.
+<TT>build_jar</TT>, and <TT>scenarios</TT> targets.
 <P>
 <LI><TT>build_jar</TT> - create an executable
 <TT><A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/jar.html#BGBFFFGG>jar</A></TT>
@@ -155,8 +155,9 @@ directory and/or its sub-directories unless otherwise noted.</I>
 <LI><TT>clean_all</TT> - executes the actions defined for the
 <TT>clean_java</TT>, <TT>clean_obj</TT>, and <TT>clean</TT> targets.
 <P>
-<LI><TT>clean_java</TT> - all of the java bytecode (.class) files in the
-<TT><U>jasl</U></TT> sub-directory hierarchy.
+<LI><TT>clean_java</TT> - the <TT><U>jasl</U></TT> (<I>output</I>)
+sub-directory (i.e. all of the <A HREF="jasl/jasl.html">package</A> bytecode
+(.class) files).
 <LI><TT>clean_obj</TT> - all of the .obj directories within the
 <TT><U>jasl</U></TT> <I>source</I> hierarchy.
 <P>
@@ -264,10 +265,16 @@ are written to <B><A HREF=../global/HTML/index.html>global/HTML</A></B>.
 <TT>docs</TT>, <TT>javadocs</TT>, <TT>doxygen</TT>, and <TT>htags</TT> targets.
 <P>
 <I>Miscellaneous targets.</I>
+<LI><TT>scenarios</TT> - copies the <A HREF="http://www.json.org">JSON</A> files
+in the <A HREF=scenarios/scenarios.html>sub-directory</A> with the same name to
+<I><B>$JASL_BASE/share/jasl/data/scenarios</B></I>. Note that this target must
+be executed in order for the <TT>test</TT> targets to function correctly.
+<P>
 <LI><TT>ctags</TT> - creates a file (<B>tags</B>) in the source directory that
 indexes many of the language objects. This is useful for navigating the source
 code from text editors, such as
 <A HREF="http://vim.sourceforge.net/">Vim</A>, that support it.
+<P>
 <LI><TT>global</TT> - creates a sub-directory (<B>gtags</B>) of the source
 directory containing tag files, which can be used by a number of
 <A HREF=http://www.gnu.org/software/global/globaldoc.html#SEC9>programs</A> to
