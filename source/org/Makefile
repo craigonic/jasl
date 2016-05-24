@@ -26,7 +26,8 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and class files in/of/for
 # this package.
 
-ORG_JSON_SRC_FILES     := JSONArray.java JSONObject.java JSONStringer.java \
+ORG_JSON_SRC_FILES     := JSONPointerException.java JSONPointer.java       \
+                          JSONArray.java JSONObject.java JSONStringer.java \
                           JSONTokener.java JSONException.java              \
                           JSONString.java JSONWriter.java
 
