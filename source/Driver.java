@@ -9,6 +9,8 @@
 // Written By: Craig R. Campbell  -  December 1998                            //
 // ************************************************************************** //
 
+import java.io.IOException;
+
 import jasl.counters.*;
 import jasl.ui.data.*;
 import jasl.utilities.Dice;
@@ -526,9 +528,66 @@ public class Driver
             }
         }
 
+        // Test the Scenario class.
+
+        System.out.println("Testing Exception handling during Scenario creation:\n");
+
+        Scenario scenario = null;
+
+        // Invalid filename (tests the constructor that accepts a String).
+
+        System.out.println("Invalid filename:\n");
+
+        try
+        {
+            scenario = new Scenario("scenarios/The Guard Counterattack.json");
+        }
+
+        catch (NullPointerException e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        catch (IOException e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Valid resource path / filename and data.
+
+        System.out.println("\nTesting the operations of the Scenario class:");
+
+        try
+        {
+            scenario =
+                new Scenario(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
+        }
+
+        catch (NullPointerException e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        catch (IOException e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Display all of the attributes of the scenario using the toText()
+        // method.
+
+        System.out.println("\nScenario.toText() output:\n");
+        System.out.print(scenario.toText());
+
+        // Display an abbreviated description of the scenario (its name) using
+        // the toString() method.
+
+        System.out.println("\nScenario.toString() output:\n");
+        System.out.println(scenario.toString());
+
         // Test the Game class.
 
-        System.out.println("Testing the operations of the Game class:\n");
+        System.out.println("\nTesting the operations of the Game class:\n");
 
         Game.game().addPlayer(Side.Sides.ALLIES,"Pixie",
                               Nationality.Nationalities.AMERICAN,1);
