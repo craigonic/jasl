@@ -63,6 +63,8 @@ obj: obj_sub_directory $(ORG_JSON_OBJ_FILES)
 	                   -o $(OBJ_SUB_DIRECTORY)/JSONObject\$$1.o
 	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONObject\$$Null.class \
 	                   -o $(OBJ_SUB_DIRECTORY)/JSONObject\$$Null.o
+	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONPointer\$$Builder.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/JSONPointer\$$Builder.o
 
 # Build all of the individual header files.
 
