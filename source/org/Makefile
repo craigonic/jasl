@@ -31,11 +31,7 @@ ORG_JSON_SRC_FILES     := JSONPointerException.java JSONPointer.java       \
                           JSONTokener.java JSONException.java              \
                           JSONString.java JSONWriter.java
 
-ORG_JSON_OBJ_FILES     := ${ORG_JSON_SRC_FILES:.java=.o}
-
-ORG_JSON_PATH          := org/json
-ORG_JSON_BIN_PATH      := $(BIN_PATH)/$(ORG_JSON_PATH)
-ORG_JSON_INCLUDE_PATH  := $(INCLUDE_PATH)/$(ORG_JSON_PATH)
+GCJ_OBJECT_FILES       := ${ORG_JSON_SRC_FILES:.java=.o}
 
 ORG_JSON_JAR_ARCHIVE   := org.json.jar
 
@@ -50,21 +46,27 @@ all: bin_directory
 
 .PHONY : jar
 jar: all
-	@(cd $(BIN_PATH);jar cf $(ORG_JSON_JAR_ARCHIVE) $(ORG_JSON_PATH))
+	@(cd $(BIN_PATH);jar cf $(ORG_JSON_JAR_ARCHIVE) $(ORG_JSON_PKG_PATH))
 
 # Build all of the individual object files.
 
+JSON_OBJ_SUB_DIRECTORY := $(ORG_JSON_PKG_NAME)/$(OBJ_SUB_DIRECTORY)
+
+.PHONY : json_obj_sub_directory
+json_obj_sub_directory:
+	$(INSTALL_DIR) $(JSON_OBJ_SUB_DIRECTORY)
+
 %.o: $(ORG_JSON_BIN_PATH)/%.class
-	$(GCJ_COMPILE_CMD) $^ -o $(OBJ_SUB_DIRECTORY)/$@
+	$(GCJ_COMPILE_CMD) $^ -o $(JSON_OBJ_SUB_DIRECTORY)/$@
 
 .PHONY : obj
-obj: obj_sub_directory $(ORG_JSON_OBJ_FILES)
+obj: json_obj_sub_directory $(GCJ_OBJECT_FILES)
 	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONObject\$$1.class \
-	                   -o $(OBJ_SUB_DIRECTORY)/JSONObject\$$1.o
+	                   -o $(JSON_OBJ_SUB_DIRECTORY)/JSONObject\$$1.o
 	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONObject\$$Null.class \
-	                   -o $(OBJ_SUB_DIRECTORY)/JSONObject\$$Null.o
+	                   -o $(JSON_OBJ_SUB_DIRECTORY)/JSONObject\$$Null.o
 	$(GCJ_COMPILE_CMD) $(ORG_JSON_BIN_PATH)/JSONPointer\$$Builder.class \
-	                   -o $(OBJ_SUB_DIRECTORY)/JSONPointer\$$Builder.o
+	                   -o $(JSON_OBJ_SUB_DIRECTORY)/JSONPointer\$$Builder.o
 
 # Build all of the individual header files.
 
@@ -74,7 +76,7 @@ hdr: include_directory
 
 # Define variables used to represent the dynamic and static libraries.
 
-DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)org-json.so
+DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(ORG_JSON_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).1
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
 DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
@@ -85,7 +87,7 @@ STATIC_LIB_FILENAME                := ${DYNAMIC_LIB_NO_VERSION_LINKNAME:.so=.a}
 # along with the necessary links, and install it/them in the library output
 # directory.
 
-LOCAL_OBJ_FILES := $(OBJ_SUB_DIRECTORY)/*.o
+LOCAL_OBJ_FILES := $(JSON_OBJ_SUB_DIRECTORY)/*.o
 
 .PHONY : libs
 libs: dynamic_lib static_lib clean_obj
@@ -108,7 +110,7 @@ clean: clean_java clean_obj
 
 .PHONY : clean_java
 clean_java:
-	$(RM) $(ORG_JSON_BIN_PATH)/*.class
+	$(RM) $(ORG_JSON_CLASS_FILES)
 
 .PHONY : clean_jar
 clean_jar:
@@ -116,13 +118,13 @@ clean_jar:
 
 .PHONY : clean_obj
 clean_obj:
-	$(RM_RECURSIVE) $(OBJ_SUB_DIRECTORY)
+	$(RM_RECURSIVE) $(JSON_OBJ_SUB_DIRECTORY)
 
 # Remove all of the header (.h) files from the include output directory.
 
 .PHONY : clean_hdr
 clean_hdr:
-	$(RM) $(ORG_JSON_INCLUDE_PATH)/*.h
+	$(RM) $(ORG_JSON_HDR_FILES)
 
 # Remove all of the dynamic and/or static library files and links from the
 # library output directory.
