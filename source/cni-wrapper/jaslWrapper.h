@@ -22,6 +22,7 @@
 
 #include "jasl/ui/data/Game.h"
 #include "jasl/ui/data/Player.h"
+#include "jasl/ui/data/Scenario.h"
 #include "jasl/ui/data/Side$Sides.h"
 
 #include "jasl/utilities/Dice.h"
@@ -93,6 +94,13 @@ typedef jasl::ui::data::Game Game;
  */
 
 typedef jasl::ui::data::Player Player;
+
+/**
+ * \typedef jasl::ui::data::Scenario Scenario
+ * \brief Shorthand declaration for a <A HREF="../../source/jasl/ui/data/Scenario.html">Scenario</A> object.
+ */
+
+typedef jasl::ui::data::Scenario Scenario;
 
 /**
  * \typedef jasl::ui::data::Side$Sides Sides

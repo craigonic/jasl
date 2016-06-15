@@ -612,9 +612,57 @@ int main(int argc, char *argv[])
         printExceptionMessage(t);
     }
 
+    // Test the Scenario class.
+
+    printf("Testing Exception handling during Scenario creation:\n");
+
+    Scenario* scenario = NULL;
+
+    // Invalid filename (tests the constructor that accepts a String).
+
+    printf("\nInvalid filename:\n");
+
+    try
+    {
+        scenario =
+            new Scenario(cc2js("scenarios/The Guard Counterattack.json"));
+    }
+
+    catch (jthrowable t)
+    {
+        printExceptionMessage(t);
+    }
+
+    // Valid resource path / filename and data.
+
+    printf("\nTesting the operations of the Scenario class:");
+
+    try
+    {
+        scenario =
+            new Scenario(cc2js("scenarios/The Guards Counterattack.json"));
+    }
+
+    catch (jthrowable t)
+    {
+        printExceptionMessage(t);
+    }
+
+    // Display all of the attributes of the scenario using the toText()
+    // method.
+
+    printf("\n\nScenario.toText() output:\n\n");
+    printJavaString(scenario->toText());
+
+    // Display an abbreviated description of the scenario (its name) using
+    // the toString() method.
+
+    printf("Scenario.toString() output:\n\n");
+    printJavaString(scenario->toString());
+
     // Test the Game class.
 
-    printf("Testing the operations of the Game class:\n\n");
+    printf("\nTesting the operations of the Game class:\n\n");
 
     Sides*  alliedSide      = Sides::valueOf(cc2js("ALLIES"));
     jstring pixie           = cc2js("Pixie");
