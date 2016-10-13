@@ -476,6 +476,40 @@ for ($i = 0;$i < 12;$i++)
     printf("%s\n",CniWrapper::js2cc($theDice->toText()));
 }
 
+# Test the Scenario class.
+
+printf("Testing Exception handling during Scenario creation:\n");
+
+# Invalid filename (tests the constructor that accepts a String).
+
+printf("\nInvalid filename:\n");
+
+$status = eval
+{
+    $scenario =
+        new UiData::Scenario(CniWrapper::cc2js("scenarios/The Guard Counterattack.json"));
+};
+
+printException($@) if (!defined($status));
+
+# Valid resource path / filename and data.
+
+printf("\nTesting the operations of the Scenario class:\n");
+
+$scenario =
+    new UiData::Scenario(CniWrapper::cc2js("../scenarios/The Guards Counterattack.json"));
+
+# Display all of the attributes of the scenario using the toText() method.
+
+printf("\nScenario.toText() output:\n");
+printf("\n%s\n",CniWrapper::js2cc($scenario->toText()));
+
+# Display an abbreviated description of the scenario (its name) using the
+# toString() method.
+
+printf("Scenario.toString() output:\n");
+printf("\n%s\n\n",CniWrapper::js2cc($scenario->toString()));
+
 # Test the Game class.
 
 printf("Testing the operations of the Game class:\n");
