@@ -33,5 +33,6 @@
 
 // Classes.
 
-%include Game.swig   // <A HREF="Game.swig.html">Game</A>
-%include Player.swig // <A HREF="Player.swig.html">Player</A>
+%include Game.swig     // <A HREF="Game.swig.html">Game</A>
+%include Player.swig   // <A HREF="Player.swig.html">Player</A>
+%include Scenario.swig // <A HREF="Scenario.swig.html">Scenario</A>
