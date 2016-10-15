@@ -26,7 +26,7 @@ import jasl.utilities.Messages;
  * has fired or not, etc.), and, where applicable, portaging support. It also
  * allows items of this type that are "wrapping" a Unit to be grouped together.
  *
- * @version 1.0
+ * @version 1.1
  * @author Copyright (C) 2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Stack.html">Source code</A>
  */
@@ -37,21 +37,21 @@ public final class Stack
 	// of this class. It is initialized to null and must remain so in order
 	// for the management of sub-stacks to work.
 
-	private Unit _unit = null;
+	private String _unit;
 
 	// This variable is used to store the ID associated with the Unit
 	// managed by a stack. It is initialized to zero and may optionally be
 	// changed to suit the needs of the calling program. It is not used
 	// internally by this class.
 
-	private int _unitID = 0;
+	private int _unitID;
 
 	// This variable is used to store the ID associated with a Stack that is
 	// managing a unit. It is initialized to zero and is either used
 	// directly, if not zero, or applied if it is, to set or determine the
 	// unique key value for a portaged item or sub-stack.
 
-	private int _stackID = 0;
+	private int _stackID;
 
 	// This variable is used to store one or more items (each a Unit
 	// "wrapped" in its own Stack instance) that are carried/portaged by the
@@ -115,7 +115,7 @@ public final class Stack
 	 * @see #takePortagedItem
 	 */
 
-	public Stack(Unit unit,int unitID,int stackID)
+	public Stack(String unit,int unitID,int stackID)
 	{
 		// Copy the value of each argument to the corresponding variable
 		// if an exception is not found.
@@ -136,6 +136,14 @@ public final class Stack
 		// Stack ID
 
 		_stackID = (stackID > 0) ? stackID : 0;
+
+		// Create the portaged item list.
+
+		_portagedItems = new LinkedHashMap<Integer,Stack>();
+
+		// Make the position label blank.
+
+		setPositionLabel(null);
 	}
 
 	/**
@@ -152,7 +160,7 @@ public final class Stack
 	 * @throws NullPointerException in the case of a null unit argument.
 	 */
 
-	public Stack(Unit unit)
+	public Stack(String unit)
 	{
 		this(unit,0,0);
 	}
@@ -195,6 +203,8 @@ public final class Stack
 
 		setPositionLabel(stack.positionLabel());
 
+		_subStacks = new LinkedHashMap<Integer,Stack>();
+
 		addSubStack(stack);
 	}
 
@@ -219,21 +229,25 @@ public final class Stack
 
 		returnString.append("Stack (");
 		returnString.append(unitID() + "," + stackID() + "):\t");
-		returnString.append(toString() + "\n");
+		returnString.append(toString());
 
 		if ((null != _unit) && !_portagedItems.isEmpty())
 		{
+			returnString.append("\n");
+
 			for (Stack stack : _portagedItems.values())
 			{
 				returnString.append("\t" + stack.toString());
 			}
 		}
 
-		if (!_subStacks.isEmpty())
+		if ((null != _subStacks) && !_subStacks.isEmpty())
 		{
+			returnString.append("\n");
+
 			for (Stack stack : _subStacks.values())
 			{
-				returnString.append(stack.toString());
+				returnString.append("\t" + stack.toString());
 			}
 		}
 
@@ -255,7 +269,10 @@ public final class Stack
 
 	public String toString()
 	{
-		if (!_positionLabel.isEmpty()) return _positionLabel;
+		if (!_positionLabel.isEmpty())
+		{
+			return positionLabel();
+		}
 
 		if (null != _unit) return _unit.toString();
 
@@ -336,7 +353,7 @@ public final class Stack
 	 * if the instance is managing sub-stacks.
 	 */
 
-	public Unit unit()
+	public String unit()
 	{
 		return _unit;
 	}
@@ -443,6 +460,8 @@ public final class Stack
 	 * Unit managed by this instance. If set, the position setting within
 	 * the departing item will be updated to match this instance.
 	 *
+	 * @param itemID the ID associated with the Stack to be removed
+	 *
 	 * @return the <CODE>Stack</CODE> with an ID matching the argument. If a matching
 	 * item is not found or the current instance is <B>not</B> managing a Unit, the
 	 * return value is null.
@@ -501,6 +520,8 @@ public final class Stack
 	 * This method allows the caller to remove the sub-stack from the stack,
 	 * taking control of it. The position setting within the departing
 	 * sub-stack will be updated to match this instance.
+	 *
+	 * @param stackID the ID associated with the Stack to be removed
 	 *
 	 * @return the <CODE>Stack</CODE> with an ID matching the argument. If a matching
 	 * item is not found or the current instance is managing a Unit, the
