@@ -563,12 +563,7 @@ public class Driver
                 new Scenario(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
         }
 
-        catch (NullPointerException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        catch (IOException e)
+        catch (Exception e) // Specific to reading the JSON data.
         {
             System.out.println("Caught: " + e);
         }
