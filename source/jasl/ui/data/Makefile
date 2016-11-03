@@ -54,6 +54,10 @@ obj: bin_directory obj_sub_directory $(GCJ_OBJECT_FILES)
 	                   -o $(OBJ_SUB_DIRECTORY)/Side\$$Sides.o
 	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/Phase\$$Phases.class \
 	                   -o $(OBJ_SUB_DIRECTORY)/Phase\$$Phases.o
+	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/Scenario\$$Formation.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/Scenario\$$Formation.o
+	$(GCJ_COMPILE_CMD) $(UI_DATA_BIN_PATH)/Scenario\$$OrderOfBattle.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/Scenario\$$OrderOfBattle.o
 
 # Build all of the individual header files.
 
@@ -66,7 +70,7 @@ hdr: include_directory
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(UI_DATA_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).4
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).5
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
