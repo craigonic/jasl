@@ -159,7 +159,7 @@ GTAGS_PATH         := $(SRC_PATH)/$(GTAGS)
 HTAGS              := htags
 HTAGS_DOCS_PATH    := $(DOCS_PATH)/global
 HTAGS_TITLE        := "jASL Source Navigation"
-HTAGS_OPTIONS      := -h -I -T --tabs 4 -F -x --title $(HTAGS_TITLE) \
+HTAGS_OPTIONS      := -h -I -T --tabs 4 -F --title $(HTAGS_TITLE) \
                       -d ${GTAGSDBPATH} $(HTAGS_DOCS_PATH)
 HTAGS_OUTPUT_PATH  := $(HTAGS_DOCS_PATH)/HTML
 HTAGS_SED_CMD      := $(SED_CONV_CMD) --in-place
@@ -331,7 +331,7 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 # GCC compile commands with options specific to each target language.
 
 #GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.18.2/i686-linux/CORE
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.18.0/x86_64-linux-thread-multi/CORE
+GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.24.0/x86_64-linux/CORE
 GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
 
 # GCC build/link options common to all libraries and target languages.
