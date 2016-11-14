@@ -21,21 +21,14 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 5.2
+ * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
 
-abstract class Personnel extends Infantry implements Classification
+abstract class Personnel extends Infantry implements MaximumELR, Classification
 {
 	// Symbolic constants
-
-	/**
-	 * Provides a label indicating if these personnel have the maximum
-	 * experience level rating : <B>Has Maximum ELR ?</B>
-	 */
-
-	public static final String HAS_MAXIMUM_ELR_LABEL = "Has Maximum ELR ?";
 
 	// These constants are used in the constructor to pass the correct value
 	// of a Personnel unit (multi-man counter) for each attribute. Other
@@ -51,7 +44,7 @@ abstract class Personnel extends Infantry implements Classification
 	// Private data members
 
 	// This variable is used to indicate that the unit that this object
-	// represents is automatically given the <A HREF="Infantry.html#_MAX_ELR_">maximum ELR</A>. This flag affects
+	// represents is automatically given the <A HREF="ExperienceLevelRating.html#_MAX_ELR_">maximum ELR</A>. This flag affects
 	// how the unit is replaced/reduced. It is indicated on the physical
 	// counter by an underscored morale value.
 
@@ -69,10 +62,11 @@ abstract class Personnel extends Infantry implements Classification
 	// This constant is used as part of the error messages (see below) that
 	// are generated when an exception is thrown.
 
-	private static final String invalidArgumentError =
-		Messages.buildErrorMessage("Personnel",Messages.CONSTRUCTOR,
-		                           Messages.INVALID_PARAMETER_MSG);
+	private static final String CLASS_NAME = Personnel.class.getSimpleName();
 
+	private static final String invalidArgumentError =
+		Messages.buildErrorMessage(CLASS_NAME,Messages.CONSTRUCTOR,
+		                           Messages.INVALID_PARAMETER_MSG);
 	// Constructor
 
 	// During the instantiation of derived concrete classes the parameters

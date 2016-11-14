@@ -30,8 +30,9 @@ include $(JASL_BASE)/util/jasl.make
 INTERFACES              := TextOutput.java Description.java Identity.java \
                            Nationality.java Status.java UnitType.java \
                            Mobility.java Firepower.java Morale.java \
-                           Portability.java Classification.java \
-                           Leadership.java SprayingFire.java
+                           Portability.java BasicPointValue.java \
+                           ExperienceLevelRating.java Classification.java \
+                           MaximumELR.java Leadership.java SprayingFire.java
 SUPER_CLASSES           := Unit.java Fighting.java Mobile.java
 INF_CLASSES             := Infantry.java Personnel.java Squad.java Leader.java
 
@@ -79,7 +80,7 @@ hdr: include_directory
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).6
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
