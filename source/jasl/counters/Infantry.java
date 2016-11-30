@@ -13,6 +13,7 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
@@ -20,7 +21,7 @@ import jasl.utilities.Messages;
  * infantry units. It is intended strictly as a superclass, not to be
  * instantiated directly.
  *
- * @version 4.2
+ * @version 4.3
  * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
@@ -377,31 +378,31 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 		String INDENT = "    ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(FIREPOWER_LABEL,firepower()) +
+		                    JsonOutput.buildJSONPair(FIREPOWER_LABEL,firepower()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(FIREPOWER_EQUIV_LABEL,firepowerEquivalent()) +
+		                    JsonOutput.buildJSONPair(FIREPOWER_EQUIV_LABEL,firepowerEquivalent()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(NORMAL_RANGE_LABEL,normalRange()) +
+		                    JsonOutput.buildJSONPair(NORMAL_RANGE_LABEL,normalRange()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(MORALE_LABEL,morale()) +
+		                    JsonOutput.buildJSONPair(MORALE_LABEL,morale()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(BROKEN_MORALE_LABEL,brokenMorale()) +
+		                    JsonOutput.buildJSONPair(BROKEN_MORALE_LABEL,brokenMorale()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(CAN_SELF_RALLY_LABEL,canSelfRally()) +
+		                    JsonOutput.buildJSONPair(CAN_SELF_RALLY_LABEL,canSelfRally()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(PORTAGE_VALUE_LABEL,portageValue()) +
+		                    JsonOutput.buildJSONPair(PORTAGE_VALUE_LABEL,portageValue()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(BPV_LABEL,basicPointValue()) +
+		                    JsonOutput.buildJSONPair(BPV_LABEL,basicPointValue()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(ELR_LABEL,experienceLevelRating()) +
+		                    JsonOutput.buildJSONPair(ELR_LABEL,experienceLevelRating()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.

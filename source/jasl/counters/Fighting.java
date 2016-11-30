@@ -13,6 +13,7 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
@@ -20,8 +21,8 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 5.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 5.2
+ * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
 
@@ -206,16 +207,16 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		String INDENT = "  ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(NATIONALITY_LABEL,nationality()) +
+		                    JsonOutput.buildJSONPair(NATIONALITY_LABEL,nationality()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(UNIT_TYPE_LABEL,unitType()) +
+		                    JsonOutput.buildJSONPair(UNIT_TYPE_LABEL,unitType()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(IDENTITY_LABEL,identity()) +
+		                    JsonOutput.buildJSONPair(IDENTITY_LABEL,identity()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(STATUS_LABEL,status()) +
+		                    JsonOutput.buildJSONPair(STATUS_LABEL,status()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -313,9 +314,8 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final void setIdentity(String newIdentity)
 	{
-		_identity =
-			((null == newIdentity) || (0 == newIdentity.length())) ?
-			"" : newIdentity;
+		_identity = ((null == newIdentity) || (newIdentity.isEmpty())) ?
+		            "" : newIdentity;
 	}
 
 	/**
@@ -374,7 +374,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	protected final void appendIdentity(StringBuffer stringBuffer)
 	{
-		if ((null != stringBuffer) && (_identity.length() > 0))
+		if ((null != stringBuffer) && !_identity.isEmpty())
 		{
 			stringBuffer.append(" (" + _identity + ")");
 		}

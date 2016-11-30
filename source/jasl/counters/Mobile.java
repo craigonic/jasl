@@ -13,6 +13,7 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
@@ -20,8 +21,8 @@ import jasl.utilities.Messages;
  * ability to move on their own. It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 4.0
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 4.1
+ * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Mobile.html">Source code</A>
  */
 
@@ -188,13 +189,13 @@ abstract class Mobile extends Fighting implements Mobility
 		String INDENT = "   ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(MOVEMENT_LABEL,movement()) +
+		                    JsonOutput.buildJSONPair(MOVEMENT_LABEL,movement()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(PORTAGE_CAPACITY_LABEL,portageCapacity()) +
+		                    JsonOutput.buildJSONPair(PORTAGE_CAPACITY_LABEL,portageCapacity()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(PORTAGE_LEVEL_LABEL,portageLevel()) +
+		                    JsonOutput.buildJSONPair(PORTAGE_LEVEL_LABEL,portageLevel()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.

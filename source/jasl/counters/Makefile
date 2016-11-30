@@ -73,14 +73,14 @@ obj: bin_directory obj_sub_directory $(GCJ_OBJECT_FILES)
 
 .PHONY : hdr
 hdr: include_directory
-	$(GJAVAH_CMD) $(COUNTERS_BIN_PATH)
+	$(GJAVAH_CMD) $(COUNTERS_BIN_PATH) -classpath $(BIN_PATH)
 
 # Define variables used to represent the dynamic and static libraries.
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).6
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).2
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output

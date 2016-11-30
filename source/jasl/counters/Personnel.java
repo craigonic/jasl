@@ -13,6 +13,7 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
@@ -21,7 +22,7 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.2
+ * @version 5.3
  * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
@@ -226,10 +227,10 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 		String INDENT = "     ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(HAS_MAXIMUM_ELR_LABEL,hasMaximumELR()) +
+		                    JsonOutput.buildJSONPair(HAS_MAXIMUM_ELR_LABEL,hasMaximumELR()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(CLASSIFICATION_LABEL,classification()) +
+		                    JsonOutput.buildJSONPair(CLASSIFICATION_LABEL,classification()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
