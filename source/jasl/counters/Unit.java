@@ -14,18 +14,20 @@ package jasl.counters;
 
 import java.io.Serializable;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 5.2
+ * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
-public abstract class Unit implements Serializable, TextOutput, Description
+public abstract class Unit implements Serializable, TextOutput, JsonData,
+                                      Description
 {
 	// Symbolic constants
 
@@ -156,10 +158,10 @@ public abstract class Unit implements Serializable, TextOutput, Description
 		String INDENT = " ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(DESCRIPTION_LABEL,description()) +
+		                    JsonOutput.buildJSONPair(DESCRIPTION_LABEL,description()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(UNIT_LABEL,toString()) +
+		                    JsonOutput.buildJSONPair(UNIT_LABEL,toString()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -176,147 +178,5 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	public final String description()
 	{
 		return _description.toString();
-	}
-
-	// Other methods
-
-	// The following methods are intended for use by the toJSON()
-	// implementations is this class and those derived from it.
-
-	/**
-	 * Generate a JSON name/value pair that includes the specified
-	 * parameters.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name or value
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	protected final String buildJSONPair(String name,String value)
-	{
-		// Define local constants.
-
-		String METHOD_NAME = "buildJSONPair (String value)";
-
-		// Check the value parameter received and throw the appropriate
-		// exception if necessary. The validity of the name parameter
-		// will be checked in buildJSONName().
-
-		if (null == value)
-		{
-			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                          METHOD_NAME,
-			                                                          Messages.NULL_PARAMETER_MSG));
-		}
-
-		// Create a buffer to store the string to be returned.
-
-		StringBuffer returnString =
-			new StringBuffer(buildJSONName(name));
-
-		returnString.append(JSON_KEY_STRING_VALUE_SEPARATOR);
-		returnString.append(value);
-		returnString.append(JSON_DOUBLE_QUOTE);
-
-		// Return the completed string to calling program.
-
-		return returnString.toString();
-	}
-
-	/**
-	 * Generate a JSON name/value pair that includes the specified
-	 * parameters.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	protected final String buildJSONPair(String name,int value)
-	{
-		// Create a buffer to store the string to be returned. The
-		// validity of the name parameter will be checked in
-		// buildJSONName().
-
-		StringBuffer returnString =
-			new StringBuffer(buildJSONName(name));
-
-		returnString.append(JSON_KEY_OTHER_VALUE_SEPARATOR);
-		returnString.append(value);
-
-		// Return the completed string to calling program.
-
-		return returnString.toString();
-	}
-
-	/**
-	 * Generate a JSON name/value pair that includes the specified
-	 * parameters.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	protected final String buildJSONPair(String name,boolean value)
-	{
-		// Create a buffer to store the string to be returned. The
-		// validity of the name parameter will be checked in
-		// buildJSONName().
-
-		StringBuffer returnString =
-			new StringBuffer(buildJSONName(name));
-
-		returnString.append(JSON_KEY_OTHER_VALUE_SEPARATOR);
-		returnString.append(Messages.getTruthLabel(value).toLowerCase());
-
-		// Return the completed string to calling program.
-
-		return returnString.toString();
-	}
-
-	/**
-	 * Generate a JSON name entry using the specified parameter.
-	 *
-	 * This method is intended only for use from the buildJSONPair()
-	 * methods.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	private String buildJSONName(String name)
-	{
-		// Define local constants.
-
-		String METHOD_NAME = "buildJSONName";
-
-		// Check the parameters received and throw the appropriate
-		// exception if necessary.
-
-		if (null == name)
-		{
-			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                          METHOD_NAME,
-			                                                          Messages.NULL_PARAMETER_MSG));
-		}
-
-		if (0 == name.length())
-		{
-			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                              METHOD_NAME,
-			                                                              Messages.ZERO_LENGTH_PARAMETER_MSG));
-		}
-
-		return JSON_DOUBLE_QUOTE + name;
 	}
 }
