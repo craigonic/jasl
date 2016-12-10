@@ -26,7 +26,7 @@ import jasl.utilities.Messages;
  * has fired or not, etc.), and, where applicable, portaging support. It also
  * allows items of this type that are "wrapping" a Unit to be grouped together.
  *
- * @version 1.1
+ * @version 1.2
  * @author Copyright (C) 2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Stack.html">Source code</A>
  */
@@ -89,23 +89,24 @@ public final class Stack
 
 	/**
 	 * Construct a new <CODE>Stack</CODE>.
-	 *
+	 * <P>
 	 * This constructor is intended to "wrap" a single Unit object, allowing
 	 * portaged items to be associated with it. If it is used to create a
 	 * new instance, the methods associated with sub-stacks will have no
 	 * effect. The unit ID is intended for use in referencing the "owner" of
 	 * any portaged items. If the stack ID has a value greater than zero, it
-	 * will be applied if the instance is added to another as a sub-stack.
-	 * For both the unit and stack ID, if the argument value is less than
-	 * zero, the setting will be initialized to zero. All Stack instances
-	 * should either have their ID set to zero <B>or</B> have a unique (greater
-	 * than zero) ID. Mixing the two may result in an unexpected failure
-	 * when adding a portaged item to an instance managing a Unit or adding
-	 * that instance as a sub-stack.
+	 * will be applied if the instance is added to another as a sub-stack
+	 * (i.e. the ID serves as the "key" in the Map item returned by
+	 * portagedItem() or subStacks()). For both the unit and stack ID, if
+	 * the argument value is less than zero, the setting will be initialized
+	 * to zero. All Stack instances should either have their ID set to zero
+	 * <B>or</B> have a unique (greater than zero) ID. Mixing the two may result
+	 * in an unexpected failure when adding a portaged item to an instance
+	 * managing a Unit or adding that instance as a sub-stack.
 	 *
-	 * @param unit the unit to be managed through the instance
-	 * @param unitID the identifier associated with the unit
-	 * @param stackID the identifier associated with the stack
+	 * @param unit the unit to be managed through the instance.
+	 * @param unitID the unique identifier associated with the unit.
+	 * @param stackID the unique identifier associated with the stack.
 	 *
 	 * @throws NullPointerException in the case of a null unit argument.
 	 *
@@ -148,14 +149,14 @@ public final class Stack
 
 	/**
 	 * Construct a new <CODE>Stack</CODE>.
-	 *
+	 * <P>
 	 * This is a convenience constructor. It has the same effect as calling
 	 * the other one that accepts a Unit object argument with zero specified
 	 * as the argument for the unitID and stackID parameters. It is
 	 * recommended that usage of these two constructors <B>not</B> be mixed,
 	 * particularly if the instances are to be managed as sub-stacks.
 	 *
-	 * @param unit the unit to be managed through the instance
+	 * @param unit the unit to be managed through the instance.
 	 *
 	 * @throws NullPointerException in the case of a null unit argument.
 	 */
@@ -167,18 +168,18 @@ public final class Stack
 
 	/**
 	 * Construct a new <CODE>Stack</CODE>.
-	 *
+	 * <P>
 	 * This constructor is intended to allow more than one instance (each
 	 * created with one of the constructors that accepts a Unit object
 	 * argument) to be managed (e.g. moved) as a group. An object of this
-	 * type is intended primarily to maintain a common Position setting for
+	 * type is intended primarily to maintain a common  <A HREF="Position.html">Position</A> setting for
 	 * all of the sub-stacks. When the initial one is added, its position,
 	 * if set, will be used to initialize the setting for the new instance.
 	 * As each sub-stack is added, including the first one, its position
 	 * setting will be cleared. When one is removed, its position will be
 	 * set to reflect the setting within the parent (this) instance.
 	 *
-	 * @param stack the initial stack to be managed through the instance
+	 * @param stack the initial stack to be managed through the instance.
 	 *
 	 * @throws NullPointerException in the case of a null stack argument.
 	 * @throws IllegalArgumentException in the case where a stack argument
@@ -198,7 +199,7 @@ public final class Stack
 
 		if (null == stack.unit())
 		{
-			throw new IllegalArgumentException(invalidArgumentError);
+			throw new IllegalArgumentException(invalidArgumentError + stack.toString());
 		}
 
 		setPositionLabel(stack.positionLabel());
@@ -212,7 +213,7 @@ public final class Stack
 
 	/**
 	 * Return a text representation of the attributes of a stack.
-	 *
+	 * <P>
 	 * The output includes the unit and stack IDs and either the position or
 	 * the unit label for the current instance. The same data for portaged
 	 * items or sub-stacks, if they exist, will also appear.
@@ -233,7 +234,7 @@ public final class Stack
 
 		if ((null != _unit) && !_portagedItems.isEmpty())
 		{
-			returnString.append("\n");
+			returnString.append("\n\t" + _unit.toString());
 
 			for (Stack stack : _portagedItems.values())
 			{
@@ -258,36 +259,34 @@ public final class Stack
 
 	/**
 	 * Return the label associated with a stack.
-	 *
+	 * <P>
 	 * The position label will be returned if it is not empty. Otherwise,
 	 * the method will return the label for the first Unit item found. In
 	 * the event that the instance is empty (all of the sub-stacks have been
-	 * removed), the return value is null.
+	 * removed), the return value is an empty String.
 	 *
 	 * @return a <CODE>String</CODE> specifying the corresponding label.
 	 */
 
 	public String toString()
 	{
-		if (!_positionLabel.isEmpty())
-		{
-			return positionLabel();
-		}
+		if (!_positionLabel.isEmpty()) return positionLabel();
 
 		if (null != _unit) return _unit.toString();
 
 		if (!_subStacks.isEmpty())
 		{
-			return _subStacks.get(_subStacks.keySet().toArray()[0]).toString();
+			return _subStacks.get(_subStacks.keySet().iterator().next()).toString();
 		}
 
-		return null;
+		return new String();
 	}
 
 	/**
 	 * Return the ID associated with the Unit managed by a stack.
 	 *
-	 * @return an <CODE>int</CODE> specifying the unit ID.
+	 * @return an <CODE>int</CODE> specifying the unit ID. The return value is zero if
+	 * the instance is <B>not</B> managing a Unit object.
 	 */
 
 	public int unitID()
@@ -296,9 +295,10 @@ public final class Stack
 	}
 
 	/**
-	 * Return the ID associated with a Stack that is managing a unit.
+	 * Return the ID associated with a Stack that is managing a Unit.
 	 *
-	 * @return an <CODE>int</CODE> specifying the stack ID.
+	 * @return an <CODE>int</CODE> specifying the stack ID. The return value is zero if
+	 * the instance is <B>not</B> managing a Unit object.
 	 */
 
 	public int stackID()
@@ -324,7 +324,7 @@ public final class Stack
 
 	/**
 	 * Change the label associated with the current position of a stack.
-	 *
+	 * <P>
 	 * If the argument is null, the position label will empty. This method
 	 * should be used with care, as its setting (or not) affects the data
 	 * returned by toString(). It is recommended that it only be applied to
@@ -333,7 +333,7 @@ public final class Stack
 	 * them).
 	 *
 	 * @param positionLabel the label associated with the new position
-	 * of the stack
+	 * of the stack.
 	 *
 	 * @see #positionLabel
 	 */
@@ -361,29 +361,29 @@ public final class Stack
 	/**
 	 * Provide access to the portaged items (Stacks) associated with the
 	 * Unit managed by an instance.
-	 *
+	 * <P>
 	 * This method allows the items (i.e. Units) being portaged to be
 	 * modified without changing the stack itself. It should <B>not</B> be used to
 	 * move (change the position or owner of) a portaged item. The key for
 	 * each entry may be used as an argument to the takePortagedItem()
 	 * method, which (obviously) does allow changes to the stack.
 	 *
-	 * @return a <CODE>Map</CODE> of key-value pairs associated with the
+	 * Note that each "key" in the returned Map will match the stackID() of
+	 * the corresponding Stack <B>if</B> a value greater than zero was specified
+	 * when the object was created. Otherwise, it will be a positive
+	 * integer.
+	 *
+	 * @return an <B>unmodifiable</B> <CODE>Map</CODE> of key-value pairs associated with the
 	 * portaged Units managed by this instance. The return value is null if
-	 * the instance is <B>not</B> managing a Unit object or there are no portaged
-	 * items.
+	 * the instance is <B>not</B> managing a Unit object.
 	 *
 	 * @see #takePortagedItem
 	 */
 
 	public Map<Integer,Stack> portagedItems()
 	{
-		if ((null != _unit) && !_portagedItems.isEmpty())
-		{
-			return Collections.unmodifiableMap(_portagedItems);
-		}
-
-		return null;
+		return (null != _portagedItems) ?
+		       Collections.unmodifiableMap(_portagedItems) : null;
 	}
 
 	// Public access methods (Stack collection)
@@ -391,7 +391,7 @@ public final class Stack
 	/**
 	 * Provide access to the Stack objects managed by an instance with
 	 * sub-stacks.
-	 *
+	 * <P>
 	 * This method allows the items (i.e. Units) within a sub-stack to be
 	 * modified without changing the stack itself or the group of
 	 * sub-stacks. It should <B>not</B> be used to move (change the position
@@ -401,50 +401,69 @@ public final class Stack
 	 * argument to the takeSubStack() method, which (obviously) does allow
 	 * changes to the stack.
 	 *
-	 * @return a <CODE>Map</CODE> of key-value pairs associated with the
+	 * Note that each "key" in the returned Map will match the stackID() of
+	 * the corresponding Stack <B>if</B> a value greater than zero was specified
+	 * when the object was created. Otherwise, it will be a positive
+	 * integer.
+	 *
+	 * @return an <B>unmodifiable</B> <CODE>Map</CODE> of key-value pairs associated with the
 	 * sub-stacks managed by this instance. The return value is null if the
-	 * instance is managing a Unit object or there are no sub-stacks.
+	 * instance is managing a Unit object.
 	 *
 	 * @see #takeSubStack
 	 */
 
 	public Map<Integer,Stack> subStacks()
 	{
-		if ((null == _unit) && !_subStacks.isEmpty())
-		{
-			return Collections.unmodifiableMap(_subStacks);
-		}
-
-		return null;
+		return (null != _subStacks) ?
+		       Collections.unmodifiableMap(_subStacks) : null;
 	}
 
 	// Public update methods (Single Stack)
 
 	/**
 	 * Add another item to be portaged by the Unit managed by an instance.
-	 *
+	 * <P>
 	 * If a position has been set in the Stack argument, it will be cleared.
 	 *
-	 * @param item the Unit (also managed by a Stack) to be portaged
+	 * @param item the Unit (also managed by a Stack) to be portaged.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating whether or not the specified Stack was
-	 * added successfully. It should always be true unless the argument is
-	 * null, the instance is <B>not</B> managing a Unit object or the specified
-	 * item is not (i.e. also supports addition of sub-stacks), the new
-	 * stack has an ID greater than zero that matches another portaged item,
-	 * or the item within the stack <B>cannot</B> legitimately be portaged by the
-	 * Unit managed by this instance.
+	 * added successfully. It should always be true unless the item within
+	 * the stack <B>cannot</B> legitimately be portaged by the Unit managed by this
+	 * instance or the new stack has an ID greater than zero that matches
+	 * another portaged item.
+	 *
+	 * @throws NullPointerException in the case of a null stack argument.
+	 * @throws IllegalArgumentException in the case where the instance (that
+	 * the stack is being added to) is <B>not</B> managing a Unit (i.e. it supports
+	 * the addition of sub-stacks) or the stack argument is <B>not</B> (managing a
+	 * Unit).
 	 */
 
 	public boolean addPortagedItem(Stack item)
 	{
+		// Define local constants.
+
+		String METHOD_NAME = "addPortagedItem";
+
 		// Don't allow the new Stack to be added if either this instance
 		// is not managing a Unit or the one to be added is not
 		// (managing a Unit).
 
-		if ((null == item) || (null == _unit) || (null == item.unit()))
+		if (null == item)
 		{
-			return false;
+			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                          METHOD_NAME,
+			                                                          Messages.NULL_PARAMETER_MSG));
+		}
+
+		if ((null == _unit) || (null == item.unit()))
+		{
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              METHOD_NAME,
+			                                                              Messages.INVALID_PARAMETER_MSG) +
+			                                                              item.toString());
 		}
 
 		// TODO: Verify that the item within the stack can be legitimately
@@ -455,12 +474,16 @@ public final class Stack
 
 	/**
 	 * Return the portaged item associated with the specified ID.
-	 *
+	 * <P>
 	 * This method allows the caller to remove the item from control of the
 	 * Unit managed by this instance. If set, the position setting within
 	 * the departing item will be updated to match this instance.
 	 *
-	 * @param itemID the ID associated with the Stack to be removed
+	 * Note that the ID is expected to be a "key" in the Map returned by
+	 * portagedItems(). It may not match the value returned by stackID() for
+	 * the portaged item (Stack).
+	 *
+	 * @param itemID the ID associated with the Stack to be removed.
 	 *
 	 * @return the <CODE>Stack</CODE> with an ID matching the argument. If a matching
 	 * item is not found or the current instance is <B>not</B> managing a Unit, the
@@ -473,12 +496,14 @@ public final class Stack
 	{
 		Stack subStack = null;
 
-		if ((null != _unit) && !_portagedItems.isEmpty() &&
-		    _portagedItems.containsValue(itemID))
+		if ((null != _unit) && !_portagedItems.isEmpty())
 		{
 			subStack = _portagedItems.remove(itemID);
 
-			subStack.setPositionLabel(_positionLabel);
+			if (null != subStack)
+			{
+				subStack.setPositionLabel(_positionLabel);
+			}
 		}
 
 		return subStack;
@@ -488,27 +513,45 @@ public final class Stack
 
 	/**
 	 * Add another Stack to the list managed by an instance.
-	 *
+	 * <P>
 	 * If a position has been set in the Stack argument, it will be cleared.
 	 *
-	 * @param stack the Stack to be added
+	 * @param stack the Stack to be added.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating whether or not the specified Stack was
-	 * added successfully. It should always be true unless the argument is
-	 * null, the instance is managing a Unit object or the specified item is
-	 * not (i.e. also supports addition of sub-stacks), or the new stack has
+	 * added successfully. It should always be true unless the new stack has
 	 * an ID greater than zero that matches an existing sub-stack.
+	 *
+	 * @throws NullPointerException in the case of a null stack argument.
+	 * @throws IllegalArgumentException in the case where the instance (that
+	 * the stack is being added to) <B>is</B> managing a Unit (i.e. it does not
+	 * support the addition of sub-stacks) or the stack argument is <B>not</B>
+	 * (managing a Unit).
 	 */
 
 	public boolean addSubStack(Stack stack)
 	{
+		// Define local constants.
+
+		String METHOD_NAME = "addSubStack";
+
 		// Don't allow the new Stack to be added if either this instance
 		// is managing a Unit or the one to be added is not (managing a
 		// Unit).
 
-		if ((null == stack) || (null != _unit) || (null == stack.unit()))
+		if (null == stack)
 		{
-			return false;
+			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                          METHOD_NAME,
+			                                                          Messages.NULL_PARAMETER_MSG));
+		}
+
+		if ((null != _unit) || (null == stack.unit()))
+		{
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              METHOD_NAME,
+			                                                              Messages.INVALID_PARAMETER_MSG) +
+			                                                              stack.toString());
 		}
 
 		return addStack(stack,_subStacks);
@@ -516,12 +559,16 @@ public final class Stack
 
 	/**
 	 * Return the sub-stack associated with the specified ID.
-	 *
+	 * <P>
 	 * This method allows the caller to remove the sub-stack from the stack,
 	 * taking control of it. The position setting within the departing
 	 * sub-stack will be updated to match this instance.
 	 *
-	 * @param stackID the ID associated with the Stack to be removed
+	 * Note that the ID is expected to be a "key" in the Map returned by
+	 * subStacks(). It may not to match the value returned by stackID() for
+	 * the sub-stack.
+	 *
+	 * @param stackID the ID associated with the Stack to be removed.
 	 *
 	 * @return the <CODE>Stack</CODE> with an ID matching the argument. If a matching
 	 * item is not found or the current instance is managing a Unit, the
@@ -534,12 +581,14 @@ public final class Stack
 	{
 		Stack subStack = null;
 
-		if ((null == _unit) && !_subStacks.isEmpty() &&
-		    _subStacks.containsValue(stackID))
+		if ((null == _unit) && !_subStacks.isEmpty())
 		{
 			subStack = _subStacks.remove(stackID);
 
-			subStack.setPositionLabel(_positionLabel);
+			if (null != subStack)
+			{
+				subStack.setPositionLabel(_positionLabel);
+			}
 		}
 
 		return subStack;
@@ -549,27 +598,34 @@ public final class Stack
 
 	/**
 	 * Add the specified stack to the indicated stack group.
-	 *
+	 * <P>
 	 * This helper method is called from addPortagedItem() and
 	 * addSubStack(). Its primary purpose is to implement the rules
 	 * associated with setting the ID/Key correctly in the Map. Whether or
 	 * not the stack should be added to the specified Map is assumed to have
 	 * been determined before this method is called.
 	 *
-	 * @param stack the Stack to be added
+	 * @param stack the Stack to be added.
 	 * @param destinationStack the (internal) Map that the Stack should
-	 * be referenced by
+	 * be referenced by.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating whether or not the specified Stack was
 	 * added successfully. It should always be true unless one of the
 	 * arguments is null or the new stack has an ID greater than zero that
-	 * matches a stack in the Map.
+	 * matches a stack in the specified Map.
 	 */
 
 	private boolean addStack(Stack stack,
 	                         LinkedHashMap<Integer,Stack> destinationStack)
 	{
-		if ((null == stack) || (null == destinationStack)) return false;
+		// The stack argument is checked for null before this method is
+		// called. The destinationStack argument is expected to be
+		// non-null based on the type of Stack instance (Unit management
+		// or list of sub-stacks) calling this method. It is expected
+		// that the check for the wrong type is made before this method
+		// is called.
+
+		assert (null != destinationStack);
 
 		Integer subStackKey = Integer.valueOf(stack.stackID());
 
