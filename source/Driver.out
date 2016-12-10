@@ -1,4 +1,4 @@
-Tue May  5 10:01:09 PDT 2015
+Thu Dec  8 22:20:14 PST 2016
 
 Leader.toText() output:
 
@@ -224,29 +224,188 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parame
 
 Testing the execution of the Dice class:
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
+White Die         : 3    Colored Die       : 4    Combined Result   : 7    
 
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
+White Die         : 5    Colored Die       : 1    Combined Result   : 6    
+
+White Die         : 2    Colored Die       : 4    Combined Result   : 6    
+
+White Die         : 5    Colored Die       : 6    Combined Result   : 11   
+
+White Die         : 1    Colored Die       : 1    Combined Result   : 2    
+
+White Die         : 1    Colored Die       : 4    Combined Result   : 5    
+
+White Die         : 6    Colored Die       : 4    Combined Result   : 10   
 
 White Die         : 2    Colored Die       : 3    Combined Result   : 5    
 
 White Die         : 6    Colored Die       : 3    Combined Result   : 9    
 
-White Die         : 6    Colored Die       : 2    Combined Result   : 8    
+White Die         : 1    Colored Die       : 4    Combined Result   : 5    
 
 White Die         : 2    Colored Die       : 2    Combined Result   : 4    
 
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
+White Die         : 3    Colored Die       : 2    Combined Result   : 5    
 
-White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+Testing Exception handling during Player creation:
 
-White Die         : 6    Colored Die       : 5    Combined Result   : 11   
+Null name parameter:
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
+Caught: java.lang.NullPointerException: Player(constructor) - Null parameter received.
 
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
+Zero-length name parameter:
 
-White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+Caught: java.lang.IllegalArgumentException: Player(constructor) - Invalid parameter received (zero length).
+
+Invalid (less than 1) entry turn:
+
+Caught: java.lang.IllegalArgumentException: Player(constructor) - Invalid parameter(s) received : -1
+
+Testing Exception handling for Player methods:
+
+Null Unit parameter to addUnit():
+
+Caught: java.lang.NullPointerException: Player(addUnit) - Null parameter received.
+
+Null Stack parameter to addStack():
+
+Caught: java.lang.NullPointerException: Player(addStack) - Null parameter received.
+
+Assign some Units to the Player:
+
+Player.toText() output:
+
+Player:	Dr. Pepper
+
+	Nationality:	Partisan
+	Entry Turn :	1
+
+	Units:
+		Stack (0,0):	7-0 Leader (Dr. Pepper)
+		Stack (0,0):	3-3-7 Squad (A)
+		Stack (0,0):	3-3-7 Squad (B)
+		Stack (0,0):	3-3-7 Squad (C)
+		Stack (0,0):	2-6 LMG (X)
+
+Invalid (Stack) list index:
+
+Caught: java.lang.IndexOutOfBoundsException: Player(takeStack) - Invalid parameter(s) received : 5
+
+Testing Exception handling during Stack creation:
+
+Null Unit parameter:
+
+Caught: java.lang.NullPointerException: Stack(constructor) - Null parameter received.
+
+Null Stack parameter:
+
+Caught: java.lang.NullPointerException: Stack(constructor) - Null parameter received.
+
+Invalid Stack parameter:
+
+Caught: java.lang.IllegalArgumentException: Stack(constructor) - Invalid parameter(s) received : 6+1 Leader (Sgt. Stedenko)
+
+Testing Exception handling for Stack methods:
+
+Null Stack parameter to addPortagedItem():
+
+Caught: java.lang.NullPointerException: Stack(addPortagedItem) - Null parameter received.
+
+Invalid Stack parameter to addPortagedItem():
+
+Caught: java.lang.IllegalArgumentException: Stack(addPortagedItem) - Invalid parameter(s) received : 6+1 Leader (Sgt. Stedenko)
+
+Testing the operations of the Player and Stack classes:
+
+The second Squad will carry the machine gun:
+
+Player.toText() output:
+
+Player:	Dr. Pepper
+
+	Nationality:	Partisan
+	Entry Turn :	1
+
+	Units:
+		Stack (0,0):	7-0 Leader (Dr. Pepper)
+		Stack (0,0):	3-3-7 Squad (A)
+		Stack (0,0):	3-3-7 Squad (B)
+	3-3-7 Squad (B)	2-6 LMG (X)
+		Stack (0,0):	3-3-7 Squad (C)
+
+Now it's the first Squad's turn to carry it:
+
+Player.toText() output:
+
+Player:	Dr. Pepper
+
+	Nationality:	Partisan
+	Entry Turn :	1
+
+	Units:
+		Stack (0,0):	7-0 Leader (Dr. Pepper)
+		Stack (0,0):	3-3-7 Squad (A)
+	3-3-7 Squad (A)	2-6 LMG (X)
+		Stack (0,0):	3-3-7 Squad (B)
+		Stack (0,0):	3-3-7 Squad (C)
+
+Null Stack parameter to Stack.addSubStack():
+
+Caught: java.lang.NullPointerException: Stack(addSubStack) - Null parameter received.
+
+Invalid Stack parameter to Stack.addSubStack():
+
+Caught: java.lang.IllegalArgumentException: Stack(addSubStack) - Invalid parameter(s) received : 6+1 Leader (Sgt. Stedenko)
+
+All of the Units in a single stack:
+
+Player.toText() output:
+
+Player:	Dr. Pepper
+
+	Nationality:	Partisan
+	Entry Turn :	1
+
+	Units:
+		Stack (0,0):	7-0 Leader (Dr. Pepper)
+	7-0 Leader (Dr. Pepper)	3-3-7 Squad (A)	3-3-7 Squad (B)	3-3-7 Squad (C)
+
+Set the position of the stack to 1H5:
+
+Player.toText() output:
+
+Player:	Dr. Pepper
+
+	Nationality:	Partisan
+	Entry Turn :	1
+
+	Units:
+		Stack (0,0):	1H5
+	7-0 Leader (Dr. Pepper)	3-3-7 Squad (A)	3-3-7 Squad (B)	3-3-7 Squad (C)
+
+Move the first Squad to a different position (1F7):
+
+The individual Stacks within the combined one are:
+
+	Key: 0	Stack (0,0):	7-0 Leader (Dr. Pepper)
+	Key: 1	Stack (0,0):	3-3-7 Squad (A)
+	3-3-7 Squad (A)	2-6 LMG (X)
+	Key: 2	Stack (0,0):	3-3-7 Squad (B)
+	Key: 3	Stack (0,0):	3-3-7 Squad (C)
+
+Player.toText() output:
+
+Player:	Dr. Pepper
+
+	Nationality:	Partisan
+	Entry Turn :	1
+
+	Units:
+		Stack (0,0):	1H5
+	7-0 Leader (Dr. Pepper)	3-3-7 Squad (B)	3-3-7 Squad (C)
+		Stack (0,0):	1F7
+	3-3-7 Squad (A)	2-6 LMG (X)
 
 Testing the operations of the Game class:
 
@@ -260,10 +419,10 @@ Player:	Pixie
 	Entry Turn :	1
 
 	Units:
-		9-1 Leader
-		7-4-7 Squad
-		7-4-7 Squad
-		7-4-7 Squad
+		Stack (0,0):	9-1 Leader
+		Stack (0,0):	7-4-7 Squad
+		Stack (0,0):	7-4-7 Squad
+		Stack (0,0):	7-4-7 Squad
 
 Side:	Axis
 
@@ -275,10 +434,12 @@ Player:	Buddy
 	Entry Turn :	1
 
 	Units:
-		8-1 Leader
-		6-5-8 Squad
-		6-5-8 Squad
-		6-5-8 Squad
+		Stack (0,0):	8-1 Leader
+		Stack (0,0):	6-5-8 Squad
+		Stack (0,0):	6-5-8 Squad
+		Stack (0,0):	6-5-8 Squad
+		Stack (0,0):	3-8 LMG
+		Stack (0,0):	3-8 LMG
 
 Active side   :	Allies
 Setup Complete:	false
