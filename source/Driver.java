@@ -41,10 +41,28 @@ public class Driver
 
         germanLeader.setIdentity("Col. Klink");
 
-        Serialization.serializeToFile(germanLeader,"/tmp/Leader.ser");
+        try
+        {
+            Serialization.serializeToFile(germanLeader,"/tmp/Leader.ser");
+        }
 
-        Unit deserializedLeader =
-            (Unit)Serialization.deserializeFromFile("/tmp/Leader.ser");
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        Unit deserializedLeader = null;
+
+        try
+        {
+            deserializedLeader =
+                (Unit)Serialization.deserializeFromFile("/tmp/Leader.ser");
+        }
+
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
 
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
@@ -91,6 +109,46 @@ public class Driver
 
         System.out.println("\nSquad.toJSON() output:\n\n" +
                            russianSquad.toJSON());
+
+        // Serialize the Squad object, writing the data to a byte array, and
+        // then deserialize the data into a new object.
+
+        byte[] serializedSquad = null;
+
+        try
+        {
+            serializedSquad = Serialization.serializeToByteArray(russianSquad);
+        }
+
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        Unit deserializedSquad = null;
+
+        try
+        {
+            deserializedSquad =
+                (Unit)Serialization.deserializeFromByteArray(serializedSquad);
+        }
+
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Display all of the entered values for the deserialized instance using
+        // the toText() method.
+
+        System.out.println("\n(Deserialized) Squad.toText() output:\n");
+        System.out.print(deserializedSquad.toText());
+
+        // Display an abbreviated description of the deserialized instance using
+        // the toString() method.
+
+        System.out.println("\n(Deserialized) Squad.toString() output:\n");
+        System.out.println(deserializedSquad.toString());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
