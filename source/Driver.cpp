@@ -97,10 +97,28 @@ int main(int argc, char *argv[])
 
             jstring serializationFile = cc2js("/tmp/Leader.ser");
 
-            Serialization::serializeToFile(germanLeader,serializationFile);
+            try
+            {
+                Serialization::serializeToFile(germanLeader,serializationFile);
+            }
 
-            Unit* deserializedLeader =
-                (Unit*)Serialization::deserializeFromFile(serializationFile);
+            catch (jthrowable t) // Not expected.
+            {
+                printExceptionMessage(t);
+            }
+
+            Unit* deserializedLeader = NULL;
+
+            try
+            {
+                deserializedLeader =
+                    (Unit*)Serialization::deserializeFromFile(serializationFile);
+            }
+
+            catch (jthrowable t) // Not expected.
+            {
+                printExceptionMessage(t);
+            }
 
             // Display all of the entered values for the deserialized instance
             // using the toText() method.
@@ -157,8 +175,6 @@ int main(int argc, char *argv[])
 
         if (russianSquad)
         {
-            russianSquad->setIdentity(cc2js("A"));
-
             const char* russianSquadDetails = js2cc(russianSquad->toText());
 
             if (russianSquadDetails)
@@ -180,14 +196,72 @@ int main(int argc, char *argv[])
                 russianSquadDetails = NULL;
             }
 
-            // Display an abbreviated description of this instance using the
-            // toJSON() method.
+            // Serialize the Squad object, writing the data to a byte array, and
+            // then deserialize the data into a new object.
 
-            russianSquadDetails = js2cc(russianSquad->toJSON());
+            russianSquad->setIdentity(cc2js("A"));
+
+            JArray<jbyte>* serializedSquad = NULL;
+
+            try
+            {
+                serializedSquad =
+                    Serialization::serializeToByteArray(russianSquad);
+            }
+
+            catch (jthrowable t) // Not expected.
+            {
+                printExceptionMessage(t);
+            }
+
+            Unit* deserializedSquad = NULL;
+
+            try
+            {
+                deserializedSquad =
+                    (Unit*)Serialization::deserializeFromByteArray(serializedSquad);
+            }
+
+            catch (jthrowable t) // Not expected.
+            {
+                printExceptionMessage(t);
+            }
+
+            // Display all of the entered values for the deserialized instance
+            // using the toText() method.
+
+            russianSquadDetails = js2cc(deserializedSquad->toText());
 
             if (russianSquadDetails)
             {
-                printf("Squad.toJSON() output:\n\n%s\n\n",russianSquadDetails);
+                printf("(Deserialized) Squad.toText() output:\n\n%s\n",
+                       russianSquadDetails);
+                delete [] russianSquadDetails;
+                russianSquadDetails = NULL;
+            }
+
+            // Display an abbreviated description of the deserialized instance
+            // using the toString() method.
+
+            russianSquadDetails = js2cc(deserializedSquad->toString());
+
+            if (russianSquadDetails)
+            {
+                printf("(Deserialized) Squad.toString() output:\n\n%s\n\n",
+                       russianSquadDetails);
+                delete [] russianSquadDetails;
+                russianSquadDetails = NULL;
+            }
+
+            // Display an abbreviated description of this instance using the
+            // toJSON() method.
+
+            russianSquadDetails = js2cc(deserializedSquad->toJSON());
+
+            if (russianSquadDetails)
+            {
+                printf("(Deserialized) Squad.toJSON() output:\n\n%s\n\n",
+                       russianSquadDetails);
                 delete [] russianSquadDetails;
                 russianSquadDetails = NULL;
             }
