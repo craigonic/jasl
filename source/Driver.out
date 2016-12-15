@@ -1,4 +1,4 @@
-Tue May  5 10:01:09 PDT 2015
+Wed Dec 14 13:11:24 PST 2016
 
 Leader.toText() output:
 
@@ -68,7 +68,7 @@ Squad.toText() output:
 
 Description       : Squad            
 Nationality       : Russian          Unit Type               : Guards           
-Identity          : A                
+Identity          :                  
 Status            : Normal                                                      
 Movement          : 4                
 Portage Capacity  : 3                Portage Level           : 0                
@@ -84,9 +84,31 @@ Smoke Placement Ex: 0
 
 Squad.toString() output:
 
+6-2-8 Squad
+
+(Deserialized) Squad.toText() output:
+
+Description       : Squad            
+Nationality       : Russian          Unit Type               : Guards           
+Identity          : A                
+Status            : Normal                                                      
+Movement          : 4                
+Portage Capacity  : 3                Portage Level           : 0                
+Firepower         : 6                Firepower Equivalent    : 6                
+Normal Range      : 2                
+Morale            : 8                Broken Morale           : 8                
+Can Self Rally ?  : No               
+Portage Value     : 10               
+Basic Point Value : 12               Experience Level Rating : 4                
+Has Maximum ELR ? : No               Classification          : Elite            
+Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
+Smoke Placement Ex: 0                
+
+(Deserialized) Squad.toString() output:
+
 6-2-8 Squad (A)
 
-Squad.toJSON() output:
+(Deserialized) Squad.toJSON() output:
 
 {
  "Description":"Squad",
@@ -224,29 +246,29 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parame
 
 Testing the execution of the Dice class:
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
-
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
-
-White Die         : 2    Colored Die       : 3    Combined Result   : 5    
-
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
+White Die         : 6    Colored Die       : 1    Combined Result   : 7    
 
 White Die         : 6    Colored Die       : 2    Combined Result   : 8    
 
+White Die         : 5    Colored Die       : 6    Combined Result   : 11   
+
+White Die         : 5    Colored Die       : 2    Combined Result   : 7    
+
+White Die         : 2    Colored Die       : 1    Combined Result   : 3    
+
 White Die         : 2    Colored Die       : 2    Combined Result   : 4    
 
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
+White Die         : 1    Colored Die       : 5    Combined Result   : 6    
 
-White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+White Die         : 3    Colored Die       : 3    Combined Result   : 6    
 
-White Die         : 6    Colored Die       : 5    Combined Result   : 11   
+White Die         : 3    Colored Die       : 3    Combined Result   : 6    
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
+White Die         : 4    Colored Die       : 6    Combined Result   : 10   
 
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
+White Die         : 5    Colored Die       : 3    Combined Result   : 8    
 
-White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+White Die         : 5    Colored Die       : 6    Combined Result   : 11   
 
 Testing the operations of the Game class:
 

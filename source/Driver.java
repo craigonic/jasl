@@ -90,8 +90,6 @@ public class Driver
                                        Classification.Classifications.ELITE,
                                        true,true,0);
 
-        russianSquad.setIdentity("A");
-
         // Display all of the entered values for this instance using the
         // toText() method.
 
@@ -104,14 +102,10 @@ public class Driver
         System.out.println("Squad.toString() output:\n\n" +
                            russianSquad.toString());
 
-        // Display all of the entered values for this instance using the
-        // toJSON() method.
-
-        System.out.println("\nSquad.toJSON() output:\n\n" +
-                           russianSquad.toJSON());
-
         // Serialize the Squad object, writing the data to a byte array, and
         // then deserialize the data into a new object.
+
+        russianSquad.setIdentity("A");
 
         byte[] serializedSquad = null;
 
@@ -149,6 +143,12 @@ public class Driver
 
         System.out.println("\n(Deserialized) Squad.toString() output:\n");
         System.out.println(deserializedSquad.toString());
+
+        // Display all of the entered values for the deserialized instance using
+        // the toJSON() method.
+
+        System.out.println("\n(Deserialized) Squad.toJSON() output:\n\n" +
+                           deserializedSquad.toJSON());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
