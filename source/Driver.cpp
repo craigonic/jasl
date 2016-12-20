@@ -68,27 +68,14 @@ int main(int argc, char *argv[])
 
         if (germanLeader)
         {
-            const char* germanLeaderDetails = js2cc(germanLeader->toText());
-
-            if (germanLeaderDetails)
-            {
-                printf("\nLeader.toText() output:\n\n%s\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
+            printf("\nLeader.toText() output:\n\n");
+            printJavaString(germanLeader->toText());
 
             // Display an abbreviated description of this instance using the
             // toString() method.
 
-            germanLeaderDetails = js2cc(germanLeader->toString());
-
-            if (germanLeaderDetails)
-            {
-                printf("Leader.toString() output:\n\n%s\n\n",germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
+            printf("Leader.toString() output:\n\n");
+            printJavaString(germanLeader->toString());
 
             // Serialize the Leader object, write the data to a file
             // (Leader.ser), then deserialize the data into a new object.
@@ -123,41 +110,20 @@ int main(int argc, char *argv[])
             // Display all of the entered values for the deserialized instance
             // using the toText() method.
 
-            germanLeaderDetails = js2cc(deserializedLeader->toText());
-
-            if (germanLeaderDetails)
-            {
-                printf("(Deserialized) Leader.toText() output:\n\n%s\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
+            printf("\n(Deserialized) Leader.toText() output:\n\n");
+            printJavaString(deserializedLeader->toText());
 
             // Display an abbreviated description of the deserialized instance
             // using the toString() method.
 
-            germanLeaderDetails = js2cc(deserializedLeader->toString());
-
-            if (germanLeaderDetails)
-            {
-                printf("(Deserialized) Leader.toString() output:\n\n%s\n\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
+            printf("(Deserialized) Leader.toString() output:\n\n");
+            printJavaString(deserializedLeader->toString());
 
             // Display all of the entered values for the deserialized instance
             // using the toJSON() method.
 
-            germanLeaderDetails = js2cc(deserializedLeader->toJSON());
-
-            if (germanLeaderDetails)
-            {
-                printf("(Deserialized) Leader.toJSON() output:\n\n%s\n\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
+            printf("\n(Deserialized) Leader.toJSON() output:\n\n");
+            printJavaString(deserializedLeader->toJSON());
         }
 
         // Create an instance of a Russian Squad.
@@ -175,26 +141,14 @@ int main(int argc, char *argv[])
 
         if (russianSquad)
         {
-            const char* russianSquadDetails = js2cc(russianSquad->toText());
-
-            if (russianSquadDetails)
-            {
-                printf("Squad.toText() output:\n\n%s\n",russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
+            printf("\nSquad.toText() output:\n\n");
+            printJavaString(russianSquad->toText());
 
             // Display an abbreviated description of this instance using the
             // toString() method.
 
-            russianSquadDetails = js2cc(russianSquad->toString());
-
-            if (russianSquadDetails)
-            {
-                printf("Squad.toString() output:\n\n%s\n\n",russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
+            printf("Squad.toString() output:\n\n");
+            printJavaString(russianSquad->toString());
 
             // Serialize the Squad object, writing the data to a byte array, and
             // then deserialize the data into a new object.
@@ -230,48 +184,27 @@ int main(int argc, char *argv[])
             // Display all of the entered values for the deserialized instance
             // using the toText() method.
 
-            russianSquadDetails = js2cc(deserializedSquad->toText());
-
-            if (russianSquadDetails)
-            {
-                printf("(Deserialized) Squad.toText() output:\n\n%s\n",
-                       russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
+            printf("\n(Deserialized) Squad.toText() output:\n\n");
+            printJavaString(deserializedSquad->toText());
 
             // Display an abbreviated description of the deserialized instance
             // using the toString() method.
 
-            russianSquadDetails = js2cc(deserializedSquad->toString());
-
-            if (russianSquadDetails)
-            {
-                printf("(Deserialized) Squad.toString() output:\n\n%s\n\n",
-                       russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
+            printf("(Deserialized) Squad.toString() output:\n\n");
+            printJavaString(deserializedSquad->toString());
 
             // Display an abbreviated description of this instance using the
             // toJSON() method.
 
-            russianSquadDetails = js2cc(deserializedSquad->toJSON());
-
-            if (russianSquadDetails)
-            {
-                printf("(Deserialized) Squad.toJSON() output:\n\n%s\n\n",
-                       russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
+            printf("\n(Deserialized) Squad.toJSON() output:\n\n");
+            printJavaString(deserializedSquad->toJSON());
         }
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
 
-        printf("Building Unit array with a Leader & 3 Squads\n\n");
+        printf("\nBuilding Unit array with a Leader & 3 Squads\n\n");
 
         // The following commented code demonstrates, based on the CNI
         // documentation, the correct/preferred way to create <A HREF="http://gcc.gnu.org/onlinedocs/gcj/Arrays.html#Arrays">arrays</A> of pointers
