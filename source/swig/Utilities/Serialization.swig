@@ -24,5 +24,7 @@ class Serialization
 
         static void                  serializeToFile(::java::lang::Object*,
                                                      ::java::lang::String*);
+        static JArray<jbyte>*        serializeToByteArray(::java::lang::Object*);
         static ::java::lang::Object* deserializeFromFile(::java::lang::String*);
+        static ::java::lang::Object* deserializeFromByteArray(JArray<jbyte>*);
 };
