@@ -51,7 +51,7 @@ printf("\nLeader.toText() output:\n\n%s\n",
 # Display an abbreviated description of this instance using the toString()
 # method.
 
-printf("Leader.toString() output:\n\n%s\n\n",
+printf("Leader.toString() output:\n\n%s\n",
        CniWrapper::js2cc($germanLeader->toString()));
 
 # Display the output of all of the access methods declared for the Leader class
@@ -96,11 +96,21 @@ $germanLeader->setIdentity(CniWrapper::cc2js("Col. Klink"));
 
 $serializationFile = CniWrapper::cc2js("/tmp/Leader.ser");
 
-Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
-                                          $serializationFile);
+$status = eval
+{
+    Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
+                                              $serializationFile);
+};
 
-$unit =
-    Counters::fromObject(Utilities::Serialization::deserializeFromFile($serializationFile));
+printException($@) if (!defined($status)); # Not expected.
+
+$status = eval
+{
+    $unit =
+        Counters::fromObject(Utilities::Serialization::deserializeFromFile($serializationFile));
+};
+
+printException($@) if (!defined($status)); # Not expected.
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
@@ -127,8 +137,6 @@ $russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
                                     6,2,8,8,0,12,4,0,
                                     $Counters::Classifications::ELITE,1,1,0);
 
-$russianSquad->setIdentity(CniWrapper::cc2js("A"));
-
 # Display all of the entered values for this instance using the toText() method.
 
 printf("Squad.toText() output:\n\n%s\n",
@@ -140,10 +148,44 @@ printf("Squad.toText() output:\n\n%s\n",
 printf("Squad.toString() output:\n\n%s\n\n",
        CniWrapper::js2cc($russianSquad->toString()));
 
-# Display all of the entered values for this instance using the toJSON() method.
+# Serialize the Squad object, writing the data to a byte array, and then
+# deserialize the data into a new object.
 
-printf("Squad.toJSON() output:\n\n%s\n\n",
-       CniWrapper::js2cc($russianSquad->toJSON()));
+$russianSquad->setIdentity(CniWrapper::cc2js("A"));
+
+$status = eval
+{
+    $serializedSquad =
+        Utilities::Serialization::serializeToByteArray(Counters::toObject($russianSquad));
+};
+
+printException($@) if (!defined($status)); # Not expected.
+
+$status = eval
+{
+    $deserializedSquad =
+        Counters::fromObject(Utilities::Serialization::deserializeFromByteArray($serializedSquad));
+};
+
+printException($@) if (!defined($status)); # Not expected.
+
+# Display all of the entered values for the deserialized instance using the
+# toText() method.
+
+printf("(Deserialized) Squad.toText() output:\n\n%s\n",
+       CniWrapper::js2cc($deserializedSquad->toText()));
+
+# Display an abbreviated description of the deserialized instance using the
+# toString() method.
+
+printf("(Deserialized) Squad.toString() output:\n\n%s\n\n",
+       CniWrapper::js2cc($deserializedSquad->toString()));
+
+# Display all of the entered values for the deserialized instance using the
+# toJSON() method.
+
+printf("(Deserialized) Squad.toJSON() output:\n\n%s\n\n",
+       CniWrapper::js2cc($deserializedSquad->toJSON()));
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.

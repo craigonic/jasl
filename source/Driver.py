@@ -81,9 +81,15 @@ germanLeader.setIdentity(cc2js("Col. Klink"))
 
 serializationFile = cc2js("/tmp/Leader.ser");
 
-Serialization_serializeToFile(toObject(germanLeader),serializationFile);
+try:
+    Serialization_serializeToFile(toObject(germanLeader),serializationFile);
+except ValueError as detail: # Not expected.
+    printException(detail)
 
-unit = fromObject(Serialization_deserializeFromFile(serializationFile));
+try:
+    unit = fromObject(Serialization_deserializeFromFile(serializationFile));
+except ValueError as detail: # Not expected.
+    printException(detail)
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
@@ -108,8 +114,6 @@ unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
 russianSquad = Squad(nationality,unitType,6,2,8,8,False,12,4,False,
                      classification,True,True,0)
 
-russianSquad.setIdentity(cc2js("A"))
-
 # Display all of the entered values for this instance using the toText() method.
 
 print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
@@ -119,9 +123,35 @@ print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
 
 print "Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString())
 
-# Display all of the entered values for this instance using the toJSON() method.
+# Serialize the Squad object, writing the data to a byte array, and then
+# deserialize the data into a new object.
 
-print "Squad.toJSON() output:\n\n%s\n" % js2cc(russianSquad.toJSON())
+russianSquad.setIdentity(cc2js("A"))
+
+try:
+    serializedSquad = Serialization_serializeToByteArray(toObject(russianSquad));
+except ValueError as detail: # Not expected.
+    printException(detail)
+
+try:
+    deserializedSquad = fromObject(Serialization_deserializeFromByteArray(serializedSquad));
+except ValueError as detail: # Not expected.
+    printException(detail)
+
+# Display all of the entered values for the deserialized instance using the
+# toText() method.
+
+print "(Deserialized) Squad.toText() output:\n\n%s" % js2cc(deserializedSquad.toText())
+
+# Display an abbreviated description of the deserialized instance using the
+# toString() method.
+
+print "(Deserialized) Squad.toString() output:\n\n%s\n" % js2cc(deserializedSquad.toString())
+
+# Display all of the entered values for the deserialized instance using the
+# toJSON() method.
+
+print "(Deserialized) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
