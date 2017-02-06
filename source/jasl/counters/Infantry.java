@@ -562,8 +562,12 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 
 	/**
 	 * Return the formal / specific type of a unit.
+	 * <P>
+	 * Use the toString() method of the enum to retrieve the label
+	 * associated with the value (e.g. "Canadian" for CANADIAN). The name()
+	 * method returns its text representation (e.g. "CANADIAN").
 	 *
-	 * @return an InfantryTypes value specifying the more specific type,
+	 * @return an <CODE>InfantryTypes</CODE> value specifying the more specific type,
 	 * designation, nationality, etc. for the unit.
 	 */
 
