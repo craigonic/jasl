@@ -21,8 +21,8 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.2
- * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
+ * @version 6.0
+ * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
@@ -59,7 +59,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 
 	// Constructors.
 
-	// During the instantiation of derived concrete classes the parameter
+	// During the instantiation of derived concrete classes the argument
 	// is passed up the inheritance tree from the constructor of the object
 	// type being created.
 
@@ -69,7 +69,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	}
 
 	// This declaration is redundant for Java and C++ usage, but it is
-	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
+	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
 	// used by <A HREF="http://www.swig.org/">SWIG</A> to build bindings for scripting languages.
 
 	protected Unit() {}
@@ -79,7 +79,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	/**
 	 * Display the value of each of the private data members that describe
 	 * the current instance.
-	 *
+	 * <P>
 	 * Each value is preceded by a label defined in this class or the
 	 * interface associated with the item. There are no more than two
 	 * values, including labels, in each line of output.
@@ -102,7 +102,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(description(),
+		returnString.append(Messages.formatTextString(description().toString(),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -117,25 +117,25 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	/**
 	 * Return an abbreviated description, which may include attributes, of a
 	 * unit.
-	 *
+	 * <P>
 	 * This method overrides the parent implementation, and it is intended
 	 * that derived public classes provide their own version. If not, this
-	 * one will return the same value as description().
+	 * one will return the same value as description().toString().
 	 *
 	 * @return a <CODE>String</CODE> specifying a simple description of the unit.
 	 */
 
 	public String toString()
 	{
-		return description();
+		return description().toString();
 	}
 
 	/**
 	 * Display the JSON representation each of the private data members that
 	 * describe the current instance.
-	 *
+	 * <P>
 	 * Each value is preceded by a label (key) defined in this class or the
-	 * the interface associated with the item. The parameters are grouped in
+	 * the interface associated with the item. The arguments are grouped in
 	 * a JSON object, with this method (the top level) adding the initial
 	 * '{' and the "bottom" (public) class implementation appending the
 	 * closing '}'. Entries at each level are successively indented to
@@ -158,7 +158,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 		String INDENT = " ";
 
 		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(DESCRIPTION_LABEL,description()) +
+		                    JsonOutput.buildJSONPair(DESCRIPTION_LABEL,description().name()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
 		                    JsonOutput.buildJSONPair(UNIT_LABEL,toString()) +
@@ -171,12 +171,16 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 
 	/**
 	 * Return the description of a unit.
+	 * <P>
+	 * Use the toString() method of the enum to retrieve the label
+	 * associated with the value (e.g. "Crew" for CREW). The name() method
+	 * returns its text representation (e.g. "CREW").
 	 *
-	 * @return a <CODE>String</CODE> specifying the unit description.
+	 * @return a <CODE>Descriptions</CODE> value specifying the unit description.
 	 */
 
-	public final String description()
+	public final Descriptions description()
 	{
-		return _description.toString();
+		return _description;
 	}
 }

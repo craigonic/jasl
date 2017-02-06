@@ -35,6 +35,7 @@
 // Enums.
 
 %include Classifications.swig // <A HREF="Classifications.swig.html">Classifications</A>
+%include Descriptions.swig    // <A HREF="Descriptions.swig.html">Descriptions</A>
 %include InfantryTypes.swig   // <A HREF="InfantryTypes.swig.html">InfantryTypes</A>
 %include Nationalities.swig   // <A HREF="Nationalities.swig.html">Nationalities</A>
 %include States.swig          // <A HREF="States.swig.html">States</A>
