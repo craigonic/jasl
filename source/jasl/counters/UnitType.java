@@ -28,7 +28,7 @@ public interface UnitType
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying a more
-	// specific description of a <A HREF="Fighting.html">Fighting</A> unit using an objects toText()
+	// specific description of a Fighting unit using an objects toText()
 	// method.
 
 	/**
@@ -41,7 +41,7 @@ public interface UnitType
 	// Recognized Infantry unit types.
 
 	/**
-	 * Recognized unit type values for Infantry.
+	 * Recognized unit type values for <A HREF="Infantry.html">Infantry</A>.
 	 * <P>
 	 * These are used to identify additional characteristics/abilities or a
 	 * more specific nationality.
@@ -58,9 +58,10 @@ public interface UnitType
 
 		/** <A NAME="_PARATROOPS_"></A>
 		 * Indicates that a unit's more precise type or capability is
-		 * <B>Paratroops</B>. If this value is specified as the unitType
-		 * argument for an object, the nationality argument must be
-		 * <B>American</B>.
+		 * <B>Paratroops</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>American</B>.
 		 *
 		 * @see Nationality.Nationalities#AMERICAN
 		 */
@@ -69,9 +70,10 @@ public interface UnitType
 
 		/** <A NAME="_AIRBORNE_"></A>
 		 * Indicates that a unit's more precise type or capability is
-		 * <B>Airborne</B>. If this value is specified as the unitType
-		 * argument for an object, the nationality argument must be
-		 * <B>British</B>.
+		 * <B>Airborne</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>British</B>.
 		 *
 		 * @see Nationality.Nationalities#BRITISH
 		 */
@@ -79,8 +81,9 @@ public interface UnitType
 		AIRBORNE("Airborne"),
 
 		/** <A NAME="_ANZAC_"></A>
-		 * Indicates that a unit's more precise nationality is <B>ANZAC</B>. If
-		 * this value is specified as the unitType argument for an
+		 * Indicates that a unit's more precise nationality is <B>ANZAC</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
 		 * object, the nationality argument must be <B>British</B>.
 		 *
 		 * @see Nationality.Nationalities#BRITISH
@@ -90,6 +93,7 @@ public interface UnitType
 
 		/** <A NAME="_CANADIAN_"></A>
 		 * Indicates that a unit's more precise nationality is <B>Canadian</B>.
+		 * <P>
 		 * If this value is specified as the unitType argument for an
 		 * object, the nationality argument must be <B>British</B>.
 		 *
@@ -100,9 +104,10 @@ public interface UnitType
 
 		/** <A NAME="_FREE_FRENCH_"></A>
 		 * Indicates that a unit's more precise nationality is
-		 * <B>Free French</B>. If this value is specified as the unitType
-		 * argument for an object, the nationality argument must be
-		 * <B>British</B>.
+		 * <B>Free French</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>British</B>.
 		 *
 		 * @see Nationality.Nationalities#BRITISH
 		 */
@@ -111,9 +116,10 @@ public interface UnitType
 
 		/** <A NAME="_FREE_POLISH_"></A>
 		 * Indicates that a unit's more precise nationality is
-		 * <B>Free Polish</B>. If this value is specified as the unitType
-		 * argument for an object, the nationality argument must be
-		 * <B>British</B>.
+		 * <B>Free Polish</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>British</B>.
 		 *
 		 * @see Nationality.Nationalities#BRITISH
 		 */
@@ -121,8 +127,9 @@ public interface UnitType
 		FREE_POLISH("Free Polish"),
 
 		/** <A NAME="_GUARDSMEN_"></A>
-		 * Indicates that a unit's more precise type is <B>Guardsmen</B>. If
-		 * this value is specified as the unitType argument for an
+		 * Indicates that a unit's more precise type is <B>Guardsmen</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
 		 * object, the nationality argument must be <B>British</B>.
 		 *
 		 * @see Nationality.Nationalities#BRITISH
@@ -132,8 +139,10 @@ public interface UnitType
 
 		/** <A NAME="_GURKHA_"></A>
 		 * Indicates that a unit's more precise type or capability is
-		 * <B>Gurkha</B>. If this value is specified as the unitType argument
-		 * for an object, the nationality argument must be <B>British</B>.
+		 * <B>Gurkha</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>British</B>.
 		 *
 		 * @see Nationality.Nationalities#BRITISH
 		 */
@@ -142,8 +151,10 @@ public interface UnitType
 
 		/** <A NAME="_SISSI_"></A>
 		 * Indicates that a unit's more precise type or capability is
-		 * <B>Sissi</B>. If this value is specified as the unitType argument
-		 * for an object, the nationality argument must be <B>Finnish</B>.
+		 * <B>Sissi</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>Finnish</B>.
 		 *
 		 * @see Nationality.Nationalities#FINNISH
 		 */
@@ -152,9 +163,10 @@ public interface UnitType
 
 		/** <A NAME="_ENGINEERS_"></A>
 		 * Indicates that a unit's more precise type or capability is
-		 * <B>Engineers</B>. If this value is specified as the unitType
-		 * argument for an object, the nationality argument must be
-		 * <B>German</B>.
+		 * <B>Engineers</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>German</B>.
 		 *
 		 * @see Nationality.Nationalities#GERMAN
 		 */
@@ -162,10 +174,10 @@ public interface UnitType
 		ENGINEERS("Engineers"),
 
 		/** <A NAME="_COMMISSAR_"></A>
-		 * Indicates that a unit's more precise type is <B>Commissar</B>. This
-		 * value may only be specified as the unitType argument for a
-		 * <B>Leader</B> object. The nationality argument must be
-		 * <B>Russian</B>.
+		 * Indicates that a unit's more precise type is <B>Commissar</B>.
+		 * <P>
+		 * This value may only be specified as the unitType argument for
+		 * a <B>Leader</B> object. The nationality argument must be <B>Russian</B>.
 		 *
 		 * @see Nationality.Nationalities#RUSSIAN
 		 * @see Leader
@@ -174,9 +186,10 @@ public interface UnitType
 		COMMISSAR("Commissar"),
 
 		/** <A NAME="_GUARDS_"></A>
-		 * Indicates that a unit's more precise type is <B>Guards</B>. If this
-		 * value is specified as the unitType argument for an object,
-		 * the nationality argument must be <B>Russian</B>.
+		 * Indicates that a unit's more precise type is <B>Guards</B>.
+		 * <P>
+		 * If this value is specified as the unitType argument for an
+		 * object, the nationality argument must be <B>Russian</B>.
 		 *
 		 * @see Nationality.Nationalities#RUSSIAN
 		 */
@@ -204,7 +217,7 @@ public interface UnitType
 		 * @return the <CODE>String</CODE> associated with the constant.
 		 */
 
-		public String toString()
+		public final String toString()
 		{
 			return _label;
 		}
