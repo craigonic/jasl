@@ -50,7 +50,7 @@ class Leader
 
         ::java::lang::String* identity();
         bool                  isStatusSet(::jasl::counters::Status$States* state);
-        ::java::lang::String* nationality();
+        Nationalities*        nationality();
         ::java::lang::String* status();
         ::java::lang::String* unitType();
 

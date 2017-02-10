@@ -21,8 +21,8 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 5.2
- * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
+ * @version 6.0
+ * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
 
@@ -70,23 +70,22 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	private static final String nullPointerError =
 		Messages.buildErrorMessage("Fighting",Messages.CONSTRUCTOR,
 		                           Messages.NULL_PARAMETER_MSG);
-
 	// Constructor
 
-	// During the instantiation of derived concrete classes the parameters
+	// During the instantiation of derived concrete classes the arguments
 	// are passed up the inheritance tree from the constructor of the object
 	// type being created.
 
 	protected Fighting(Descriptions description,Nationalities nationality,
 	                   String unitType)
 	{
-		// Pass the first parameter to the superclass constructor. If
-		// any exceptions are thrown, assume that they will be caught
-		// and handled by the program creating the object.
+		// Pass the first argument to the superclass constructor. If any
+		// exceptions are thrown, assume that they will be caught and
+		// handled by the program creating the object.
 
 		super(description);
 
-		// Copy the value of each remaining parameter to the
+		// Copy the value of each remaining argument to the
 		// corresponding variable if an exception is not found.
 
 		// Nationality
@@ -113,7 +112,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	/**
 	 * Display the value of each of the private data members that describe
 	 * the current instance.
-	 *
+	 * <P>
 	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
 	 * continuing down the hierarchy to this level, are appended to the
 	 * returned string. Each value is preceded by a label defined in this
@@ -140,7 +139,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(nationality(),
+		returnString.append(Messages.formatTextString(nationality().toString(),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,false));
 
@@ -182,7 +181,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	/**
 	 * Display the JSON representation each of the private data members that
 	 * describe the current instance.
-	 *
+	 * <P>
 	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
 	 * continuing down the hierarchy to this level, are appended to the
 	 * returned string. Each value is preceded by a label (key) defined in
@@ -207,7 +206,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		String INDENT = "  ";
 
 		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(NATIONALITY_LABEL,nationality()) +
+		                    JsonOutput.buildJSONPair(NATIONALITY_LABEL,nationality().name()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
 		                    JsonOutput.buildJSONPair(UNIT_TYPE_LABEL,unitType()) +
@@ -226,18 +225,22 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	/**
 	 * Return the nationality of a unit.
+	 * <P>
+	 * Use the toString() method of the enum to retrieve the label
+	 * associated with the value (e.g. "American" for AMERICAN). The name()
+	 * method returns its text representation (e.g. "AMERICAN").
 	 *
-	 * @return a <CODE>String</CODE> specifying the unit's nationality.
+	 * @return a <CODE>Nationalities</CODE> value specifying the unit's nationality.
 	 */
 
-	public final String nationality()
+	public final Nationalities nationality()
 	{
-		return _nationality.toString();
+		return _nationality;
 	}
 
 	/**
 	 * Return the formal / specific type of a unit.
-	 *
+	 * <P>
 	 * This provides for more accurate identification and application of the
 	 * attributes associated with specific unit types. For example, it may
 	 * specify vehicle names (Pz VIb, T-34/76, etc.) as well as special
@@ -256,7 +259,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	/**
 	 * Return the identity of a unit.
-	 *
+	 * <P>
 	 * This is typically a single alphanumeric character, but it may also be
 	 * a full name (e.g. for leaders and heroes).
 	 *
@@ -294,7 +297,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 	 * @return a <CODE>boolean</CODE> indicating if the unit is in the specified state.
 	 */
 
-	public boolean isStatusSet(States state)
+	public final boolean isStatusSet(States state)
 	{
 		return false;
 	}
@@ -303,8 +306,8 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	/**
 	 * Set a new identity for a unit.
-	 *
-	 * If a null or zero length parameter is specified, the current setting
+	 * <P>
+	 * If a null or zero length argument is specified, the current setting
 	 * will be cleared.
 	 *
 	 * @param newIdentity the new identity.
@@ -364,7 +367,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	/**
 	 * Add the identity setting, in parentheses, to the specified buffer.
-	 *
+	 * <P>
 	 * This method is intended for use by the toString() implementation in
 	 * derived public classes. The StringBuffer is modified only if it is
 	 * <B>not</B> null <B>and</B> an identity value has been set (i.e. it is not empty).
