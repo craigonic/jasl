@@ -11,9 +11,15 @@
 // Written By: Craig R. Campbell  -  April 2007                               //
 // ************************************************************************** //
 
+#include <assert.h>
 #include <stdio.h>
 
+#include <java/lang/Integer.h>
 #include <java/lang/Throwable.h> // For jthrowable.
+#include <java/util/Iterator.h>
+#include <java/util/List.h>
+#include <java/util/Map.h>
+#include <java/util/Set.h>
 
 #include "jasl/cni/CniWrapper.h"
 #include "jasl/cni/JaslErrorMessage.h"
@@ -248,7 +254,7 @@ int main(int argc, char *argv[])
 
                 printf("\nUnitList[%d]:\t%s\n\n",i,toStringOutput);
 
-                if (toStringOutput) delete [] toStringOutput;
+                delete [] toStringOutput;
 
                 printJavaString(((Mobile*)UnitList[i])->description());
                 printJavaString(((Mobile*)UnitList[i])->identity());
@@ -605,6 +611,346 @@ int main(int argc, char *argv[])
 
             else printf("New Dice object generation failed\n");
         }
+
+        // Test the Player and Stack classes.
+
+        printf("Testing Exception handling during Player creation:\n");
+
+        Player* playerObject = NULL;
+
+        nationality = Nationalities::valueOf(cc2js("PARTISAN"));
+
+        // Null Name
+
+        printf("\nNull name parameter:\n");
+
+        try
+        {
+            playerObject = new Player(NULL,nationality,1);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Blank Name
+
+        printf("\nZero-length name parameter:\n");
+
+        try
+        {
+            playerObject = new Player(cc2js(""),nationality,1);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Invalid Entry Turn (less than 1)
+
+        printf("\nInvalid (less than 1) entry turn:\n");
+
+        try
+        {
+            playerObject = new Player(cc2js("Dr. Pepper"),nationality,-1);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        printf("\nTesting Exception handling for Player methods:\n");
+
+        // Null Unit parameter to addUnit()
+
+        playerObject = new Player(cc2js("Dr. Pepper"),nationality,1);
+
+        printf("\nNull Unit parameter to addUnit():\n");
+
+        try
+        {
+            playerObject->addUnit(NULL);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Null Stack parameter to addStack()
+
+        printf("\nNull Stack parameter to addStack():\n");
+
+        try
+        {
+            playerObject->addStack(NULL);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Confirm that the Player's Unit list is empty.
+
+        assert(playerObject->stackList()->isEmpty());
+
+        // Add some valid Units to the Player object.
+
+        printf("\nAssign some Units to the Player:\n");
+
+        playerObject->addUnit(cc2js("7-0 Leader (Dr. Pepper)"));
+        playerObject->addUnit(cc2js("3-3-7 Squad (A)"));
+        playerObject->addUnit(cc2js("3-3-7 Squad (B)"));
+        playerObject->addUnit(cc2js("3-3-7 Squad (C)"));
+        playerObject->addUnit(cc2js("2-6 LMG (X)"));
+
+        // Display all of the entered values for this instance using the
+        // toText() method.
+
+        printf("\nPlayer.toText() output:\n\n");
+        printJavaString(playerObject->toText());
+
+        // Retrieve a list of the Units (in Stacks) assigned to the Player.
+
+        ::java::util::List* unitList = playerObject->stackList();
+
+        // Invalid index parameter to takeStack()
+
+        Stack* temporaryStack = NULL;
+
+        printf("Invalid (Stack) list index:\n");
+
+        try
+        {
+            temporaryStack = playerObject->takeStack(unitList->size());
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Create Stacks for use in testing invalid argument handling in
+        // Stack::addPortagedItem() and Stack::addSubStack().
+
+        printf("\nTesting Exception handling during Stack creation:\n");
+
+        jstring testUnit      = NULL;
+        Stack*  unitTestStack = NULL;
+
+        // Null Unit
+
+        printf("\nNull Unit parameter:\n");
+
+        try
+        {
+            unitTestStack = new Stack(testUnit);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Null Stack
+
+        printf("\nNull Stack parameter:\n");
+
+        try
+        {
+            unitTestStack = new Stack(unitTestStack);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        testUnit = cc2js("6+1 Leader (Sgt. Stedenko)");
+
+        unitTestStack = new Stack(testUnit,7,77);
+
+        Stack* subStackTestStack = new Stack(unitTestStack);
+
+        // Confirm that a Stack managing a Unit doesn't have sub-stacks.
+
+        assert(NULL == unitTestStack->subStacks());
+
+        // Confirm that a Stack managing a group of sub-stacks doesn't have
+        // any portaged items.
+
+        assert(NULL == subStackTestStack->portagedItems());
+
+        // Invalid Stack
+
+        printf("\nInvalid Stack parameter:\n");
+
+        try
+        {
+            subStackTestStack = new Stack(subStackTestStack);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        printf("\nTesting Exception handling for Stack methods:\n");
+
+        // Null Stack parameter to addPortagedItem()
+
+        printf("\nNull Stack parameter to addPortagedItem():\n");
+
+        try
+        {
+            static_cast<Stack*>(unitList->get(2))->addPortagedItem(NULL);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Invalid Stack parameter to addPortagedItem()
+
+        printf("\nInvalid Stack parameter to addPortagedItem():\n");
+
+        try
+        {
+            static_cast<Stack*>(unitList->get(2))->addPortagedItem(subStackTestStack);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        printf("\nTesting the operations of the Player and Stack classes:\n");
+
+        // Have the second Squad in the list carry (portage) the machine gun.
+
+        printf("\nThe second Squad will carry the machine gun:\n");
+
+        temporaryStack = playerObject->takeStack(unitList->size() - 1);
+
+        static_cast<Stack*>(unitList->get(2))->addPortagedItem(temporaryStack);
+
+        printf("\nPlayer.toText() output:\n\n");
+        printJavaString(playerObject->toText());
+
+        // Pass the machine gun from the second squad to the first.
+
+        printf("Now it's the first Squad's turn to carry it:\n");
+
+        unitList = playerObject->stackList();
+
+        ::java::util::Map* portagedItems =
+             static_cast< ::java::util::Map* >(static_cast<Stack*>(unitList->get(2))->portagedItems());
+
+        temporaryStack =
+            static_cast<Stack*>(unitList->get(2))->takePortagedItem(static_cast< ::java::lang::Integer*>(portagedItems->keySet()->iterator()->next()));
+
+        static_cast<Stack*>(unitList->get(1))->addPortagedItem(temporaryStack);
+
+        printf("\nPlayer.toText() output:\n\n");
+        printJavaString(playerObject->toText());
+
+        // Null Stack parameter to addSubStack()
+
+        printf("Null Stack parameter to Stack.addSubStack():\n");
+
+        try
+        {
+            static_cast<Stack*>(unitList->get(2))->addSubStack(NULL);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Invalid Stack parameter to addSubStack()
+
+        printf("\nInvalid Stack parameter to Stack.addSubStack():\n");
+
+        try
+        {
+            static_cast<Stack*>(unitList->get(2))->addSubStack(subStackTestStack);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Group all of the Units into a single Stack.
+
+        printf("\nAll of the Units in a single stack:\n");
+
+        Stack* newStack = new Stack(playerObject->takeStack(0));
+
+        int i = 0;
+        int stackListSize = playerObject->stackList()->size();
+
+        while (i++ < stackListSize)
+        {
+            newStack->addSubStack(playerObject->takeStack(0));
+        }
+
+        playerObject->addStack(newStack);
+
+        printf("\nPlayer.toText() output:\n\n");
+        printJavaString(playerObject->toText());
+
+        // Set the position of the (single / combined) Stack.
+
+        printf("Set the position of the stack to 1H5:\n");
+
+        unitList = playerObject->stackList();
+
+        static_cast<Stack*>(unitList->get(0))->setPositionLabel(cc2js("1H5"));
+
+        printf("\nPlayer.toText() output:\n\n");
+        printJavaString(playerObject->toText());
+
+        // Move the first Squad in the (single / combined) Stack to a separate
+        // position.
+
+        printf("Move the first Squad to a different position (1F7):\n");
+
+        temporaryStack = static_cast<Stack*>(playerObject->stackList()->get(0));
+
+        ::java::util::Map* subStacks =
+             static_cast< ::java::util::Map* >(temporaryStack->subStacks());
+
+        printf("\nThe individual Stacks within the combined one are:\n\n");
+
+        ::java::util::Iterator* subStackKeyIterator =
+            subStacks->keySet()->iterator();
+
+        while (subStackKeyIterator->hasNext())
+        {
+            ::java::lang::Integer* key =
+                static_cast< ::java::lang::Integer*>(subStackKeyIterator->next());
+            Stack* value =
+                static_cast<Stack*>(subStacks->get(key));
+
+            printf("\tKey: %s\t%s\n",
+                   js2cc(key->toString()),js2cc(value->toText()));
+        }
+
+        newStack = temporaryStack->takeSubStack(::java::lang::Integer::valueOf(1));
+
+        newStack->setPositionLabel(cc2js("1F7"));
+
+        playerObject->addStack(newStack);
+
+        printf("\nPlayer.toText() output:\n\n");
+        printJavaString(playerObject->toText());
     }
 
     catch (jthrowable t)
@@ -640,6 +986,8 @@ int main(int argc, char *argv[])
     axisPlayer->addUnit(cc2js("6-5-8 Squad"));
     axisPlayer->addUnit(cc2js("6-5-8 Squad"));
     axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+    axisPlayer->addUnit(cc2js("3-8 LMG"));
+    axisPlayer->addUnit(cc2js("3-8 LMG"));
 
     printJavaString(Game::game()->toText());
 
