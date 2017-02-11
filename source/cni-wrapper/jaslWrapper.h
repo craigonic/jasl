@@ -23,6 +23,7 @@
 #include "jasl/ui/data/Game.h"
 #include "jasl/ui/data/Player.h"
 #include "jasl/ui/data/Side$Sides.h"
+#include "jasl/ui/data/Stack.h"
 
 #include "jasl/utilities/Dice.h"
 #include "jasl/utilities/Serialization.h"
@@ -100,6 +101,13 @@ typedef jasl::ui::data::Player Player;
  */
 
 typedef jasl::ui::data::Side$Sides Sides;
+
+/**
+ * \typedef jasl::ui::data::Stack Stack
+ * \brief Shorthand declaration for a <A HREF="../../source/jasl/ui/data/Stack.html">Stack</A> object.
+ */
+
+typedef jasl::ui::data::Stack Stack;
 
 // Utilities
 
