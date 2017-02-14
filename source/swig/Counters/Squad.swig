@@ -86,7 +86,7 @@ class Squad
 
         // <A HREF="../../jasl/counters/Personnel.html">Personnel</A>.
 
-        ::java::lang::String* classification();
+        Classifications*      classification();
         bool                  hasMaximumELR();
 
         // <A HREF="../../jasl/counters/Squad.html">Squad</A>.
