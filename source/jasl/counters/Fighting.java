@@ -13,6 +13,10 @@
 
 package jasl.counters;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
@@ -160,7 +164,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		                                              true,false));
 
 		returnString.append(Messages.formatTextString(identity(),
-		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
 		                                              false,true));
 
 		// Status
@@ -169,7 +173,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(status(),
+		returnString.append(Messages.formatTextString(status().toString(),
 		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
 		                                              false,true));
 
@@ -215,7 +219,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 		                    JsonOutput.buildJSONPair(IDENTITY_LABEL,identity()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(STATUS_LABEL,status()) +
+		                    JsonOutput.buildJSONPair(STATUS_LABEL,_status) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -277,29 +281,38 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	/**
 	 * Return the current status of a unit.
+	 * <P>
+	 * In cases, where states are related (e.g. one state is a prerequisite
+	 * for the other), only the "worst" state will be included. For example,
+	 * if an infantry Unit is broken, and becomes subject to desperation
+	 * morale, only the latter will be included in the list.
 	 *
-	 * @return a comma delimited <CODE>String</CODE> describing the unit status.
+	 * @return an <B>unmodifiable</B> <CODE>List</CODE> of States describing the unit status. If
+	 * the current state is NORMAL, the returned list will be empty.
 	 *
 	 * @see #clearStatus
 	 * @see #setStatus
 	 */
 
-	public final String status()
+	public final List<States> status()
 	{
-		return States.NORMAL.toString();
-	}
+		ArrayList<States> statesList = new ArrayList<States>();
 
-	/**
-	 * Determine if the status of a unit includes the indicated state.
-	 *
-	 * @param state the state of interest.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the unit is in the specified state.
-	 */
+		for (States state : States.values())
+		{
+			if ((_status & state.value()) > 0)
+			{
+				if ((States.BROKEN == state) &&
+				    ((_status & States.DESPERATE.value()) > 0))
+				{
+					continue;
+				}
 
-	public final boolean isStatusSet(States state)
-	{
-		return false;
+				statesList.add(state);
+			}
+		}
+
+		return Collections.unmodifiableList(statesList);
 	}
 
 	// Public update methods
@@ -334,8 +347,15 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final boolean clearStatus(States state)
 	{
-		if (!isStatusSet(state))
+		if (status().contains(state))
 		{
+			if ((States.BROKEN == state) &&
+			    ((_status & States.DESPERATE.value()) > 0))
+			{
+				return false;
+			}
+
+			_status &= ~state.value();
 			return true;
 		}
 
@@ -355,8 +375,12 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final boolean setStatus(States state)
 	{
-		if (!isStatusSet(state))
+		if (!status().contains(state))
 		{
+			_status ^= state.value();
+
+			if (state == States.DESPERATE) setStatus(States.BROKEN);
+
 			return true;
 		}
 

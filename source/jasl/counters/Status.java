@@ -13,14 +13,16 @@
 
 package jasl.counters;
 
+import java.util.List;
+
 /**
  * This interface is used to define the public constants, using an enum, and
  * required methods associated with the status of a <A HREF="Unit.html">Unit</A>. The methods are
  * intended for operation on an integer member variable within the implementing
  * class.
  *
- * @version 2.0
- * @author Copyright (C) 2011-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 3.0
+ * @author Copyright (C) 2011-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Status.html">Source code</A>
  */
 
@@ -29,7 +31,7 @@ public interface Status
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the status
-	// of a <A HREF="Unit.html">Unit</A> using an objects toText() method.
+	// of a Unit using an object's toText() method.
 
 	/**
 	 * Provides a label for a unit's status : <B>Status</B>
@@ -38,9 +40,10 @@ public interface Status
 	public static final String STATUS_LABEL = "Status";
 
 	/**
-	 * Recognized status values. These constants include a corresponding
-	 * label and a value, which is intended for use as a mask to set or
-	 * check for a specific value.
+	 * Recognized status values.
+	 * <P>
+	 * These constants include a corresponding label and a value, which is
+	 * intended for use as a mask to set or check for a specific value.
 	 */
 
 	public enum States
@@ -95,7 +98,7 @@ public interface Status
 		 * @return the <CODE>String</CODE> associated with the enum element.
 		 */
 
-		public String toString()
+		public final String toString()
 		{
 			return _label;
 		}
@@ -106,7 +109,7 @@ public interface Status
 		 * @return the <CODE>int</CODE> (bit mask) associated with the enum element.
 		 */
 
-		public int value()
+		public final int value()
 		{
 			return _value;
 		}
@@ -117,26 +120,13 @@ public interface Status
 	/**
 	 * Return the current status of a unit.
 	 *
-	 * @return a comma delimited <CODE>String</CODE> describing the unit status. The list
-	 * will contain the string constants associated with the states within
-	 * the overall status.
+	 * @return an <B>unmodifiable</B> <CODE>List</CODE> of States describing the unit status.
 	 *
 	 * @see #clearStatus
 	 * @see #setStatus
 	 */
 
-	public abstract String status();
-
-	/**
-	 * Determine if the status of a unit includes the indicated state.
-	 *
-	 * @param state the state of interest. This value will be used as a
-	 * mask to determine if the corresponding bit is set.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the unit is in the specified state.
-	 */
-
-	public abstract boolean isStatusSet(States state);
+	public abstract List<States> status();
 
 	// Update methods
 
@@ -155,8 +145,10 @@ public interface Status
 	public abstract boolean clearStatus(States state);
 
 	/**
-	 * Change the status of a unit. The interpretation of the parameter
-	 * value will be determined by the implementor of this interface.
+	 * Change the status of a unit.
+	 * <P>
+	 * The interpretation of the parameter value will be determined by the
+	 * implementor of this interface.
 	 *
 	 * @param state the state to be set or applied. This value will be
 	 * used as a mask to set the corresponding bit in the status value.

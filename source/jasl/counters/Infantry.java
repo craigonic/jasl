@@ -370,7 +370,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 		                                              true,false));
 
 		returnString.append(Messages.formatTextString(infantryType().name(),
-		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
 		                                              false,true));
 
 		// Return the completed string to calling program.
@@ -617,8 +617,8 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 	{
 		// Verify that the "unit" actually needs to be rallied.
 
-		if ((isStatusSet(States.BROKEN)) ||
-		    (isStatusSet(States.DESPERATE)))
+		if ((status().contains(States.BROKEN)) ||
+		    (status().contains(States.DESPERATE)))
 		{
 			// If the unit is capable of self-rallying (leaders and
 			// some elite units) or a <B>unbroken</B> leader is present in
