@@ -24,6 +24,8 @@ public class Driver
                                          UnitType.InfantryTypes.NONE,
                                          9,9,4,-1);
 
+        germanLeader.setStatus(Status.States.BROKEN);
+
         // Display all of the entered values for this instance using the
         // toText() method.
 
@@ -64,6 +66,8 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
+        ((Leader)deserializedLeader).clearStatus(Status.States.BROKEN);
+
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
 
@@ -89,6 +93,8 @@ public class Driver
                                        6,2,8,8,false,12,4,false,
                                        Classification.Classifications.ELITE,
                                        true,true,0);
+
+        russianSquad.setStatus(Status.States.DESPERATE);
 
         // Display all of the entered values for this instance using the
         // toText() method.
@@ -132,6 +138,13 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
+        // (Silently) verify that if a Unit is subject to desperation morale,
+        // it's broken status can't be (underhandedly) removed.
+
+        assert(!((Squad)deserializedSquad).clearStatus(Status.States.BROKEN));
+
+        ((Squad)deserializedSquad).clearStatus(Status.States.DESPERATE);
+
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
 
@@ -170,6 +183,7 @@ public class Driver
                                 true,false,3);
 
         ((Squad)UnitList[1]).setIdentity("X");
+        ((Squad)UnitList[1]).setStatus(Status.States.BROKEN);
 
         UnitList[2] = new Squad(Nationality.Nationalities.AMERICAN,
                                 UnitType.InfantryTypes.NONE,
@@ -178,6 +192,7 @@ public class Driver
                                 true,false,3);
 
         ((Squad)UnitList[2]).setIdentity("Y");
+        ((Squad)UnitList[2]).setStatus(Status.States.DESPERATE);
 
         UnitList[3] = new Squad(Nationality.Nationalities.AMERICAN,
                                 UnitType.InfantryTypes.NONE,
@@ -197,7 +212,7 @@ public class Driver
             System.out.println("\nUnitList[" + i + "]:\t" +
                                UnitList[i].toString());
 
-            if (Description.Descriptions.LEADER.toString() == UnitList[i].description())
+            if (Description.Descriptions.LEADER == UnitList[i].description())
             {
                 leaderObject = (Leader)UnitList[i];
 
@@ -208,7 +223,7 @@ public class Driver
                                    "\n" + leaderObject.status());
             }
 
-            if (Description.Descriptions.SQUAD.toString() == UnitList[i].description())
+            if (Description.Descriptions.SQUAD == UnitList[i].description())
             {
                 squadObject = (Squad)UnitList[i];
 

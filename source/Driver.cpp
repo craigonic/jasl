@@ -11,15 +11,18 @@
 // Written By: Craig R. Campbell  -  April 2007                               //
 // ************************************************************************** //
 
-#include <stdio.h>
-
-#include <java/lang/Throwable.h> // For jthrowable.
 
 #include "jasl/cni/CniWrapper.h"
 #include "jasl/cni/JaslErrorMessage.h"
 #include "jasl/cni/jaslWrapper.h"
 
 #include "jasl/counters/Mobile.h"
+
+#include <java/lang/Throwable.h>
+#include <java/util/List.h>
+
+#include <assert.h>
+#include <stdio.h>
 
 typedef jasl::counters::Mobile Mobile;
 
@@ -58,6 +61,8 @@ int main(int argc, char *argv[])
         Nationalities*   nationality    = Nationalities::valueOf(cc2js("GERMAN"));
         InfantryTypes*   unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         Classifications* classification = Classifications::valueOf(cc2js("FIRST_LINE"));
+        States*          brokenState    = States::valueOf(cc2js("BROKEN"));
+        States*          desperateState = States::valueOf(cc2js("DESPERATE"));
 
         // Create an instance of a German Leader.
 
@@ -68,6 +73,8 @@ int main(int argc, char *argv[])
 
         if (germanLeader)
         {
+            germanLeader->setStatus(brokenState);
+
             printf("\nLeader.toText() output:\n\n");
             printJavaString(germanLeader->toText());
 
@@ -107,6 +114,8 @@ int main(int argc, char *argv[])
                 printExceptionMessage(t);
             }
 
+            static_cast<Leader*>(deserializedLeader)->clearStatus(brokenState);
+
             // Display all of the entered values for the deserialized instance
             // using the toText() method.
 
@@ -141,6 +150,8 @@ int main(int argc, char *argv[])
 
         if (russianSquad)
         {
+            russianSquad->setStatus(desperateState);
+
             printf("\nSquad.toText() output:\n\n");
             printJavaString(russianSquad->toText());
 
@@ -180,6 +191,13 @@ int main(int argc, char *argv[])
             {
                 printExceptionMessage(t);
             }
+
+            // (Silently) verify that if a Unit is subject to desperation
+            // morale, it's broken status can't be (underhandedly) removed.
+
+            assert(!(static_cast<Squad*>(deserializedSquad)->clearStatus(brokenState)));
+
+            static_cast<Squad*>(deserializedSquad)->clearStatus(desperateState);
 
             // Display all of the entered values for the deserialized instance
             // using the toText() method.
@@ -234,11 +252,13 @@ int main(int argc, char *argv[])
                                 classification,true,false,3);
 
         ((Squad*)UnitList[1])->setIdentity(cc2js("X"));
+        ((Squad*)UnitList[1])->setStatus(brokenState);
 
         UnitList[2] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
                                 classification,true,false,3);
 
         ((Squad*)UnitList[2])->setIdentity(cc2js("Y"));
+        ((Squad*)UnitList[2])->setStatus(desperateState);
 
         UnitList[3] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
                                 classification,true,false,3);
@@ -257,11 +277,11 @@ int main(int argc, char *argv[])
 
                 if (toStringOutput) delete [] toStringOutput;
 
-                printJavaString(((Mobile*)UnitList[i])->description());
+                printJavaString(((Mobile*)UnitList[i])->description()->toString());
                 printJavaString(((Mobile*)UnitList[i])->identity());
                 printJavaString(((Mobile*)UnitList[i])->unitType());
                 printf("%d\n",((Mobile*)UnitList[i])->movement());
-                printJavaString(((Mobile*)UnitList[i])->status());
+                printJavaString(((Mobile*)UnitList[i])->status()->toString());
             }
 
             else printf("UnitList[%d] is NULL\n",i);
