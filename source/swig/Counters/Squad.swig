@@ -49,16 +49,19 @@ class Squad
         Descriptions*         description();
 
         // <A HREF="../../jasl/counters/Fighting.html">Fighting</A>.
+        //
+        // For the status() method, the List* will be transformed (via a
+        // typemap) into an array of States* objects. Note that the array will
+        // be empty if the current status is "normal".
 
         ::java::lang::String* identity();
-        bool                  isStatusSet(::jasl::counters::Status$States* state);
         Nationalities*        nationality();
-        ::java::lang::String* status();
+        ::java::util::List*   status();
         ::java::lang::String* unitType();
 
-        bool                  clearStatus(::jasl::counters::Status$States* state);
-        void                  setIdentity(::java::lang::String* newIdentity);
-        bool                  setStatus(::jasl::counters::Status$States* state);
+        bool                  clearStatus(::jasl::counters::Status$States*);
+        void                  setIdentity(::java::lang::String*);
+        bool                  setStatus(::jasl::counters::Status$States*);
 
         // <A HREF="../../jasl/counters/Mobile.html">Mobile</A>.
 
@@ -66,7 +69,7 @@ class Squad
         int                   portageCapacity();
         int                   portageLevel();
 
-        void                  setPortageLevel(int portageLevel);
+        void                  setPortageLevel(int);
 
         // <A HREF="../../jasl/counters/Infantry.html">Infantry</A>.
 
@@ -81,8 +84,8 @@ class Squad
         int                   normalRange();
         int                   portageValue();
 
-        bool                  check(int modifier);
-        bool                  restore(bool isLeaderPresent,int modifier);
+        bool                  check(int);
+        bool                  restore(bool,int);
 
         // <A HREF="../../jasl/counters/Personnel.html">Personnel</A>.
 
