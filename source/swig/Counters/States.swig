@@ -37,13 +37,13 @@ class States
 {
     public:
 
-        static ::jasl::counters::Status$States* valueOf(::java::lang::String*);
+        // toString() returns the label associated with an enum value (e.g.
+        // "Normal" for NORMAL) and name() returns its text representation (e.g.
+        // "NORMAL").
 
-%immutable;
-
-        static ::jasl::counters::Status$States* NORMAL;
-        static ::jasl::counters::Status$States* BROKEN;
-        static ::jasl::counters::Status$States* DESPERATE;
+        ::java::lang::String* name();
+        ::java::lang::String* toString();
+        static        States* valueOf(::java::lang::String*);
 
     private:
 
