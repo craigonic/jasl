@@ -76,6 +76,14 @@
     sv_2mortal($result);
     argvi++;
 #elif defined(SWIGPYTHON)
+    $result = PyList_New($1->size());
+
+    for (int i = 0;i < $1->size();++i)
+    {
+        PyObject* pyObject = SWIG_NewPointerObj($1->get(i),SWIGTYPE_p_States,0);
+
+        PyList_SetItem($result,i,pyObject);
+    }
 #endif
 }
 
