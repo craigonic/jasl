@@ -303,20 +303,19 @@ my $unitIndex = 0;
 
 foreach my $unit (@unitList)
 {
-    printf("\nUnitList[%d]:\t%s\n",
-           $unitIndex++,CniWrapper::js2cc($unit->toString()));
-
     my @statusList   = @{$unit->status()};
     my $statusString = "";
 
-    # Note that this is not the ideal way to access the status list (it destroys
-    # it) and the output would not match the Java or C++ versions if there is
-    # more than one item in the list.
+    # Note that this would not be a good solution if the list was expected to
+    # contain more than one entry, but it works here for testing purposes.
 
-    while (defined(my $state = shift @statusList))
+    foreach (@statusList)
     {
-        $statusString = CniWrapper::js2cc($state->toString());
+        $statusString = CniWrapper::js2cc($_->toString());
     }
+
+    printf("\nUnitList[%d]:\t%s\n",
+           $unitIndex++,CniWrapper::js2cc($unit->toString()));
 
     printf("\n%s\n%s\n%s\n%d\n[%s]\n",
            CniWrapper::js2cc($unit->description()->toString()),
