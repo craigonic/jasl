@@ -127,7 +127,9 @@ $status = eval
 
 printException($@) if (!defined($status)); # Not expected.
 
-$deserializedLeader->clearStatus($brokenState);
+my @statusList = @{$deserializedLeader->status()};
+
+$deserializedLeader->clearStatus($statusList[0]);
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
@@ -249,7 +251,9 @@ if ($deserializedSquad->clearStatus($brokenState))
     die "Broken status cleared when subject to desperation morale!";
 }
 
-$deserializedSquad->clearStatus($desperateState);
+@statusList = @{$deserializedSquad->status()};
+
+$deserializedSquad->clearStatus($statusList[0]);
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.

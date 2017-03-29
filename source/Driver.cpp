@@ -114,7 +114,10 @@ int main(int argc, char *argv[])
                 printExceptionMessage(t);
             }
 
-            static_cast<Leader*>(deserializedLeader)->clearStatus(brokenState);
+            ::java::util::List* statusList =
+                static_cast<Leader*>(deserializedLeader)->status();
+
+            static_cast<Leader*>(deserializedLeader)->clearStatus(static_cast<States*>(statusList->get(0)));
 
             // Display all of the entered values for the deserialized instance
             // using the toText() method.
@@ -197,7 +200,10 @@ int main(int argc, char *argv[])
 
             assert(!(static_cast<Squad*>(deserializedSquad)->clearStatus(brokenState)));
 
-            static_cast<Squad*>(deserializedSquad)->clearStatus(desperateState);
+            ::java::util::List* statusList =
+                static_cast<Squad*>(deserializedSquad)->status();
+
+            static_cast<Squad*>(deserializedSquad)->clearStatus(static_cast<States*>(statusList->get(0)));
 
             // Display all of the entered values for the deserialized instance
             // using the toText() method.

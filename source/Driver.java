@@ -9,6 +9,8 @@
 // Written By: Craig R. Campbell  -  December 1998                            //
 // ************************************************************************** //
 
+import java.util.List;
+
 import jasl.counters.*;
 import jasl.ui.data.*;
 import jasl.utilities.Dice;
@@ -66,7 +68,9 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        ((Leader)deserializedLeader).clearStatus(Status.States.BROKEN);
+        List statusList = ((Leader)deserializedLeader).status();
+
+        ((Leader)deserializedLeader).clearStatus((Status.States)statusList.get(0));
 
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
@@ -143,7 +147,9 @@ public class Driver
 
         assert(!((Squad)deserializedSquad).clearStatus(Status.States.BROKEN));
 
-        ((Squad)deserializedSquad).clearStatus(Status.States.DESPERATE);
+        statusList = ((Squad)deserializedSquad).status();
+
+        ((Squad)deserializedSquad).clearStatus((Status.States)statusList.get(0));
 
         // Display all of the entered values for the deserialized instance using
         // the toText() method.

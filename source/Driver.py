@@ -104,7 +104,9 @@ try:
 except ValueError as detail: # Not expected.
     printException(detail)
 
-deserializedLeader.clearStatus(brokenState);
+statusList = deserializedLeader.status()
+
+deserializedLeader.clearStatus(statusList[0]);
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
@@ -195,7 +197,9 @@ except ValueError as detail: # Not expected.
 
 assert(False == deserializedSquad.clearStatus(brokenState));
 
-deserializedSquad.clearStatus(desperateState);
+statusList = deserializedSquad.status()
+
+deserializedSquad.clearStatus(statusList[0]);
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
