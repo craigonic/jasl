@@ -34,4 +34,19 @@
 // Classes.
 
 %include Game.swig   // <A HREF="Game.swig.html">Game</A>
+
+// The following typemap is applied in the interface files listed below it. The
+// classes both access Stack objects (which are (obviously) "wrapped" by the
+// Stack interface) and take them, in turn, as arguments.
+
+%typemap(in) ::jasl::ui::data::Stack*
+{
+    if (!SWIG_IsOK(SWIG_ConvertPtr($input,(void **)&$1,$descriptor(Stack*),0)))
+    {
+        SWIG_exception_fail(SWIG_TypeError,
+                            "in method '$symname',expecting type $descriptor(Stack*)");
+    }
+}
+
 %include Player.swig // <A HREF="Player.swig.html">Player</A>
+%include Stack.swig  // <A HREF="Stack.swig.html">Stack</A>
