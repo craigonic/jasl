@@ -69,11 +69,20 @@ GCJ_CLASSPATH_CMD  := --classpath=$(BIN_PATH)
 OUTPUT_DIR_CMD     := -d $(BIN_PATH)
 
 JAVA_OPTIMIZE      := -O
-GCJ_OPTIMIZE       := -O3 -s -pipe -fPIC
+GCJ_OPTIMIZE       := -O2 -s -pipe -fPIC
 
 JAVA_OPTIONS       := $(JAVA_COMPILER) $(JAVA_OPTIMIZE) \
                       ${ANDROID_SOURCE_VERSION} ${ANDROID_TARGET_VERSION} \
                       $(OUTPUT_DIR_CMD) $(CLASSPATH_CMD)
+
+# If the JASL_COMPILER_FLAGS environment variable is set, it will be applied
+# instead of the default above. This is intended primarily for use in building
+# the code to gather coverage data. See the README file in the source directory
+# for more details.
+
+ifdef JASL_COMPILER_FLAGS
+    GCJ_OPTIMIZE   := ${JASL_COMPILER_FLAGS} -fPIC
+endif
 
 GCC_BUILD_CMD      := $(GCC_COMPILER) $(GCJ_OPTIMIZE)
 GCC_COMPILE_CMD    := $(GCC_BUILD_CMD) -c
