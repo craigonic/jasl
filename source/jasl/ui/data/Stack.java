@@ -26,8 +26,8 @@ import jasl.utilities.Messages;
  * has fired or not, etc.), and, where applicable, portaging support. It also
  * allows items of this type that are "wrapping" a Unit to be grouped together.
  *
- * @version 1.2
- * @author Copyright (C) 2016 Craig R. Campbell (craigonic@gmail.com)
+ * @version 1.3
+ * @author Copyright (C) 2016-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Stack.html">Source code</A>
  */
 
@@ -232,13 +232,14 @@ public final class Stack
 		returnString.append(unitID() + "," + stackID() + "):\t");
 		returnString.append(toString());
 
-		if ((null != _unit) && !_portagedItems.isEmpty())
+		if ((null != _unit) &&
+		    (!_positionLabel.isEmpty() || !_portagedItems.isEmpty()))
 		{
 			returnString.append("\n\t" + _unit.toString());
 
-			for (Stack stack : _portagedItems.values())
+			for (Stack portagedItem : _portagedItems.values())
 			{
-				returnString.append("\t" + stack.toString());
+				returnString.append("\t[" + portagedItem.toString() + "]");
 			}
 		}
 
@@ -249,6 +250,11 @@ public final class Stack
 			for (Stack stack : _subStacks.values())
 			{
 				returnString.append("\t" + stack.toString());
+
+				for (Stack portagedItem : stack.portagedItems().values())
+				{
+					returnString.append("\t[" + portagedItem.toString() + "]");
+				}
 			}
 		}
 
