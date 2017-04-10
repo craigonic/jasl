@@ -1,4 +1,4 @@
-Mon Mar  6 12:46:01 PST 2017
+Mon Apr 10 12:48:50 PDT 2017
 
 Leader.toText() output:
 
@@ -7,7 +7,7 @@ Nationality       : German           Unit Type               :
 Identity          :                                                             
 Status            : [Broken]                                                    
 Movement          : 6                
-Portage Capacity  : 1                Portage Level           : 0                
+Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
 Normal Range      : 0                
 Morale            : 9                Broken Morale           : 9                
@@ -21,6 +21,18 @@ Leader.toString() output:
 
 9-1 Leader
 
+Testing Exception handling for serialization to and from a file:
+
+Caught: java.lang.NullPointerException: Serialization(serializeToFile) - Null parameter received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(serializeToFile) - Invalid parameter received (zero length).
+
+Caught: java.lang.NullPointerException: Serialization(deserializeFromFile) - Null parameter received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromFile) - Invalid parameter received (zero length).
+
+Caught: java.io.FileNotFoundException: /tmp/NonExistentFile (No such file or directory)
+
 (Deserialized) Leader.toText() output:
 
 Description       : Leader           
@@ -28,7 +40,7 @@ Nationality       : German           Unit Type               :
 Identity          : Col. Klink                                                  
 Status            : []                                                          
 Movement          : 6                
-Portage Capacity  : 1                Portage Level           : 0                
+Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
 Normal Range      : 0                
 Morale            : 9                Broken Morale           : 9                
@@ -53,7 +65,7 @@ Modifier          : -1
   "Status":0,
    "Movement":6,
    "Portage Capacity":1,
-   "Portage Level":0,
+   "Portage Level":2,
     "Firepower":"0",
     "Firepower Equivalent":0,
     "Normal Range":0,
@@ -89,6 +101,12 @@ Smoke Placement Ex: 0
 Squad.toString() output:
 
 6-2-8 Squad
+
+Testing Exception handling for serialization to and from a byte array:
+
+Caught: java.lang.NullPointerException: Serialization(serializeToByteArray) - Null parameter received.
+
+Caught: java.lang.NullPointerException: Serialization(deserializeFromByteArray) - Null parameter received.
 
 (Deserialized) Squad.toText() output:
 
@@ -178,6 +196,12 @@ Z
 4
 []
 
+Testing Exception handling for Squad update methods:
+
+Invalid portage level parameter:
+
+Caught: java.lang.IllegalArgumentException: Mobile(setPortageLevel) - Invalid parameter(s) received : -1
+
 Testing Exception handling during Squad creation:
 
 Incompatible nationality and unitType parameters:
@@ -252,29 +276,29 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parame
 
 Testing the execution of the Dice class:
 
-White Die         : 6    Colored Die       : 2    Combined Result   : 8    
-
-White Die         : 1    Colored Die       : 1    Combined Result   : 2    
-
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
-
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
-
-White Die         : 2    Colored Die       : 4    Combined Result   : 6    
-
-White Die         : 2    Colored Die       : 3    Combined Result   : 5    
+White Die         : 3    Colored Die       : 4    Combined Result   : 7    
 
 White Die         : 3    Colored Die       : 4    Combined Result   : 7    
 
-White Die         : 2    Colored Die       : 1    Combined Result   : 3    
+White Die         : 6    Colored Die       : 6    Combined Result   : 12   
 
-White Die         : 1    Colored Die       : 5    Combined Result   : 6    
+White Die         : 5    Colored Die       : 1    Combined Result   : 6    
 
 White Die         : 3    Colored Die       : 1    Combined Result   : 4    
 
-White Die         : 1    Colored Die       : 4    Combined Result   : 5    
+White Die         : 3    Colored Die       : 6    Combined Result   : 9    
 
-White Die         : 1    Colored Die       : 1    Combined Result   : 2    
+White Die         : 4    Colored Die       : 6    Combined Result   : 10   
+
+White Die         : 2    Colored Die       : 1    Combined Result   : 3    
+
+White Die         : 4    Colored Die       : 5    Combined Result   : 9    
+
+White Die         : 6    Colored Die       : 2    Combined Result   : 8    
+
+White Die         : 4    Colored Die       : 4    Combined Result   : 8    
+
+White Die         : 2    Colored Die       : 4    Combined Result   : 6    
 
 Testing the operations of the Game class:
 
