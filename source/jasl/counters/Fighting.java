@@ -25,7 +25,7 @@ import jasl.utilities.Messages;
  * (nationality, status, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 6.0
+ * @version 6.1
  * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
@@ -347,7 +347,7 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final boolean clearStatus(States state)
 	{
-		if (status().contains(state))
+		if ((_status & state.value()) > 0)
 		{
 			if ((States.BROKEN == state) &&
 			    ((_status & States.DESPERATE.value()) > 0))
@@ -375,11 +375,11 @@ abstract class Fighting extends Unit implements Identity, Nationality, Status, U
 
 	public final boolean setStatus(States state)
 	{
-		if (!status().contains(state))
+		if (0 == (_status & state.value()))
 		{
 			_status ^= state.value();
 
-			if (state == States.DESPERATE) setStatus(States.BROKEN);
+			if (States.DESPERATE == state) setStatus(States.BROKEN);
 
 			return true;
 		}
