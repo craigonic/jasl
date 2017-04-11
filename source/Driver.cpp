@@ -68,9 +68,6 @@ int main(int argc, char *argv[])
 
         Leader* germanLeader = new Leader(nationality,unitType,9,9,4,-1);
 
-        // Display all of the entered values for this instance using the
-        // toText() method.
-
         assert(germanLeader);
 
         germanLeader->setStatus(brokenState);
@@ -80,6 +77,9 @@ int main(int argc, char *argv[])
         // (successfully) set again (i.e. it worked the first time).
 
         assert(!germanLeader->setStatus(brokenState));
+
+        // Display all of the entered values for this instance using the
+        // toText() method.
 
         printf("\nLeader.toText() output:\n\n");
         printJavaString(germanLeader->toText());
