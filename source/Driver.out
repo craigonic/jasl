@@ -1,4 +1,4 @@
-Mon Apr 10 12:48:50 PDT 2017
+Tue Apr 11 12:49:46 PDT 2017
 
 Leader.toText() output:
 
@@ -107,6 +107,8 @@ Testing Exception handling for serialization to and from a byte array:
 Caught: java.lang.NullPointerException: Serialization(serializeToByteArray) - Null parameter received.
 
 Caught: java.lang.NullPointerException: Serialization(deserializeFromByteArray) - Null parameter received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromByteArray) - Invalid parameter received (zero length).
 
 (Deserialized) Squad.toText() output:
 
@@ -276,29 +278,29 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parame
 
 Testing the execution of the Dice class:
 
-White Die         : 3    Colored Die       : 4    Combined Result   : 7    
-
-White Die         : 3    Colored Die       : 4    Combined Result   : 7    
-
-White Die         : 6    Colored Die       : 6    Combined Result   : 12   
-
-White Die         : 5    Colored Die       : 1    Combined Result   : 6    
-
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
-
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
-
-White Die         : 4    Colored Die       : 6    Combined Result   : 10   
-
-White Die         : 2    Colored Die       : 1    Combined Result   : 3    
+White Die         : 2    Colored Die       : 4    Combined Result   : 6    
 
 White Die         : 4    Colored Die       : 5    Combined Result   : 9    
 
-White Die         : 6    Colored Die       : 2    Combined Result   : 8    
+White Die         : 6    Colored Die       : 5    Combined Result   : 11   
 
-White Die         : 4    Colored Die       : 4    Combined Result   : 8    
+White Die         : 6    Colored Die       : 4    Combined Result   : 10   
 
-White Die         : 2    Colored Die       : 4    Combined Result   : 6    
+White Die         : 4    Colored Die       : 5    Combined Result   : 9    
+
+White Die         : 2    Colored Die       : 1    Combined Result   : 3    
+
+White Die         : 5    Colored Die       : 6    Combined Result   : 11   
+
+White Die         : 2    Colored Die       : 6    Combined Result   : 8    
+
+White Die         : 3    Colored Die       : 3    Combined Result   : 6    
+
+White Die         : 6    Colored Die       : 5    Combined Result   : 11   
+
+White Die         : 1    Colored Die       : 3    Combined Result   : 4    
+
+White Die         : 6    Colored Die       : 3    Combined Result   : 9    
 
 Testing the operations of the Game class:
 
