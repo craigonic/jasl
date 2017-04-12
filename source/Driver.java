@@ -371,29 +371,13 @@ public class Driver
 
         System.out.println("\nTesting Exception handling for Squad update methods:");
 
-        // Null Identity
+        // Null Identity (no error, just clears the existing one).
 
-        try
-        {
-            squadObject.setIdentity(null);
-        }
+        squadObject.setIdentity(null);
 
-        catch (Exception e) // No longer expected.
-        {
-            System.out.println("Caught: " + e);
-        }
+        // Blank Identity (no error, just clears the existing one).
 
-        // Blank Identity
-
-        try
-        {
-            squadObject.setIdentity("");
-        }
-
-        catch (Exception e) // No longer expected.
-        {
-            System.out.println("Caught: " + e);
-        }
+        squadObject.setIdentity("");
 
         // Invalid portage level
 

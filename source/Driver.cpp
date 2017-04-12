@@ -410,29 +410,13 @@ int main(int argc, char *argv[])
 
         printf("\nTesting Exception handling for Squad update methods:\n");
 
-        // Null Identity
+        // Null Identity (no error, just clears the existing one).
 
-        try
-        {
-            squad->setIdentity(NULL);
-        }
+        squad->setIdentity(NULL);
 
-        catch (jthrowable t) // No longer expected.
-        {
-            printExceptionMessage(t);
-        }
+        // Blank Identity (no error, just clears the existing one).
 
-        // Blank Identity
-
-        try
-        {
-            squad->setIdentity(cc2js(""));
-        }
-
-        catch (jthrowable t) // No longer expected.
-        {
-            printExceptionMessage(t);
-        }
+        squad->setIdentity(cc2js(""));
 
         // Invalid portage level
 
