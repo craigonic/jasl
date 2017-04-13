@@ -48,6 +48,15 @@ my $germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
                                         9,9,4,-1);
 
 $germanLeader->setStatus($brokenState);
+$germanLeader->setPortageLevel(2);
+
+# (Silently) verify that the status that was just set is not (successfully) set
+# again (i.e. it worked the first time).
+
+if ($germanLeader->setStatus($brokenState))
+{
+    die "Status changed when existing state specified again!";
+}
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -102,14 +111,62 @@ printf("Leader.toString() output:\n\n%s\n",
 
 #printf("\tmodifier(): %d\n\n",$germanLeader->modifier());
 
+# Test the exception handling within the Serialization class, specifically the
+# methods associated with serializing to and deserializing from a file.
+
+printf("\nTesting Exception handling for serialization to and from a file:\n");
+
+my $serializationFile = CniWrapper::cc2js("");
+
+my $status = eval
+{
+    Utilities::Serialization::serializeToFile(undef,$serializationFile);
+};
+
+printException($@) if (!defined($status));
+
+$status = eval
+{
+    Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
+                                              $serializationFile);
+};
+
+printException($@) if (!defined($status));
+
+my $deserializedLeader = undef;
+
+$status = eval
+{
+    $deserializedLeader =
+        Utilities::Serialization::deserializeFromFile(undef);
+};
+
+printException($@) if (!defined($status));
+
+$status = eval
+{
+     $deserializedLeader =
+         Utilities::Serialization::deserializeFromFile($serializationFile);
+};
+
+printException($@) if (!defined($status));
+
+$status = eval
+{
+     $deserializedLeader =
+         Utilities::Serialization::deserializeFromFile(CniWrapper::cc2js("/tmp/NonExistentFile"));
+};
+
+printException($@) if (!defined($status));
+
 # Serialize the Leader object, write the data to a file (Leader.ser), then
 # deserialize the data into a new object.
 
 $germanLeader->setIdentity(CniWrapper::cc2js("Col. Klink"));
 
-my $serializationFile = CniWrapper::cc2js("/tmp/Leader.ser");
+$serializationFile = CniWrapper::cc2js("/tmp/Leader.ser");
 
-my $status = eval
+$status = eval
 {
     Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
                                               $serializationFile);
@@ -117,7 +174,7 @@ my $status = eval
 
 printException($@) if (!defined($status)); # Not expected.
 
-my $deserializedLeader = undef;
+$deserializedLeader = undef;
 
 $status = eval
 {
@@ -126,6 +183,8 @@ $status = eval
 };
 
 printException($@) if (!defined($status)); # Not expected.
+
+# Retrieve the leader's status and then use the value to restore to "normal".
 
 my @statusList = @{$deserializedLeader->status()};
 
@@ -218,6 +277,28 @@ printf("Squad.toString() output:\n\n%s\n\n",
 #printf("\tsmokePlacementExponent(): %d\n",
 #       $russianSquad->smokePlacementExponent());
 
+# Test the exception handling within the Serialization class, specifically the
+# methods associated with serializing to and deserializing from a byte array.
+
+printf("Testing Exception handling for serialization to and from a byte array:\n");
+
+$status = eval
+{
+    Utilities::Serialization::serializeToByteArray(undef);
+};
+
+printException($@) if (!defined($status));
+
+my $deserializedSquad = undef;
+
+$status = eval
+{
+    $deserializedSquad =
+        Utilities::Serialization::deserializeFromByteArray(undef);
+};
+
+printException($@) if (!defined($status));
+
 # Serialize the Squad object, writing the data to a byte array, and then
 # deserialize the data into a new object.
 
@@ -233,7 +314,7 @@ $status = eval
 
 printException($@) if (!defined($status)); # Not expected.
 
-my $deserializedSquad = undef;
+$deserializedSquad = undef;
 
 $status = eval
 {
@@ -251,14 +332,24 @@ if ($deserializedSquad->clearStatus($brokenState))
     die "Broken status cleared when subject to desperation morale!";
 }
 
+# Retrieve the squad's status and then use the value to "reduce" it to "broken".
+
 @statusList = @{$deserializedSquad->status()};
 
 $deserializedSquad->clearStatus($statusList[0]);
 
+# (Silently) verify that the status that was just cleared is not (successfully)
+# cleared again (i.e. it worked the first time).
+
+if ($deserializedSquad->clearStatus($statusList[0]))
+{
+    die "Status cleared when previous state specified again!";
+}
+
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
-printf("(Deserialized) Squad.toText() output:\n\n%s\n",
+printf("\n(Deserialized) Squad.toText() output:\n\n%s\n",
        CniWrapper::js2cc($deserializedSquad->toText()));
 
 # Display an abbreviated description of the deserialized instance using the
@@ -330,6 +421,33 @@ foreach my $unit (@unitList)
 
 # Create an instance of a German Squad (that throws some exceptions).
 
+printf("\nTesting Exception handling for Squad update methods:\n");
+
+$nationality    = $Counters::Nationalities::GERMAN;
+$unitType       = $Counters::InfantryTypes::NONE;
+
+my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                $classification,1,0,0);
+
+# Null Identity (no error, just clears the existing one).
+
+$squad->setIdentity(undef);
+
+# Blank Identity (no error, just clears the existing one).
+
+$squad->setIdentity(CniWrapper::cc2js(""));
+
+# Invalid portage level
+
+printf("\nInvalid portage level parameter:\n");
+
+$status = eval
+{
+    $squad->setPortageLevel(-1);
+};
+
+printException($@) if (!defined($status));
+
 printf("\nTesting Exception handling during Squad creation:\n");
 
 $nationality    = $Counters::Nationalities::BRITISH;
@@ -342,8 +460,8 @@ printf("\nIncompatible nationality and unitType parameters:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -358,8 +476,8 @@ printf("\nIncompatible description and unitType parameters:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,4,7,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,4,7,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -374,8 +492,8 @@ printf("\nInvalid (less than 0) firepower parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,-1,6,7,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,-1,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -384,8 +502,8 @@ printf("\nInvalid (greater than maximum) firepower parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,11,6,7,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,11,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -396,8 +514,8 @@ printf("\nInvalid (less than 0) normal range parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,-255,7,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,-255,7,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -408,8 +526,8 @@ printf("\nInvalid (less than 0) morale parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,-1,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,-1,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -420,8 +538,8 @@ printf("\nInvalid (greater than maximum) morale parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,11,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,11,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -432,8 +550,8 @@ printf("\nInvalid (less than 0) broken morale parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,-7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,-7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -444,8 +562,8 @@ printf("\nInvalid (greater than maximum) broken morale parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,17,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,17,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -456,8 +574,8 @@ printf("\nInvalid (less than zero) Basic Point Value (BPV):\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,-1,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,-1,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -468,8 +586,8 @@ printf("\nInvalid (less than zero) Experience Level Rating (ELR):\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,-1,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,-1,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -480,8 +598,8 @@ printf("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,6,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,6,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -495,8 +613,8 @@ printf("\nIncompatible classification parameter:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
-                                    $classification,1,0,0);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -510,8 +628,8 @@ printf("\nInvalid (less than zero) Smoke Placement Exponent:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
-                                    $classification,1,0,-4);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,-4);
 };
 
 printException($@) if (!defined($status));
@@ -522,8 +640,8 @@ printf("\nInvalid (greater than maximum) Smoke Placement Exponent:\n");
 
 $status = eval
 {
-    my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
-                                    $classification,1,0,4);
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                 $classification,1,0,4);
 };
 
 printException($@) if (!defined($status));
@@ -596,7 +714,7 @@ $game->addPlayer($axis,$axisPlayerName,$nationality,1);
 my $alliedPlayer = $game->player($allies,$alliedPlayerName);
 
 my $leader = CniWrapper::cc2js("9-1 Leader");
-my $squad  = CniWrapper::cc2js("7-4-7 Squad");
+$squad     = CniWrapper::cc2js("7-4-7 Squad");
 
 $alliedPlayer->addUnit($leader);
 $alliedPlayer->addUnit($squad);
@@ -627,6 +745,7 @@ sub printException
 
     $inputString =~ s/ValueError/Caught:/;
     $inputString =~ s/ at .*\.pm line \d+\.//;
+    $inputString =~ s/ at .\/Driver line \d+\.//;
 
     printf("\n%s",$inputString);
 }
