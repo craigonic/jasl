@@ -22,9 +22,13 @@
 
 %apply SWIGTYPE* DISOWN { Player* };
 
-// Add support for catching Java exceptions thrown by the constructor.
+// Add support for catching Java exceptions thrown by the constructor and the
+// mutator methods.
 
-%exception Player JAVA_EXCEPTION
+%exception Player    JAVA_EXCEPTION
+%exception addUnit   JAVA_EXCEPTION
+%exception addStack  JAVA_EXCEPTION
+%exception takeStack JAVA_EXCEPTION
 
 // This typemap is used to copy the elements of the List (each a pointer to a
 // Stack object) into an array/list that is accessible via the corresponding
