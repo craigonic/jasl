@@ -12,13 +12,14 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
  * This class is used to represent a Squad counter.
  *
- * @version 4.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 4.2
+ * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Squad.html">Source code</A>
  */
 
@@ -240,13 +241,13 @@ public final class Squad extends Personnel implements SprayingFire
 		String INDENT = "      ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(CAN_ASSAULT_FIRE_LABEL,canAssaultFire()) +
+		                    JsonOutput.buildJSONPair(CAN_ASSAULT_FIRE_LABEL,canAssaultFire()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(CAN_SPRAY_FIRE_LABEL,canSprayFire()) +
+		                    JsonOutput.buildJSONPair(CAN_SPRAY_FIRE_LABEL,canSprayFire()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(SMOKE_PLACEMENT_EXP_LABEL,smokePlacementExponent()) +
+		                    JsonOutput.buildJSONPair(SMOKE_PLACEMENT_EXP_LABEL,smokePlacementExponent()) +
 		                    JSON_OBJECT_END);
 
 		// Return the completed string to calling program.

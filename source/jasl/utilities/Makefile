@@ -5,7 +5,7 @@
 #            compiler. In both cases, the files can compiled individually or   #
 #            the entire package can be re-created.                             #
 #                                                                              #
-# Written By : Craig R. Campbell  -  January 2009                              #
+# Written By:  Craig R. Campbell  -  January 2009                              #
 #                                                                              #
 ################################################################################
 
@@ -27,59 +27,31 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and class files in/of/for
 # this package.
 
-MESSAGES_CLASS       := Messages.class
-MESSAGES_OBJ         := ${MESSAGES_CLASS:.class=.o}
-MESSAGES_SRC         := ${MESSAGES_CLASS:.class=.java}
+JASL_UTILITIES_SRC_FILES := Messages.java Dice.java Serialization.java \
+                            JsonData.java
 
-DICE_CLASS           := Dice.class
-DICE_OBJ             := ${DICE_CLASS:.class=.o}
-DICE_SRC             := ${DICE_CLASS:.class=.java}
+GCJ_OBJECT_FILES         := ${JASL_UTILITIES_SRC_FILES:.java=.o}
 
-SERIALIZATION_CLASS  := Serialization.class
-SERIALIZATION_OBJ    := ${SERIALIZATION_CLASS:.class=.o}
-SERIALIZATION_SRC    := ${SERIALIZATION_CLASS:.class=.java}
-
-ALL_CLASSES          := $(MESSAGES_CLASS) $(DICE_CLASS) $(SERIALIZATION_CLASS)
-
-GCJ_OBJECT_FILES     := ${ALL_CLASSES:.class=.o}
-
-JAVA_CLASSES         := ${ALL_CLASSES:.class=}
+JAVA_CLASSES             := ${JASL_UTILITIES_SRC_FILES:.java=}
 
 # Build all of the individual class files.
 
+%.class: %.java
+	$(JAVA_OPTIONS) $^
+
 .PHONY : all
-all: $(ALL_CLASSES)
-
-# Compile the individual Java classes in this package.
-
-$(MESSAGES_CLASS): bin_directory
-	$(JAVA_OPTIONS) $(MESSAGES_SRC)
-
-$(DICE_CLASS): $(MESSAGES_CLASS)
-	$(JAVA_OPTIONS) $(DICE_SRC)
-
-$(SERIALIZATION_CLASS): $(MESSAGES_CLASS)
-	$(JAVA_OPTIONS) $(SERIALIZATION_SRC)
-
-# Compile individual object files used to build a native executable with the gcj
-# compiler.
-
-$(MESSAGES_OBJ): $(MESSAGES_CLASS)
-	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(MESSAGES_CLASS) \
-	                   -o $(OBJ_SUB_DIRECTORY)/$(MESSAGES_OBJ)
-
-$(DICE_OBJ): $(DICE_CLASS)
-	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(DICE_CLASS) \
-	                  -o $(OBJ_SUB_DIRECTORY)/$(DICE_OBJ)
-
-$(SERIALIZATION_OBJ): $(SERIALIZATION_CLASS)
-	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$(SERIALIZATION_CLASS) \
-	                  -o $(OBJ_SUB_DIRECTORY)/$(SERIALIZATION_OBJ)
+all: bin_directory
+	$(JAVA_OPTIONS) $(JASL_UTILITIES_SRC_FILES)
 
 # Build all of the individual object files.
 
+%.o: %.class
+	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/$^ -o $(OBJ_SUB_DIRECTORY)/$@
+
 .PHONY : obj
-obj: obj_sub_directory $(GCJ_OBJECT_FILES)
+obj: bin_directory obj_sub_directory $(GCJ_OBJECT_FILES)
+	$(GCJ_COMPILE_CMD) $(UTILITIES_BIN_PATH)/JsonData\$$JsonOutput.class \
+	                   -o $(OBJ_SUB_DIRECTORY)/JsonData\$$JsonOutput.o
 
 # Build all of the individual header files.
 
@@ -91,8 +63,8 @@ hdr: include_directory
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(UTILITIES_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
-DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).3
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
+DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).4
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
@@ -114,7 +86,8 @@ dynamic_lib: lib_directory obj
 static_lib: lib_directory obj
 	$(AR) $(UTILITIES_STATIC_LIB_PATH) $(LOCAL_OBJ_FILES)
 
-# Remove all of the .class and/or object files from the binary output directory.
+# Remove all of the .class and/or object files from the their respective output
+# directory.
 
 .PHONY : clean
 clean: clean_java clean_obj

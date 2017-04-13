@@ -41,7 +41,7 @@ public interface SprayingFire
 	// Access methods
 
 	/**
-	 * Return if a unit is capable of spraying fire (attacking two adjacent
+	 * Indicate if a unit is capable of spraying fire (attacking two adjacent
 	 * hexes with a single fire action). This is indicated on the physical
 	 * counter by an underscored range value.
 	 *

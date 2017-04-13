@@ -20,6 +20,13 @@ from Counters   import *
 from UiData     import *
 from Utilities  import *
 
+# Simple function to prepend "Caught: " to the beginning of an exception message
+# returned by the tests below. This is done primarily to modify the output to
+# match that of the other test programs.
+
+def printException(detail):
+    print "\nCaught: %s" % detail
+
 # The following call is necessary only if either the js2cc() or cc2js() function
 # is NOT called (invoking either one will start the CniWrapper).
 
@@ -28,14 +35,24 @@ from Utilities  import *
 # A call to the valueOf() method of each of the following enums is necessary in
 # order to use the constants associated with the type/object directly.
 
+description    = Descriptions_valueOf(cc2js("LEADER"))
 nationality    = Nationalities_valueOf(cc2js("GERMAN"))
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
 classification = Classifications_valueOf(cc2js("ELITE"))
-state          = States_valueOf(cc2js("NORMAL"))
+brokenState    = States_valueOf(cc2js("BROKEN"))
+desperateState = States_valueOf(cc2js("DESPERATE"))
 
 # Create an instance of a German Leader.
 
 germanLeader = Leader(nationality,unitType,9,9,4,-1)
+
+germanLeader.setStatus(brokenState)
+germanLeader.setPortageLevel(2)
+
+# (Silently) verify that the status that was just set is not (successfully) set
+# again (i.e. it worked the first time).
+
+assert(False == germanLeader.setStatus(brokenState))
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -51,11 +68,12 @@ print "Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString())
 
 #print "Leader class access methods and output :\n"
 
-#print "\tdescription(): %s"           % js2cc(germanLeader.description())
+#print "\tdescription() - name: %s\tlabel: %s" % (js2cc(germanLeader.description().name()),js2cc(germanLeader.description().toString()))
 
 #print "\tidentity(): %s"              % js2cc(germanLeader.identity())
-#print "\tnationality(): %s"           % js2cc(germanLeader.nationality())
-#print "\tstatus(): %s"                % js2cc(germanLeader.status())
+#print "\tnationality() - name: %s\tlabel: %s" % (js2cc(germanLeader.nationality().name()),js2cc(germanLeader.nationality().toString()))
+#statusList = germanLeader.status()
+#print "\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString()))
 #print "\tunitType(): %s"              % js2cc(germanLeader.unitType())
 
 #print "\tmovement(): %d"              % germanLeader.movement()
@@ -68,37 +86,82 @@ print "Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString())
 #print "\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating()
 #print "\tfirepower(): %s"             % js2cc(germanLeader.firepower())
 #print "\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent()
+#print "\tinfantryType() - name: %s\tlabel: %s" % (js2cc(germanLeader.infantryType().name()),js2cc(germanLeader.infantryType().toString()))
 #print "\tmorale(): %d"                % germanLeader.morale()
 #print "\tnormalRange(): %d"           % germanLeader.normalRange()
 #print "\tportageValue(): %d"          % germanLeader.portageValue()
 
 #print "\tmodifier(): %d"              % germanLeader.modifier()
 
+# Test the exception handling within the Serialization class, specifically the
+# methods associated with serializing to and deserializing from a file.
+
+print "Testing Exception handling for serialization to and from a file:"
+
+serializationFile = cc2js("")
+
+try:
+    Serialization_serializeToFile(None,serializationFile)
+except ValueError as detail:
+    printException(detail)
+
+try:
+    Serialization_serializeToFile(toObject(germanLeader), serializationFile)
+except ValueError as detail:
+    printException(detail)
+
+try:
+    deserializedLeader = Serialization_deserializeFromFile(None)
+except ValueError as detail:
+    printException(detail)
+
+try:
+     deserializedLeader = Serialization_deserializeFromFile(serializationFile)
+except ValueError as detail:
+    printException(detail)
+
+try:
+     deserializedLeader = Serialization_deserializeFromFile(cc2js("/tmp/NonExistentFile"))
+except ValueError as detail:
+    printException(detail)
+
 # Serialize the Leader object, write the data to a file (Leader.ser), then
 # deserialize the data into a new object.
 
 germanLeader.setIdentity(cc2js("Col. Klink"))
 
-serializationFile = cc2js("/tmp/Leader.ser");
+serializationFile = cc2js("/tmp/Leader.ser")
 
-Serialization_serializeToFile(toObject(germanLeader),serializationFile);
+try:
+    Serialization_serializeToFile(toObject(germanLeader),serializationFile)
+except ValueError as detail: # Not expected.
+    printException(detail)
 
-unit = fromObject(Serialization_deserializeFromFile(serializationFile));
+try:
+    deserializedLeader = unitToLeader(fromObject(Serialization_deserializeFromFile(serializationFile)))
+except ValueError as detail: # Not expected.
+    printException(detail)
+
+# Retrieve the leader's status and then use the value to restore to "normal".
+
+statusList = deserializedLeader.status()
+
+deserializedLeader.clearStatus(statusList[0])
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
-print "(Deserialized) Leader.toText() output:\n\n%s" % js2cc(unit.toText())
+print "\n(Deserialized) Leader.toText() output:\n\n%s" % js2cc(deserializedLeader.toText())
 
 # Display an abbreviated description of the deserialized instance using the
 # toString() method.
 
-print "(Deserialized) Leader.toString() output:\n\n%s\n" % js2cc(unit.toString())
+print "(Deserialized) Leader.toString() output:\n\n%s\n" % js2cc(deserializedLeader.toString())
 
 # Display all of the entered values for the deserialized instance using the
 # toJSON() method.
 
-print "(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(unit.toJSON())
+print "(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(deserializedLeader.toJSON())
 
 # Create an instance of a Russian Squad.
 
@@ -108,7 +171,7 @@ unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
 russianSquad = Squad(nationality,unitType,6,2,8,8,False,12,4,False,
                      classification,True,True,0)
 
-russianSquad.setIdentity(cc2js("A"))
+russianSquad.setStatus(desperateState)
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -119,20 +182,17 @@ print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
 
 print "Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString())
 
-# Display all of the entered values for this instance using the toJSON() method.
-
-print "Squad.toJSON() output:\n\n%s\n" % js2cc(russianSquad.toJSON())
-
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
 
 #print "Squad class access methods and output :\n"
 
-#print "\tdescription(): %s"            % js2cc(russianSquad.description())
+#print "\tdescription() - name: %s\tlabel: %s" % (js2cc(russianSquad.description().name()),js2cc(russianSquad.description().toString()))
 
 #print "\tidentity(): %s"               % js2cc(russianSquad.identity())
-#print "\tnationality(): %s"            % js2cc(russianSquad.nationality())
-#print "\tstatus(): %s"                 % js2cc(russianSquad.status())
+#print "\tnationality() - name: %s\tlabel: %s" % (js2cc(russianSquad.nationality().name()),js2cc(russianSquad.nationality().toString()))
+#statusList = russianSquad.status()
+#print "\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString()))
 #print "\tunitType(): %s"               % js2cc(russianSquad.unitType())
 
 #print "\tmovement(): %d"               % russianSquad.movement()
@@ -145,21 +205,83 @@ print "Squad.toJSON() output:\n\n%s\n" % js2cc(russianSquad.toJSON())
 #print "\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating()
 #print "\tfirepower(): %s"              % js2cc(russianSquad.firepower())
 #print "\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent()
+#print "\tinfantryType() - name: %s\tlabel: %s" % (js2cc(russianSquad.infantryType().name()),js2cc(russianSquad.infantryType().toString()))
 #print "\tmorale(): %d"                 % russianSquad.morale()
 #print "\tnormalRange(): %d"            % russianSquad.normalRange()
 #print "\tportageValue(): %d"           % russianSquad.portageValue()
 
-#print "\tclassification(): %s"         % js2cc(russianSquad.classification())
+#print "\tclassification() - name: %s\tlabel: %s" % (js2cc(russianSquad.classification().name()),js2cc(russianSquad.classification().toString()))
 #print "\thasMaximumELR(): %d"          % russianSquad.hasMaximumELR()
 
 #print "\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire()
 #print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
 #print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
 
+# Test the exception handling within the Serialization class, specifically the
+# methods associated with serializing to and deserializing from a byte array.
+
+print "Testing Exception handling for serialization to and from a byte array:"
+
+try:
+    Serialization_serializeToByteArray(None)
+except ValueError as detail:
+    printException(detail)
+
+try:
+    deserializedSquad = Serialization_deserializeFromByteArray(None)
+except ValueError as detail:
+    printException(detail)
+
+# Serialize the Squad object, writing the data to a byte array, and then
+# deserialize the data into a new object.
+
+russianSquad.setIdentity(cc2js("A"))
+
+try:
+    serializedSquad = Serialization_serializeToByteArray(toObject(russianSquad))
+except ValueError as detail: # Not expected.
+    printException(detail)
+
+try:
+    deserializedSquad = unitToSquad(fromObject(Serialization_deserializeFromByteArray(serializedSquad)))
+except ValueError as detail: # Not expected.
+    printException(detail)
+
+# (Silently) verify that if a Unit is subject to desperation morale, it's broken
+# status can't be (underhandedly) removed.
+
+assert(False == deserializedSquad.clearStatus(brokenState))
+
+# Retrieve the squad's status and then use the value to "reduce" it to "broken".
+
+statusList = deserializedSquad.status()
+
+deserializedSquad.clearStatus(statusList[0])
+
+# (Silently) verify that the status that was just cleared is not (successfully)
+# cleared again (i.e. it worked the first time).
+
+assert(False == deserializedSquad.clearStatus(statusList[0]))
+
+# Display all of the entered values for the deserialized instance using the
+# toText() method.
+
+print "\n(Deserialized) Squad.toText() output:\n\n%s" % js2cc(deserializedSquad.toText())
+
+# Display an abbreviated description of the deserialized instance using the
+# toString() method.
+
+print "(Deserialized) Squad.toString() output:\n\n%s\n" % js2cc(deserializedSquad.toString())
+
+# Display all of the entered values for the deserialized instance using the
+# toJSON() method.
+
+print "(Deserialized) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
+
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
-print "Building Unit array with a Leader & 3 Squads\n";
+print "Building Unit array with a Leader & 3 Squads\n"
 
 unitList = []
 
@@ -179,7 +301,9 @@ unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
                       classification,True,True,0))
 
 unitList[1].setIdentity(cc2js("X"))
+unitList[1].setStatus(brokenState)
 unitList[2].setIdentity(cc2js("Y"))
+unitList[2].setStatus(desperateState)
 unitList[3].setIdentity(cc2js("Z"))
 
 print "Displaying Unit array with a Leader & 3 Squads"
@@ -187,22 +311,49 @@ print "Displaying Unit array with a Leader & 3 Squads"
 for unitIndex in xrange(4):
     unit = unitList[unitIndex]
 
+    statusList   = unit.status()
+    statusString = ""
+
+    # Note that this would not be a good solution if the list was expected to
+    # contain more than one entry, but it works here for testing purposes.
+
+    for status in statusList:
+        statusString = js2cc(status.toString())
+
     print "\nUnitList[%d]:\t%s" % (unitIndex,js2cc(unit.toString()))
 
-    print "\n%s" % js2cc(unit.description())
+    print "\n%s" % js2cc(unit.description().toString())
     print "%s"   % js2cc(unit.identity())
     print "%s"   % js2cc(unit.unitType())
-    print "%s"   % unit.movement()
-    print "%s"   % js2cc(unit.status())
-
-# Simple function to prepend "Caught: " to the beginning of an exception message
-# returned by the tests below. This is done primarily to modify the output to
-# match that of the other test programs.
-
-def printException(detail):
-    print "\nCaught: %s" % detail
+    print "%d"   % unit.movement()
+    print "[%s]" % statusString
 
 # Create an instance of a German Squad (that throws some exceptions).
+
+print "\nTesting Exception handling for Squad update methods:"
+
+nationality = Nationalities_valueOf(cc2js("GERMAN"))
+unitType    = InfantryTypes_valueOf(cc2js("NONE"))
+
+squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,True,
+              False,0)
+
+# Null Identity (no error, just clears the existing one).
+
+squad.setIdentity(None)
+
+# Blank Identity (no error, just clears the existing one).
+
+squad.setIdentity(cc2js(""))
+
+# Invalid portage level
+
+print "\nInvalid portage level parameter:"
+
+try:
+    squad.setPortageLevel(-1)
+except ValueError as detail:
+    printException(detail)
 
 print "\nTesting Exception handling during Squad creation:"
 
@@ -443,13 +594,13 @@ print "%s\n" % (js2cc(scenario.toString()))
 
 # Test the Game class.
 
-print "Testing the operations of the Game class:";
+print "Testing the operations of the Game class:"
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))
 alliedPlayerName = cc2js("Pixie")
 
-game = Game_game();
+game = Game_game()
 
 game.addPlayer(allies,alliedPlayerName,nationality,1)
 
@@ -464,19 +615,19 @@ alliedPlayer = game.player(allies,alliedPlayerName)
 leader = cc2js("9-1 Leader")
 squad  = cc2js("7-4-7 Squad")
 
-alliedPlayer.addUnit(leader);
-alliedPlayer.addUnit(squad);
-alliedPlayer.addUnit(squad);
-alliedPlayer.addUnit(squad);
+alliedPlayer.addUnit(leader)
+alliedPlayer.addUnit(squad)
+alliedPlayer.addUnit(squad)
+alliedPlayer.addUnit(squad)
 
 axisPlayer = game.player(axis,axisPlayerName)
 
 leader = cc2js("8-1 Leader")
 squad  = cc2js("6-5-8 Squad")
 
-axisPlayer.addUnit(leader);
-axisPlayer.addUnit(squad);
-axisPlayer.addUnit(squad);
-axisPlayer.addUnit(squad);
+axisPlayer.addUnit(leader)
+axisPlayer.addUnit(squad)
+axisPlayer.addUnit(squad)
+axisPlayer.addUnit(squad)
 
-print "\n%s" % js2cc(game.toText());
+print "\n%s" % js2cc(game.toText())

@@ -16,11 +16,11 @@ package jasl.counters;
 /**
  * This interface is used to define the public constants, using an enum, and
  * required method associated with the nationality of a <A HREF="Fighting.html">Fighting</A> unit. The
- * method is intended for operation on a String member variable within the
- * implementing class.
+ * method is intended for operation on a Nationalities enum member variable
+ * within the implementing class.
  *
- * @version 3.0
- * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 4.0
+ * @author Copyright (C) 2006-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Nationality.html">Source code</A>
  */
 
@@ -29,7 +29,7 @@ public interface Nationality
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the
-	// nationality of a <A HREF="Unit.html">Unit</A> using an objects toText() method.
+	// nationality of a Unit using an objects toText() method.
 
 	/**
 	 * Provides a label for a unit's nationality : <B>Nationality</B>
@@ -38,9 +38,10 @@ public interface Nationality
 	public static final String NATIONALITY_LABEL = "Nationality";
 
 	/**
-	 * Recognized nationality values. The nationality best describes the
-	 * army that the <A HREF="Unit.html">unit</A> belongs to, not necessarily the true nationality
-	 * of the soldiers in it.
+	 * Recognized nationality values.
+	 * <P>
+	 * The nationality best describes the army that the <A HREF="Unit.html">unit</A> belongs to, not
+	 * necessarily the true nationality of the soldiers within it.
 	 */
 
 	public enum Nationalities
@@ -132,7 +133,7 @@ public interface Nationality
 		 * @return the <CODE>String</CODE> associated with the constant.
 		 */
 
-		public String toString()
+		public final String toString()
 		{
 			return _label;
 		}
@@ -143,8 +144,8 @@ public interface Nationality
 	/**
 	 * Return the nationality of a unit.
 	 *
-	 * @return a <CODE>String</CODE> specifying the unit's nationality.
+	 * @return a <CODE>Nationalities</CODE> value specifying the unit's nationality.
 	 */
 
-	public abstract String nationality();
+	public abstract Nationalities nationality();
 }

@@ -13,6 +13,7 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
@@ -21,28 +22,22 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 6.0
+ * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
 
-abstract class Personnel extends Infantry implements Classification
+abstract class Personnel extends Infantry implements MaximumELR, Classification
 {
 	// Symbolic constants
-
-	/**
-	 * Provides a label indicating if these personnel have the maximum
-	 * experience level rating : <B>Has Maximum ELR ?</B>
-	 */
-
-	public static final String HAS_MAXIMUM_ELR_LABEL = "Has Maximum ELR ?";
 
 	// These constants are used in the constructor to pass the correct value
 	// of a Personnel unit (multi-man counter) for each attribute. Other
 	// types of <A HREF="Unit.html">Unit</A>s may allow the calling program to set these values, but
 	// they are the same for all MMCs. The movement allowance is reduced by
 	// one if the unit is inexperienced (green or conscript) AND a leader is
-	// not present.
+	// not present. Since this reduction is based on situation, it is
+	// (obviously) not applied in this class.
 
 	private static final int MOVEMENT_ALLOWANCE = 4;
 	private static final int PORTAGE_CAPACITY = 3;
@@ -51,7 +46,7 @@ abstract class Personnel extends Infantry implements Classification
 	// Private data members
 
 	// This variable is used to indicate that the unit that this object
-	// represents is automatically given the <A HREF="Infantry.html#_MAX_ELR_">maximum ELR</A>. This flag affects
+	// represents is automatically given the <A HREF="ExperienceLevelRating.html#_MAX_ELR_">maximum ELR</A>. This flag affects
 	// how the unit is replaced/reduced. It is indicated on the physical
 	// counter by an underscored morale value.
 
@@ -69,13 +64,14 @@ abstract class Personnel extends Infantry implements Classification
 	// This constant is used as part of the error messages (see below) that
 	// are generated when an exception is thrown.
 
-	private static final String invalidArgumentError =
-		Messages.buildErrorMessage("Personnel",Messages.CONSTRUCTOR,
-		                           Messages.INVALID_PARAMETER_MSG);
+	private static final String CLASS_NAME = Personnel.class.getSimpleName();
 
+	private static final String invalidArgumentError =
+		Messages.buildErrorMessage(CLASS_NAME,Messages.CONSTRUCTOR,
+		                           Messages.INVALID_PARAMETER_MSG);
 	// Constructor
 
-	// During the instantiation of derived concrete classes the parameters
+	// During the instantiation of derived concrete classes the arguments
 	// are passed up the inheritance tree from the constructor of the object
 	// type being created.
 
@@ -86,7 +82,7 @@ abstract class Personnel extends Infantry implements Classification
 	                    int experienceLevelRating,boolean hasMaximumELR,
 	                    Classifications classification)
 	{
-		// Pass the first 10 parameters to the superclass constructor.
+		// Pass the first 10 arguments to the superclass constructor.
 		// Note that one or more variables has been set with symbolic
 		// constants. These are defined at the beginning of this class
 		// and its superclasses. If any exceptions are thrown, assume
@@ -98,7 +94,7 @@ abstract class Personnel extends Infantry implements Classification
 		      brokenMorale,canSelfRally,PORTAGE_VALUE,basicPointValue,
 		      experienceLevelRating);
 
-		// Check the value of the remaining parameter and copy the value
+		// Check the value of the remaining argument and copy the value
 		// to the local copy of the corresponding variable if an
 		// exception is not found.
 
@@ -125,7 +121,7 @@ abstract class Personnel extends Infantry implements Classification
 	/**
 	 * Display the value of each of the private data members that describe
 	 * the current instance.
-	 *
+	 * <P>
 	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
 	 * continuing down the hierarchy to this level, are appended to the
 	 * returned string. Each value is preceded by a label defined in this
@@ -162,7 +158,7 @@ abstract class Personnel extends Infantry implements Classification
 		                                              THIRD_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(classification(),
+		returnString.append(Messages.formatTextString(classification().toString(),
 		                                              FOURTH_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -173,14 +169,14 @@ abstract class Personnel extends Infantry implements Classification
 
 	/**
 	 * Return an abbreviated description, including attributes, of a unit.
-	 *
+	 * <P>
 	 * The text includes the firepower, range, morale, and counter type. If
 	 * an identity is set, it will also be included, shown in parentheses.
 	 *
 	 * @return a <CODE>String</CODE> specifying a simple description of the unit.
 	 */
 
-	public String toString()
+	public final String toString()
 	{
 		// Create a buffer to store the string to be returned,
 		// initializing it with the basic attributes of the unit.
@@ -207,7 +203,7 @@ abstract class Personnel extends Infantry implements Classification
 	/**
 	 * Display the JSON representation each of the private data members that
 	 * describe the current instance.
-	 *
+	 * <P>
 	 * All of the members, beginning with the top-level class (<B><A HREF="Unit.html">Unit</A></B>) and
 	 * continuing down the hierarchy to this level, are appended to the
 	 * returned string. Each value is preceded by a label (key) defined in
@@ -232,10 +228,10 @@ abstract class Personnel extends Infantry implements Classification
 		String INDENT = "     ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(HAS_MAXIMUM_ELR_LABEL,hasMaximumELR()) +
+		                    JsonOutput.buildJSONPair(HAS_MAXIMUM_ELR_LABEL,hasMaximumELR()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(CLASSIFICATION_LABEL,classification()) +
+		                    JsonOutput.buildJSONPair(CLASSIFICATION_LABEL,classification().name()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -246,7 +242,7 @@ abstract class Personnel extends Infantry implements Classification
 	/**
 	 * Indicate if a unit inherently has the maximum experience level
 	 * rating.
-	 *
+	 * <P>
 	 * This is used to determine how a unit is replaced. It is indicated on
 	 * the physical counter by an underscored morale value.
 	 *
@@ -260,15 +256,19 @@ abstract class Personnel extends Infantry implements Classification
 
 	/**
 	 * Return the classification of a unit.
-	 *
+	 * <P>
 	 * This is indicated on the front of the physical counter by an
 	 * alphanumeric character in the upper right corner.
+	 * <P>
+	 * Use the toString() method of the enum to retrieve the label
+	 * associated with the value (e.g. "Elite" for ELITE). The name() method
+	 * returns its text representation (e.g. "ELITE").
 	 *
-	 * @return a <CODE>String</CODE> specifying the unit classification.
+	 * @return a <CODE>Classifications</CODE> value specifying the unit classification.
 	 */
 
-	public final String classification()
+	public final Classifications classification()
 	{
-		return _classification.toString();
+		return _classification;
 	}
 }

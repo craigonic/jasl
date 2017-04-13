@@ -18,8 +18,8 @@ package jasl.counters;
  * generate a formatted text representation of an instance of one of the public
  * classes in the <B>counters</B> package.
  *
- * @version 3.0
- * @author Copyright (C) 2009-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 4.0
+ * @author Copyright (C) 2009-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/TextOutput.html">Source code</A>
  */
 
@@ -58,56 +58,6 @@ public interface TextOutput
 
 	public static final int FOURTH_COLUMN_VALUE_WIDTH = 17;
 
-	// These items are intended to be used in implementations of the
-	// toJSON() method (and any helper method(s) called from them).
-
-	/**
-	 * The text designating the beginning and end of a key or a string
-	 * value in JSON output.
-	 */
-
-	public static final String JSON_DOUBLE_QUOTE = "\"";
-
-	/**
-	 * The text separating a key and a non-string (number or boolean) value
-	 * in JSON output.
-	 */
-
-	public static final String JSON_KEY_OTHER_VALUE_SEPARATOR =
-		JSON_DOUBLE_QUOTE + ":";
-
-	/**
-	 * The text separating a key and a string value in JSON output.
-	 */
-
-	public static final String JSON_KEY_STRING_VALUE_SEPARATOR =
-		JSON_KEY_OTHER_VALUE_SEPARATOR + JSON_DOUBLE_QUOTE;
-
-	/**
-	 * The text indicating the beginning of an object container in JSON
-	 * output.
-	 *
-	 * Note that the string includes a CR-LF ('\n') after the curly brace.
-	 */
-
-	public static final String JSON_OBJECT_START = "{\n";
-
-	/**
-	 * The text separating an object entry from the next one in JSON output.
-	 *
-	 * Note that the string includes a CR-LF ('\n') after the comma.
-	 */
-
-	public static final String JSON_OBJECT_SEPARATOR = ",\n";
-
-	/**
-	 * The text indicating the end of an object container in JSON output.
-	 *
-	 * Note that the string includes a CR-LF ('\n') before the curly brace.
-	 */
-
-	public static final String JSON_OBJECT_END = "\n}";
-
 	// Access methods
 
 	/**
@@ -122,13 +72,4 @@ public interface TextOutput
 	 */
 
 	public abstract String toText();
-
-	/**
-	 * Display a JSON representation of an instance of a class that
-	 * implements this interface.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON data.
-	 */
-
-	public abstract String toJSON();
 }

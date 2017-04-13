@@ -1,39 +1,53 @@
-Tue May  5 10:01:09 PDT 2015
+Tue Apr 11 12:49:46 PDT 2017
 
 Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
-Identity          :                  
-Status            : Normal                                                      
+Identity          :                                                             
+Status            : [Broken]                                                    
 Movement          : 6                
-Portage Capacity  : 1                Portage Level           : 0                
+Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
 Normal Range      : 0                
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
 Basic Point Value : 0                Experience Level Rating : 4                
+Infantry Type     : NONE                                                        
 Modifier          : -1               
 
 Leader.toString() output:
 
 9-1 Leader
 
+Testing Exception handling for serialization to and from a file:
+
+Caught: java.lang.NullPointerException: Serialization(serializeToFile) - Null parameter received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(serializeToFile) - Invalid parameter received (zero length).
+
+Caught: java.lang.NullPointerException: Serialization(deserializeFromFile) - Null parameter received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromFile) - Invalid parameter received (zero length).
+
+Caught: java.io.FileNotFoundException: /tmp/NonExistentFile (No such file or directory)
+
 (Deserialized) Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
-Identity          : Col. Klink       
-Status            : Normal                                                      
+Identity          : Col. Klink                                                  
+Status            : []                                                          
 Movement          : 6                
-Portage Capacity  : 1                Portage Level           : 0                
+Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
 Normal Range      : 0                
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
 Basic Point Value : 0                Experience Level Rating : 4                
+Infantry Type     : NONE                                                        
 Modifier          : -1               
 
 (Deserialized) Leader.toString() output:
@@ -43,15 +57,15 @@ Modifier          : -1
 (Deserialized) Leader.toJSON() output:
 
 {
- "Description":"Leader",
+ "Description":"LEADER",
  "Unit Label":"9-1 Leader (Col. Klink)",
-  "Nationality":"German",
+  "Nationality":"GERMAN",
   "Unit Type":"",
   "Identity":"Col. Klink",
-  "Status":"Normal",
+  "Status":0,
    "Movement":6,
    "Portage Capacity":1,
-   "Portage Level":0,
+   "Portage Level":2,
     "Firepower":"0",
     "Firepower Equivalent":0,
     "Normal Range":0,
@@ -61,6 +75,7 @@ Modifier          : -1
     "Portage Value":0,
     "Basic Point Value":0,
     "Experience Level Rating":4,
+    "Infantry Type":"NONE",
      "Modifier":-1
 }
 
@@ -68,8 +83,8 @@ Squad.toText() output:
 
 Description       : Squad            
 Nationality       : Russian          Unit Type               : Guards           
-Identity          : A                
-Status            : Normal                                                      
+Identity          :                                                             
+Status            : [Desperate]                                                 
 Movement          : 4                
 Portage Capacity  : 3                Portage Level           : 0                
 Firepower         : 6                Firepower Equivalent    : 6                
@@ -78,23 +93,55 @@ Morale            : 8                Broken Morale           : 8
 Can Self Rally ?  : No               
 Portage Value     : 10               
 Basic Point Value : 12               Experience Level Rating : 4                
+Infantry Type     : GUARDS                                                      
 Has Maximum ELR ? : No               Classification          : Elite            
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
 Smoke Placement Ex: 0                
 
 Squad.toString() output:
 
+6-2-8 Squad
+
+Testing Exception handling for serialization to and from a byte array:
+
+Caught: java.lang.NullPointerException: Serialization(serializeToByteArray) - Null parameter received.
+
+Caught: java.lang.NullPointerException: Serialization(deserializeFromByteArray) - Null parameter received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromByteArray) - Invalid parameter received (zero length).
+
+(Deserialized) Squad.toText() output:
+
+Description       : Squad            
+Nationality       : Russian          Unit Type               : Guards           
+Identity          : A                                                           
+Status            : [Broken]                                                    
+Movement          : 4                
+Portage Capacity  : 3                Portage Level           : 0                
+Firepower         : 6                Firepower Equivalent    : 6                
+Normal Range      : 2                
+Morale            : 8                Broken Morale           : 8                
+Can Self Rally ?  : No               
+Portage Value     : 10               
+Basic Point Value : 12               Experience Level Rating : 4                
+Infantry Type     : GUARDS                                                      
+Has Maximum ELR ? : No               Classification          : Elite            
+Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
+Smoke Placement Ex: 0                
+
+(Deserialized) Squad.toString() output:
+
 6-2-8 Squad (A)
 
-Squad.toJSON() output:
+(Deserialized) Squad.toJSON() output:
 
 {
- "Description":"Squad",
+ "Description":"SQUAD",
  "Unit Label":"6-2-8 Squad (A)",
-  "Nationality":"Russian",
+  "Nationality":"RUSSIAN",
   "Unit Type":"Guards",
   "Identity":"A",
-  "Status":"Normal",
+  "Status":1,
    "Movement":4,
    "Portage Capacity":3,
    "Portage Level":0,
@@ -107,8 +154,9 @@ Squad.toJSON() output:
     "Portage Value":10,
     "Basic Point Value":12,
     "Experience Level Rating":4,
+    "Infantry Type":"GUARDS",
      "Has Maximum ELR ?":false,
-     "Classification":"Elite",
+     "Classification":"ELITE",
       "Can Assault Fire ?":true,
       "Can Spray Fire ?":true,
       "Smoke Placement Exponent":0
@@ -124,7 +172,7 @@ Leader
 Sgt. Slaughter
 
 6
-Normal
+[]
 
 UnitList[1]:	6-6-6 Squad (X)
 
@@ -132,7 +180,7 @@ Squad
 X
 
 4
-Normal
+[Broken]
 
 UnitList[2]:	6-6-6 Squad (Y)
 
@@ -140,7 +188,7 @@ Squad
 Y
 
 4
-Normal
+[Desperate]
 
 UnitList[3]:	6-6-6 Squad (Z)
 
@@ -148,7 +196,13 @@ Squad
 Z
 
 4
-Normal
+[]
+
+Testing Exception handling for Squad update methods:
+
+Invalid portage level parameter:
+
+Caught: java.lang.IllegalArgumentException: Mobile(setPortageLevel) - Invalid parameter(s) received : -1
 
 Testing Exception handling during Squad creation:
 
@@ -224,29 +278,29 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parame
 
 Testing the execution of the Dice class:
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
+White Die         : 2    Colored Die       : 4    Combined Result   : 6    
 
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
-
-White Die         : 2    Colored Die       : 3    Combined Result   : 5    
-
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
-
-White Die         : 6    Colored Die       : 2    Combined Result   : 8    
-
-White Die         : 2    Colored Die       : 2    Combined Result   : 4    
-
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
-
-White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+White Die         : 4    Colored Die       : 5    Combined Result   : 9    
 
 White Die         : 6    Colored Die       : 5    Combined Result   : 11   
 
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
+White Die         : 6    Colored Die       : 4    Combined Result   : 10   
 
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
+White Die         : 4    Colored Die       : 5    Combined Result   : 9    
 
-White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+White Die         : 2    Colored Die       : 1    Combined Result   : 3    
+
+White Die         : 5    Colored Die       : 6    Combined Result   : 11   
+
+White Die         : 2    Colored Die       : 6    Combined Result   : 8    
+
+White Die         : 3    Colored Die       : 3    Combined Result   : 6    
+
+White Die         : 6    Colored Die       : 5    Combined Result   : 11   
+
+White Die         : 1    Colored Die       : 3    Combined Result   : 4    
+
+White Die         : 6    Colored Die       : 3    Combined Result   : 9    
 
 Testing the operations of the Game class:
 

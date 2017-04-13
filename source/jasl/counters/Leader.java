@@ -13,13 +13,14 @@
 
 package jasl.counters;
 
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 5.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 5.2
+ * @author Copyright (C) 1998-2016 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
 
@@ -208,7 +209,7 @@ public final class Leader extends Infantry implements Leadership
 		String INDENT = "     ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(MODIFIER_LABEL,modifier()) +
+		                    JsonOutput.buildJSONPair(MODIFIER_LABEL,modifier()) +
 		                    JSON_OBJECT_END);
 
 		// Return the completed string to calling program.

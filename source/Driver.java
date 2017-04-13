@@ -10,6 +10,7 @@
 // ************************************************************************** //
 
 import java.io.IOException;
+import java.util.List;
 
 import jasl.counters.*;
 import jasl.ui.data.*;
@@ -26,6 +27,14 @@ public class Driver
                                          UnitType.InfantryTypes.NONE,
                                          9,9,4,-1);
 
+        germanLeader.setStatus(Status.States.BROKEN);
+        germanLeader.setPortageLevel(2);
+
+        // (Silently) verify that the status that was just set is not
+        // (successfully) set again (i.e. it worked the first time).
+
+        assert(!germanLeader.setStatus(Status.States.BROKEN));
+
         // Display all of the entered values for this instance using the
         // toText() method.
 
@@ -38,15 +47,103 @@ public class Driver
         System.out.println("\nLeader.toString() output:\n");
         System.out.println(germanLeader.toString());
 
+        // Test the exception handling within the Serialization class,
+        // specifically the methods associated with serializing to and
+        // deserializing from a file.
+
+        System.out.println("\nTesting Exception handling for serialization to and from a file:\n");
+
+        String serializationFile = "";
+
+        try
+        {
+            Serialization.serializeToFile(null,serializationFile);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e + "\n");
+        }
+
+        try
+        {
+            Serialization.serializeToFile(germanLeader,serializationFile);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e + "\n");
+        }
+
+        Unit deserializedLeader = null;
+
+        try
+        {
+            deserializedLeader =
+                (Unit)Serialization.deserializeFromFile(null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e + "\n");
+        }
+
+        try
+        {
+             deserializedLeader =
+                 (Unit)Serialization.deserializeFromFile(serializationFile);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e + "\n");
+        }
+
+        try
+        {
+             deserializedLeader =
+                 (Unit)Serialization.deserializeFromFile("/tmp/NonExistentFile");
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
         // Serialize the Leader object, write the data to a file (Leader.ser),
         // then deserialize the data into a new object.
 
         germanLeader.setIdentity("Col. Klink");
 
-        Serialization.serializeToFile(germanLeader,"/tmp/Leader.ser");
+        try
+        {
+            Serialization.serializeToFile(germanLeader,"/tmp/Leader.ser");
+        }
 
-        Unit deserializedLeader =
-            (Unit)Serialization.deserializeFromFile("/tmp/Leader.ser");
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        deserializedLeader = null;
+
+        try
+        {
+            deserializedLeader =
+                (Unit)Serialization.deserializeFromFile("/tmp/Leader.ser");
+        }
+
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Retrieve the leader's status and then use the value to restore to
+        // "normal".
+
+        List statusList = ((Leader)deserializedLeader).status();
+
+        ((Leader)deserializedLeader).clearStatus((Status.States)statusList.get(0));
 
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
@@ -74,7 +171,7 @@ public class Driver
                                        Classification.Classifications.ELITE,
                                        true,true,0);
 
-        russianSquad.setIdentity("A");
+        russianSquad.setStatus(Status.States.DESPERATE);
 
         // Display all of the entered values for this instance using the
         // toText() method.
@@ -88,11 +185,110 @@ public class Driver
         System.out.println("Squad.toString() output:\n\n" +
                            russianSquad.toString());
 
-        // Display all of the entered values for this instance using the
-        // toJSON() method.
+        // Test the exception handling within the Serialization class,
+        // specifically the methods associated with serializing to and
+        // deserializing from a byte array.
 
-        System.out.println("\nSquad.toJSON() output:\n\n" +
-                           russianSquad.toJSON());
+        System.out.println("\nTesting Exception handling for serialization to and from a byte array:\n");
+
+        try
+        {
+            Serialization.serializeToByteArray(null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e + "\n");
+        }
+
+        Unit deserializedSquad = null;
+
+        try
+        {
+            deserializedSquad =
+                (Unit)Serialization.deserializeFromByteArray(null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e + "\n");
+        }
+
+        try
+        {
+            deserializedSquad =
+                (Unit)Serialization.deserializeFromByteArray(new byte[0]);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Serialize the Squad object, writing the data to a byte array, and
+        // then deserialize the data into a new object.
+
+        russianSquad.setIdentity("A");
+
+        byte[] serializedSquad = null;
+
+        try
+        {
+            serializedSquad = Serialization.serializeToByteArray(russianSquad);
+        }
+
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        deserializedSquad = null;
+
+        try
+        {
+            deserializedSquad =
+                (Unit)Serialization.deserializeFromByteArray(serializedSquad);
+        }
+
+        catch (Exception e) // Not expected.
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // (Silently) verify that if a Unit is subject to desperation morale,
+        // it's broken status can't be (underhandedly) removed.
+
+        assert(!((Squad)deserializedSquad).clearStatus(Status.States.BROKEN));
+
+        // Retrieve the squad's status and then use the value to "reduce" it to
+        // "broken".
+
+        statusList = ((Squad)deserializedSquad).status();
+
+        ((Squad)deserializedSquad).clearStatus((Status.States)statusList.get(0));
+
+        // (Silently) verify that the status that was just cleared is not
+        // (successfully) cleared again (i.e. it worked the first time).
+
+        assert(!((Squad)deserializedSquad).clearStatus((Status.States)(statusList.get(0))));
+
+        // Display all of the entered values for the deserialized instance using
+        // the toText() method.
+
+        System.out.println("\n(Deserialized) Squad.toText() output:\n");
+        System.out.print(deserializedSquad.toText());
+
+        // Display an abbreviated description of the deserialized instance using
+        // the toString() method.
+
+        System.out.println("\n(Deserialized) Squad.toString() output:\n");
+        System.out.println(deserializedSquad.toString());
+
+        // Display all of the entered values for the deserialized instance using
+        // the toJSON() method.
+
+        System.out.println("\n(Deserialized) Squad.toJSON() output:\n\n" +
+                           deserializedSquad.toJSON());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
@@ -114,6 +310,7 @@ public class Driver
                                 true,false,3);
 
         ((Squad)UnitList[1]).setIdentity("X");
+        ((Squad)UnitList[1]).setStatus(Status.States.BROKEN);
 
         UnitList[2] = new Squad(Nationality.Nationalities.AMERICAN,
                                 UnitType.InfantryTypes.NONE,
@@ -122,6 +319,7 @@ public class Driver
                                 true,false,3);
 
         ((Squad)UnitList[2]).setIdentity("Y");
+        ((Squad)UnitList[2]).setStatus(Status.States.DESPERATE);
 
         UnitList[3] = new Squad(Nationality.Nationalities.AMERICAN,
                                 UnitType.InfantryTypes.NONE,
@@ -141,7 +339,7 @@ public class Driver
             System.out.println("\nUnitList[" + i + "]:\t" +
                                UnitList[i].toString());
 
-            if (Description.Descriptions.LEADER.toString() == UnitList[i].description())
+            if (Description.Descriptions.LEADER == UnitList[i].description())
             {
                 leaderObject = (Leader)UnitList[i];
 
@@ -152,7 +350,7 @@ public class Driver
                                    "\n" + leaderObject.status());
             }
 
-            if (Description.Descriptions.SQUAD.toString() == UnitList[i].description())
+            if (Description.Descriptions.SQUAD == UnitList[i].description())
             {
                 squadObject = (Squad)UnitList[i];
 
@@ -166,19 +364,29 @@ public class Driver
 
         // Create an instance of a German Squad (that throws some exceptions).
 
-        System.out.println("\nTesting Exception handling during Squad creation:");
-
         squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                 UnitType.InfantryTypes.NONE,
                                 4,6,7,7,false,10,3,false,
                                 Classification.Classifications.FIRST_LINE,
                                 true,false,0);
 
-        // Null Identity
+        System.out.println("\nTesting Exception handling for Squad update methods:");
+
+        // Null Identity (no error, just clears the existing one).
+
+        squadObject.setIdentity(null);
+
+        // Blank Identity (no error, just clears the existing one).
+
+        squadObject.setIdentity("");
+
+        // Invalid portage level
+
+        System.out.println("\nInvalid portage level parameter:\n");
 
         try
         {
-            squadObject.setIdentity(null);
+            squadObject.setPortageLevel(-1);
         }
 
         catch (Exception e) // No longer expected.
@@ -186,17 +394,7 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Blank Identity
-
-        try
-        {
-            squadObject.setIdentity("");
-        }
-
-        catch (Exception e) // No longer expected.
-        {
-            System.out.println("Caught: " + e);
-        }
+        System.out.println("\nTesting Exception handling during Squad creation:");
 
         // Incompatible nationality and unitType
 

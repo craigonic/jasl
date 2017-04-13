@@ -11,15 +11,18 @@
 // Written By: Craig R. Campbell  -  April 2007                               //
 // ************************************************************************** //
 
-#include <stdio.h>
-
-#include <java/lang/Throwable.h> // For jthrowable.
 
 #include "jasl/cni/CniWrapper.h"
 #include "jasl/cni/JaslErrorMessage.h"
 #include "jasl/cni/jaslWrapper.h"
 
 #include "jasl/counters/Mobile.h"
+
+#include <java/lang/Throwable.h>
+#include <java/util/List.h>
+
+#include <assert.h>
+#include <stdio.h>
 
 typedef jasl::counters::Mobile Mobile;
 
@@ -58,89 +61,151 @@ int main(int argc, char *argv[])
         Nationalities*   nationality    = Nationalities::valueOf(cc2js("GERMAN"));
         InfantryTypes*   unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         Classifications* classification = Classifications::valueOf(cc2js("FIRST_LINE"));
+        States*          brokenState    = States::valueOf(cc2js("BROKEN"));
+        States*          desperateState = States::valueOf(cc2js("DESPERATE"));
 
         // Create an instance of a German Leader.
 
         Leader* germanLeader = new Leader(nationality,unitType,9,9,4,-1);
 
+        assert(germanLeader);
+
+        germanLeader->setStatus(brokenState);
+        germanLeader->setPortageLevel(2);
+
+        // (Silently) verify that the status that was just set is not
+        // (successfully) set again (i.e. it worked the first time).
+
+        assert(!germanLeader->setStatus(brokenState));
+
         // Display all of the entered values for this instance using the
         // toText() method.
 
-        if (germanLeader)
+        printf("\nLeader.toText() output:\n\n");
+        printJavaString(germanLeader->toText());
+
+        // Display an abbreviated description of this instance using the
+        // toString() method.
+
+        printf("Leader.toString() output:\n\n");
+        printJavaString(germanLeader->toString());
+
+        // Test the exception handling within the Serialization class,
+        // specifically the methods associated with serializing to and
+        // deserializing from a file.
+
+        printf("\nTesting Exception handling for serialization to and from a file:\n");
+
+        jstring serializationFile = cc2js("");
+
+        try
         {
-            const char* germanLeaderDetails = js2cc(germanLeader->toText());
-
-            if (germanLeaderDetails)
-            {
-                printf("\nLeader.toText() output:\n\n%s\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
-
-            // Display an abbreviated description of this instance using the
-            // toString() method.
-
-            germanLeaderDetails = js2cc(germanLeader->toString());
-
-            if (germanLeaderDetails)
-            {
-                printf("Leader.toString() output:\n\n%s\n\n",germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
-
-            // Serialize the Leader object, write the data to a file
-            // (Leader.ser), then deserialize the data into a new object.
-
-            germanLeader->setIdentity(cc2js("Col. Klink"));
-
-            jstring serializationFile = cc2js("/tmp/Leader.ser");
-
-            Serialization::serializeToFile(germanLeader,serializationFile);
-
-            Unit* deserializedLeader =
-                (Unit*)Serialization::deserializeFromFile(serializationFile);
-
-            // Display all of the entered values for the deserialized instance
-            // using the toText() method.
-
-            germanLeaderDetails = js2cc(deserializedLeader->toText());
-
-            if (germanLeaderDetails)
-            {
-                printf("(Deserialized) Leader.toText() output:\n\n%s\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
-
-            // Display an abbreviated description of the deserialized instance
-            // using the toString() method.
-
-            germanLeaderDetails = js2cc(deserializedLeader->toString());
-
-            if (germanLeaderDetails)
-            {
-                printf("(Deserialized) Leader.toString() output:\n\n%s\n\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
-
-            // Display all of the entered values for the deserialized instance
-            // using the toJSON() method.
-
-            germanLeaderDetails = js2cc(deserializedLeader->toJSON());
-
-            if (germanLeaderDetails)
-            {
-                printf("(Deserialized) Leader.toJSON() output:\n\n%s\n\n",
-                       germanLeaderDetails);
-                delete [] germanLeaderDetails;
-                germanLeaderDetails = NULL;
-            }
+            Serialization::serializeToFile(NULL,serializationFile);
         }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        try
+        {
+            Serialization::serializeToFile(germanLeader,serializationFile);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        Unit* deserializedLeader = NULL;
+
+        try
+        {
+            deserializedLeader =
+                (Unit*)Serialization::deserializeFromFile(NULL);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        try
+        {
+             deserializedLeader =
+                 (Unit*)Serialization::deserializeFromFile(serializationFile);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        try
+        {
+             deserializedLeader =
+                 (Unit*)Serialization::deserializeFromFile(cc2js("/tmp/NonExistentFile"));
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Serialize the Leader object, write the data to a file (Leader.ser),
+        // then deserialize the data into a new object.
+
+        germanLeader->setIdentity(cc2js("Col. Klink"));
+
+        serializationFile = cc2js("/tmp/Leader.ser");
+
+        try
+        {
+            Serialization::serializeToFile(germanLeader,serializationFile);
+        }
+
+        catch (jthrowable t) // Not expected.
+        {
+            printExceptionMessage(t);
+        }
+
+        try
+        {
+            deserializedLeader =
+                (Unit*)Serialization::deserializeFromFile(serializationFile);
+        }
+
+        catch (jthrowable t) // Not expected.
+        {
+            printExceptionMessage(t);
+        }
+
+        // Retrieve the leader's status and then use the value to restore to
+        // "normal".
+
+        ::java::util::List* statusList =
+            static_cast<Leader*>(deserializedLeader)->status();
+
+        static_cast<Leader*>(deserializedLeader)->clearStatus(static_cast<States*>(statusList->get(0)));
+
+        // Display all of the entered values for the deserialized instance using
+        // the toText() method.
+
+        printf("\n(Deserialized) Leader.toText() output:\n\n");
+        printJavaString(deserializedLeader->toText());
+
+        // Display an abbreviated description of the deserialized instance using
+        // the toString() method.
+
+        printf("(Deserialized) Leader.toString() output:\n\n");
+        printJavaString(deserializedLeader->toString());
+
+        // Display all of the entered values for the deserialized instance using
+        // the toJSON() method.
+
+        printf("\n(Deserialized) Leader.toJSON() output:\n\n");
+        printJavaString(deserializedLeader->toJSON());
 
         // Create an instance of a Russian Squad.
 
@@ -155,49 +220,117 @@ int main(int argc, char *argv[])
         // Display all of the entered values for this instance using the
         // toText() method.
 
-        if (russianSquad)
+        assert(russianSquad);
+
+        russianSquad->setStatus(desperateState);
+
+        printf("\nSquad.toText() output:\n\n");
+        printJavaString(russianSquad->toText());
+
+        // Display an abbreviated description of this instance using the
+        // toString() method.
+
+        printf("Squad.toString() output:\n\n");
+        printJavaString(russianSquad->toString());
+
+        // Test the exception handling within the Serialization class,
+        // specifically the methods associated with serializing to and
+        // deserializing from a byte array.
+
+        printf("\nTesting Exception handling for serialization to and from a byte array:\n");
+
+        try
         {
-            russianSquad->setIdentity(cc2js("A"));
-
-            const char* russianSquadDetails = js2cc(russianSquad->toText());
-
-            if (russianSquadDetails)
-            {
-                printf("Squad.toText() output:\n\n%s\n",russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
-
-            // Display an abbreviated description of this instance using the
-            // toString() method.
-
-            russianSquadDetails = js2cc(russianSquad->toString());
-
-            if (russianSquadDetails)
-            {
-                printf("Squad.toString() output:\n\n%s\n\n",russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
-
-            // Display an abbreviated description of this instance using the
-            // toJSON() method.
-
-            russianSquadDetails = js2cc(russianSquad->toJSON());
-
-            if (russianSquadDetails)
-            {
-                printf("Squad.toJSON() output:\n\n%s\n\n",russianSquadDetails);
-                delete [] russianSquadDetails;
-                russianSquadDetails = NULL;
-            }
+            Serialization::serializeToByteArray(NULL);
         }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        Unit* deserializedSquad = NULL;
+
+        try
+        {
+            deserializedSquad =
+                (Unit*)Serialization::deserializeFromByteArray(NULL);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Serialize the Squad object, writing the data to a byte array, and
+        // then deserialize the data into a new object.
+
+        russianSquad->setIdentity(cc2js("A"));
+
+        JArray<jbyte>* serializedSquad = NULL;
+
+        try
+        {
+            serializedSquad =
+                Serialization::serializeToByteArray(russianSquad);
+        }
+
+        catch (jthrowable t) // Not expected.
+        {
+            printExceptionMessage(t);
+        }
+
+        try
+        {
+            deserializedSquad =
+                (Unit*)Serialization::deserializeFromByteArray(serializedSquad);
+        }
+
+        catch (jthrowable t) // Not expected.
+        {
+            printExceptionMessage(t);
+        }
+
+        // (Silently) verify that if a Unit is subject to desperation morale,
+        // it's broken status can't be (underhandedly) removed.
+
+        assert(!(static_cast<Squad*>(deserializedSquad)->clearStatus(brokenState)));
+
+        // Retrieve the squad's status and then use the value to "reduce" it to
+        // "broken".
+
+        statusList = static_cast<Squad*>(deserializedSquad)->status();
+
+        static_cast<Squad*>(deserializedSquad)->clearStatus(static_cast<States*>(statusList->get(0)));
+
+        // (Silently) verify that the status that was just cleared is not
+        // (successfully) cleared again (i.e. it worked the first time).
+
+        assert(!static_cast<Squad*>(deserializedSquad)->clearStatus(static_cast<States*>(statusList->get(0))));
+
+        // Display all of the entered values for the deserialized instance using
+        // the toText() method.
+
+        printf("\n(Deserialized) Squad.toText() output:\n\n");
+        printJavaString(deserializedSquad->toText());
+
+        // Display an abbreviated description of the deserialized instance using
+        // the toString() method.
+
+        printf("(Deserialized) Squad.toString() output:\n\n");
+        printJavaString(deserializedSquad->toString());
+
+        // Display an abbreviated description of this instance using the
+        // toJSON() method.
+
+        printf("\n(Deserialized) Squad.toJSON() output:\n\n");
+        printJavaString(deserializedSquad->toJSON());
 
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
 
-        printf("Building Unit array with a Leader & 3 Squads\n\n");
+        printf("\nBuilding Unit array with a Leader & 3 Squads\n\n");
 
         // The following commented code demonstrates, based on the CNI
         // documentation, the correct/preferred way to create <A HREF="http://gcc.gnu.org/onlinedocs/gcj/Arrays.html#Arrays">arrays</A> of pointers
@@ -227,11 +360,13 @@ int main(int argc, char *argv[])
                                 classification,true,false,3);
 
         ((Squad*)UnitList[1])->setIdentity(cc2js("X"));
+        ((Squad*)UnitList[1])->setStatus(brokenState);
 
         UnitList[2] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
                                 classification,true,false,3);
 
         ((Squad*)UnitList[2])->setIdentity(cc2js("Y"));
+        ((Squad*)UnitList[2])->setStatus(desperateState);
 
         UnitList[3] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
                                 classification,true,false,3);
@@ -242,22 +377,19 @@ int main(int argc, char *argv[])
 
         for (int i = 0; i < 4; i++)
         {
-            if (UnitList[i])
-            {
-                const char* toStringOutput = js2cc(UnitList[i]->toString());
+            assert(UnitList[i]);
 
-                printf("\nUnitList[%d]:\t%s\n\n",i,toStringOutput);
+            const char* toStringOutput = js2cc(UnitList[i]->toString());
 
-                if (toStringOutput) delete [] toStringOutput;
+            printf("\nUnitList[%d]:\t%s\n\n",i,toStringOutput);
 
-                printJavaString(((Mobile*)UnitList[i])->description());
-                printJavaString(((Mobile*)UnitList[i])->identity());
-                printJavaString(((Mobile*)UnitList[i])->unitType());
-                printf("%d\n",((Mobile*)UnitList[i])->movement());
-                printJavaString(((Mobile*)UnitList[i])->status());
-            }
+            delete [] toStringOutput;
 
-            else printf("UnitList[%d] is NULL\n",i);
+            printJavaString(((Mobile*)UnitList[i])->description()->toString());
+            printJavaString(((Mobile*)UnitList[i])->identity());
+            printJavaString(((Mobile*)UnitList[i])->unitType());
+            printf("%d\n",((Mobile*)UnitList[i])->movement());
+            printJavaString(((Mobile*)UnitList[i])->status()->toString());
         }
 
         // If it was generated the old fashioned way (see above) delete the
@@ -269,8 +401,6 @@ int main(int argc, char *argv[])
 
         // Create an instance of a German Squad (that throws some exceptions).
 
-        printf("\nTesting Exception handling during Squad creation:\n");
-
         nationality    = Nationalities::valueOf(cc2js("GERMAN"));
         unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         classification = Classifications::valueOf(cc2js("FIRST_LINE"));
@@ -278,29 +408,34 @@ int main(int argc, char *argv[])
         Squad* squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
                                  classification,true,false,0);
 
-        // Null Identity
+        printf("\nTesting Exception handling for Squad update methods:\n");
+
+        // Null Identity (no error, just clears the existing one).
+
+        squad->setIdentity(NULL);
+
+        // Blank Identity (no error, just clears the existing one).
+
+        squad->setIdentity(cc2js(""));
+
+        // Invalid portage level
+
+        printf("\nInvalid portage level parameter:\n");
 
         try
         {
-            squad->setIdentity(NULL);
+            squad->setPortageLevel(-1);
         }
 
-        catch (jthrowable t) // No longer expected.
+        catch (jthrowable t)
         {
             printExceptionMessage(t);
         }
 
-        // Blank Identity
+        printf("\nTesting Exception handling during Squad creation:\n");
 
-        try
-        {
-            squad->setIdentity(cc2js(""));
-        }
-
-        catch (jthrowable t) // No longer expected.
-        {
-            printExceptionMessage(t);
-        }
+        nationality = Nationalities::valueOf(cc2js("BRITISH"));
+        unitType    = InfantryTypes::valueOf(cc2js("ENGINEERS"));
 
         // Incompatible nationality and unitType
 
@@ -308,9 +443,6 @@ int main(int argc, char *argv[])
 
         try
         {
-            nationality    = Nationalities::valueOf(cc2js("BRITISH"));
-            unitType       = InfantryTypes::valueOf(cc2js("ENGINEERS"));
-
             squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
                               classification,true,false,0);
         }
@@ -593,17 +725,14 @@ int main(int argc, char *argv[])
         {
             theDice = new Dice();
 
-            if (theDice)
-            {
-//              printf("White: %d Colored: %d Combined: %2d\n",
-//                     theDice->whiteDieValue(),
-//                     theDice->coloredDieValue(),
-//                     theDice->combinedResult());
+            assert(theDice);
 
-                printJavaString(theDice->toText());
-            }
+//          printf("White: %d Colored: %d Combined: %2d\n",
+//                 theDice->whiteDieValue(),
+//                 theDice->coloredDieValue(),
+//                 theDice->combinedResult());
 
-            else printf("New Dice object generation failed\n");
+            printJavaString(theDice->toText());
         }
     }
 
