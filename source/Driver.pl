@@ -699,6 +699,8 @@ printf("Testing Exception handling during Scenario creation:\n");
 
 # Invalid filename (tests the constructor that accepts a String).
 
+my $scenario = undef;
+
 printf("\nInvalid filename:\n");
 
 $status = eval
