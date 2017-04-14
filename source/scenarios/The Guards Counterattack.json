@@ -15,26 +15,26 @@
 					"units":
 					[
 						{
-							"Description":"Leader",
-							"Nationality":"Russian",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"RUSSIAN",
+							"Infantry Type":"NONE",
 							"Morale":9,
 							"Broken Morale":9,
 							"Modifier":0
 						},
 						{
-							"Description":"Leader",
-							"Nationality":"Russian",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"RUSSIAN",
+							"Infantry Type":"NONE",
 							"Morale":9,
 							"Broken Morale":9,
 							"Modifier":-1
 						},
 						{
 							"copies":9,
-							"Description":"Squad",
-							"Nationality":"Russian",
-							"Unit Type":"",
+							"Description":"SQUAD",
+							"Nationality":"RUSSIAN",
+							"Infantry Type":"NONE",
 							"Firepower":4,
 							"Normal Range":4,
 							"Morale":7,
@@ -42,7 +42,7 @@
 							"Can Self Rally ?":false,
 							"Basic Point Value":7,
 							"Has Maximum ELR ?":false,
-							"Classification":"1st Line",
+							"Classification":"FIRST_LINE",
 							"Can Assault Fire ?":false,
 							"Can Spray Fire ?":false,
 							"Smoke Placement Exponent":0
@@ -54,18 +54,18 @@
 					"units":
 					[
 						{
-							"Description":"Leader",
-							"Nationality":"Russian",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"RUSSIAN",
+							"Infantry Type":"GUARDS",
 							"Morale":10,
 							"Broken Morale":10,
 							"Modifier":-2
 						},
 						{
 							"copies":12,
-							"Description":"Squad",
-							"Nationality":"Russian",
-							"Unit Type":"Guards",
+							"Description":"SQUAD",
+							"Nationality":"RUSSIAN",
+							"Infantry Type":"GUARDS",
 							"Firepower":6,
 							"Normal Range":2,
 							"Morale":8,
@@ -73,7 +73,7 @@
 							"Can Self Rally ?":false,
 							"Basic Point Value":12,
 							"Has Maximum ELR ?":false,
-							"Classification":"Elite",
+							"Classification":"ELITE",
 							"Can Assault Fire ?":true,
 							"Can Spray Fire ?":true,
 							"Smoke Placement Exponent":0
@@ -93,43 +93,43 @@
 					"units":
 					[
 						{
-							"Description":"Leader",
-							"Nationality":"German",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"GERMAN",
+							"Infantry Type":"NONE",
 							"Morale":9,
 							"Broken Morale":9,
 							"Modifier":-2
 						},
 						{
-							"Description":"Leader",
-							"Nationality":"German",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"GERMAN",
+							"Infantry Type":"NONE",
 							"Morale":9,
 							"Broken Morale":9,
 							"Modifier":-1
 						},
 						{
 							"copies":2,
-							"Description":"Leader",
-							"Nationality":"German",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"GERMAN",
+							"Infantry Type":"NONE",
 							"Morale":8,
 							"Broken Morale":8,
 							"Modifier":-1
 						},
 						{
-							"Description":"Leader",
-							"Nationality":"German",
-							"Unit Type":"",
+							"Description":"LEADER",
+							"Nationality":"GERMAN",
+							"Infantry Type":"NONE",
 							"Morale":8,
 							"Broken Morale":8,
 							"Modifier":0
 						},
 						{
 							"copies":13,
-							"Description":"Squad",
-							"Nationality":"German",
-							"Unit Type":"",
+							"Description":"SQUAD",
+							"Nationality":"GERMAN",
+							"Infantry Type":"NONE",
 							"Firepower":4,
 							"Normal Range":6,
 							"Morale":7,
@@ -137,7 +137,7 @@
 							"Can Self Rally ?":false,
 							"Basic Point Value":8,
 							"Has Maximum ELR ?":false,
-							"Classification":"1st Line",
+							"Classification":"FIRST_LINE",
 							"Can Assault Fire ?":false,
 							"Can Spray Fire ?":true,
 							"Smoke Placement Exponent":1
