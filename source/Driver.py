@@ -79,11 +79,11 @@ print "Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString())
 
 germanLeader.setIdentity(cc2js("Col. Klink"))
 
-serializationFile = cc2js("/tmp/Leader.ser");
+serializationFile = cc2js("/tmp/Leader.ser")
 
-Serialization_serializeToFile(toObject(germanLeader),serializationFile);
+Serialization_serializeToFile(toObject(germanLeader),serializationFile)
 
-unit = fromObject(Serialization_deserializeFromFile(serializationFile));
+unit = fromObject(Serialization_deserializeFromFile(serializationFile))
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
@@ -159,7 +159,7 @@ print "Squad.toJSON() output:\n\n%s\n" % js2cc(russianSquad.toJSON())
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
-print "Building Unit array with a Leader & 3 Squads\n";
+print "Building Unit array with a Leader & 3 Squads\n"
 
 unitList = []
 
@@ -411,15 +411,276 @@ for i in (list(range(12))):
 
     print "%s" % (js2cc(dice.toText()))
 
+# Test the Player and Stack classes.
+
+print "Testing Exception handling during Player creation:"
+
+nationality = Nationalities_valueOf(cc2js("PARTISAN"))
+
+# Null Name
+
+print "\nNull name parameter:"
+
+try:
+    player = Player(None,nationality,1)
+except ValueError as detail:
+    printException(detail)
+
+# Blank Name
+
+print "\nZero-length name parameter:"
+
+try:
+    player = Player(cc2js(""),nationality,1)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Entry Turn (less than 1)
+
+print "\nInvalid (less than 1) entry turn:"
+
+try:
+    player = Player(cc2js("Dr. Pepper"),nationality,-1)
+except ValueError as detail:
+    printException(detail)
+
+print "\nTesting Exception handling for Player methods:"
+
+# Null Unit parameter to addUnit()
+
+player = Player(cc2js("Dr. Pepper"),nationality,1)
+
+print "\nNull Unit parameter to addUnit():"
+
+try:
+    player.addUnit(None)
+except ValueError as detail:
+    printException(detail)
+
+# Null Stack parameter to addStack()
+
+print "\nNull Stack parameter to addStack():"
+
+try:
+    player.addStack(None)
+except ValueError as detail:
+    printException(detail)
+
+# Confirm that the Player's Unit list is empty.
+
+unitList = player.stackList()
+
+assert(0 == len(unitList))
+
+# Add some valid Units to the Player object.
+
+print "\nAssign some Units to the Player:"
+
+player.addUnit(cc2js("7-0 Leader (Dr. Pepper)"))
+player.addUnit(cc2js("3-3-7 Squad (A)"))
+player.addUnit(cc2js("3-3-7 Squad (B)"))
+player.addUnit(cc2js("3-3-7 Squad (C)"))
+player.addUnit(cc2js("2-6 LMG (X)"))
+
+# Display all of the entered values for this instance using the toText() method.
+
+print "\nPlayer.toText() output:"
+print "\n%s" % js2cc(player.toText())
+
+# Retrieve a list of the Units (in Stacks) assigned to the Player.
+
+unitList = player.stackList()
+
+# Invalid index parameter to takeStack()
+
+temporaryStack = None
+
+print "Invalid (Stack) list index:"
+
+try:
+   temporaryStack = player.takeStack(len(unitList))
+except ValueError as detail:
+    printException(detail)
+
+# Create Stacks for use in testing invalid argument handling in
+# Stack::addPortagedItem() and Stack::addSubStack().
+
+print "\nTesting Exception handling during Stack creation:"
+
+testUnit      = None
+unitTestStack = None
+
+# Null Unit
+
+print "\nNull Unit parameter:"
+
+try:
+    unitTestStack = Stack_U(testUnit,0,0)
+except ValueError as detail:
+    printException(detail)
+
+# Null Stack
+
+print "\nNull Stack parameter:"
+
+try:
+    unitTestStack = Stack_U(unitTestStack,0,0)
+except ValueError as detail:
+    printException(detail)
+
+testUnit = cc2js("6+1 Leader (Sgt. Stedenko)")
+
+unitTestStack = Stack_U(testUnit,7,77)
+
+subStackTestStack = Stack_S(unitTestStack)
+
+# Confirm that a Stack managing a Unit doesn't have sub-stacks.
+
+assert(None == unitTestStack.subStacks())
+
+# Confirm that a Stack managing a group of sub-stacks doesn't have
+# any portaged items.
+
+assert(None == subStackTestStack.portagedItems())
+
+# Invalid Stack
+
+print "\nInvalid Stack parameter:"
+
+try:
+    subStackTestStack = Stack_S(subStackTestStack)
+except ValueError as detail:
+    printException(detail)
+
+print "\nTesting Exception handling for Stack methods:"
+
+# Null Stack parameter to addPortagedItem()
+
+print "\nNull Stack parameter to addPortagedItem():"
+
+try:
+    unitList[2].addPortagedItem(None)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Stack parameter to addPortagedItem()
+
+print "\nInvalid Stack parameter to addPortagedItem():"
+
+try:
+    unitList[2].addPortagedItem(subStackTestStack)
+except ValueError as detail:
+    printException(detail)
+
+print "\nTesting the operations of the Player and Stack classes:"
+
+# Have the second Squad in the list carry (portage) the machine gun.
+
+print "\nThe second Squad will carry the machine gun:"
+
+temporaryStack = player.takeStack(len(unitList) - 1)
+
+unitList[2].addPortagedItem(temporaryStack)
+
+print "\nPlayer.toText() output:"
+print "\n%s" % js2cc(player.toText())
+
+# Pass the machine gun from the second squad to the first.
+
+print "Now it's the first Squad's turn to carry it:"
+
+unitList = player.stackList()
+
+portagedItems = unitList[2].portagedItems()
+
+temporaryStack = unitList[2].takePortagedItem(portagedItems.keys()[0])
+
+unitList[1].addPortagedItem(temporaryStack)
+
+print "\nPlayer.toText() output:"
+print "\n%s" % js2cc(player.toText())
+
+# Null Stack parameter to addSubStack()
+
+print "Null Stack parameter to Stack.addSubStack():"
+
+try:
+    unitList[2].addSubStack(None)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid Stack parameter to addSubStack()
+
+print "\nInvalid Stack parameter to Stack.addSubStack():"
+
+try:
+    unitList[2].addSubStack(subStackTestStack)
+except ValueError as detail:
+    printException(detail)
+
+# Group all of the Units into a single Stack.
+
+print "\nAll of the Units in a single stack:"
+
+newStack = Stack_S(player.takeStack(0))
+
+unitList = player.stackList()
+i = 0
+stackListSize = len(unitList)
+
+while (i < stackListSize):
+    newStack.addSubStack(player.takeStack(0))
+    i = i + 1
+
+player.addStack(newStack)
+
+print "\nPlayer.toText() output:"
+print "\n%s" % js2cc(player.toText())
+
+# Set the position of the (single / combined) Stack.
+
+print "Set the position of the stack to 1H5:"
+
+unitList = player.stackList()
+
+unitList[0].setPositionLabel(cc2js("1H5"))
+
+print "\nPlayer.toText() output:"
+print "\n%s" % js2cc(player.toText())
+
+# Move the first Squad in the (single / combined) Stack to a separate position.
+
+print "Move the first Squad to a different position (1F7):"
+
+unitList = player.stackList()
+
+temporaryStack = unitList[0]
+
+subStacks = temporaryStack.subStacks()
+
+print "\nThe individual Stacks within the combined one are:\n"
+
+for key in (subStacks.keys()):
+    print "\tKey: %d" % key + "\t%s" % js2cc(subStacks.get(key).toText())
+
+newStack = temporaryStack.takeSubStack(subStacks.keys()[1])
+
+newStack.setPositionLabel(cc2js("1F7"))
+
+player.addStack(newStack)
+
+print "\nPlayer.toText() output:"
+print "\n%s" % js2cc(player.toText())
+
 # Test the Game class.
 
-print "Testing the operations of the Game class:";
+print "Testing the operations of the Game class:"
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))
 alliedPlayerName = cc2js("Pixie")
 
-game = Game_game();
+game = Game_game()
 
 game.addPlayer(allies,alliedPlayerName,nationality,1)
 
@@ -434,19 +695,22 @@ alliedPlayer = game.player(allies,alliedPlayerName)
 leader = cc2js("9-1 Leader")
 squad  = cc2js("7-4-7 Squad")
 
-alliedPlayer.addUnit(leader);
-alliedPlayer.addUnit(squad);
-alliedPlayer.addUnit(squad);
-alliedPlayer.addUnit(squad);
+alliedPlayer.addUnit(leader)
+alliedPlayer.addUnit(squad)
+alliedPlayer.addUnit(squad)
+alliedPlayer.addUnit(squad)
 
 axisPlayer = game.player(axis,axisPlayerName)
 
 leader = cc2js("8-1 Leader")
 squad  = cc2js("6-5-8 Squad")
+lmg    = cc2js("3-8 LMG")
 
-axisPlayer.addUnit(leader);
-axisPlayer.addUnit(squad);
-axisPlayer.addUnit(squad);
-axisPlayer.addUnit(squad);
+axisPlayer.addUnit(leader)
+axisPlayer.addUnit(squad)
+axisPlayer.addUnit(squad)
+axisPlayer.addUnit(squad)
+axisPlayer.addUnit(lmg)
+axisPlayer.addUnit(lmg)
 
-print "\n%s" % js2cc(game.toText());
+print "\n%s" % js2cc(game.toText())
