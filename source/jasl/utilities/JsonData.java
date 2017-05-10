@@ -14,8 +14,8 @@ package jasl.utilities;
  * generate and parse a JSON representation of an instance of a public class in
  * one of the other jasl packages.
  *
- * @version 1.0
- * @author Copyright (C) 2016 Craig R. Campbell (craigonic@gmail.com)
+ * @version 2.0
+ * @author Copyright (C) 2016-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/JsonData.html">Source code</A>
  */
 
@@ -51,7 +51,7 @@ public interface JsonData
 	/**
 	 * The text indicating the beginning of an object container in JSON
 	 * output.
-	 *
+	 * <P>
 	 * Note that the string includes a CR-LF ('\n') after the curly brace.
 	 */
 
@@ -59,7 +59,7 @@ public interface JsonData
 
 	/**
 	 * The text separating an object entry from the next one in JSON output.
-	 *
+	 * <P>
 	 * Note that the string includes a CR-LF ('\n') after the comma.
 	 */
 
@@ -67,22 +67,86 @@ public interface JsonData
 
 	/**
 	 * The text indicating the end of an object container in JSON output.
-	 *
+	 * <P>
 	 * Note that the string includes a CR-LF ('\n') before the curly brace.
 	 */
 
 	public static final String JSON_OBJECT_END = "\n}";
 
+	// These items are intended to be used in implementations of the
+	// fromJSON() method (and any helper method(s) called from them) in
+	// generating more detailed exception messages.
+
+	/**
+	 * The name of the fromJSON() method.
+	 * <P>
+	 * This is included (obviously) to avoid sprinkling the same string
+	 * literal everywhere.
+	 */
+
+	public static final String FROM_JSON_METHOD_NAME = "fromJSON";
+
+	/**
+	 * The beginning of a detailed message for an exception thrown by a
+	 * fromJSON() implementation.
+	 * <P>
+	 * This one is used to indicate that the value in the JSON data did not
+	 * match the setting within the class instance.
+	 */
+
+	public static final String FROM_JSON_NON_MATCH_PREFIX =
+		"Non-matching value (";
+
+	/**
+	 * The beginning of a detailed message for an exception thrown by a
+	 * fromJSON() implementation.
+	 * <P>
+	 * This one is used to indicate that the value in the JSON data is not
+	 * valid for the setting within the class instance.
+	 */
+
+	public static final String FROM_JSON_NOT_VALID_PREFIX =
+		"Invalid value (";
+
+	/**
+	 * The separator within a detailed message for an exception thrown by a
+	 * fromJSON() implementation.
+	 * <P>
+	 * This is appended after non-matching or invalid value text. It is
+	 * intended that it be followed by the associated key.
+	 */
+
+	public static final String FROM_JSON_FOR_SEPARATOR = ") for ";
+
 	// Access methods
 
 	/**
-	 * Display a JSON representation of an instance of a class that
+	 * Generate a JSON representation of an instance of a class that
 	 * implements this interface.
 	 *
 	 * @return a <CODE>String</CODE> containing the JSON data.
 	 */
 
 	public abstract String toJSON();
+
+	// Update methods
+
+	/**
+	 * Update an instance of a class that implements this interface to
+	 * reflect the settings within the specified JSON data.
+	 * <P>
+	 * This primary use of this method is to change the mutable attributes
+	 * of an existing object (i.e. those that may be changed through its
+	 * interface), not as a means to create a new instance. Implementations
+	 * of it will throw an exception if the input string is malformed or
+	 * contains invalid data. It is recommended that a copy of the current
+	 * state be made (with toJSON()) before calling this method, allowing it
+	 * to be restored in the event of failure.
+	 *
+	 * @param jsonData JSON formatted text <CODE>String</CODE>.
+	 */
+
+	public abstract void fromJSON(String jsonData);
 
 	// JSON output generation helper class
 
@@ -108,7 +172,7 @@ public interface JsonData
 
 		/**
 		 * Generate a JSON name/value pair that includes the specified
-		 * parameters.
+		 * arguments.
 		 *
 		 * @param name the name associated with the entry.
 		 * @param value the value as a String.
@@ -121,16 +185,15 @@ public interface JsonData
 		 * (zero length) name.
 		 */
 
-		public static final String buildJSONPair(String name,
-		                                         String value)
+		public static String buildJSONPair(String name,String value)
 		{
 			// Define local constants.
 
 			String METHOD_NAME = "buildJSONPair (String value)";
 
-			// Check the value parameter received and throw an
+			// Check the value argument received and throw an
 			// exception if it is null. The validity of the name
-			// parameter will be checked in buildJSONName().
+			// argument will be checked in buildJSONName().
 
 			if (null == value)
 			{
@@ -155,7 +218,7 @@ public interface JsonData
 
 		/**
 		 * Generate a JSON name/value pair that includes the specified
-		 * parameters.
+		 * arguments.
 		 *
 		 * @param name the name associated with the entry.
 		 * @param value the value as an integer.
@@ -167,10 +230,10 @@ public interface JsonData
 		 * (zero length) name.
 		 */
 
-		public static final String buildJSONPair(String name,int value)
+		public static String buildJSONPair(String name,int value)
 		{
 			// Create a buffer to store the string to be returned.
-			// The validity of the name parameter will be checked in
+			// The validity of the name argument will be checked in
 			// buildJSONName().
 
 			StringBuffer returnString =
@@ -186,7 +249,7 @@ public interface JsonData
 
 		/**
 		 * Generate a JSON name/value pair that includes the specified
-		 * parameters.
+		 * arguments.
 		 *
 		 * @param name the name associated with the entry.
 		 * @param value the value as a boolean.
@@ -198,11 +261,10 @@ public interface JsonData
 		 * (zero length) name.
 		 */
 
-		public static final String buildJSONPair(String name,
-		                                         boolean value)
+		public static String buildJSONPair(String name,boolean value)
 		{
 			// Create a buffer to store the string to be returned.
-			// The validity of the name parameter will be checked in
+			// The validity of the name argument will be checked in
 			// buildJSONName().
 
 			StringBuffer returnString =
@@ -217,7 +279,7 @@ public interface JsonData
 		}
 
 		/**
-		 * Generate a JSON name entry using the specified parameter.
+		 * Generate a JSON name entry using the specified argument.
 		 *
 		 * @param name the name associated with the entry.
 		 *
@@ -237,7 +299,7 @@ public interface JsonData
 
 			String METHOD_NAME = "buildJSONName";
 
-			// Check the parameters received and throw the
+			// Check the arguments received and throw the
 			// appropriate exception if necessary.
 
 			if (null == name)
