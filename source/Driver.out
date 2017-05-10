@@ -1,4 +1,4 @@
-Tue Apr 11 12:49:46 PDT 2017
+Thu Apr 27 14:10:46 PDT 2017
 
 Leader.toText() output:
 
@@ -23,13 +23,13 @@ Leader.toString() output:
 
 Testing Exception handling for serialization to and from a file:
 
-Caught: java.lang.NullPointerException: Serialization(serializeToFile) - Null parameter received.
+Caught: java.lang.NullPointerException: Serialization(serializeToFile) - Null argument received.
 
-Caught: java.lang.IllegalArgumentException: Serialization(serializeToFile) - Invalid parameter received (zero length).
+Caught: java.lang.IllegalArgumentException: Serialization(serializeToFile) - Invalid argument received (zero length).
 
-Caught: java.lang.NullPointerException: Serialization(deserializeFromFile) - Null parameter received.
+Caught: java.lang.NullPointerException: Serialization(deserializeFromFile) - Null argument received.
 
-Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromFile) - Invalid parameter received (zero length).
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromFile) - Invalid argument received (zero length).
 
 Caught: java.io.FileNotFoundException: /tmp/NonExistentFile (No such file or directory)
 
@@ -104,11 +104,11 @@ Squad.toString() output:
 
 Testing Exception handling for serialization to and from a byte array:
 
-Caught: java.lang.NullPointerException: Serialization(serializeToByteArray) - Null parameter received.
+Caught: java.lang.NullPointerException: Serialization(serializeToByteArray) - Null argument received.
 
-Caught: java.lang.NullPointerException: Serialization(deserializeFromByteArray) - Null parameter received.
+Caught: java.lang.NullPointerException: Serialization(deserializeFromByteArray) - Null argument received.
 
-Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromByteArray) - Invalid parameter received (zero length).
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromByteArray) - Invalid argument received (zero length).
 
 (Deserialized) Squad.toText() output:
 
@@ -202,105 +202,105 @@ Testing Exception handling for Squad update methods:
 
 Invalid portage level parameter:
 
-Caught: java.lang.IllegalArgumentException: Mobile(setPortageLevel) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Mobile(setPortageLevel) - Invalid argument(s) received : -1
 
 Testing Exception handling during Squad creation:
 
 Incompatible nationality and unitType parameters:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : British and Engineers
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : British and Engineers
 
 Incompatible description and unitType parameters:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : Squad and Commissar
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : Squad and Commissar
 
 Invalid (less than 0) firepower parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
 Invalid (greater than maximum) firepower parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 11
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
 
 Invalid (less than 0) normal range parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -255
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -255
 
 Invalid (less than 0) morale parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
 Invalid (greater than maximum) morale parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 11
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
 
 Invalid (less than 0) broken morale parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -7
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -7
 
 Invalid (greater than maximum) broken morale parameter:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 17
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 17
 
 Invalid (less than zero) Basic Point Value (BPV):
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
 Invalid (less than zero) Experience Level Rating (ELR):
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
 Invalid (greater than maximum) Experience Level Rating (ELR):
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 6
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 6
 
 Incompatible classification parameter:
 
-Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid parameter(s) received : Italian and SS
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Italian and SS
 
 Invalid (less than zero) Smoke Placement Exponent:
 
-Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid parameter(s) received : -4
+Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid argument(s) received : -4
 
 Invalid (greater than maximum) Smoke Placement Exponent:
 
-Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid parameter(s) received : 4
+Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid argument(s) received : 4
 
 Testing Exception handling during Leader creation:
 
 Invalid (less than minimum) modifier parameter:
 
-Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : -4
+Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : -4
 
 Invalid (greater than maximum) modifier parameter:
 
-Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : 4
+Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : 4
 
 Testing the execution of the Dice class:
 
-White Die         : 2    Colored Die       : 4    Combined Result   : 6    
-
-White Die         : 4    Colored Die       : 5    Combined Result   : 9    
-
-White Die         : 6    Colored Die       : 5    Combined Result   : 11   
+White Die         : 1    Colored Die       : 1    Combined Result   : 2    
 
 White Die         : 6    Colored Die       : 4    Combined Result   : 10   
 
-White Die         : 4    Colored Die       : 5    Combined Result   : 9    
+White Die         : 1    Colored Die       : 5    Combined Result   : 6    
+
+White Die         : 2    Colored Die       : 4    Combined Result   : 6    
 
 White Die         : 2    Colored Die       : 1    Combined Result   : 3    
 
-White Die         : 5    Colored Die       : 6    Combined Result   : 11   
+White Die         : 4    Colored Die       : 2    Combined Result   : 6    
 
-White Die         : 2    Colored Die       : 6    Combined Result   : 8    
+White Die         : 1    Colored Die       : 4    Combined Result   : 5    
 
-White Die         : 3    Colored Die       : 3    Combined Result   : 6    
+White Die         : 5    Colored Die       : 5    Combined Result   : 10   
 
-White Die         : 6    Colored Die       : 5    Combined Result   : 11   
+White Die         : 1    Colored Die       : 2    Combined Result   : 3    
+
+White Die         : 3    Colored Die       : 6    Combined Result   : 9    
+
+White Die         : 2    Colored Die       : 5    Combined Result   : 7    
 
 White Die         : 1    Colored Die       : 3    Combined Result   : 4    
-
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
 
 Testing the operations of the Game class:
 
