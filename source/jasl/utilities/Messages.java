@@ -12,14 +12,14 @@ package jasl.utilities;
  * This class provides static methods used to generate messages for use in
  * exception and text output.
  *
- * @version 1.4
- * @author Copyright (C) 2009-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 1.5
+ * @author Copyright (C) 2009-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Messages.html">Source code</A>
  */
 
 public final class Messages
 {
-	// Public symbolic constants
+	// Symbolic constants
 
 	// The following strings are used to assemble the text that appears when
 	// an exception is thrown and in other common messages. Their intended
@@ -38,7 +38,7 @@ public final class Messages
 	// values.
 
 	/**
-	 * Separates multiple invalid parameters in error messages for
+	 * Separates multiple invalid arguments in error messages for
 	 * exceptions :
 	 * <B> and </B>
 	 */
@@ -49,37 +49,38 @@ public final class Messages
 	// Error messages associated with common exceptions.
 
 	/**
-	 * Indicates that a null parameter was received by a constructor or
+	 * Indicates that a null argument was received by a constructor or
 	 * method :
-	 * <B>Null parameter received.</B>
+	 * <B>Null argument received.</B>
 	 */
 
 	public static final String NULL_PARAMETER_MSG =
-		"Null parameter received.";
+		"Null argument received.";
 
 	/**
-	 * Indicates that a zero length parameter was received by a constructor
+	 * Indicates that a zero length argument was received by a constructor
 	 * or method :
-	 * <B>Invalid parameter received (zero length).</B>
+	 * <B>Invalid argument received (zero length).</B>
 	 */
 
 	public static final String ZERO_LENGTH_PARAMETER_MSG =
-		"Invalid parameter received (zero length).";
+		"Invalid argument received (zero length).";
 
 	/**
-	 * Indicates that one or more invalid parameters was received by a
+	 * Indicates that one or more invalid arguments was received by a
 	 * constructor or method :
-	 * <B>Invalid parameter(s) received : </B>
+	 * <B>Invalid argument(s) received : </B>
 	 */
 
 	public static final String INVALID_PARAMETER_MSG =
-		"Invalid parameter(s) received : ";
+		"Invalid argument(s) received : ";
 
-	// Private symbolic constants
+	// This constant is used as part of the error messages (see below) that
+	// are generated when an exception is thrown.
 
-	private static final String CLASS_NAME = "Messages";
+	private static final String CLASS_NAME = Messages.class.getSimpleName();
 
-	// Public static methods
+	// Public helper methods
 
 	/**
 	 * Build a descriptive error message to help pinpoint the location where
@@ -90,16 +91,16 @@ public final class Messages
 	 * @param methodName the name of the method where the error occurred.
 	 * Example - "constructor"
 	 * @param message the message describing the error.
-	 * Example - "Null parameter received."
+	 * Example - "Null argument received."
 	 *
 	 * @return a <CODE>String</CODE> containing the location in the code where the error
 	 * occurred and a descriptive message.
-	 * Example - <CODE>Unit(constructor) - Null parameter received.</CODE>
+	 * Example - <CODE>Unit(constructor) - Null argument received.</CODE>
 	 */
 
-	public static final String buildErrorMessage(String className,
-	                                             String methodName,
-	                                             String message)
+	public static String buildErrorMessage(String className,
+	                                       String methodName,
+	                                       String message)
 	{
 		// Create a buffer to store the new error message.
 
@@ -107,7 +108,7 @@ public final class Messages
 
 		// Add the class name specified to the buffer after verifying it.
 
-		if ((className != null) && (className.length() > 0))
+		if ((className != null) && (!className.isEmpty()))
 		{
 			errorString.append(className);
 		}
@@ -115,7 +116,7 @@ public final class Messages
 		// After verifying the method name specified, add it to the
 		// buffer in a set of parentheses.
 
-		if ((methodName != null) && (methodName.length() > 0))
+		if ((methodName != null) && (!methodName.isEmpty()))
 		{
 			errorString.append('(');
 			errorString.append(methodName);
@@ -124,7 +125,7 @@ public final class Messages
 
 		// Add the message specified to the buffer after verifying it.
 
-		if ((message != null) && (message.length() > 0))
+		if ((message != null) && (!message.isEmpty()))
 		{
 			errorString.append(" - ");
 			errorString.append(message);
@@ -137,10 +138,11 @@ public final class Messages
 
 	/**
 	 * Create a formatted version of an input string by appending spaces as
-	 * necessary to make the length equal to a specific value. This function
-	 * is used primarily to create the tabular output for the toText()
-	 * method. The last character in the returned string will always be a
-	 * space.
+	 * necessary to make the length equal to a specific value.
+	 * <P>
+	 * This method is used primarily to create the tabular output for the
+	 * toText() method. The last character in the returned string will
+	 * always be a space.
 	 *
 	 * @param inputString the string to be formatted.
 	 * Example - "Description"
@@ -152,7 +154,7 @@ public final class Messages
 	 * @param addNewLine indicates if a newline (CR-LF) should be added to
 	 * the returned string.
 	 *
-	 * @return a <CODE>String</CODE> formatted to meet the specified parameters.
+	 * @return a <CODE>String</CODE> formatted to meet the specified arguments.
 	 * Example - <CODE>Description  : </CODE>
 	 *
 	 * @throws NullPointerException in the case of a null input string
@@ -160,10 +162,10 @@ public final class Messages
 	 * is less than 2
 	 */
 
-	public static final String formatTextString(String inputString,
-	                                            int columnWidth,
-	                                            boolean isALabel,
-	                                            boolean addNewLine)
+	public static String formatTextString(String inputString,
+	                                      int columnWidth,
+	                                      boolean isALabel,
+	                                      boolean addNewLine)
 	{
 		// Define local constants.
 
@@ -176,7 +178,7 @@ public final class Messages
 		char   SPACE              = ' ';
 		char   SEPARATOR          = ':';
 
-		// Check the parameters received and throw the appropriate
+		// Check the arguments received and throw the appropriate
 		// exception if necessary.
 
 		if (inputString == null)
@@ -264,7 +266,7 @@ public final class Messages
 	}
 
 	/**
-	 * Return a text representation of the parameter as a truth value (<B>True</B>
+	 * Return a text representation of the argument as a truth value (<B>True</B>
 	 * or <B>False</B>)
 	 */
 
@@ -274,7 +276,7 @@ public final class Messages
 	}
 
 	/**
-	 * Return a text representation of the value as a number (<B>1</B> or <B>0</B>
+	 * Return a text representation of the value as a number (<B>1</B> or <B>0</B>)
 	 */
 
 	public static String getNumericLabel(boolean value)
