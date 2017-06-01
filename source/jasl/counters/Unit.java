@@ -14,6 +14,9 @@ package jasl.counters;
 
 import java.io.Serializable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
@@ -21,7 +24,7 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 6.0
+ * @version 7.0
  * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
@@ -77,8 +80,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	// Public access methods
 
 	/**
-	 * Display the value of each of the private data members that describe
-	 * the current instance.
+	 * Display a plain text representation of an instance of this class.
 	 * <P>
 	 * Each value is preceded by a label defined in this class or the
 	 * interface associated with the item. There are no more than two
@@ -131,17 +133,18 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	}
 
 	/**
-	 * Display the JSON representation each of the private data members that
-	 * describe the current instance.
+	 * Generate a JSON representation of an instance of this class.
 	 * <P>
 	 * Each value is preceded by a label (key) defined in this class or the
-	 * the interface associated with the item. The arguments are grouped in
-	 * a JSON object, with this method (the top level) adding the initial
-	 * '{' and the "bottom" (public) class implementation appending the
-	 * closing '}'. Entries at each level are successively indented to
-	 * provide hierarchical formatting of the output.
+	 * the interface associated with the item. The elements are grouped in a
+	 * JSON object, with this method (the top level) adding the initial '{'
+	 * and the "bottom" (public) class implementation appending the closing
+	 * '}'. Entries at each level are successively indented to provide
+	 * hierarchical formatting of the output.
 	 *
 	 * @return a <CODE>String</CODE> containing the JSON data.
+	 *
+	 * @see #fromJSON
 	 */
 
 	public String toJSON()
@@ -182,5 +185,90 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	public final Descriptions description()
 	{
 		return _description;
+	}
+
+	// Update methods
+
+	/**
+	 * Update an instance of this class to reflect the settings within the
+	 * specified JSON data.
+	 * <P>
+	 * The setting for each attribute is checked against the corresponding
+	 * input value.
+	 *
+	 * @param jsonData JSON formatted text <CODE>String</CODE>.
+	 *
+	 * @throws NullPointerException in the case of a null argument.
+	 * @throws IllegalArgumentException in the case of a zero length
+	 * argument or where non-matching data values are found within it.
+	 * @throws JSONException in the case where the text is not valid JSON or
+	 * an expected "key" is not found.
+	 *
+	 * @see #toJSON
+	 */
+
+	public void fromJSON(String jsonData)
+	{
+		// Check the argument received and throw the appropriate
+		// exception if necessary.
+
+		if (null == jsonData)
+		{
+			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                          JsonData.FROM_JSON_METHOD_NAME,
+			                                                          Messages.NULL_PARAMETER_MSG));
+		}
+
+		if (jsonData.isEmpty())
+		{
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              JsonData.FROM_JSON_METHOD_NAME,
+			                                                              Messages.ZERO_LENGTH_PARAMETER_MSG));
+		}
+
+		// Check the values specific to this class.
+
+		String exceptionDetails = "";
+
+		try
+		{
+			JSONObject jsonObject = new JSONObject(jsonData);
+
+			Descriptions description =
+				Descriptions.valueOf(jsonObject.getString(DESCRIPTION_LABEL));
+
+			if (description != _description)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					description.name() +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					DESCRIPTION_LABEL;
+			}
+
+			if (!exceptionDetails.isEmpty())
+			{
+				throw new IllegalArgumentException(exceptionDetails);
+			}
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			if (exceptionDetails.isEmpty())
+			{
+				exceptionDetails = exception.getMessage();
+			}
+
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              JsonData.FROM_JSON_METHOD_NAME,
+			                                                              exceptionDetails));
+		}
+
+		catch (JSONException exception)
+		{
+			throw new JSONException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                   JsonData.FROM_JSON_METHOD_NAME,
+			                                                   exception.getMessage()));
+		}
 	}
 }
