@@ -289,6 +289,304 @@ public class Driver
         System.out.println("\n(Deserialized) Squad.toJSON() output:\n\n" +
                            deserializedSquad.toJSON());
 
+        // Test the fromJSON() method.
+
+        System.out.println("\nTesting the fromJSON() method:");
+
+        String squadJSONData       = deserializedSquad.toJSON();
+
+        String validDescription    = "{\"Description\":\"SQUAD\"";
+        String validNationality    = ",\"Nationality\":\"RUSSIAN\"";
+        String validUnitType       = ",\"Unit Type\":\"Guards\"";
+        String validIdentity       = ",\"Identity\":\"B\"";
+        String validStatus         = ",\"Status\":0";
+
+        String validFighting       = validDescription + validNationality +
+                                      validUnitType + validIdentity + validStatus;
+
+        String validMovement       = ",\"Movement\":4";
+        String validPortageCap     = ",\"Portage Capacity\":3";
+        String validPortageLevel   = ",\"Portage Level\":2";
+
+        String validMobile         = validFighting + validMovement +
+                                      validPortageCap + validPortageLevel;
+
+        String validFirepower      = ",\"Firepower\":\"6\"";
+        String validFpEquivalent   = ",\"Firepower Equivalent\":6";
+        String validNormalRange    = ",\"Normal Range\":2";
+        String validMorale         = ",\"Morale\":8";
+        String validBrokenMorale   = ",\"Broken Morale\":8";
+        String validCanSelfRally   = ",\"Can Self Rally ?\":false";
+        String validPortageValue   = ",\"Portage Value\":10";
+        String validBPV            = ",\"Basic Point Value\":12";
+        String validELR            = ",\"Experience Level Rating\":4";
+        String validInfantryType   = ",\"Infantry Type\":\"GUARDS\"";
+
+        String validInfantry       = validMobile + validFirepower +
+                                      validFpEquivalent + validNormalRange +
+                                       validMorale + validBrokenMorale +
+                                        validCanSelfRally + validPortageValue +
+                                         validBPV + validELR + validInfantryType;
+
+        String validHasMaxELR      = ",\"Has Maximum ELR ?\":false";
+        String validClassification = ",\"Classification\":\"ELITE\"";
+
+        String validPersonnel      = validInfantry + validHasMaxELR +
+                                      validClassification;
+
+        String validCanAssaultFire = ",\"Can Assault Fire ?\":true";
+        String validCanSprayFire   = ",\"Can Spray Fire ?\":true";
+        String validSPE            = ",\"Smoke Placement Exponent\":0";
+
+        String fromJsonSquadTestStrings[][] =
+        {
+         // Unit
+
+          {"Null JSON input data",null},
+          {"Empty JSON input data",""},
+
+          {"Updating a Squad with Leader data",deserializedLeader.toJSON()},
+          {"Updating a Squad with an invalid (wrong case) description",
+           "{\"Description\":\"Squad\"}"},
+          {"Updating a Squad with an invalid (non-string) description",
+           "{\"Description\":null}"},
+
+         // Fighting
+
+          {"Updating a Squad with a different nationality",
+           validDescription + ",\"Nationality\":\"GERMAN\"" + validUnitType +
+            validIdentity + validStatus + "}"},
+          {"Updating a Squad with an invalid (wrong case) nationality",
+           validDescription + ",\"Nationality\":\"Russian\"}"},
+          {"Updating a Squad with an invalid (non-string) nationality",
+           validDescription + ",\"Nationality\":null}"},
+
+          {"Updating a Squad with a different unit type",
+           validDescription + validNationality + ",\"Unit Type\":\"Gurkha\"" +
+            validIdentity + validStatus + "}"},
+          {"Updating a Squad with an invalid (non-string) unit type",
+           validDescription + validNationality + ",\"Unit Type\":null}"},
+
+          {"Updating a Squad with an invalid (non-string) identity",
+           validDescription + validNationality + validUnitType +
+            ",\"Identity\":null" + validStatus + "}"},
+
+          {"Updating a Squad with an invalid (negative) status",
+           validDescription + validNationality + validUnitType + validIdentity +
+            ",\"Status\":-2}"},
+          {"Updating a Squad with an invalid (non-integer) status",
+           validDescription + validNationality + validUnitType + validIdentity +
+            ",\"Status\":null}"},
+
+         // Mobile
+
+          {"Updating a Squad with a different movement value",
+           validFighting + ",\"Movement\":3" +
+           validPortageCap + validPortageLevel + "}"},
+          {"Updating a Squad with an invalid (non-integer) movement value",
+           validFighting + ",\"Movement\":null}"},
+
+          {"Updating a Squad with a different portage capacity",
+           validFighting + validMovement + ",\"Portage Capacity\":5" +
+            validPortageLevel + "}"},
+          {"Updating a Squad with an invalid (non-integer) portage capacity",
+           validFighting + validMovement + ",\"Portage Capacity\":null}"},
+
+          {"Updating a Squad with an invalid (negative) portage level",
+           validFighting + validMovement + validPortageCap +
+            ",\"Portage Level\":-1}"},
+          {"Updating a Squad with an invalid (non-integer) portage level",
+           validFighting + validMovement + validPortageCap +
+            ",\"Portage Level\":null}"},
+
+         // Infantry
+
+          {"Updating a Squad with a different firepower value",
+           validMobile + ",\"Firepower\":\"4\"" + validFpEquivalent +
+            validNormalRange + validMorale + validBrokenMorale +
+             validCanSelfRally + validPortageValue + validBPV + validELR +
+              validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-string) firepower value",
+           validMobile + ",\"Firepower\":null}"},
+
+          {"Updating a Squad with a different firepower equivalent value",
+           validMobile + validFirepower + ",\"Firepower Equivalent\":4" +
+            validNormalRange + validMorale + validBrokenMorale +
+             validCanSelfRally + validPortageValue + validBPV + validELR +
+              validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-integer) firepower equivalent value",
+           validMobile + validFirepower + ",\"Firepower Equivalent\":null}"},
+
+          {"Updating a Squad with a different normal range value",
+           validMobile + validFirepower + validFpEquivalent +
+            ",\"Normal Range\":4" + validMorale + validBrokenMorale +
+             validCanSelfRally + validPortageValue + validBPV + validELR +
+              validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-integer) normal range value",
+           validMobile + validFirepower + validFpEquivalent +
+            ",\"Normal Range\":null}"},
+
+          {"Updating a Squad with a different morale value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            ",\"Morale\":7" + validBrokenMorale + validCanSelfRally +
+             validPortageValue + validBPV + validELR + validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-integer) morale value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            ",\"Morale\":null}"},
+
+          {"Updating a Squad with a different broken morale value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + ",\"Broken Morale\":7" + validCanSelfRally +
+             validPortageValue + validBPV + validELR + validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-integer) broken morale value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + ",\"Broken Morale\":null}"},
+
+          {"Updating a Squad with a different can self rally setting",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + ",\"Can Self Rally ?\":true" +
+             validPortageValue + validBPV + validELR + validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-boolean) can self rally setting",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + ",\"Can Self Rally ?\":null}"},
+
+          {"Updating a Squad with a different portage value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             ",\"Portage Value\":9" + validBPV + validELR + validInfantryType +
+              "}"},
+          {"Updating a Squad with an invalid (non-integer) portage value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             ",\"Portage Value\":null}"},
+
+          {"Updating a Squad with a different basic point value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + ",\"Basic Point Value\":52" + validELR +
+              validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-integer) basic point value",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + ",\"Basic Point Value\":null}"},
+
+          {"Updating a Squad with a different experience level rating",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + validBPV +",\"Experience Level Rating\":3" +
+              validInfantryType + "}"},
+          {"Updating a Squad with an invalid (non-integer) experience level rating",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + validBPV +
+              ",\"Experience Level Rating\":null}"},
+
+          {"Updating a Squad with a different infantry type",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + validBPV + validELR +
+              ",\"Infantry Type\":\"NONE\"" + "}"},
+          {"Updating a Squad with an invalid (wrong case) infantry type",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + validBPV + validELR +
+              ",\"Infantry Type\":\"Guards\"" + "}"},
+          {"Updating a Squad with an invalid (non-string) infantry type",
+           validMobile + validFirepower + validFpEquivalent + validNormalRange +
+            validMorale + validBrokenMorale + validCanSelfRally +
+             validPortageValue + validBPV + validELR +
+              ",\"Infantry Type\":null}"},
+
+         // Personnel
+
+          {"Updating a Squad with a different has maximum ELR setting",
+           validInfantry + ",\"Has Maximum ELR ?\":true" +
+            validClassification + "}"},
+          {"Updating a Squad with an invalid (non-boolean) has maximum ELR setting",
+           validInfantry + ",\"Has Maximum ELR ?\":null}"},
+
+          {"Updating a Squad with a different classification",
+           validInfantry + validHasMaxELR +
+            ",\"Classification\":\"FIRST_LINE\"" + "}"},
+          {"Updating a Squad with an invalid (wrong case) classification",
+           validInfantry + validHasMaxELR +
+            ",\"Classification\":\"Elite\"" + "}"},
+          {"Updating a Squad with an invalid (non-string) classification",
+           validInfantry + validHasMaxELR +
+            ",\"Classification\":null}"},
+
+         // Squad
+
+          {"Updating a Squad with a different can assault fire setting",
+           validPersonnel + ",\"Can Assault Fire ?\":false" +
+            validCanSprayFire + validSPE + "}"},
+          {"Updating a Squad with an invalid (non-boolean) can assault fire setting",
+           validPersonnel + ",\"Can Assault Fire ?\":null}"},
+
+          {"Updating a Squad with a different can spray fire setting",
+           validPersonnel + validCanAssaultFire +
+            ",\"Can Spray Fire ?\":false" + validSPE + "}"},
+          {"Updating a Squad with an invalid (non-boolean) can spray fire setting",
+           validPersonnel + validCanAssaultFire +
+            ",\"Can Spray Fire ?\":null}"},
+
+          {"Updating a Squad with a different smoke placement exponent value",
+           validPersonnel + validCanAssaultFire + validCanSprayFire +
+            ",\"Smoke Placement Exponent\":3"+ "}"},
+          {"Updating a Squad with an invalid (non-integer) smoke placement exponent value",
+           validPersonnel + validCanAssaultFire + validCanSprayFire +
+            ",\"Smoke Placement Exponent\":null}"}
+        };
+
+        for (int i = 0;i < fromJsonSquadTestStrings.length;++i)
+        {
+            System.out.println("\n" + fromJsonSquadTestStrings[i][0] + ":\n");
+
+            try
+            {
+                deserializedSquad.fromJSON(fromJsonSquadTestStrings[i][1]);
+            }
+
+            catch (Exception e)
+            {
+                System.out.println("Caught: " + e);
+            }
+        }
+
+        String deserializedLeaderJSON = deserializedLeader.toJSON();
+        String validModifier          = "\"Modifier\":-1";
+
+        String fromJsonLeaderTestStrings[][] =
+        {
+          {"Updating a Leader with a different modifier value",
+           deserializedLeaderJSON.replaceAll(validModifier,
+                                             validModifier.replaceAll("-1","-2"))},
+          {"Updating a Leader with an invalid (non-integer) modifier value",
+           deserializedLeaderJSON.replaceAll(validModifier,
+                                             validModifier.replaceAll("-1","null"))}
+        };
+
+        for (int i = 0;i < fromJsonLeaderTestStrings.length;++i)
+        {
+            System.out.println("\n" + fromJsonLeaderTestStrings[i][0] + ":\n");
+
+            try
+            {
+                deserializedLeader.fromJSON(fromJsonLeaderTestStrings[i][1]);
+            }
+
+            catch (Exception e)
+            {
+                System.out.println("Caught: " + e);
+            }
+        }
+
+        // Display all of the entered values for the instance updated using the
+        // fromJSON() method (Identity, Status, and Portage Level have changed).
+
+        System.out.println("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n" +
+                           deserializedSquad.toJSON());
+
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
@@ -388,7 +686,7 @@ public class Driver
             squadObject.setPortageLevel(-1);
         }
 
-        catch (Exception e) // No longer expected.
+        catch (Exception e)
         {
             System.out.println("Caught: " + e);
         }
