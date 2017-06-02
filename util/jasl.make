@@ -270,6 +270,28 @@ UI_DATA_STATIC_LIB_PATH       := $(LIB_PATH)/$(UI_DATA_STATIC_LIB_NAME)
 
 ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH) \
                                  $(UI_DATA_PKG_PATH)
+
+# org "package" (really just a parent directory for external packages?)
+
+ORG_PKG_NAME                  := org
+
+# org.json package.
+
+ORG_JSON_PKG_NAME             := json
+
+ORG_JSON_PKG_PATH             := $(ORG_PKG_NAME)/$(ORG_JSON_PKG_NAME)
+ORG_JSON_OBJ_PATH             := $(SRC_PATH)/$(ORG_JSON_PKG_PATH)
+ORG_JSON_BIN_PATH             := $(BIN_PATH)/$(ORG_JSON_PKG_PATH)
+ORG_JSON_INCLUDE_PATH         := $(INCLUDE_PATH)/$(ORG_JSON_PKG_PATH)
+
+ORG_JSON_CLASS_FILES          := $(ORG_JSON_BIN_PATH)/*.class
+ORG_JSON_OBJ_FILES            := $(ORG_JSON_OBJ_PATH)/$(OBJ_SUB_DIRECTORY)/*.o
+ORG_JSON_HDR_FILES            := $(ORG_JSON_HDR_PATH)/*.h
+
+ORG_JSON_BASE_LIB_NAME        := $(ORG_PKG_NAME)-$(ORG_JSON_PKG_NAME)
+ORG_JSON_STATIC_LIB_NAME      := $(LIB_PREFIX)$(ORG_JSON_BASE_LIB_NAME).a
+ORG_JSON_STATIC_LIB_PATH      := $(LIB_PATH)/$(ORG_JSON_STATIC_LIB_NAME)
+
 ## Scenarios
 
 SCENARIOS_DIRECTORY           := scenarios

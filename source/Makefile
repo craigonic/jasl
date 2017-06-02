@@ -66,7 +66,7 @@ JAVA_SRC_FILES     := ${ALL_CLASSES:.class=.java}
 JAVA_CLASSES       := ${ALL_CLASSES:.class=}
 
 GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES) \
-                      $(UI_DATA_OBJ_FILES)
+                      $(UI_DATA_OBJ_FILES)  $(ORG_JSON_OBJ_FILES)
 
 ## Build #######################################################################
 
@@ -167,6 +167,7 @@ build_c_static: $(DRIVER_C_STATIC)
 .PHONY : obj
 obj:
 	$(MAKE) -C $(PROGRAM_NAME) $@
+	$(MAKE) -C $(ORG_PKG_NAME) $@
 
 # Build the native executable version of all programs, using the gcj compiler.
 # Note that use of this target requires that all of the .java files in the jasl
@@ -231,14 +232,18 @@ $(DRIVER_EXEC): $(DRIVER_CLASS)
 $(DRIVER_DYNAMIC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_DYNAMIC) $(DRIVER_SRC) \
 	                 -L$(LIB_PATH) -l$(COUNTERS_BASE_LIB_NAME) \
-	                 -l$(UTILITIES_BASE_LIB_NAME) -l$(UI_DATA_BASE_LIB_NAME)
+	                 -l$(UTILITIES_BASE_LIB_NAME) \
+	                 -l$(UI_DATA_BASE_LIB_NAME) \
+	                 -l$(ORG_JSON_BASE_LIB_NAME)
 
 # Build and link with the static libraries.
 
 $(DRIVER_STATIC): $(DRIVER_CLASS)
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_STATIC) $(DRIVER_SRC) \
 	                 $(COUNTERS_STATIC_LIB_PATH) \
-	                 $(UTILITIES_STATIC_LIB_PATH) $(UI_DATA_STATIC_LIB_PATH)
+	                 $(UTILITIES_STATIC_LIB_PATH) \
+	                 $(UI_DATA_STATIC_LIB_PATH) \
+	                 $(ORG_JSON_STATIC_LIB_PATH)
 
 # Build the C++ version of the Driver program, which uses the Compiled Native
 # Interface (CNI) wrapper, and is used to test the classes defined in the jasl
@@ -259,7 +264,8 @@ $(DRIVER_CPP_DYNAMIC): bin_directory
 	                 -l$(CNI_WRAPPER_BASE_LIB_NAME) \
 	                 -l$(COUNTERS_BASE_LIB_NAME) \
 	                 -l$(UTILITIES_BASE_LIB_NAME) \
-	                 -l$(UI_DATA_BASE_LIB_NAME)
+	                 -l$(UI_DATA_BASE_LIB_NAME) \
+	                 -l$(ORG_JSON_BASE_LIB_NAME)
 
 # Build and link with the static libraries.
 
@@ -269,7 +275,8 @@ $(DRIVER_CPP_STATIC): bin_directory
 	                 $(CNI_WRAPPER_STATIC_LIB_PATH) \
 	                 $(COUNTERS_STATIC_LIB_PATH) \
 	                 $(UTILITIES_STATIC_LIB_PATH) \
-	                 $(UI_DATA_STATIC_LIB_PATH)
+	                 $(UI_DATA_STATIC_LIB_PATH) \
+	                 $(ORG_JSON_STATIC_LIB_PATH)
 
 # Build and link with the dynamic (CNI) wrapper libraries.
 
@@ -336,6 +343,7 @@ clean_java:
 .PHONY : clean_obj
 clean_obj:
 	$(MAKE) -C $(PROGRAM_NAME) $@
+	$(MAKE) -C $(ORG_PKG_NAME) $@
 
 .PHONY : clean
 clean: clean_class clean_jar clean_gcj clean_gcj_dynamic clean_gcj_static \
