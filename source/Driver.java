@@ -140,7 +140,7 @@ public class Driver
         // Retrieve the leader's status and then use the value to restore to
         // "normal".
 
-        List statusList = ((Leader)deserializedLeader).status();
+        List<Status.States> statusList = ((Leader)deserializedLeader).status();
 
         ((Leader)deserializedLeader).clearStatus((Status.States)statusList.get(0));
 
@@ -292,8 +292,6 @@ public class Driver
         // Test the fromJSON() method.
 
         System.out.println("\nTesting the fromJSON() method:");
-
-        String squadJSONData       = deserializedSquad.toJSON();
 
         String validDescription    = "{\"Description\":\"SQUAD\"";
         String validNationality    = ",\"Nationality\":\"RUSSIAN\"";
