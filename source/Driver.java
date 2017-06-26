@@ -293,48 +293,31 @@ public class Driver
 
         System.out.println("\nTesting the fromJSON() method:");
 
-        String validDescription    = "{\"Description\":\"SQUAD\"";
-        String validNationality    = ",\"Nationality\":\"RUSSIAN\"";
-        String validUnitType       = ",\"Unit Type\":\"Guards\"";
-        String validIdentity       = ",\"Identity\":\"B\"";
-        String validStatus         = ",\"Status\":0";
+        String deserializedSquadJSON = deserializedSquad.toJSON();
 
-        String validFighting       = validDescription + validNationality +
-                                      validUnitType + validIdentity + validStatus;
-
-        String validMovement       = ",\"Movement\":4";
-        String validPortageCap     = ",\"Portage Capacity\":3";
-        String validPortageLevel   = ",\"Portage Level\":2";
-
-        String validMobile         = validFighting + validMovement +
-                                      validPortageCap + validPortageLevel;
-
-        String validFirepower      = ",\"Firepower\":\"6\"";
-        String validFpEquivalent   = ",\"Firepower Equivalent\":6";
-        String validNormalRange    = ",\"Normal Range\":2";
-        String validMorale         = ",\"Morale\":8";
-        String validBrokenMorale   = ",\"Broken Morale\":8";
-        String validCanSelfRally   = ",\"Can Self Rally ?\":false";
-        String validPortageValue   = ",\"Portage Value\":10";
-        String validBPV            = ",\"Basic Point Value\":12";
-        String validELR            = ",\"Experience Level Rating\":4";
-        String validInfantryType   = ",\"Infantry Type\":\"GUARDS\"";
-
-        String validInfantry       = validMobile + validFirepower +
-                                      validFpEquivalent + validNormalRange +
-                                       validMorale + validBrokenMorale +
-                                        validCanSelfRally + validPortageValue +
-                                         validBPV + validELR + validInfantryType;
-
-        String validHasMaxELR      = ",\"Has Maximum ELR ?\":false";
-        String validClassification = ",\"Classification\":\"ELITE\"";
-
-        String validPersonnel      = validInfantry + validHasMaxELR +
-                                      validClassification;
-
-        String validCanAssaultFire = ",\"Can Assault Fire ?\":true";
-        String validCanSprayFire   = ",\"Can Spray Fire ?\":true";
-        String validSPE            = ",\"Smoke Placement Exponent\":0";
+        String validDescription    = "\"Description\":\"SQUAD\"";
+        String validNationality    = "\"Nationality\":\"RUSSIAN\"";
+        String validUnitType       = "\"Unit Type\":\"Guards\"";
+        String validIdentity       = "\"Identity\":\"A\"";
+        String validStatus         = "\"Status\":1";
+        String validMovement       = "\"Movement\":4";
+        String validPortageCap     = "\"Portage Capacity\":3";
+        String validPortageLevel   = "\"Portage Level\":0";
+        String validFirepower      = "\"Firepower\":\"6\"";
+        String validFpEquivalent   = "\"Firepower Equivalent\":6";
+        String validNormalRange    = "\"Normal Range\":2";
+        String validMorale         = "\"Morale\":8";
+        String validBrokenMorale   = "\"Broken Morale\":8";
+        String validCanSelfRally   = "\"Can Self Rally \\?\":false";
+        String validPortageValue   = "\"Portage Value\":10";
+        String validBPV            = "\"Basic Point Value\":12";
+        String validELR            = "\"Experience Level Rating\":4";
+        String validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
+        String validHasMaxELR      = "\"Has Maximum ELR \\?\":false";
+        String validClassification = "\"Classification\":\"ELITE\"";
+        String validCanAssaultFire = "\"Can Assault Fire \\?\":true";
+        String validCanSprayFire   = "\"Can Spray Fire \\?\":true";
+        String validSPE            = "\"Smoke Placement Exponent\":0";
 
         String fromJsonSquadTestStrings[][] =
         {
@@ -345,195 +328,201 @@ public class Driver
 
           {"Updating a Squad with Leader data",deserializedLeader.toJSON()},
           {"Updating a Squad with an invalid (wrong case) description",
-           "{\"Description\":\"Squad\"}"},
+           deserializedSquadJSON.replaceAll(validDescription,
+                                            validDescription.replaceAll("\"SQUAD\"",
+                                                                        "\"Squad\""))},
           {"Updating a Squad with an invalid (non-string) description",
-           "{\"Description\":null}"},
-
+           deserializedSquadJSON.replaceAll(validDescription,
+                                            validDescription.replaceAll("\"SQUAD\"",
+                                                                        "null"))},
          // Fighting
 
           {"Updating a Squad with a different nationality",
-           validDescription + ",\"Nationality\":\"GERMAN\"" + validUnitType +
-            validIdentity + validStatus + "}"},
+           deserializedSquadJSON.replaceAll(validNationality,
+                                            validNationality.replaceAll("\"RUSSIAN\"",
+                                                                        "\"GERMAN\""))},
           {"Updating a Squad with an invalid (wrong case) nationality",
-           validDescription + ",\"Nationality\":\"Russian\"}"},
+           deserializedSquadJSON.replaceAll(validNationality,
+                                            validNationality.replaceAll("\"RUSSIAN\"",
+                                                                        "\"Russian\""))},
           {"Updating a Squad with an invalid (non-string) nationality",
-           validDescription + ",\"Nationality\":null}"},
+           deserializedSquadJSON.replaceAll(validNationality,
+                                            validNationality.replaceAll("\"RUSSIAN\"",
+                                                                        "null"))},
 
           {"Updating a Squad with a different unit type",
-           validDescription + validNationality + ",\"Unit Type\":\"Gurkha\"" +
-            validIdentity + validStatus + "}"},
+           deserializedSquadJSON.replaceAll(validUnitType,
+                                            validUnitType.replaceAll("\"Guards\"",
+                                                                     "\"Gurkha\""))},
           {"Updating a Squad with an invalid (non-string) unit type",
-           validDescription + validNationality + ",\"Unit Type\":null}"},
+           deserializedSquadJSON.replaceAll(validUnitType,
+                                            validUnitType.replaceAll("\"Guards\"",
+                                                                     "null"))},
 
           {"Updating a Squad with an invalid (non-string) identity",
-           validDescription + validNationality + validUnitType +
-            ",\"Identity\":null" + validStatus + "}"},
+           deserializedSquadJSON.replaceAll(validIdentity,
+                                            validIdentity.replaceAll("\"A\"",
+                                                                     "null"))},
 
           {"Updating a Squad with an invalid (negative) status",
-           validDescription + validNationality + validUnitType + validIdentity +
-            ",\"Status\":-2}"},
+           deserializedSquadJSON.replaceAll(validStatus,
+                                            validStatus.replaceAll("1","-2"))},
           {"Updating a Squad with an invalid (non-integer) status",
-           validDescription + validNationality + validUnitType + validIdentity +
-            ",\"Status\":null}"},
+           deserializedSquadJSON.replaceAll(validStatus,
+                                            validStatus.replaceAll("1","null"))},
 
          // Mobile
 
           {"Updating a Squad with a different movement value",
-           validFighting + ",\"Movement\":3" +
-           validPortageCap + validPortageLevel + "}"},
+           deserializedSquadJSON.replaceAll(validMovement,
+                                            validMovement.replaceAll("4","3"))},
           {"Updating a Squad with an invalid (non-integer) movement value",
-           validFighting + ",\"Movement\":null}"},
+           deserializedSquadJSON.replaceAll(validMovement,
+                                            validMovement.replaceAll("4","null"))},
 
           {"Updating a Squad with a different portage capacity",
-           validFighting + validMovement + ",\"Portage Capacity\":5" +
-            validPortageLevel + "}"},
+           deserializedSquadJSON.replaceAll(validPortageCap,
+                                            validPortageCap.replaceAll("3","5"))},
           {"Updating a Squad with an invalid (non-integer) portage capacity",
-           validFighting + validMovement + ",\"Portage Capacity\":null}"},
+           deserializedSquadJSON.replaceAll(validPortageCap,
+                                            validPortageCap.replaceAll("3","null"))},
 
           {"Updating a Squad with an invalid (negative) portage level",
-           validFighting + validMovement + validPortageCap +
-            ",\"Portage Level\":-1}"},
+           deserializedSquadJSON.replaceAll(validPortageLevel,
+                                            validPortageLevel.replaceAll("0","-1"))},
           {"Updating a Squad with an invalid (non-integer) portage level",
-           validFighting + validMovement + validPortageCap +
-            ",\"Portage Level\":null}"},
-
+           deserializedSquadJSON.replaceAll(validPortageLevel,
+                                            validPortageLevel.replaceAll("0","null"))},
          // Infantry
 
           {"Updating a Squad with a different firepower value",
-           validMobile + ",\"Firepower\":\"4\"" + validFpEquivalent +
-            validNormalRange + validMorale + validBrokenMorale +
-             validCanSelfRally + validPortageValue + validBPV + validELR +
-              validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validFirepower,
+                                            validFirepower.replaceAll("\"6\"",
+                                                                      "\"4\""))},
           {"Updating a Squad with an invalid (non-string) firepower value",
-           validMobile + ",\"Firepower\":null}"},
+           deserializedSquadJSON.replaceAll(validFirepower,
+                                            validFirepower.replaceAll("\"6\"",
+                                                                      "null"))},
 
           {"Updating a Squad with a different firepower equivalent value",
-           validMobile + validFirepower + ",\"Firepower Equivalent\":4" +
-            validNormalRange + validMorale + validBrokenMorale +
-             validCanSelfRally + validPortageValue + validBPV + validELR +
-              validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validFpEquivalent,
+                                            validFpEquivalent.replaceAll("6","4"))},
           {"Updating a Squad with an invalid (non-integer) firepower equivalent value",
-           validMobile + validFirepower + ",\"Firepower Equivalent\":null}"},
+           deserializedSquadJSON.replaceAll(validFpEquivalent,
+                                            validFpEquivalent.replaceAll("6","null"))},
 
           {"Updating a Squad with a different normal range value",
-           validMobile + validFirepower + validFpEquivalent +
-            ",\"Normal Range\":4" + validMorale + validBrokenMorale +
-             validCanSelfRally + validPortageValue + validBPV + validELR +
-              validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validNormalRange,
+                                            validNormalRange.replaceAll("2","4"))},
           {"Updating a Squad with an invalid (non-integer) normal range value",
-           validMobile + validFirepower + validFpEquivalent +
-            ",\"Normal Range\":null}"},
+           deserializedSquadJSON.replaceAll(validNormalRange,
+                                            validNormalRange.replaceAll("2","null"))},
 
           {"Updating a Squad with a different morale value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            ",\"Morale\":7" + validBrokenMorale + validCanSelfRally +
-             validPortageValue + validBPV + validELR + validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validMorale,
+                                            validMorale.replaceAll("8","7"))},
           {"Updating a Squad with an invalid (non-integer) morale value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            ",\"Morale\":null}"},
+           deserializedSquadJSON.replaceAll(validMorale,
+                                            validMorale.replaceAll("8","null"))},
 
           {"Updating a Squad with a different broken morale value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + ",\"Broken Morale\":7" + validCanSelfRally +
-             validPortageValue + validBPV + validELR + validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validBrokenMorale,
+                                            validBrokenMorale.replaceAll("8","7"))},
           {"Updating a Squad with an invalid (non-integer) broken morale value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + ",\"Broken Morale\":null}"},
+           deserializedSquadJSON.replaceAll(validBrokenMorale,
+                                            validBrokenMorale.replaceAll("8","null"))},
 
           {"Updating a Squad with a different can self rally setting",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + ",\"Can Self Rally ?\":true" +
-             validPortageValue + validBPV + validELR + validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validCanSelfRally,
+                                            validCanSelfRally.replaceAll("false",
+                                                                         "true"))},
           {"Updating a Squad with an invalid (non-boolean) can self rally setting",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + ",\"Can Self Rally ?\":null}"},
+           deserializedSquadJSON.replaceAll(validCanSelfRally,
+                                            validCanSelfRally.replaceAll("false",
+                                                                         "null"))},
 
           {"Updating a Squad with a different portage value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             ",\"Portage Value\":9" + validBPV + validELR + validInfantryType +
-              "}"},
+           deserializedSquadJSON.replaceAll(validPortageValue,
+                                            validPortageValue.replaceAll("10","9"))},
           {"Updating a Squad with an invalid (non-integer) portage value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             ",\"Portage Value\":null}"},
+           deserializedSquadJSON.replaceAll(validPortageValue,
+                                            validPortageValue.replaceAll("10","null"))},
 
           {"Updating a Squad with a different basic point value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + ",\"Basic Point Value\":52" + validELR +
-              validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validBPV,
+                                            validBPV.replaceAll("12","52"))},
           {"Updating a Squad with an invalid (non-integer) basic point value",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + ",\"Basic Point Value\":null}"},
+           deserializedSquadJSON.replaceAll(validBPV,
+                                            validBPV.replaceAll("12","null"))},
 
           {"Updating a Squad with a different experience level rating",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + validBPV +",\"Experience Level Rating\":3" +
-              validInfantryType + "}"},
+           deserializedSquadJSON.replaceAll(validELR,
+                                            validELR.replaceAll("4","3"))},
           {"Updating a Squad with an invalid (non-integer) experience level rating",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + validBPV +
-              ",\"Experience Level Rating\":null}"},
+           deserializedSquadJSON.replaceAll(validELR,
+                                            validELR.replaceAll("4","null"))},
 
           {"Updating a Squad with a different infantry type",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + validBPV + validELR +
-              ",\"Infantry Type\":\"NONE\"" + "}"},
+           deserializedSquadJSON.replaceAll(validInfantryType,
+                                            validInfantryType.replaceAll("\"GUARDS\"",
+                                                                        "\"NONE\""))},
           {"Updating a Squad with an invalid (wrong case) infantry type",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + validBPV + validELR +
-              ",\"Infantry Type\":\"Guards\"" + "}"},
+           deserializedSquadJSON.replaceAll(validInfantryType,
+                                            validInfantryType.replaceAll("\"GUARDS\"",
+                                                                        "\"Guards\""))},
           {"Updating a Squad with an invalid (non-string) infantry type",
-           validMobile + validFirepower + validFpEquivalent + validNormalRange +
-            validMorale + validBrokenMorale + validCanSelfRally +
-             validPortageValue + validBPV + validELR +
-              ",\"Infantry Type\":null}"},
-
+           deserializedSquadJSON.replaceAll(validInfantryType,
+                                            validInfantryType.replaceAll("\"GUARDS\"",
+                                                                        "null"))},
          // Personnel
 
           {"Updating a Squad with a different has maximum ELR setting",
-           validInfantry + ",\"Has Maximum ELR ?\":true" +
-            validClassification + "}"},
+           deserializedSquadJSON.replaceAll(validHasMaxELR,
+                                            validHasMaxELR.replaceAll("false",
+                                                                      "true"))},
           {"Updating a Squad with an invalid (non-boolean) has maximum ELR setting",
-           validInfantry + ",\"Has Maximum ELR ?\":null}"},
+           deserializedSquadJSON.replaceAll(validHasMaxELR,
+                                            validHasMaxELR.replaceAll("false",
+                                                                      "null"))},
 
           {"Updating a Squad with a different classification",
-           validInfantry + validHasMaxELR +
-            ",\"Classification\":\"FIRST_LINE\"" + "}"},
+           deserializedSquadJSON.replaceAll(validClassification,
+                                            validClassification.replaceAll("\"ELITE\"",
+                                                                           "\"FIRST_LINE\""))},
           {"Updating a Squad with an invalid (wrong case) classification",
-           validInfantry + validHasMaxELR +
-            ",\"Classification\":\"Elite\"" + "}"},
+           deserializedSquadJSON.replaceAll(validClassification,
+                                            validClassification.replaceAll("\"ELITE\"",
+                                                                           "\"Elite\""))},
           {"Updating a Squad with an invalid (non-string) classification",
-           validInfantry + validHasMaxELR +
-            ",\"Classification\":null}"},
-
+           deserializedSquadJSON.replaceAll(validClassification,
+                                            validClassification.replaceAll("\"ELITE\"",
+                                                                           "null"))},
          // Squad
 
           {"Updating a Squad with a different can assault fire setting",
-           validPersonnel + ",\"Can Assault Fire ?\":false" +
-            validCanSprayFire + validSPE + "}"},
+           deserializedSquadJSON.replaceAll(validCanAssaultFire,
+                                            validCanAssaultFire.replaceAll("true",
+                                                                           "false"))},
           {"Updating a Squad with an invalid (non-boolean) can assault fire setting",
-           validPersonnel + ",\"Can Assault Fire ?\":null}"},
+           deserializedSquadJSON.replaceAll(validCanAssaultFire,
+                                            validCanAssaultFire.replaceAll("true",
+                                                                           "null"))},
 
           {"Updating a Squad with a different can spray fire setting",
-           validPersonnel + validCanAssaultFire +
-            ",\"Can Spray Fire ?\":false" + validSPE + "}"},
+           deserializedSquadJSON.replaceAll(validCanSprayFire,
+                                            validCanSprayFire.replaceAll("true",
+                                                                         "false"))},
           {"Updating a Squad with an invalid (non-boolean) can spray fire setting",
-           validPersonnel + validCanAssaultFire +
-            ",\"Can Spray Fire ?\":null}"},
+           deserializedSquadJSON.replaceAll(validCanSprayFire,
+                                            validCanSprayFire.replaceAll("true",
+                                                                         "null"))},
 
           {"Updating a Squad with a different smoke placement exponent value",
-           validPersonnel + validCanAssaultFire + validCanSprayFire +
-            ",\"Smoke Placement Exponent\":3"+ "}"},
+           deserializedSquadJSON.replaceAll(validSPE,
+                                            validSPE.replaceAll("0","3"))},
           {"Updating a Squad with an invalid (non-integer) smoke placement exponent value",
-           validPersonnel + validCanAssaultFire + validCanSprayFire +
-            ",\"Smoke Placement Exponent\":null}"}
+           deserializedSquadJSON.replaceAll(validSPE,
+                                            validSPE.replaceAll("0","null"))}
         };
 
         for (int i = 0;i < fromJsonSquadTestStrings.length;++i)
@@ -550,6 +539,8 @@ public class Driver
                 System.out.println("Caught: " + e);
             }
         }
+
+        // Leader
 
         String deserializedLeaderJSON = deserializedLeader.toJSON();
         String validModifier          = "\"Modifier\":-1";
@@ -579,8 +570,22 @@ public class Driver
             }
         }
 
-        // Display all of the entered values for the instance updated using the
-        // fromJSON() method (Identity, Status, and Portage Level have changed).
+        // Verify that all of the values for the Squad instance that can be
+        // changed using the fromJSON() method (Identity, Status, and Portage
+        // Level) work as expected.
+
+        deserializedSquadJSON =
+            deserializedSquadJSON.replaceAll(validIdentity,
+                                             validIdentity.replaceAll("\"A\"",
+                                                                      "\"B\""));
+        deserializedSquadJSON =
+            deserializedSquadJSON.replaceAll(validStatus,
+                                             validStatus.replaceAll("1","0"));
+        deserializedSquadJSON =
+            deserializedSquadJSON.replaceAll(validPortageLevel,
+                                             validPortageLevel.replaceAll("0","2"));
+
+        deserializedSquad.fromJSON(deserializedSquadJSON);
 
         System.out.println("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n" +
                            deserializedSquad.toJSON());
