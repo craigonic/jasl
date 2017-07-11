@@ -364,6 +364,300 @@ printf("(Deserialized) Squad.toString() output:\n\n%s\n\n",
 printf("(Deserialized) Squad.toJSON() output:\n\n%s\n\n",
        CniWrapper::js2cc($deserializedSquad->toJSON()));
 
+# Test the fromJSON() method.
+
+printf("Testing the fromJSON() method:\n");
+
+my $deserializedSquadJSON  = CniWrapper::js2cc($deserializedSquad->toJSON());
+my $deserializedLeaderJSON = CniWrapper::js2cc($deserializedLeader->toJSON());
+
+my $validDescription    = "\"Description\":\"SQUAD\"";
+my $validNationality    = "\"Nationality\":\"RUSSIAN\"";
+my $validUnitType       = "\"Unit Type\":\"Guards\"";
+my $validIdentity       = "\"Identity\":\"A\"";
+my $validStatus         = "\"Status\":1";
+my $validMovement       = "\"Movement\":4";
+my $validPortageCap     = "\"Portage Capacity\":3";
+my $validPortageLevel   = "\"Portage Level\":0";
+my $validFirepower      = "\"Firepower\":\"6\"";
+my $validFpEquivalent   = "\"Firepower Equivalent\":6";
+my $validNormalRange    = "\"Normal Range\":2";
+my $validMorale         = "\"Morale\":8";
+my $validBrokenMorale   = "\"Broken Morale\":8";
+my $validCanSelfRally   = "\"Can Self Rally \\?\":false";
+my $validPortageValue   = "\"Portage Value\":10";
+my $validBPV            = "\"Basic Point Value\":12";
+my $validELR            = "\"Experience Level Rating\":4";
+my $validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
+my $validHasMaxELR      = "\"Has Maximum ELR \\?\":false";
+my $validClassification = "\"Classification\":\"ELITE\"";
+my $validCanAssaultFire = "\"Can Assault Fire \\?\":true";
+my $validCanSprayFire   = "\"Can Spray Fire \\?\":true";
+my $validSPE            = "\"Smoke Placement Exponent\":0";
+
+# Unit
+
+(my $wrongCaseDescription = $deserializedSquadJSON) =~
+    s/$validDescription/"Description":"Squad"/;
+(my $invalidDescription = $deserializedSquadJSON) =~
+    s/$validDescription/"Description":null/;
+
+# Fighting
+
+(my $differentNationality = $deserializedSquadJSON) =~
+    s/$validNationality/"Nationality":"GERMAN"/;
+(my $wrongCaseNationality = $deserializedSquadJSON) =~
+    s/$validNationality/"Nationality":"Russian"/;
+(my $invalidNationality = $deserializedSquadJSON) =~
+    s/$validNationality/"Nationality":null/;
+
+(my $differentUnitType = $deserializedSquadJSON) =~
+    s/$validUnitType/"Unit Type":"Gurkha"/;
+(my $invalidUnitType = $deserializedSquadJSON) =~
+    s/$validUnitType/"Unit Type":null/;
+
+(my $invalidIdentity = $deserializedSquadJSON) =~
+    s/$validIdentity/"Identity":null/;
+
+(my $negativeStatus = $deserializedSquadJSON) =~
+    s/$validStatus/"Status":-2/;
+(my $invalidStatus = $deserializedSquadJSON) =~
+    s/$validStatus/"Status":null/;
+
+# Mobile
+
+(my $differentMovement = $deserializedSquadJSON) =~
+    s/$validMovement/"Movement":3/;
+(my $invalidMovement = $deserializedSquadJSON) =~
+    s/$validMovement/"Movement":null/;
+
+(my $differentPortageCapacity = $deserializedSquadJSON) =~
+    s/$validPortageCap/"Portage Capacity":5/;
+(my $invalidPortageCapacity = $deserializedSquadJSON) =~
+    s/$validPortageCap/"Portage Capacity":null/;
+
+(my $negativePortageLevel = $deserializedSquadJSON) =~
+    s/$validPortageLevel/"Portage Level":-1/;
+(my $invalidPortageLevel = $deserializedSquadJSON) =~
+    s/$validPortageLevel/"Portage Level":null/;
+
+# Infantry
+
+(my $differentFirepower = $deserializedSquadJSON) =~
+    s/$validFirepower/"Firepower":"4"/;
+(my $invalidFirepower = $deserializedSquadJSON) =~
+    s/$validFirepower/"Firepower":null/;
+
+(my $differentFpEquivalent = $deserializedSquadJSON) =~
+    s/$validFpEquivalent/"Firepower Equivalent":4/;
+(my $invalidFpEquivalent = $deserializedSquadJSON) =~
+    s/$validFpEquivalent/"Firepower Equivalent":null/;
+
+(my $differentNormalRange = $deserializedSquadJSON) =~
+    s/$validNormalRange/"Normal Range":4/;
+(my $invalidNormalRange = $deserializedSquadJSON) =~
+    s/$validNormalRange/"Normal Range":null/;
+
+(my $differentMorale = $deserializedSquadJSON) =~
+    s/$validMorale/"Morale":7/;
+(my $invalidMorale = $deserializedSquadJSON) =~
+    s/$validMorale/"Morale":null/;
+
+(my $differentBrokenMorale = $deserializedSquadJSON) =~
+    s/$validBrokenMorale/"Broken Morale":7/;
+(my $invalidBrokenMorale = $deserializedSquadJSON) =~
+    s/$validBrokenMorale/"Broken Morale":null/;
+
+(my $differentCanSelfRally = $deserializedSquadJSON) =~
+    s/$validCanSelfRally/"Can Self Rally ?":true/;
+(my $invalidCanSelfRally = $deserializedSquadJSON) =~
+    s/$validCanSelfRally/"Can Self Rally ?":null/;
+
+(my $differentPortageValue = $deserializedSquadJSON) =~
+    s/$validPortageValue/"Portage Value":9/;
+(my $invalidPortageValue = $deserializedSquadJSON) =~
+    s/$validPortageValue/"Portage Value":null/;
+
+(my $differentBPV = $deserializedSquadJSON) =~
+    s/$validBPV/"Basic Point Value":52/;
+(my $invalidBPV = $deserializedSquadJSON) =~
+    s/$validBPV/"Basic Point Value":null/;
+
+(my $differentELR = $deserializedSquadJSON) =~
+    s/$validELR/"Experience Level Rating":3/;
+(my $invalidELR = $deserializedSquadJSON) =~
+    s/$validELR/"Experience Level Rating":null/;
+
+(my $differentInfantryType = $deserializedSquadJSON) =~
+    s/$validInfantryType/"Infantry Type":"NONE"/;
+(my $wrongCaseInfantryType = $deserializedSquadJSON) =~
+    s/$validInfantryType/"Infantry Type":"Guards"/;
+(my $invalidInfantryType = $deserializedSquadJSON) =~
+    s/$validInfantryType/"Infantry Type":null/;
+
+# Personnel
+
+(my $differentHasMaxELR = $deserializedSquadJSON) =~
+    s/$validHasMaxELR/"Has Maximum ELR ?":true/;
+(my $invalidHasMaxELR = $deserializedSquadJSON) =~
+    s/$validHasMaxELR/"Has Maximum ELR ?":null/;
+
+(my $differentClassification = $deserializedSquadJSON) =~
+    s/$validClassification/"Classification":"FIRST_LINE"/;
+(my $wrongCaseClassification = $deserializedSquadJSON) =~
+    s/$validClassification/"Classification":"Elite"/;
+(my $invalidClassification = $deserializedSquadJSON) =~
+    s/$validClassification/"Classification":null/;
+
+# Squad
+
+(my $differentCanAssaultFire = $deserializedSquadJSON) =~
+    s/$validCanAssaultFire/"Can Assault Fire ?":false/;
+(my $invalidCanAssaultFire = $deserializedSquadJSON) =~
+    s/$validCanAssaultFire/"Can Assault Fire ?":null/;
+
+(my $differentCanSprayFire = $deserializedSquadJSON) =~
+    s/$validCanSprayFire/"Can Spray Fire ?":false/;
+(my $invalidCanSprayFire = $deserializedSquadJSON) =~
+    s/$validCanSprayFire/"Can Spray Fire ?":null/;
+
+(my $differentSPE = $deserializedSquadJSON) =~
+    s/$validSPE/"Smoke Placement Exponent":3/;
+(my $invalidSPE = $deserializedSquadJSON) =~
+    s/$validSPE/"Smoke Placement Exponent":null/;
+
+my @fromJsonSquadTestStrings =
+(
+ # Unit
+
+  ["Null JSON input data",undef],
+  ["Empty JSON input data",""],
+
+  ["Updating a Squad with Leader data",$deserializedLeaderJSON],
+  ["Updating a Squad with an invalid (wrong case) description",$wrongCaseDescription],
+  ["Updating a Squad with an invalid (non-string) description",$invalidDescription],
+
+ # Fighting
+
+  ["Updating a Squad with a different nationality",$differentNationality],
+  ["Updating a Squad with an invalid (wrong case) nationality",$wrongCaseNationality],
+  ["Updating a Squad with an invalid (non-string) nationality",$invalidNationality],
+  ["Updating a Squad with a different unit type",$differentUnitType],
+  ["Updating a Squad with an invalid (non-string) unit type",$invalidUnitType],
+  ["Updating a Squad with an invalid (non-string) identity",$invalidIdentity],
+  ["Updating a Squad with an invalid (negative) status",$negativeStatus],
+  ["Updating a Squad with an invalid (non-integer) status",$invalidStatus],
+
+ # Mobile
+
+  ["Updating a Squad with a different movement value",$differentMovement],
+  ["Updating a Squad with an invalid (non-integer) movement value",$invalidMovement],
+  ["Updating a Squad with a different portage capacity",$differentPortageCapacity],
+  ["Updating a Squad with an invalid (non-integer) portage capacity",$invalidPortageCapacity],
+  ["Updating a Squad with an invalid (negative) portage level",$negativePortageLevel],
+  ["Updating a Squad with an invalid (non-integer) portage level",$invalidPortageLevel],
+
+ # Infantry
+
+  ["Updating a Squad with a different firepower value",$differentFirepower],
+  ["Updating a Squad with an invalid (non-string) firepower value",$invalidFirepower],
+  ["Updating a Squad with a different firepower equivalent value",$differentFpEquivalent],
+  ["Updating a Squad with an invalid (non-integer) firepower equivalent value",$invalidFpEquivalent],
+  ["Updating a Squad with a different normal range value",$differentNormalRange],
+  ["Updating a Squad with an invalid (non-integer) normal range value",$invalidNormalRange],
+  ["Updating a Squad with a different morale value",$differentMorale],
+  ["Updating a Squad with an invalid (non-integer) morale value",$invalidMorale],
+  ["Updating a Squad with a different broken morale value",$differentBrokenMorale],
+  ["Updating a Squad with an invalid (non-integer) broken morale value",$invalidBrokenMorale],
+  ["Updating a Squad with a different can self rally setting",$differentCanSelfRally],
+  ["Updating a Squad with an invalid (non-boolean) can self rally setting",$invalidCanSelfRally],
+  ["Updating a Squad with a different portage value",$differentPortageValue],
+  ["Updating a Squad with an invalid (non-integer) portage value",$invalidPortageValue],
+  ["Updating a Squad with a different basic point value",$differentBPV],
+  ["Updating a Squad with an invalid (non-integer) basic point value",$invalidBPV],
+  ["Updating a Squad with a different experience level rating",$differentELR],
+  ["Updating a Squad with an invalid (non-integer) experience level rating",$invalidELR],
+  ["Updating a Squad with a different infantry type",$differentInfantryType],
+  ["Updating a Squad with an invalid (wrong case) infantry type",$wrongCaseInfantryType],
+  ["Updating a Squad with an invalid (non-string) infantry type",$invalidInfantryType],
+
+ # Personnel
+
+  ["Updating a Squad with a different has maximum ELR setting",$differentHasMaxELR],
+  ["Updating a Squad with an invalid (non-boolean) has maximum ELR setting",$invalidHasMaxELR],
+  ["Updating a Squad with a different classification",$differentClassification],
+  ["Updating a Squad with an invalid (wrong case) classification",$wrongCaseClassification],
+  ["Updating a Squad with an invalid (non-string) classification",$invalidClassification],
+
+ # Squad
+
+  ["Updating a Squad with a different can assault fire setting",$differentCanAssaultFire],
+  ["Updating a Squad with an invalid (non-boolean) can assault fire setting",$invalidCanAssaultFire],
+  ["Updating a Squad with a different can spray fire setting",$differentCanSprayFire],
+  ["Updating a Squad with an invalid (non-boolean) can spray fire setting",$invalidCanSprayFire],
+  ["Updating a Squad with a different smoke placement exponent value",$differentSPE],
+  ["Updating a Squad with an invalid (non-integer) smoke placement exponent value",$invalidSPE]
+);
+
+for my $row (0..$#fromJsonSquadTestStrings)
+{
+#   printf("label: %s JSON: %s\n",
+#          $fromJsonSquadTestStrings[$row][0],
+#          $fromJsonSquadTestStrings[$row][1]);
+
+    printf("\n%s:\n",$fromJsonSquadTestStrings[$row][0]);
+
+    $status = eval
+    {
+        $deserializedSquad->fromJSON(CniWrapper::cc2js($fromJsonSquadTestStrings[$row][1]));
+    };
+
+    printException($@) if (!defined($status));
+}
+
+# Leader
+
+my $validModifier = "\"Modifier\":-1";
+
+(my $differentModifier = $deserializedLeaderJSON) =~
+    s/$validModifier/"Modifier":-2/;
+(my $invalidModifier = $deserializedLeaderJSON) =~
+    s/$validModifier/"Modifier":null/;
+
+my @fromJsonLeaderTestStrings =
+(
+  ["Updating a Leader with a different modifier value",$differentModifier],
+  ["Updating a Leader with an invalid (non-integer) modifier value",$invalidModifier]
+);
+
+for my $row (0..$#fromJsonLeaderTestStrings)
+{
+#   printf("label: %s JSON: %s\n",
+#          $fromJsonLeaderTestStrings[$row][0],
+#          $fromJsonLeaderTestStrings[$row][1]);
+
+    printf("\n%s:\n",$fromJsonLeaderTestStrings[$row][0]);
+
+    $status = eval
+    {
+        $deserializedLeader->fromJSON(CniWrapper::cc2js($fromJsonLeaderTestStrings[$row][1]));
+    };
+
+    printException($@) if (!defined($status));
+}
+
+# Verify that all of the values for the Squad instance that can be changed using
+# the fromJSON() method (Identity, Status, and Portage Level) work as expected.
+
+$deserializedSquadJSON =~ s/$validIdentity/"Identity":"B"/;
+$deserializedSquadJSON =~ s/$validStatus/"Status":0/;
+$deserializedSquadJSON =~ s/$validPortageLevel/"Portage Level":2/;
+
+$deserializedSquad->fromJSON(CniWrapper::cc2js($deserializedSquadJSON));
+
+printf("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n\n",
+       CniWrapper::js2cc($deserializedSquad->toJSON()));
+
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
