@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        // These items are used to set parameters that require conversion /
+        // These items are used to set arguments that require conversion /
         // initialization from a (static) enum value.
 
         Nationalities*   nationality    = Nationalities::valueOf(cc2js("GERMAN"));
@@ -1183,7 +1183,7 @@ int main(int argc, char *argv[])
 
         // Invalid portage level
 
-        printf("\nInvalid portage level parameter:\n");
+        printf("\nInvalid portage level argument:\n");
 
         try
         {
@@ -1202,7 +1202,7 @@ int main(int argc, char *argv[])
 
         // Incompatible nationality and unitType
 
-        printf("\nIncompatible nationality and unitType parameters:\n");
+        printf("\nIncompatible nationality and unitType arguments:\n");
 
         try
         {
@@ -1221,7 +1221,7 @@ int main(int argc, char *argv[])
 
         // Incompatible description and unitType
 
-        printf("\nIncompatible description and unitType parameters:\n");
+        printf("\nIncompatible description and unitType arguments:\n");
 
         try
         {
@@ -1240,7 +1240,7 @@ int main(int argc, char *argv[])
 
         // Invalid Firepower
 
-        printf("\nInvalid (less than 0) firepower parameter:\n");
+        printf("\nInvalid (less than 0) firepower argument:\n");
 
         try
         {
@@ -1253,7 +1253,7 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        printf("\nInvalid (greater than maximum) firepower parameter:\n");
+        printf("\nInvalid (greater than maximum) firepower argument:\n");
 
         try
         {
@@ -1268,7 +1268,7 @@ int main(int argc, char *argv[])
 
         // Invalid Range
 
-        printf("\nInvalid (less than 0) normal range parameter:\n");
+        printf("\nInvalid (less than 0) normal range argument:\n");
 
         try
         {
@@ -1283,7 +1283,7 @@ int main(int argc, char *argv[])
 
         // Invalid Morale (Minimum)
 
-        printf("\nInvalid (less than 0) morale parameter:\n");
+        printf("\nInvalid (less than 0) morale argument:\n");
 
         try
         {
@@ -1298,7 +1298,7 @@ int main(int argc, char *argv[])
 
         // Invalid Morale (Maximum)
 
-        printf("\nInvalid (greater than maximum) morale parameter:\n");
+        printf("\nInvalid (greater than maximum) morale argument:\n");
 
         try
         {
@@ -1313,7 +1313,7 @@ int main(int argc, char *argv[])
 
         // Invalid Broken Morale (Minimum)
 
-        printf("\nInvalid (less than 0) broken morale parameter:\n");
+        printf("\nInvalid (less than 0) broken morale argument:\n");
 
         try
         {
@@ -1328,7 +1328,7 @@ int main(int argc, char *argv[])
 
         // Invalid Broken Morale (Maximum)
 
-        printf("\nInvalid (greater than maximum) broken morale parameter:\n");
+        printf("\nInvalid (greater than maximum) broken morale argument:\n");
 
         try
         {
@@ -1391,7 +1391,7 @@ int main(int argc, char *argv[])
 
         // Incompatible Classification
 
-        printf("\nIncompatible classification parameter:\n");
+        printf("\nIncompatible classification argument:\n");
 
         try
         {
@@ -1451,7 +1451,7 @@ int main(int argc, char *argv[])
 
         // Invalid Modifier (Minimum)
 
-        printf("\nInvalid (less than minimum) modifier parameter:\n");
+        printf("\nInvalid (less than minimum) modifier argument:\n");
 
         try
         {
@@ -1465,7 +1465,7 @@ int main(int argc, char *argv[])
 
         // Invalid Modifier (Maximum)
 
-        printf("\nInvalid (greater than maximum) modifier parameter:\n");
+        printf("\nInvalid (greater than maximum) modifier argument:\n");
 
         try
         {
@@ -1476,7 +1476,7 @@ int main(int argc, char *argv[])
         {
             printExceptionMessage(t);
         }
-
+/*
         // Test the Dice class.
 
         printf("\nTesting the execution of the Dice class:\n\n");
@@ -1496,7 +1496,7 @@ int main(int argc, char *argv[])
 //                 theDice->combinedResult());
 
             printJavaString(theDice->toText());
-        }
+        } */
     }
 
     catch (jthrowable t)
@@ -1506,7 +1506,7 @@ int main(int argc, char *argv[])
 
     // Test the Game class.
 
-    printf("Testing the operations of the Game class:\n\n");
+    printf("\nTesting the operations of the Game class:\n\n");
 
     Sides*  alliedSide      = Sides::valueOf(cc2js("ALLIES"));
     jstring pixie           = cc2js("Pixie");

@@ -733,7 +733,7 @@ $squad->setIdentity(CniWrapper::cc2js(""));
 
 # Invalid portage level
 
-printf("\nInvalid portage level parameter:\n");
+printf("\nInvalid portage level argument:\n");
 
 $status = eval
 {
@@ -750,7 +750,7 @@ $classification = $Counters::Classifications::FIRST_LINE;
 
 # Incompatible nationality and unitType
 
-printf("\nIncompatible nationality and unitType parameters:\n");
+printf("\nIncompatible nationality and unitType arguments:\n");
 
 $status = eval
 {
@@ -766,7 +766,7 @@ $classification = $Counters::Classifications::GREEN;
 
 # Incompatible description and unitType
 
-printf("\nIncompatible description and unitType parameters:\n");
+printf("\nIncompatible description and unitType arguments:\n");
 
 $status = eval
 {
@@ -782,7 +782,7 @@ $classification = $Counters::Classifications::FIRST_LINE;
 
 # Invalid Firepower
 
-printf("\nInvalid (less than 0) firepower parameter:\n");
+printf("\nInvalid (less than 0) firepower argument:\n");
 
 $status = eval
 {
@@ -792,7 +792,7 @@ $status = eval
 
 printException($@) if (!defined($status));
 
-printf("\nInvalid (greater than maximum) firepower parameter:\n");
+printf("\nInvalid (greater than maximum) firepower argument:\n");
 
 $status = eval
 {
@@ -804,7 +804,7 @@ printException($@) if (!defined($status));
 
 # Invalid Range
 
-printf("\nInvalid (less than 0) normal range parameter:\n");
+printf("\nInvalid (less than 0) normal range argument:\n");
 
 $status = eval
 {
@@ -816,7 +816,7 @@ printException($@) if (!defined($status));
 
 # Invalid Morale (Minimum)
 
-printf("\nInvalid (less than 0) morale parameter:\n");
+printf("\nInvalid (less than 0) morale argument:\n");
 
 $status = eval
 {
@@ -828,7 +828,7 @@ printException($@) if (!defined($status));
 
 # Invalid Morale (Maximum)
 
-printf("\nInvalid (greater than maximum) morale parameter:\n");
+printf("\nInvalid (greater than maximum) morale argument:\n");
 
 $status = eval
 {
@@ -840,7 +840,7 @@ printException($@) if (!defined($status));
 
 # Invalid Broken Morale (Minimum)
 
-printf("\nInvalid (less than 0) broken morale parameter:\n");
+printf("\nInvalid (less than 0) broken morale argument:\n");
 
 $status = eval
 {
@@ -852,7 +852,7 @@ printException($@) if (!defined($status));
 
 # Invalid Broken Morale (Maximum)
 
-printf("\nInvalid (greater than maximum) broken morale parameter:\n");
+printf("\nInvalid (greater than maximum) broken morale argument:\n");
 
 $status = eval
 {
@@ -903,7 +903,7 @@ $classification = $Counters::Classifications::SS;
 
 # Incompatible Classification
 
-printf("\nIncompatible classification parameter:\n");
+printf("\nIncompatible classification argument:\n");
 
 $status = eval
 {
@@ -951,7 +951,7 @@ $unitType       = $Counters::InfantryTypes::CANADIAN;
 
 # Invalid Modifier (Minimum)
 
-printf("\nInvalid (less than minimum) modifier parameter:\n");
+printf("\nInvalid (less than minimum) modifier argument:\n");
 
 $status = eval
 {
@@ -962,7 +962,7 @@ printException($@) if (!defined($status));
 
 # Invalid Modifier (Maximum)
 
-printf("\nInvalid (greater than maximum) modifier parameter:\n");
+printf("\nInvalid (greater than maximum) modifier argument:\n");
 
 $status = eval
 {
@@ -973,23 +973,23 @@ printException($@) if (!defined($status));
 
 # Test the Dice class.
 
-printf("\nTesting the execution of the Dice class:\n\n");
+#printf("\nTesting the execution of the Dice class:\n\n");
 
-for (my $i = 0;$i < 12;$i++)
-{
-    my $theDice = new Utilities::Dice();
+#for (my $i = 0;$i < 12;$i++)
+#{
+#    my $theDice = new Utilities::Dice();
 
-#   printf("Access methods test - White: %d Colored: %d Combined: %2d\n",
-#          $theDice->whiteDieValue(),
-#          $theDice->coloredDieValue(),
-#          $theDice->combinedResult());
+##   printf("Access methods test - White: %d Colored: %d Combined: %2d\n",
+##          $theDice->whiteDieValue(),
+##          $theDice->coloredDieValue(),
+##          $theDice->combinedResult());
 
-    printf("%s\n",CniWrapper::js2cc($theDice->toText()));
-}
+#    printf("%s\n",CniWrapper::js2cc($theDice->toText()));
+#}
 
 # Test the Game class.
 
-printf("Testing the operations of the Game class:\n");
+printf("\nTesting the operations of the Game class:\n");
 
 my $allies           = UiData::Sides::valueOf(CniWrapper::cc2js("ALLIES"));
 $nationality         = $Counters::Nationalities::AMERICAN;

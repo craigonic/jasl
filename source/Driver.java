@@ -682,7 +682,7 @@ public class Driver
 
         // Invalid portage level
 
-        System.out.println("\nInvalid portage level parameter:\n");
+        System.out.println("\nInvalid portage level argument:\n");
 
         try
         {
@@ -698,7 +698,7 @@ public class Driver
 
         // Incompatible nationality and unitType
 
-        System.out.println("\nIncompatible nationality and unitType parameters:\n");
+        System.out.println("\nIncompatible nationality and unitType arguments:\n");
 
         try
         {
@@ -716,7 +716,7 @@ public class Driver
 
         // Incompatible description and unitType
 
-        System.out.println("\nIncompatible description and unitType parameters:\n");
+        System.out.println("\nIncompatible description and unitType arguments:\n");
 
         try
         {
@@ -734,7 +734,7 @@ public class Driver
 
         // Invalid Firepower
 
-        System.out.println("\nInvalid (less than 0) firepower parameter:\n");
+        System.out.println("\nInvalid (less than 0) firepower argument:\n");
 
         try
         {
@@ -750,7 +750,7 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        System.out.println("\nInvalid (greater than maximum) firepower parameter:\n");
+        System.out.println("\nInvalid (greater than maximum) firepower argument:\n");
 
         try
         {
@@ -768,7 +768,7 @@ public class Driver
 
         // Invalid Range
 
-        System.out.println("\nInvalid (less than 0) normal range parameter:\n");
+        System.out.println("\nInvalid (less than 0) normal range argument:\n");
 
         try
         {
@@ -786,7 +786,7 @@ public class Driver
 
         // Invalid Morale (Minimum)
 
-        System.out.println("\nInvalid (less than 0) morale parameter:\n");
+        System.out.println("\nInvalid (less than 0) morale argument:\n");
 
         try
         {
@@ -804,7 +804,7 @@ public class Driver
 
         // Invalid Morale (Maximum)
 
-        System.out.println("\nInvalid (greater than maximum) morale parameter:\n");
+        System.out.println("\nInvalid (greater than maximum) morale argument:\n");
 
         try
         {
@@ -822,7 +822,7 @@ public class Driver
 
         // Invalid Broken Morale (Minimum)
 
-        System.out.println("\nInvalid (less than 0) broken morale parameter:\n");
+        System.out.println("\nInvalid (less than 0) broken morale argument:\n");
 
         try
         {
@@ -840,7 +840,7 @@ public class Driver
 
         // Invalid Broken Morale (Maximum)
 
-        System.out.println("\nInvalid (greater than maximum) broken morale parameter:\n");
+        System.out.println("\nInvalid (greater than maximum) broken morale argument:\n");
 
         try
         {
@@ -912,7 +912,7 @@ public class Driver
 
         // Incompatible Classification
 
-        System.out.println("\nIncompatible classification parameter:\n");
+        System.out.println("\nIncompatible classification argument:\n");
 
         try
         {
@@ -973,7 +973,7 @@ public class Driver
 
         // Invalid Modifier (Minimum)
 
-        System.out.println("Invalid (less than minimum) modifier parameter:\n");
+        System.out.println("Invalid (less than minimum) modifier argument:\n");
 
         try
         {
@@ -989,7 +989,7 @@ public class Driver
 
         // Invalid Modifier (Maximum)
 
-        System.out.println("\nInvalid (greater than maximum) modifier parameter:\n");
+        System.out.println("\nInvalid (greater than maximum) modifier argument:\n");
 
         try
         {
@@ -1002,7 +1002,7 @@ public class Driver
         {
             System.out.println("Caught: " + e);
         }
-
+/*
         // Test the Dice class.
 
         System.out.println("\nTesting the execution of the Dice class:\n");
@@ -1025,10 +1025,10 @@ public class Driver
                 System.out.println("Caught: " + e);
             }
         }
-
+*/
         // Test the Game class.
 
-        System.out.println("Testing the operations of the Game class:\n");
+        System.out.println("\nTesting the operations of the Game class:\n");
 
         Game.game().addPlayer(Side.Sides.ALLIES,"Pixie",
                               Nationality.Nationalities.AMERICAN,1);

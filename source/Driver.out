@@ -1,4 +1,4 @@
-Wed May 31 09:04:59 PDT 2017
+Wed Jul 12 09:43:35 PDT 2017
 
 Leader.toText() output:
 
@@ -443,45 +443,45 @@ Z
 
 Testing Exception handling for Squad update methods:
 
-Invalid portage level parameter:
+Invalid portage level argument:
 
 Caught: java.lang.IllegalArgumentException: Mobile(setPortageLevel) - Invalid argument(s) received : -1
 
 Testing Exception handling during Squad creation:
 
-Incompatible nationality and unitType parameters:
+Incompatible nationality and unitType arguments:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : British and Engineers
 
-Incompatible description and unitType parameters:
+Incompatible description and unitType arguments:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : Squad and Commissar
 
-Invalid (less than 0) firepower parameter:
+Invalid (less than 0) firepower argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
-Invalid (greater than maximum) firepower parameter:
+Invalid (greater than maximum) firepower argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
 
-Invalid (less than 0) normal range parameter:
+Invalid (less than 0) normal range argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -255
 
-Invalid (less than 0) morale parameter:
+Invalid (less than 0) morale argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
-Invalid (greater than maximum) morale parameter:
+Invalid (greater than maximum) morale argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
 
-Invalid (less than 0) broken morale parameter:
+Invalid (less than 0) broken morale argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -7
 
-Invalid (greater than maximum) broken morale parameter:
+Invalid (greater than maximum) broken morale argument:
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 17
 
@@ -497,7 +497,7 @@ Invalid (greater than maximum) Experience Level Rating (ELR):
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 6
 
-Incompatible classification parameter:
+Incompatible classification argument:
 
 Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Italian and SS
 
@@ -511,39 +511,13 @@ Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid argumen
 
 Testing Exception handling during Leader creation:
 
-Invalid (less than minimum) modifier parameter:
+Invalid (less than minimum) modifier argument:
 
 Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : -4
 
-Invalid (greater than maximum) modifier parameter:
+Invalid (greater than maximum) modifier argument:
 
 Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : 4
-
-Testing the execution of the Dice class:
-
-White Die         : 2    Colored Die       : 3    Combined Result   : 5    
-
-White Die         : 4    Colored Die       : 1    Combined Result   : 5    
-
-White Die         : 1    Colored Die       : 5    Combined Result   : 6    
-
-White Die         : 5    Colored Die       : 1    Combined Result   : 6    
-
-White Die         : 4    Colored Die       : 5    Combined Result   : 9    
-
-White Die         : 5    Colored Die       : 4    Combined Result   : 9    
-
-White Die         : 3    Colored Die       : 1    Combined Result   : 4    
-
-White Die         : 3    Colored Die       : 5    Combined Result   : 8    
-
-White Die         : 5    Colored Die       : 2    Combined Result   : 7    
-
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
-
-White Die         : 3    Colored Die       : 2    Combined Result   : 5    
-
-White Die         : 6    Colored Die       : 1    Combined Result   : 7    
 
 Testing the operations of the Game class:
 

@@ -605,7 +605,7 @@ squad.setIdentity(cc2js(""))
 
 # Invalid portage level
 
-print "\nInvalid portage level parameter:"
+print "\nInvalid portage level argument:"
 
 try:
     squad.setPortageLevel(-1)
@@ -619,7 +619,7 @@ unitType    = InfantryTypes_valueOf(cc2js("ENGINEERS"))
 
 # Incompatible nationality and unitType
 
-print "\nIncompatible nationality and unitType parameters:"
+print "\nIncompatible nationality and unitType arguments:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
@@ -633,7 +633,7 @@ classification = Classifications_valueOf(cc2js("GREEN"))
 
 # Incompatible description and unitType
 
-print "\nIncompatible description and unitType parameters:"
+print "\nIncompatible description and unitType arguments:"
 
 try:
     squad = Squad(nationality,unitType,4,4,7,7,False,10,3,False,classification,
@@ -647,7 +647,7 @@ classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
 # Invalid Firepower
 
-print "\nInvalid (less than 0) firepower parameter:"
+print "\nInvalid (less than 0) firepower argument:"
 
 try:
     squad = Squad(nationality,unitType,-1,6,7,7,False,10,3,False,classification,
@@ -655,7 +655,7 @@ try:
 except ValueError as detail:
     printException(detail)
 
-print "\nInvalid (greater than maximum) firepower parameter:"
+print "\nInvalid (greater than maximum) firepower argument:"
 
 try:
     squad = Squad(nationality,unitType,11,6,7,7,False,10,3,False,classification,
@@ -665,7 +665,7 @@ except ValueError as detail:
 
 # Invalid Range
 
-print "\nInvalid (less than 0) normal range parameter:"
+print "\nInvalid (less than 0) normal range argument:"
 
 try:
     squad = Squad(nationality,unitType,4,-255,7,7,False,10,3,False,
@@ -675,7 +675,7 @@ except ValueError as detail:
 
 # Invalid Morale (Minimum)
 
-print "\nInvalid (less than 0) morale parameter:"
+print "\nInvalid (less than 0) morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,-1,7,False,10,3,False,classification,
@@ -685,7 +685,7 @@ except ValueError as detail:
 
 # Invalid Morale (Maximum)
 
-print "\nInvalid (greater than maximum) morale parameter:"
+print "\nInvalid (greater than maximum) morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,11,7,False,10,3,False,classification,
@@ -695,7 +695,7 @@ except ValueError as detail:
 
 # Invalid Broken Morale (Minimum)
 
-print "\nInvalid (less than 0) broken morale parameter:"
+print "\nInvalid (less than 0) broken morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,-7,False,10,3,False,classification,
@@ -705,7 +705,7 @@ except ValueError as detail:
 
 # Invalid Broken Morale (Maximum)
 
-print "\nInvalid (greater than maximum) broken morale parameter:"
+print "\nInvalid (greater than maximum) broken morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,17,False,10,3,False,classification,
@@ -748,7 +748,7 @@ classification = Classifications_valueOf(cc2js("SS"))
 
 # Incompatible Classification
 
-print "\nIncompatible classification parameter:"
+print "\nIncompatible classification argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
@@ -790,7 +790,7 @@ unitType    = InfantryTypes_valueOf(cc2js("CANADIAN"))
 
 # Invalid Modifier (Minimum)
 
-print "\nInvalid (less than minimum) modifier parameter:"
+print "\nInvalid (less than minimum) modifier argument:"
 
 try:
     leader = Leader(nationality,unitType,10,10,5,-4)
@@ -799,7 +799,7 @@ except ValueError as detail:
 
 # Invalid Modifier (Maximum)
 
-print "\nInvalid (greater than maximum) modifier parameter:"
+print "\nInvalid (greater than maximum) modifier argument:"
 
 try:
     leader = Leader(nationality,unitType,10,10,5,4)
@@ -808,20 +808,20 @@ except ValueError as detail:
 
 # Test the Dice class.
 
-print "\nTesting the execution of the Dice class:\n"
+#print "\nTesting the execution of the Dice class:\n"
 
-for i in (list(range(12))):
-    dice = Dice()
+#for i in (list(range(12))):
+#    dice = Dice()
 
-#   print "Access methods test - White: %d" % dice.whiteDieValue() + \
-#         " Colored: %d"  % dice.coloredDieValue() + \
-#         " Combined: %2d" % dice.combinedResult()
+##   print "Access methods test - White: %d" % dice.whiteDieValue() + \
+##         " Colored: %d"  % dice.coloredDieValue() + \
+##         " Combined: %2d" % dice.combinedResult()
 
-    print "%s" % (js2cc(dice.toText()))
+#    print "%s" % (js2cc(dice.toText()))
 
 # Test the Game class.
 
-print "Testing the operations of the Game class:"
+print "\nTesting the operations of the Game class:"
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))
