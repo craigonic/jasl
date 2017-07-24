@@ -47,6 +47,7 @@ class Classifications
         static ::jasl::counters::Classification$Classifications* SECOND_LINE;
         static ::jasl::counters::Classification$Classifications* GREEN;
         static ::jasl::counters::Classification$Classifications* CONSCRIPT;
+        static ::jasl::counters::Classification$Classifications* NONE;
 
     private:
 

@@ -20,7 +20,7 @@ package jasl.counters;
  * method is intended for operation on a Classifications enum member variable
  * within the implementing class.
  *
- * @version 4.0
+ * @version 5.0
  * @author Copyright (C) 2006-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Classification.html">Source code</A>
  */
@@ -87,7 +87,19 @@ public interface Classification
 		 * Indicates that the classification of a unit is <B>Conscript</B>.
 		 */
 
-		CONSCRIPT("Conscript");
+		CONSCRIPT("Conscript"),
+
+		/** <A NAME="_NONE_"></A>
+		 * Indicates that a classification does not apply to a Personnel
+		 * unit.
+		 * <P>
+		 * This value is applicable only when the "nationality" of the
+		 * unit is <B>Partisan</B>.
+		 *
+		 * @see Nationality.Nationalities#PARTISAN
+		 */
+
+		NONE("");
 
 		// Private data members
 
