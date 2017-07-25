@@ -598,36 +598,34 @@ public class Driver
 
         Unit[] UnitList = new Unit[4];
 
-        UnitList[0] = new Leader(Nationality.Nationalities.AMERICAN,
-                                 UnitType.InfantryTypes.NONE,9,9,4,-1);
+        UnitList[0] = new Leader(Nationality.Nationalities.RUSSIAN,
+                                 UnitType.InfantryTypes.COMMISSAR,9,9,3,0);
 
-        ((Leader)UnitList[0]).setIdentity("Sgt. Slaughter");
+        ((Leader)UnitList[0]).setIdentity("Commissar Ryzhiy");
 
-        UnitList[1] = new Squad(Nationality.Nationalities.AMERICAN,
+        UnitList[1] = new Squad(Nationality.Nationalities.RUSSIAN,
+                                UnitType.InfantryTypes.GUARDS,
+                                6,2,8,8,false,12,3,false,
+                                Classification.Classifications.ELITE,
+                                true,true,0);
+
+        UnitList[2] = new Squad(Nationality.Nationalities.RUSSIAN,
                                 UnitType.InfantryTypes.NONE,
-                                6,6,6,6,false,11,4,false,
+                                4,4,7,7,false,7,3,false,
                                 Classification.Classifications.FIRST_LINE,
-                                true,false,3);
+                                false,false,0);
+
+        UnitList[3] = new Squad(Nationality.Nationalities.RUSSIAN,
+                                UnitType.InfantryTypes.NONE,
+                                4,2,6,5,false,4,3,false,
+                                Classification.Classifications.CONSCRIPT,
+                                false,false,0);
 
         ((Squad)UnitList[1]).setIdentity("X");
-        ((Squad)UnitList[1]).setStatus(Status.States.BROKEN);
-
-        UnitList[2] = new Squad(Nationality.Nationalities.AMERICAN,
-                                UnitType.InfantryTypes.NONE,
-                                6,6,6,6,false,11,4,false,
-                                Classification.Classifications.FIRST_LINE,
-                                true,false,3);
-
         ((Squad)UnitList[2]).setIdentity("Y");
-        ((Squad)UnitList[2]).setStatus(Status.States.DESPERATE);
-
-        UnitList[3] = new Squad(Nationality.Nationalities.AMERICAN,
-                                UnitType.InfantryTypes.NONE,
-                                6,6,6,6,false,11,4,false,
-                                Classification.Classifications.FIRST_LINE,
-                                true,false,3);
-
+        ((Squad)UnitList[2]).setStatus(Status.States.BROKEN);
         ((Squad)UnitList[3]).setIdentity("Z");
+        ((Squad)UnitList[3]).setStatus(Status.States.DESPERATE);
 
         System.out.println("Displaying Unit array with a Leader & 3 Squads");
 
@@ -910,9 +908,9 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Incompatible Classification
+        // Incompatible Classification (only German units can be SS)
 
-        System.out.println("\nIncompatible classification argument:\n");
+        System.out.println("\nIncompatible classification argument (nationality mismatch):\n");
 
         try
         {
@@ -921,6 +919,24 @@ public class Driver
                                     4,6,7,7,false,10,3,false,
                                     Classification.Classifications.SS,
                                     true,false,0);
+        }
+
+        catch (IllegalArgumentException e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Incompatible Classification (Partisan units must have empty classification)
+
+        System.out.println("\nIncompatible classification argument (invalid setting):\n");
+
+        try
+        {
+            squadObject = new Squad(Nationality.Nationalities.PARTISAN,
+                                    UnitType.InfantryTypes.NONE,
+                                    3,3,7,6,false,6,3,false,
+                                    Classification.Classifications.ELITE,
+                                    false,false,0);
         }
 
         catch (IllegalArgumentException e)

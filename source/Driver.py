@@ -542,26 +542,35 @@ print "Building Unit array with a Leader & 3 Squads\n"
 
 unitList = []
 
-nationality    = Nationalities_valueOf(cc2js("AMERICAN"))
+nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
+unitType       = InfantryTypes_valueOf(cc2js("COMMISSAR"))
+
+unitList.append(Leader(nationality,unitType,9,9,3,0))
+
+unitList[0].setIdentity(cc2js("Commissar Ryzhiy"))
+
+unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
+classification = Classifications_valueOf(cc2js("ELITE"))
+
+unitList.append(Squad(nationality,unitType,6,2,8,8,False,12,3,False,
+                      classification,True,True,0))
+
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
 classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
-unitList.append(Leader(nationality,unitType,9,9,4,-1))
+unitList.append(Squad(nationality,unitType,4,4,7,7,False,7,3,False,
+                      classification,False,False,0))
 
-unitList[0].setIdentity(cc2js("Sgt. Slaughter"))
+classification = Classifications_valueOf(cc2js("CONSCRIPT"))
 
-unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
-                      classification,True,True,0))
-unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
-                      classification,True,True,0))
-unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
-                      classification,True,True,0))
+unitList.append(Squad(nationality,unitType,4,2,6,5,False,4,3,False,
+                      classification,False,False,0))
 
 unitList[1].setIdentity(cc2js("X"))
-unitList[1].setStatus(brokenState)
 unitList[2].setIdentity(cc2js("Y"))
-unitList[2].setStatus(desperateState)
+unitList[2].setStatus(brokenState)
 unitList[3].setIdentity(cc2js("Z"))
+unitList[3].setStatus(desperateState)
 
 print "Displaying Unit array with a Leader & 3 Squads"
 
@@ -746,13 +755,26 @@ except ValueError as detail:
 nationality    = Nationalities_valueOf(cc2js("ITALIAN"))
 classification = Classifications_valueOf(cc2js("SS"))
 
-# Incompatible Classification
+# Incompatible Classification (only German units can be SS)
 
-print "\nIncompatible classification argument:"
+print "\nIncompatible classification argument (nationality mismatch):"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
                   True,False,0)
+except ValueError as detail:
+    printException(detail)
+
+nationality    = Nationalities_valueOf(cc2js("PARTISAN"))
+classification = Classifications_valueOf(cc2js("ELITE"))
+
+# Incompatible Classification (Partisan units must have empty classification)
+
+print "\nIncompatible classification argument (invalid setting):"
+
+try:
+    squad = Squad(nationality,unitType,3,3,7,6,False,10,3,False,classification,
+                  False,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -764,7 +786,7 @@ classification = Classifications_valueOf(cc2js("SECOND_LINE"))
 print "\nInvalid (less than zero) Smoke Placement Exponent:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,6,3,False,classification,
                   True,False,-4)
 except ValueError as detail:
     printException(detail)

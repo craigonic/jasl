@@ -665,26 +665,35 @@ printf("Building Unit array with a Leader & 3 Squads\n");
 
 my @unitList = ();
 
-$nationality    = $Counters::Nationalities::AMERICAN;
+$nationality    = $Counters::Nationalities::RUSSIAN;
+$unitType       = $Counters::InfantryTypes::COMMISSAR;
+
+push @unitList,new Counters::Leader($nationality,$unitType,9,9,3,0);
+
+$unitList[0]->setIdentity(CniWrapper::cc2js("Commissar Ryzhiy"));
+
+$unitType       = $Counters::InfantryTypes::GUARDS;
+$classification = $Counters::Classifications::ELITE;
+
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   6,2,8,8,0,12,3,0,$classification,1,1,0);
+
 $unitType       = $Counters::InfantryTypes::NONE;
 $classification = $Counters::Classifications::FIRST_LINE;
 
-push @unitList,new Counters::Leader($nationality,$unitType,9,9,4,-1);
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   4,4,7,7,0,7,3,0,$classification,0,0,0);
 
-$unitList[0]->setIdentity(CniWrapper::cc2js("Sgt. Slaughter"));
+$classification = $Counters::Classifications::CONSCRIPT;
 
 push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
-push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
-push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
+                                   4,2,6,5,0,4,3,0,$classification,0,0,0);
 
 $unitList[1]->setIdentity(CniWrapper::cc2js("X"));
-$unitList[1]->setStatus($brokenState);
 $unitList[2]->setIdentity(CniWrapper::cc2js("Y"));
-$unitList[2]->setStatus($desperateState);
+$unitList[2]->setStatus($brokenState);
 $unitList[3]->setIdentity(CniWrapper::cc2js("Z"));
+$unitList[3]->setStatus($desperateState);
 
 printf("\nDisplaying Unit array with a Leader & 3 Squads\n");
 
@@ -901,14 +910,29 @@ printException($@) if (!defined($status));
 $nationality    = $Counters::Nationalities::ITALIAN;
 $classification = $Counters::Classifications::SS;
 
-# Incompatible Classification
+# Incompatible Classification (only German units can be SS)
 
-printf("\nIncompatible classification argument:\n");
+printf("\nIncompatible classification argument (nationality mismatch):\n");
 
 $status = eval
 {
     $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
                                  $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+$nationality    = $Counters::Nationalities::PARTISAN;
+$classification = $Counters::Classifications::ELITE;
+
+# Incompatible Classification (Partisan units must have empty classification)
+
+printf("\nIncompatible classification argument (invalid setting):\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,3,3,7,6,0,6,3,0,
+                                 $classification,0,0,0);
 };
 
 printException($@) if (!defined($status));

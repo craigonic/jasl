@@ -1111,30 +1111,35 @@ int main(int argc, char *argv[])
 
         Unit** UnitList = new Unit*[4];
 
-        nationality    = Nationalities::valueOf(cc2js("AMERICAN"));
+        nationality    = Nationalities::valueOf(cc2js("RUSSIAN"));
+        unitType       = InfantryTypes::valueOf(cc2js("COMMISSAR"));
+
+        UnitList[0] = new Leader(nationality,unitType,9,9,3,0);
+
+        ((Leader*)UnitList[0])->setIdentity(cc2js("Commissar Ryzhiy"));
+
+        unitType       = InfantryTypes::valueOf(cc2js("GUARDS"));
+        classification = Classifications::valueOf(cc2js("ELITE"));
+
+        UnitList[1] = new Squad(nationality,unitType,6,2,8,8,false,12,3,false,
+                                classification,true,true,0);
+
         unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
-        UnitList[0] = new Leader(nationality,unitType,9,9,4,-1);
+        UnitList[2] = new Squad(nationality,unitType,4,4,7,7,false,7,3,false,
+                                classification,false,false,0);
 
-        ((Leader*)UnitList[0])->setIdentity(cc2js("Sgt. Slaughter"));
+        classification = Classifications::valueOf(cc2js("CONSCRIPT"));
 
-        UnitList[1] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
-                                classification,true,false,3);
+        UnitList[3] = new Squad(nationality,unitType,4,2,6,5,false,4,3,false,
+                                classification,false,false,0);
 
         ((Squad*)UnitList[1])->setIdentity(cc2js("X"));
-        ((Squad*)UnitList[1])->setStatus(brokenState);
-
-        UnitList[2] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
-                                classification,true,false,3);
-
         ((Squad*)UnitList[2])->setIdentity(cc2js("Y"));
-        ((Squad*)UnitList[2])->setStatus(desperateState);
-
-        UnitList[3] = new Squad(nationality,unitType,6,6,6,6,false,11,4,false,
-                                classification,true,false,3);
-
+        ((Squad*)UnitList[2])->setStatus(brokenState);
         ((Squad*)UnitList[3])->setIdentity(cc2js("Z"));
+        ((Squad*)UnitList[3])->setStatus(desperateState);
 
         printf("Displaying Unit array with a Leader & 3 Squads\n");
 
@@ -1389,14 +1394,32 @@ int main(int argc, char *argv[])
         nationality    = Nationalities::valueOf(cc2js("ITALIAN"));
         classification = Classifications::valueOf(cc2js("SS"));
 
-        // Incompatible Classification
+        // Incompatible Classification (only German units can be SS)
 
-        printf("\nIncompatible classification argument:\n");
+        printf("\nIncompatible classification argument (nationality mismatch):\n");
 
         try
         {
             squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
                               classification,true,false,0);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        nationality    = Nationalities::valueOf(cc2js("PARTISAN"));
+        classification = Classifications::valueOf(cc2js("ELITE"));
+
+        // Incompatible Classification (Partisan units must have empty classification)
+
+        printf("\nIncompatible classification argument (invalid setting):\n");
+
+        try
+        {
+            squad = new Squad(nationality,unitType,3,3,7,6,false,6,3,false,
+                              classification,false,false,0);
         }
 
         catch (jthrowable t)

@@ -1,4 +1,4 @@
-Wed Jul 12 09:43:35 PDT 2017
+Fri Jul 21 12:53:42 PDT 2017
 
 Leader.toText() output:
 
@@ -409,37 +409,37 @@ Building Unit array with a Leader & 3 Squads
 
 Displaying Unit array with a Leader & 3 Squads
 
-UnitList[0]:	9-1 Leader (Sgt. Slaughter)
+UnitList[0]:	9-0 Commissar (Commissar Ryzhiy)
 
 Leader
-Sgt. Slaughter
-
+Commissar Ryzhiy
+Commissar
 6
 []
 
-UnitList[1]:	6-6-6 Squad (X)
+UnitList[1]:	6-2-8 Squad (X)
 
 Squad
 X
-
+Guards
 4
-[Broken]
+[]
 
-UnitList[2]:	6-6-6 Squad (Y)
+UnitList[2]:	4-4-7 Squad (Y)
 
 Squad
 Y
 
 4
-[Desperate]
+[Broken]
 
-UnitList[3]:	6-6-6 Squad (Z)
+UnitList[3]:	4-2-6 Squad (Z)
 
 Squad
 Z
 
-4
-[]
+3
+[Desperate]
 
 Testing Exception handling for Squad update methods:
 
@@ -497,9 +497,13 @@ Invalid (greater than maximum) Experience Level Rating (ELR):
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 6
 
-Incompatible classification argument:
+Incompatible classification argument (nationality mismatch):
 
 Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Italian and SS
+
+Incompatible classification argument (invalid setting):
+
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Partisan and Elite
 
 Invalid (less than zero) Smoke Placement Exponent:
 
