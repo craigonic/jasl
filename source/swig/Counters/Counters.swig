@@ -33,10 +33,11 @@
 
 %include counters-obj-cast.swig
 
-// Add support for catching Java exceptions thrown by the following method,
-// which is found in the indicated classes.
+// Add support for catching Java exceptions thrown by the following methods,
+// which are found in the indicated classes.
 
 %exception setPortageLevel JAVA_EXCEPTION // Leader, Squad
+%exception fromJSON        JAVA_EXCEPTION // All
 
 // Load the interface files associated with the public classes and enums of the
 // <B>jasl.counters</B> package.

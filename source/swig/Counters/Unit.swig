@@ -38,11 +38,14 @@ class Unit
 
         Unit();
 
-        // Access methods.
+        // Method declarations. See the class documentation for more details on
+        // the operation of each one.
 
         Descriptions*         description();
 
         ::java::lang::String* toText();
         ::java::lang::String* toString();
         ::java::lang::String* toJSON();
+
+        void fromJSON(::java::lang::String*);
 };

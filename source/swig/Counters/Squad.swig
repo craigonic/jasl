@@ -92,7 +92,7 @@ class Squad
         Classifications*      classification();
         bool                  hasMaximumELR();
 
-        // <A HREF="../../jasl/counters/Squad.html">Squad</A>.
+        // Squad.
 
         bool                  canAssaultFire();
         bool                  canSprayFire();
@@ -101,4 +101,6 @@ class Squad
         ::java::lang::String* toText();
         ::java::lang::String* toString();
         ::java::lang::String* toJSON();
+
+        void fromJSON(::java::lang::String*);
 };

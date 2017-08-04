@@ -68,6 +68,7 @@ python_obj: python_src
 # Build the library for the desired target language.
 
 COMMON_BUILD_OPTIONS := $(GCC_COMMON_BUILD_OPTIONS) \
+                        -l$(ORG_JSON_BASE_LIB_NAME) \
                         -l$(COUNTERS_BASE_LIB_NAME) \
                         -l$(UTILITIES_BASE_LIB_NAME) \
                         $(SWIG_WRAPPER_OBJ)

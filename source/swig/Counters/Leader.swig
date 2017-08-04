@@ -85,11 +85,13 @@ class Leader
         bool                  check(int);
         bool                  restore(bool,int);
 
-        // <A HREF="../../jasl/counters/Leader.html">Leader</A>.
+        // Leader.
 
         int                   modifier();
 
         ::java::lang::String* toText();
         ::java::lang::String* toString();
         ::java::lang::String* toJSON();
+
+        void fromJSON(::java::lang::String*);
 };

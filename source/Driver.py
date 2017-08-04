@@ -278,6 +278,263 @@ print "(Deserialized) Squad.toString() output:\n\n%s\n" % js2cc(deserializedSqua
 
 print "(Deserialized) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
 
+# Test the fromJSON() method.
+
+print "Testing the fromJSON() method:"
+
+deserializedSquadJSON  = js2cc(deserializedSquad.toJSON())
+deserializedLeaderJSON = js2cc(deserializedLeader.toJSON())
+
+validDescription    = "\"Description\":\"SQUAD\"";
+validNationality    = "\"Nationality\":\"RUSSIAN\"";
+validUnitType       = "\"Unit Type\":\"Guards\"";
+validIdentity       = "\"Identity\":\"A\"";
+validStatus         = "\"Status\":1";
+validMovement       = "\"Movement\":4";
+validPortageCap     = "\"Portage Capacity\":3";
+validPortageLevel   = "\"Portage Level\":0";
+validFirepower      = "\"Firepower\":\"6\"";
+validFpEquivalent   = "\"Firepower Equivalent\":6";
+validNormalRange    = "\"Normal Range\":2";
+validMorale         = "\"Morale\":8";
+validBrokenMorale   = "\"Broken Morale\":8";
+validCanSelfRally   = "\"Can Self Rally ?\":false";
+validPortageValue   = "\"Portage Value\":10";
+validBPV            = "\"Basic Point Value\":12";
+validELR            = "\"Experience Level Rating\":4";
+validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
+validHasMaxELR      = "\"Has Maximum ELR ?\":false";
+validClassification = "\"Classification\":\"ELITE\"";
+validCanAssaultFire = "\"Can Assault Fire ?\":true";
+validCanSprayFire   = "\"Can Spray Fire ?\":true";
+validSPE            = "\"Smoke Placement Exponent\":0";
+
+fromJsonSquadTestStrings = [
+ # Unit
+
+  ["Null JSON input data",None],
+  ["Empty JSON input data",""],
+
+  ["Updating a Squad with Leader data",deserializedLeaderJSON],
+  ["Updating a Squad with an invalid (wrong case) description",
+   deserializedSquadJSON.replace(validDescription,
+                                 validDescription.replace("\"SQUAD\"","\"Squad\""))],
+  ["Updating a Squad with an invalid (non-string) description",
+   deserializedSquadJSON.replace(validDescription,
+                                 validDescription.replace("\"SQUAD\"","null"))],
+ # Fighting
+
+  ["Updating a Squad with a different nationality",
+   deserializedSquadJSON.replace(validNationality,
+                                 validNationality.replace("\"RUSSIAN\"",
+                                                          "\"GERMAN\""))],
+  ["Updating a Squad with an invalid (wrong case) nationality",
+   deserializedSquadJSON.replace(validNationality,
+                                 validNationality.replace("\"RUSSIAN\"",
+                                                          "\"Russian\""))],
+  ["Updating a Squad with an invalid (non-string) nationality",
+   deserializedSquadJSON.replace(validNationality,
+                                 validNationality.replace("\"RUSSIAN\"","null"))],
+
+  ["Updating a Squad with a different unit type",
+   deserializedSquadJSON.replace(validUnitType,
+                                 validUnitType.replace("\"Guards\"",
+                                                       "\"Gurkha\""))],
+  ["Updating a Squad with an invalid (non-string) unit type",
+   deserializedSquadJSON.replace(validUnitType,
+                                 validUnitType.replace("\"Guards\"","null"))],
+
+  ["Updating a Squad with an invalid (non-string) identity",
+   deserializedSquadJSON.replace(validIdentity,
+                                 validIdentity.replace("\"A\"","null"))],
+
+  ["Updating a Squad with an invalid (negative) status",
+   deserializedSquadJSON.replace(validStatus,validStatus.replace("1","-2"))],
+  ["Updating a Squad with an invalid (non-integer) status",
+   deserializedSquadJSON.replace(validStatus,validStatus.replace("1","null"))],
+
+ # Mobile
+
+  ["Updating a Squad with a different movement value",
+   deserializedSquadJSON.replace(validMovement,validMovement.replace("4","3"))],
+  ["Updating a Squad with an invalid (non-integer) movement value",
+   deserializedSquadJSON.replace(validMovement,validMovement.replace("4","null"))],
+
+  ["Updating a Squad with a different portage capacity",
+   deserializedSquadJSON.replace(validPortageCap,
+                                 validPortageCap.replace("3","5"))],
+  ["Updating a Squad with an invalid (non-integer) portage capacity",
+   deserializedSquadJSON.replace(validPortageCap,
+                                 validPortageCap.replace("3","null"))],
+
+  ["Updating a Squad with an invalid (negative) portage level",
+   deserializedSquadJSON.replace(validPortageLevel,
+                                 validPortageLevel.replace("0","-1"))],
+  ["Updating a Squad with an invalid (non-integer) portage level",
+   deserializedSquadJSON.replace(validPortageLevel,
+                                 validPortageLevel.replace("0","null"))],
+ # Infantry
+
+  ["Updating a Squad with a different firepower value",
+   deserializedSquadJSON.replace(validFirepower,
+                                 validFirepower.replace("\"6\"","\"4\""))],
+  ["Updating a Squad with an invalid (non-string) firepower value",
+   deserializedSquadJSON.replace(validFirepower,
+                                 validFirepower.replace("\"6\"","null"))],
+
+  ["Updating a Squad with a different firepower equivalent value",
+   deserializedSquadJSON.replace(validFpEquivalent,
+                                 validFpEquivalent.replace("6","4"))],
+  ["Updating a Squad with an invalid (non-integer) firepower equivalent value",
+   deserializedSquadJSON.replace(validFpEquivalent,
+                                 validFpEquivalent.replace("6","null"))],
+
+  ["Updating a Squad with a different normal range value",
+   deserializedSquadJSON.replace(validNormalRange,
+                                 validNormalRange.replace("2","4"))],
+  ["Updating a Squad with an invalid (non-integer) normal range value",
+   deserializedSquadJSON.replace(validNormalRange,
+                                 validNormalRange.replace("2","null"))],
+
+  ["Updating a Squad with a different morale value",
+   deserializedSquadJSON.replace(validMorale,validMorale.replace("8","7"))],
+  ["Updating a Squad with an invalid (non-integer) morale value",
+   deserializedSquadJSON.replace(validMorale,validMorale.replace("8","null"))],
+
+  ["Updating a Squad with a different broken morale value",
+   deserializedSquadJSON.replace(validBrokenMorale,
+                                 validBrokenMorale.replace("8","7"))],
+  ["Updating a Squad with an invalid (non-integer) broken morale value",
+   deserializedSquadJSON.replace(validBrokenMorale,
+                                 validBrokenMorale.replace("8","null"))],
+
+  ["Updating a Squad with a different can self rally setting",
+   deserializedSquadJSON.replace(validCanSelfRally,
+                                 validCanSelfRally.replace("false","true"))],
+  ["Updating a Squad with an invalid (non-boolean) can self rally setting",
+   deserializedSquadJSON.replace(validCanSelfRally,
+                                 validCanSelfRally.replace("false","null"))],
+
+  ["Updating a Squad with a different portage value",
+   deserializedSquadJSON.replace(validPortageValue,
+                                 validPortageValue.replace("10","9"))],
+  ["Updating a Squad with an invalid (non-integer) portage value",
+   deserializedSquadJSON.replace(validPortageValue,
+                                 validPortageValue.replace("10","null"))],
+
+  ["Updating a Squad with a different basic point value",
+   deserializedSquadJSON.replace(validBPV,validBPV.replace("12","52"))],
+  ["Updating a Squad with an invalid (non-integer) basic point value",
+   deserializedSquadJSON.replace(validBPV,validBPV.replace("12","null"))],
+
+  ["Updating a Squad with a different experience level rating",
+   deserializedSquadJSON.replace(validELR,validELR.replace("4","3"))],
+  ["Updating a Squad with an invalid (non-integer) experience level rating",
+   deserializedSquadJSON.replace(validELR,validELR.replace("4","null"))],
+
+  ["Updating a Squad with a different infantry type",
+   deserializedSquadJSON.replace(validInfantryType,
+                                 validInfantryType.replace("\"GUARDS\"",
+                                                           "\"NONE\""))],
+  ["Updating a Squad with an invalid (wrong case) infantry type",
+   deserializedSquadJSON.replace(validInfantryType,
+                                 validInfantryType.replace("\"GUARDS\"",
+                                                           "\"Guards\""))],
+  ["Updating a Squad with an invalid (non-string) infantry type",
+   deserializedSquadJSON.replace(validInfantryType,
+                                 validInfantryType.replace("\"GUARDS\"",
+                                                           "null"))],
+ # Personnel
+
+  ["Updating a Squad with a different has maximum ELR setting",
+   deserializedSquadJSON.replace(validHasMaxELR,
+                                 validHasMaxELR.replace("false","true"))],
+  ["Updating a Squad with an invalid (non-boolean) has maximum ELR setting",
+   deserializedSquadJSON.replace(validHasMaxELR,
+                                 validHasMaxELR.replace("false","null"))],
+
+  ["Updating a Squad with a different classification",
+   deserializedSquadJSON.replace(validClassification,
+                                 validClassification.replace("\"ELITE\"",
+                                                             "\"FIRST_LINE\""))],
+  ["Updating a Squad with an invalid (wrong case) classification",
+   deserializedSquadJSON.replace(validClassification,
+                                 validClassification.replace("\"ELITE\"",
+                                                             "\"Elite\""))],
+  ["Updating a Squad with an invalid (non-string) classification",
+   deserializedSquadJSON.replace(validClassification,
+                                 validClassification.replace("\"ELITE\"",
+                                                             "null"))],
+ # Squad
+
+  ["Updating a Squad with a different can assault fire setting",
+   deserializedSquadJSON.replace(validCanAssaultFire,
+                                 validCanAssaultFire.replace("true","false"))],
+  ["Updating a Squad with an invalid (non-boolean) can assault fire setting",
+   deserializedSquadJSON.replace(validCanAssaultFire,
+                                 validCanAssaultFire.replace("true","null"))],
+
+  ["Updating a Squad with a different can spray fire setting",
+   deserializedSquadJSON.replace(validCanSprayFire,
+                                 validCanSprayFire.replace("true","false"))],
+  ["Updating a Squad with an invalid (non-boolean) can spray fire setting",
+   deserializedSquadJSON.replace(validCanSprayFire,
+                                 validCanSprayFire.replace("true","null"))],
+
+  ["Updating a Squad with a different smoke placement exponent value",
+   deserializedSquadJSON.replace(validSPE,validSPE.replace("0","3"))],
+  ["Updating a Squad with an invalid (non-integer) smoke placement exponent value",
+   deserializedSquadJSON.replace(validSPE,validSPE.replace("0","null"))]
+]
+
+for row in range(len(fromJsonSquadTestStrings)):
+#   print "label: %s JSON: %s\n" % (fromJsonSquadTestStrings[row][0],fromJsonSquadTestStrings[row][1])
+
+    print "\n%s:" % fromJsonSquadTestStrings[row][0]
+
+    try:
+        deserializedSquad.fromJSON(cc2js(fromJsonSquadTestStrings[row][1]))
+    except ValueError as detail:
+        printException(detail)
+
+# Leader
+
+validModifier = "\"Modifier\":-1";
+
+fromJsonLeaderTestStrings = [
+ ["Updating a Leader with a different modifier value",
+  deserializedLeaderJSON.replace(validModifier,
+                                 validModifier.replace("-1","-2"))],
+ ["Updating a Leader with an invalid (non-integer) modifier value",
+  deserializedLeaderJSON.replace(validModifier,
+                                 validModifier.replace("-1","null"))]
+]
+
+for row in range(len(fromJsonLeaderTestStrings)):
+#   print "label: %s JSON: %s\n" % (fromJsonLeaderTestStrings[row][0],fromJsonLeaderTestStrings[row][1])
+
+    print "\n%s:" % fromJsonLeaderTestStrings[row][0]
+
+    try:
+        deserializedLeader.fromJSON(cc2js(fromJsonLeaderTestStrings[row][1]))
+    except ValueError as detail:
+        printException(detail)
+
+# Verify that all of the values for the Squad instance that can be changed using
+# the fromJSON() method (Identity, Status, and Portage Level) work as expected.
+
+deserializedSquadJSON = deserializedSquadJSON.replace(validIdentity,
+                                                      validIdentity.replace("\"A\"",
+                                                                            "\"B\""))
+deserializedSquadJSON = deserializedSquadJSON.replace(validStatus,
+                                                      validStatus.replace("1","0"))
+deserializedSquadJSON = deserializedSquadJSON.replace(validPortageLevel,
+                                                      validPortageLevel.replace("0","2"))
+
+deserializedSquad.fromJSON(cc2js(deserializedSquadJSON))
+
+print "\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
+
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
@@ -285,26 +542,35 @@ print "Building Unit array with a Leader & 3 Squads\n"
 
 unitList = []
 
-nationality    = Nationalities_valueOf(cc2js("AMERICAN"))
+nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
+unitType       = InfantryTypes_valueOf(cc2js("COMMISSAR"))
+
+unitList.append(Leader(nationality,unitType,9,9,3,0))
+
+unitList[0].setIdentity(cc2js("Commissar Ryzhiy"))
+
+unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
+classification = Classifications_valueOf(cc2js("ELITE"))
+
+unitList.append(Squad(nationality,unitType,6,2,8,8,False,12,3,False,
+                      classification,True,True,0))
+
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
 classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
-unitList.append(Leader(nationality,unitType,9,9,4,-1))
+unitList.append(Squad(nationality,unitType,4,4,7,7,False,7,3,False,
+                      classification,False,False,0))
 
-unitList[0].setIdentity(cc2js("Sgt. Slaughter"))
+classification = Classifications_valueOf(cc2js("CONSCRIPT"))
 
-unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
-                      classification,True,True,0))
-unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
-                      classification,True,True,0))
-unitList.append(Squad(nationality,unitType,6,6,6,6,False,11,4,False,
-                      classification,True,True,0))
+unitList.append(Squad(nationality,unitType,4,2,6,5,False,4,3,False,
+                      classification,False,False,0))
 
 unitList[1].setIdentity(cc2js("X"))
-unitList[1].setStatus(brokenState)
 unitList[2].setIdentity(cc2js("Y"))
-unitList[2].setStatus(desperateState)
+unitList[2].setStatus(brokenState)
 unitList[3].setIdentity(cc2js("Z"))
+unitList[3].setStatus(desperateState)
 
 print "Displaying Unit array with a Leader & 3 Squads"
 
@@ -348,7 +614,7 @@ squad.setIdentity(cc2js(""))
 
 # Invalid portage level
 
-print "\nInvalid portage level parameter:"
+print "\nInvalid portage level argument:"
 
 try:
     squad.setPortageLevel(-1)
@@ -362,7 +628,7 @@ unitType    = InfantryTypes_valueOf(cc2js("ENGINEERS"))
 
 # Incompatible nationality and unitType
 
-print "\nIncompatible nationality and unitType parameters:"
+print "\nIncompatible nationality and unitType arguments:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
@@ -376,7 +642,7 @@ classification = Classifications_valueOf(cc2js("GREEN"))
 
 # Incompatible description and unitType
 
-print "\nIncompatible description and unitType parameters:"
+print "\nIncompatible description and unitType arguments:"
 
 try:
     squad = Squad(nationality,unitType,4,4,7,7,False,10,3,False,classification,
@@ -390,7 +656,7 @@ classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
 # Invalid Firepower
 
-print "\nInvalid (less than 0) firepower parameter:"
+print "\nInvalid (less than 0) firepower argument:"
 
 try:
     squad = Squad(nationality,unitType,-1,6,7,7,False,10,3,False,classification,
@@ -398,7 +664,7 @@ try:
 except ValueError as detail:
     printException(detail)
 
-print "\nInvalid (greater than maximum) firepower parameter:"
+print "\nInvalid (greater than maximum) firepower argument:"
 
 try:
     squad = Squad(nationality,unitType,11,6,7,7,False,10,3,False,classification,
@@ -408,7 +674,7 @@ except ValueError as detail:
 
 # Invalid Range
 
-print "\nInvalid (less than 0) normal range parameter:"
+print "\nInvalid (less than 0) normal range argument:"
 
 try:
     squad = Squad(nationality,unitType,4,-255,7,7,False,10,3,False,
@@ -418,7 +684,7 @@ except ValueError as detail:
 
 # Invalid Morale (Minimum)
 
-print "\nInvalid (less than 0) morale parameter:"
+print "\nInvalid (less than 0) morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,-1,7,False,10,3,False,classification,
@@ -428,7 +694,7 @@ except ValueError as detail:
 
 # Invalid Morale (Maximum)
 
-print "\nInvalid (greater than maximum) morale parameter:"
+print "\nInvalid (greater than maximum) morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,11,7,False,10,3,False,classification,
@@ -438,7 +704,7 @@ except ValueError as detail:
 
 # Invalid Broken Morale (Minimum)
 
-print "\nInvalid (less than 0) broken morale parameter:"
+print "\nInvalid (less than 0) broken morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,-7,False,10,3,False,classification,
@@ -448,7 +714,7 @@ except ValueError as detail:
 
 # Invalid Broken Morale (Maximum)
 
-print "\nInvalid (greater than maximum) broken morale parameter:"
+print "\nInvalid (greater than maximum) broken morale argument:"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,17,False,10,3,False,classification,
@@ -489,13 +755,26 @@ except ValueError as detail:
 nationality    = Nationalities_valueOf(cc2js("ITALIAN"))
 classification = Classifications_valueOf(cc2js("SS"))
 
-# Incompatible Classification
+# Incompatible Classification (only German units can be SS)
 
-print "\nIncompatible classification parameter:"
+print "\nIncompatible classification argument (nationality mismatch):"
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
                   True,False,0)
+except ValueError as detail:
+    printException(detail)
+
+nationality    = Nationalities_valueOf(cc2js("PARTISAN"))
+classification = Classifications_valueOf(cc2js("ELITE"))
+
+# Incompatible Classification (Partisan units must have empty classification)
+
+print "\nIncompatible classification argument (invalid setting):"
+
+try:
+    squad = Squad(nationality,unitType,3,3,7,6,False,10,3,False,classification,
+                  False,False,0)
 except ValueError as detail:
     printException(detail)
 
@@ -507,7 +786,7 @@ classification = Classifications_valueOf(cc2js("SECOND_LINE"))
 print "\nInvalid (less than zero) Smoke Placement Exponent:"
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,6,3,False,classification,
                   True,False,-4)
 except ValueError as detail:
     printException(detail)
@@ -533,7 +812,7 @@ unitType    = InfantryTypes_valueOf(cc2js("CANADIAN"))
 
 # Invalid Modifier (Minimum)
 
-print "\nInvalid (less than minimum) modifier parameter:"
+print "\nInvalid (less than minimum) modifier argument:"
 
 try:
     leader = Leader(nationality,unitType,10,10,5,-4)
@@ -542,7 +821,7 @@ except ValueError as detail:
 
 # Invalid Modifier (Maximum)
 
-print "\nInvalid (greater than maximum) modifier parameter:"
+print "\nInvalid (greater than maximum) modifier argument:"
 
 try:
     leader = Leader(nationality,unitType,10,10,5,4)
@@ -551,16 +830,16 @@ except ValueError as detail:
 
 # Test the Dice class.
 
-print "\nTesting the execution of the Dice class:\n"
+#print "\nTesting the execution of the Dice class:\n"
 
-for i in (list(range(12))):
-    dice = Dice()
+#for i in (list(range(12))):
+#    dice = Dice()
 
-#   print "Access methods test - White: %d" % dice.whiteDieValue() + \
-#         " Colored: %d"  % dice.coloredDieValue() + \
-#         " Combined: %2d" % dice.combinedResult()
+##   print "Access methods test - White: %d" % dice.whiteDieValue() + \
+##         " Colored: %d"  % dice.coloredDieValue() + \
+##         " Combined: %2d" % dice.combinedResult()
 
-    print "%s" % (js2cc(dice.toText()))
+#    print "%s" % (js2cc(dice.toText()))
 
 # Test the Scenario class.
 
@@ -594,7 +873,7 @@ print "%s\n" % (js2cc(scenario.toString()))
 
 # Test the Game class.
 
-print "Testing the operations of the Game class:"
+print "\nTesting the operations of the Game class:"
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))
