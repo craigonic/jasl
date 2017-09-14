@@ -2,7 +2,7 @@
  * \file jaslWrapper.h
  *
  * This file contains a set of typedef declarations intended to simplify the use
- * of the public classes in the jasl libraries when accessed through the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcj/About-CNI.html#About-CNI">CNI</A>
+ * of the public classes in the jasl libraries when accessed through the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A>
  * (Compiled Native Interface) wrapper.
  *
  * Written By: Craig R. Campbell  -  June 2007

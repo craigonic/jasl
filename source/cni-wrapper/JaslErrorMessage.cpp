@@ -1,7 +1,7 @@
 /**
  * \file JaslErrorMessage.cpp
  *
- * This file defines a generic C++ exception class to "wrap" a <A HREF="http://java.sun.com/">Java</A> <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html">Throwable</A>
+ * This file defines a generic C++ exception class to "wrap" a <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://download.oracle.com/javase/8/docs/api/java/lang/Throwable.html">Throwable</A>
  * object, providing a copy of the detailed description of the error it
  * represents.
  *

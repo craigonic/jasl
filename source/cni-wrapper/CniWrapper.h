@@ -2,7 +2,7 @@
  * \file CniWrapper.h
  *
  * This file declares the class infrastructure used to create and manage the
- * connection and interaction with a <A HREF="http://java.sun.com/">Java</A> Virtual Machine.
+ * connection and interaction with a <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> Virtual Machine.
  *
  * Written By: Craig R. Campbell  -  April 2007
  */
@@ -14,12 +14,12 @@
 #include <gcj/cni.h>
 
 /**
- * \brief <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
+ * \brief <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
  *
  * This <A HREF="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton</A> class is used to create, manage, and close a JVM (Java Virtual
- * Machine). This allows a C/C++ program to access <A HREF="http://java.sun.com/">Java</A> code compiled using <A HREF="http://gcc.gnu.org/java/">GCJ</A>.
+ * Machine). This allows a C/C++ program to access <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> code compiled using <A HREF="http://gcc.gnu.org/wiki/GCJ/">GCJ</A>.
  *
- * Methods are also provided to convert const char* strings to Java <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A>
+ * Methods are also provided to convert const char* strings to Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>
  * objects and vice-versa.
  *
  * @version 2.0
@@ -54,7 +54,7 @@ class CniWrapper
 
 		/** <A NAME="_STRINGTOCONSTCHAR_"></A>
 		 * \brief Return the const char* string representation of the
-		 * specified <A HREF="http://java.sun.com/">Java</A> <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object.
+		 * specified <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object.
 		 *
 		 * See <A HREF="#_JS2CC_">js2cc</A>() for more details.
 		 */
@@ -62,7 +62,7 @@ class CniWrapper
 		const char* stringToConstChar(jstring javaString) const;
 
 		/** <A NAME="_CONSTCHARTOSTRING_"></A>
-		 * \brief Return a <A HREF="http://java.sun.com/">Java</A> <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object containing the specified
+		 * \brief Return a <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object containing the specified
 		 * const char* string.
 		 *
 		 * See <A HREF="#_CC2JS_">cc2js</A>() for more details.
@@ -105,7 +105,7 @@ class CniWrapper
 typedef struct CniWrapper CniWrapper;
 
 /**
- * \brief Declaration to allow a <A HREF="http://java.sun.com/">Java</A> <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object to be referenced from a C
+ * \brief Declaration to allow a <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object to be referenced from a C
  * program.
  *
  * jstring is equivalent to ::java::lang::String*.
@@ -137,8 +137,8 @@ extern const CniWrapper* startCniWrapper();
 extern void stopCniWrapper();
 
 /** <A NAME="_JS2CC_"></A>
- * \brief Return the const char* string representation of the specified <A HREF="http://java.sun.com/">Java</A>
- * <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object.
+ * \brief Return the const char* string representation of the specified <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>
+ * <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object.
  *
  * This function calls the <A HREF="#_STRINGTOCONSTCHAR_">stringToConstChar</A>() method of the CniWrapper,
  * returning a pointer to a copy of the text managed by the parameter object. If
@@ -153,7 +153,7 @@ extern void stopCniWrapper();
 extern const char* js2cc(jstring javaString);
 
 /** <A NAME="_CC2JS_"></A>
- * \brief Return a <A HREF="http://java.sun.com/">Java</A> <A HREF="http://java.sun.com/javase/6/docs/api/java/lang/String.html">String</A> object containing the specified const char*
+ * \brief Return a <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object containing the specified const char*
  * string.
  *
  * This function calls the <A HREF="#_CONSTCHARTOSTRING_">constCharToString</A>() method of the CniWrapper,

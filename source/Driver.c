@@ -2,8 +2,8 @@
 // Driver.c - This file contains the Driver program, which is used to test    //
 //            the functionality of the Java classes defined in the jasl       //
 //            package hierarchy. It is implemented to use wrapper classes     //
-//            that interact with libraries generated using <A HREF="http://gcc.gnu.org/java/">GCJ</A>, through the   //
-//            <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface).                                //
+//            that interact with libraries generated using <A HREF="http://gcc.gnu.org/wiki/GCJ/">GCJ</A>, through the   //
+//            <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface).                                //
 //                                                                            //
 //            The calls within this file are specific to the C API of the     //
 //            wrapper classes.                                                //

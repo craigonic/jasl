@@ -3,7 +3,7 @@
 //                   used to generate libraries that link to the <A HREF="../../cni-wrapper/cni-wrapper.html">cni-wrapper</A>  //
 //                   library. These libraries, along with the other files     //
 //                   that are generated, are used to create, manage, and      //
-//                   close a JVM (<A HREF="http://java.sun.com/">Java</A> Virtual Machine). The JVM is required  //
+//                   close a JVM (<A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> Virtual Machine). The JVM is required  //
 //                   to use the objects referenced by the other libraries     //
 //                   generated in this directory from the supported scripting //
 //                   languages (<A HREF="http://www.perl.org/">Perl</A> and <A HREF="http://www.python.org/">Python</A>).                             //
