@@ -14,9 +14,6 @@ package jasl.counters;
 
 import java.io.Serializable;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
@@ -24,7 +21,7 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 7.0
+ * @version 8.0
  * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
@@ -72,7 +69,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	}
 
 	// This declaration is redundant for Java and C++ usage, but it is
-	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
+	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
 	// used by <A HREF="http://www.swig.org/">SWIG</A> to build bindings for scripting languages.
 
 	protected Unit() {}
@@ -196,7 +193,8 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	 * The setting for each attribute is checked against the corresponding
 	 * input value.
 	 *
-	 * @param jsonData JSON formatted text <CODE>String</CODE>.
+	 * @param jsonData the JSON formatted text containing the data
+	 * necessary to update the Unit.
 	 *
 	 * @throws NullPointerException in the case of a null argument.
 	 * @throws IllegalArgumentException in the case of a zero length
@@ -232,7 +230,8 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 
 		try
 		{
-			JSONObject jsonObject = new JSONObject(jsonData);
+			org.json.JSONObject jsonObject =
+				new org.json.JSONObject(jsonData);
 
 			Descriptions description =
 				Descriptions.valueOf(jsonObject.getString(DESCRIPTION_LABEL));
@@ -264,11 +263,110 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 			                                                              exceptionDetails));
 		}
 
-		catch (JSONException exception)
+		catch (org.json.JSONException exception)
 		{
-			throw new JSONException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                   JsonData.FROM_JSON_METHOD_NAME,
-			                                                   exception.getMessage()));
+			throw new org.json.JSONException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                            JsonData.FROM_JSON_METHOD_NAME,
+			                                                            exception.getMessage()));
 		}
+	}
+
+	// Other methods
+
+	/**
+	 * Generate an instance of one of the derived public classes using the
+	 * specified JSON data.
+	 * <P>
+	 * This method expects the JSON data to include the arguments required
+	 * to create an individual object. The Description value is used to
+	 * determine the corresponding (static) create() method to call.
+	 *
+	 * @param jsonData the JSON formatted text containing the attributes
+	 * necessary to create the Unit.
+	 * @param experienceLevelRating the ELR for a group of infantry units
+	 * on a side.
+	 *
+	 * @throws NullPointerException in the case of a null argument.
+	 * @throws IllegalArgumentException in the case of a zero length
+	 * argument or where invalid data values are found within it.
+	 * @throws JSONException in the case where the text is not valid JSON or
+	 * an expected "key" is not found.
+	 *
+	 * @return a <CODE>Unit</CODE> object reflecting the JSON input data.
+	 */
+
+	public static final Unit factory(String jsonData,
+	                                 int experienceLevelRating)
+	{
+		// Define local constants.
+
+		String METHOD_NAME = "factory";
+
+		// Check the String argument received and throw the appropriate
+		// exception if necessary. The other argument will be verified
+		// when the Unit object is created, if applicable.
+
+		if (null == jsonData)
+		{
+			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                          METHOD_NAME,
+			                                                          Messages.NULL_PARAMETER_MSG));
+		}
+
+		if (jsonData.isEmpty())
+		{
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              METHOD_NAME,
+			                                                              Messages.ZERO_LENGTH_PARAMETER_MSG));
+		}
+
+		// Generate a Unit object based on the value of the Description
+		// key within the JSON data.
+
+		Unit unit = null;
+
+		try
+		{
+			org.json.JSONObject jsonObject =
+				new org.json.JSONObject(jsonData);
+
+			Descriptions description =
+				Descriptions.valueOf(jsonObject.getString(DESCRIPTION_LABEL));
+
+			switch (description.name())
+			{
+				case "LEADER":
+					jasl.counters.UnitType.InfantryTypes infantryType =
+						jasl.counters.UnitType.InfantryTypes.valueOf(jsonObject.getString(jasl.counters.Infantry.INFANTRY_TYPE_LABEL));
+					unit = Leader.create(jsonData,
+					                     experienceLevelRating,
+					                     infantryType);
+				break;
+
+				case "SQUAD":
+					infantryType =
+						jasl.counters.UnitType.InfantryTypes.valueOf(jsonObject.getString(jasl.counters.Infantry.INFANTRY_TYPE_LABEL));
+					unit = Squad.create(jsonData,
+					                    experienceLevelRating,
+					                    infantryType);
+				break;
+			}
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              METHOD_NAME,
+			                                                              exception.getMessage()));
+		}
+
+		catch (org.json.JSONException exception)
+		{
+			throw new org.json.JSONException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                            METHOD_NAME,
+			                                                            exception.getMessage()));
+		}
+
+		return unit;
 	}
 }

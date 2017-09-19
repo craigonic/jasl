@@ -57,7 +57,7 @@ all: bin_directory
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/$^ -o $(OBJ_SUB_DIRECTORY)/$@
 
 .PHONY : obj
-obj: bin_directory obj_sub_directory $(GCJ_OBJECT_FILES)
+obj: bin_directory obj_sub_directory all $(GCJ_OBJECT_FILES)
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/Description\$$Descriptions.class \
 	                   -o $(OBJ_SUB_DIRECTORY)/Description\$$Descriptions.o
 	$(GCJ_COMPILE_CMD) $(COUNTERS_BIN_PATH)/Nationality\$$Nationalities.class \
@@ -79,8 +79,8 @@ hdr: include_directory
 
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
-DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).8
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).9
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).0
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
