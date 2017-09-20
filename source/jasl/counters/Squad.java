@@ -12,16 +12,13 @@
 
 package jasl.counters;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
  * This class is used to represent a Squad counter.
  *
- * @version 5.0
+ * @version 6.0
  * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Squad.html">Source code</A>
  */
@@ -91,7 +88,7 @@ public final class Squad extends Personnel implements SprayingFire
 	 *
 	 * @param nationality the nationality of the squad. Example - <B><A HREF="Nationality.html#_GERMAN_">GERMAN</A></B>
 	 * @param unitType a more specific nationality, type, or capability
-	 * description for the squad. Example - <B><A HREF="Infantry.html#_ENGINEERS_">ENGINEERS</A></B>
+	 * description for the squad. Example - <B><A HREF="UnitType.html#_ENGINEERS_">ENGINEERS</A></B>
 	 * @param firepower the inherent firepower of the squad. Example - <B>8</B>
 	 * @param normalRange the maximum range that the squad's inherent
 	 * firepower can be used at full strength. Example - <B>3</B>
@@ -317,7 +314,9 @@ public final class Squad extends Personnel implements SprayingFire
 	 * checked against the corresponding input value (the majority of cases)
 	 * or updated with it.
 	 *
-	 * @param jsonData JSON formatted text <CODE>String</CODE>.
+	 * @param jsonData the JSON formatted text containing the data
+	 * necessary to update the squad. It is expected to contain all of the
+	 * fields found in the output of toJSON().
 	 *
 	 * @throws IllegalArgumentException in the case where non-matching data
 	 * values are found within the text.
@@ -338,8 +337,9 @@ public final class Squad extends Personnel implements SprayingFire
 
 		try
 		{
-			JSONObject jsonObject       = new JSONObject(jsonData);
-			String     exceptionDetails = "";
+			org.json.JSONObject jsonObject =
+				new org.json.JSONObject(jsonData);
+			String exceptionDetails = "";
 
 			boolean canAssaultFire =
 				jsonObject.getBoolean(CAN_ASSAULT_FIRE_LABEL);
@@ -385,11 +385,79 @@ public final class Squad extends Personnel implements SprayingFire
 			}
 		}
 
-		catch (JSONException exception)
+		catch (org.json.JSONException exception)
 		{
-			throw new JSONException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                   JsonData.FROM_JSON_METHOD_NAME,
-			                                                   exception.getMessage()));
+			throw new org.json.JSONException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                            JsonData.FROM_JSON_METHOD_NAME,
+			                                                            exception.getMessage()));
 		}
+	}
+
+	// Other methods
+
+	/**
+	 * Generate a new Squad instance using the specified JSON data.
+	 * <P>
+	 * This method is (intended to be) called primarily from the (also
+	 * static) Unit.factory() method.
+	 *
+	 * @param jsonData the JSON formatted text containing the attributes
+	 * necessary to create the squad.
+	 * @param experienceLevelRating the ELR for a group of infantry units
+	 * on a side.
+	 * @param infantryType a more specific type for the squad.
+	 * Example - <B><A HREF="UnitType.html#_ANZAC_">ANZAC</A></B>
+	 *
+	 * @throws IllegalArgumentException in the case where argument contains
+	 * invalid data values.
+	 * @throws JSONException in the case where the text is not valid JSON or
+	 * an expected "key" is not found.
+	 *
+	 * @return a <CODE>Squad</CODE> object reflecting the JSON input data.
+	 *
+	 * @see #factory
+	 */
+
+	protected static Unit create(String jsonData,int experienceLevelRating,
+	                             InfantryTypes infantryType)
+	{
+		// The validity of the first argument should have been checked
+		// in the (expected) calling method (Unit.factory()). The other
+		// arguments will be verified when the Squad object is created.
+
+		assert(null != jsonData);
+		assert(!jsonData.isEmpty());
+
+		// Generate a Squad object using the values found within the
+		// JSON data and the specified ELR.
+
+		org.json.JSONObject jsonObject =
+			new org.json.JSONObject(jsonData);
+
+		Nationalities nationality =
+			Nationalities.valueOf(jsonObject.getString(NATIONALITY_LABEL));
+		int firepower = jsonObject.getInt(FIREPOWER_LABEL);
+		int morale = jsonObject.getInt(MORALE_LABEL);
+		int brokenMorale = jsonObject.getInt(BROKEN_MORALE_LABEL);
+		int normalRange = jsonObject.getInt(NORMAL_RANGE_LABEL);
+		boolean canSelfRally =
+			jsonObject.getBoolean(CAN_SELF_RALLY_LABEL);
+		int basicPointValue = jsonObject.getInt(BPV_LABEL);
+		boolean hasMaximumELR =
+			jsonObject.getBoolean(HAS_MAXIMUM_ELR_LABEL);
+		Classifications classification =
+			Classifications.valueOf(jsonObject.getString(CLASSIFICATION_LABEL));
+		boolean canAssaultFire =
+			jsonObject.getBoolean(CAN_ASSAULT_FIRE_LABEL);
+		boolean canSprayFire =
+			jsonObject.getBoolean(CAN_SPRAY_FIRE_LABEL);
+		int smokePlacementExponent =
+			jsonObject.getInt(SMOKE_PLACEMENT_EXP_LABEL);
+
+		return new Squad(nationality,infantryType,firepower,normalRange,
+		                 morale,brokenMorale,canSelfRally,
+		                 basicPointValue,experienceLevelRating,
+		                 hasMaximumELR,classification,canAssaultFire,
+		                 canSprayFire,smokePlacementExponent);
 	}
 }

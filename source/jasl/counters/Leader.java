@@ -13,16 +13,13 @@
 
 package jasl.counters;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 6.0
+ * @version 7.0
  * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
@@ -68,7 +65,7 @@ public final class Leader extends Infantry implements Leadership
 	 *
 	 * @param nationality the nationality of the leader. Example - <B><A HREF="Nationality.html#_BRITISH_">BRITISH</A></B>
 	 * @param unitType a more specific nationality, type, or capability
-	 * description for the leader. Example - <B><A HREF="Infantry.html#_CANADIAN_">CANADIAN</A></B>
+	 * description for the leader. Example - <B><A HREF="UnitType.html#_CANADIAN_">CANADIAN</A></B>
 	 * @param morale the morale level of the leader in its unbroken state.
 	 * Example - <B>8</B>
 	 * @param brokenMorale the morale level of the leader when it is
@@ -248,7 +245,9 @@ public final class Leader extends Infantry implements Leadership
 	 * checked against the corresponding input value (the majority of cases)
 	 * or updated with it.
 	 *
-	 * @param jsonData JSON formatted text <CODE>String</CODE>.
+	 * @param jsonData the JSON formatted text containing the data
+	 * necessary to update the leader. It is expected to contain all of the
+	 * fields found in the output of toJSON().
 	 *
 	 * @throws IllegalArgumentException in the case where non-matching data
 	 * values are found within the text.
@@ -269,8 +268,9 @@ public final class Leader extends Infantry implements Leadership
 
 		try
 		{
-			JSONObject jsonObject       = new JSONObject(jsonData);
-			String     exceptionDetails = "";
+			org.json.JSONObject jsonObject =
+				new org.json.JSONObject(jsonData);
+			String exceptionDetails = "";
 
 			int modifier = jsonObject.getInt(MODIFIER_LABEL);
 
@@ -291,11 +291,62 @@ public final class Leader extends Infantry implements Leadership
 			}
 		}
 
-		catch (JSONException exception)
+		catch (org.json.JSONException exception)
 		{
-			throw new JSONException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                   JsonData.FROM_JSON_METHOD_NAME,
-			                                                   exception.getMessage()));
+			throw new org.json.JSONException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                            JsonData.FROM_JSON_METHOD_NAME,
+			                                                            exception.getMessage()));
 		}
+	}
+
+	// Other methods
+
+	/**
+	 * Generate a new Leader instance using the specified JSON data.
+	 * <P>
+	 * This method is (intended to be) called primarily from the (also
+	 * static) Unit.factory() method.
+	 *
+	 * @param jsonData the JSON formatted text containing the attributes
+	 * necessary to create the leader.
+	 * @param experienceLevelRating the ELR for a group of infantry units
+	 * on a side.
+	 * @param infantryType a more specific type for the leader.
+	 * Example - <B><A HREF="UnitType.html#_COMMISSAR_">COMMISSAR</A></B>
+	 *
+	 * @throws IllegalArgumentException in the case where argument contains
+	 * invalid data values.
+	 * @throws JSONException in the case where the text is not valid JSON or
+	 * an expected "key" is not found.
+	 *
+	 * @return a <CODE>Leader</CODE> object reflecting the JSON input data.
+	 *
+	 * @see #factory
+	 */
+
+	protected static Unit create(String jsonData,int experienceLevelRating,
+	                             InfantryTypes infantryType)
+	{
+		// The validity of the first argument should have been checked
+		// in the (expected) calling method (Unit.factory()). The other
+		// arguments will be verified when the Leader object is created.
+
+		assert(null != jsonData);
+		assert(!jsonData.isEmpty());
+
+		// Generate a Leader object using the values found within the
+		// JSON data and the specified ELR.
+
+		org.json.JSONObject jsonObject =
+			new org.json.JSONObject(jsonData);
+
+		Nationalities nationality =
+			Nationalities.valueOf(jsonObject.getString(NATIONALITY_LABEL));
+		int morale = jsonObject.getInt(MORALE_LABEL);
+		int brokenMorale = jsonObject.getInt(BROKEN_MORALE_LABEL);
+		int modifier = jsonObject.getInt(MODIFIER_LABEL);
+
+		return new Leader(nationality,infantryType,morale,brokenMorale,
+		                  experienceLevelRating,modifier);
 	}
 }
