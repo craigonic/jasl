@@ -14,7 +14,8 @@ import java.util.List;
 
 import jasl.counters.*;
 import jasl.ui.data.*;
-import jasl.utilities.Dice;
+//import jasl.utilities.Dice;
+import jasl.utilities.JsonData;
 import jasl.utilities.Serialization;
 
 public class Driver
@@ -591,6 +592,144 @@ public class Driver
         System.out.println("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n" +
                            deserializedSquad.toJSON());
 
+        // Test the Unit.factory() method.
+
+        System.out.println("\nTesting the Unit.factory() method:");
+
+        Unit unitObject = null;
+
+        // Build JSON string for general and Leader specific Unit.factory()
+        // testing.
+
+        StringBuffer newLeaderJSON =
+            new StringBuffer(JsonData.JSON_OBJECT_START);
+
+        String factoryDescription  = "\"Description\":\"LEADER\"";
+        String factoryNationality  = "\"Nationality\":\"AMERICAN\"";
+        String factoryInfantryType = "\"Infantry Type\":\"NONE\"";
+        String factoryModifier     = "\"Modifier\":-1";
+
+        newLeaderJSON.append(factoryDescription + JsonData.JSON_OBJECT_SEPARATOR);
+        newLeaderJSON.append(factoryNationality + JsonData.JSON_OBJECT_SEPARATOR);
+        newLeaderJSON.append(factoryInfantryType + JsonData.JSON_OBJECT_SEPARATOR);
+        newLeaderJSON.append("\"Morale\":8,\n");
+        newLeaderJSON.append("\"Broken Morale\":8,\n");
+        newLeaderJSON.append(factoryModifier + JsonData.JSON_OBJECT_SEPARATOR);
+        newLeaderJSON.append(JsonData.JSON_OBJECT_END);
+
+        String newLeaderJsonString = newLeaderJSON.toString();
+
+        // Start with a successful (at least expected to be) generation of a
+        // Leader using the new data.
+
+        unitObject = Unit.factory(newLeaderJsonString,3);
+
+        // Display all of the entered values for the new Leader instance
+        // (created with Unit.factory()) using the toJSON() method.
+
+        System.out.println("\n(Created with Unit.factory()) Leader.toJSON() output:\n\n" +
+                           unitObject.toJSON());
+
+        // Build JSON string for Squad specific Unit.factory() testing.
+
+        StringBuffer newSquadJSON =
+            new StringBuffer(JsonData.JSON_OBJECT_START);
+
+        String factoryNormalRange    = "\"Normal Range\":6";
+        String factoryClassification = "\"Classification\":\"FIRST_LINE\"";
+
+        newSquadJSON.append("\"Description\":\"SQUAD\",\n");
+        newSquadJSON.append(factoryNationality + JsonData.JSON_OBJECT_SEPARATOR);
+        newSquadJSON.append(factoryInfantryType + JsonData.JSON_OBJECT_SEPARATOR);
+        newSquadJSON.append("\"Firepower\":6,\n");
+        newSquadJSON.append(factoryNormalRange + JsonData.JSON_OBJECT_SEPARATOR);
+        newSquadJSON.append("\"Morale\":6,\n");
+        newSquadJSON.append("\"Broken Morale\":6,\n");
+        newSquadJSON.append("\"Can Self Rally ?\":false,\n");
+        newSquadJSON.append("\"Basic Point Value\":11,\n");
+        newSquadJSON.append("\"Has Maximum ELR ?\":false,\n");
+        newSquadJSON.append(factoryClassification + JsonData.JSON_OBJECT_SEPARATOR);
+        newSquadJSON.append("\"Can Assault Fire ?\":true,\n");
+        newSquadJSON.append("\"Can Spray Fire ?\":false,\n");
+        newSquadJSON.append("\"Smoke Placement Exponent\":3");
+        newSquadJSON.append(JsonData.JSON_OBJECT_END);
+
+        String newSquadJsonString = newSquadJSON.toString();
+
+        // Start with a successful (at least expected to be) generation of a
+        // Squad using the new data.
+
+        unitObject = Unit.factory(newSquadJsonString,3);
+
+        // Display all of the entered values for the new Squad instance
+        // (created with Unit.factory()) using the toJSON() method.
+
+        System.out.println("\n(Created with Unit.factory()) Squad.toJSON() output:\n\n" +
+                           unitObject.toJSON());
+
+        // (Attempt to) create Unit instances using Unit.factory() to test
+        // exceptions.
+
+        System.out.println("\nTesting Exception handling for Unit.factory() method:");
+
+        String factoryTestStrings[][] =
+        {
+         // Unit
+
+          {"Null JSON input data",null},
+          {"Empty JSON input data",""},
+          {"Invalid (wrong case) Description value",
+           newLeaderJsonString.replaceAll(factoryDescription,
+                                          factoryDescription.replaceAll("\"LEADER\"",
+                                                                        "\"Leader\""))},
+          {"Invalid (non-string) Description value",
+           newLeaderJsonString.replaceAll(factoryDescription,
+                                          factoryDescription.replaceAll("\"LEADER\"",
+                                                                        "null"))},
+         // Leader
+
+          {"Invalid (wrong case) Nationality value",
+           newLeaderJsonString.replaceAll(factoryNationality,
+                                          factoryNationality.replaceAll("\"AMERICAN\"",
+                                                                        "\"American\""))},
+          {"Invalid (non-string) Nationality value",
+           newLeaderJsonString.replaceAll(factoryNationality,
+                                          factoryNationality.replaceAll("\"AMERICAN\"",
+                                                                        "null"))},
+          {"Invalid (less than minimum) modifier argument",
+           newLeaderJsonString.replaceAll(factoryModifier,
+                                          factoryModifier.replaceAll("-1","-4"))},
+         // Squad
+
+          {"Invalid (for nationality) Classification value",
+           newSquadJsonString.replaceAll(factoryClassification,
+                                         factoryClassification.replaceAll("\"FIRST_LINE\"",
+                                                                          "\"SS\""))},
+          {"Invalid (wrong case) Classification value",
+           newSquadJsonString.replaceAll(factoryClassification,
+                                         factoryClassification.replaceAll("\"FIRST_LINE\"",
+                                                                          "\"Green\""))},
+          {"Invalid (non-string) Classification value",
+           newSquadJsonString.replaceAll(factoryClassification,
+                                         factoryClassification.replaceAll("\"FIRST_LINE\"",
+                                                                          "null"))}
+        };
+
+        for (int i = 0;i < factoryTestStrings.length;++i)
+        {
+            System.out.println("\n" + factoryTestStrings[i][0] + ":\n");
+
+            try
+            {
+                unitObject = Unit.factory(factoryTestStrings[i][1],3);
+            }
+
+            catch (Exception e)
+            {
+                System.out.println("Caught: " + e);
+            }
+        }
+
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
@@ -1045,7 +1184,7 @@ public class Driver
 */
         // Test the Scenario class.
 
-        System.out.println("Testing Exception handling during Scenario creation:\n");
+        System.out.println("\nTesting Exception handling during Scenario creation:\n");
 
         Scenario scenario = null;
 

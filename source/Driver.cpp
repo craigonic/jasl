@@ -17,6 +17,7 @@
 #include "jasl/cni/jaslWrapper.h"
 
 #include "jasl/counters/Mobile.h"
+#include "jasl/utilities/JsonData.h"
 
 #include <java/lang/Throwable.h>
 #include <java/util/List.h>
@@ -27,7 +28,8 @@
 #include <string>
 #include <vector>
 
-typedef jasl::counters::Mobile Mobile;
+using Mobile   = jasl::counters::Mobile;
+using JsonData = jasl::utilities::JsonData;
 
 static void printJavaString(jstring javaString)
 {
@@ -103,7 +105,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Serialization::serializeToFile(NULL,serializationFile);
+            Serialization::serializeToFile(nullptr,serializationFile);
         }
 
         catch (jthrowable t)
@@ -121,12 +123,12 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        Unit* deserializedLeader = NULL;
+        Unit* deserializedLeader = nullptr;
 
         try
         {
             deserializedLeader =
-                (Unit*)Serialization::deserializeFromFile(NULL);
+                (Unit*)Serialization::deserializeFromFile(nullptr);
         }
 
         catch (jthrowable t)
@@ -244,7 +246,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Serialization::serializeToByteArray(NULL);
+            Serialization::serializeToByteArray(nullptr);
         }
 
         catch (jthrowable t)
@@ -252,12 +254,12 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        Unit* deserializedSquad = NULL;
+        Unit* deserializedSquad = nullptr;
 
         try
         {
             deserializedSquad =
-                (Unit*)Serialization::deserializeFromByteArray(NULL);
+                (Unit*)Serialization::deserializeFromByteArray(nullptr);
         }
 
         catch (jthrowable t)
@@ -270,7 +272,7 @@ int main(int argc, char *argv[])
 
         russianSquad->setIdentity(cc2js("A"));
 
-        JArray<jbyte>* serializedSquad = NULL;
+        JArray<jbyte>* serializedSquad = nullptr;
 
         try
         {
@@ -1089,6 +1091,221 @@ int main(int argc, char *argv[])
         printf("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n");
         printJavaString(deserializedSquad->toJSON());
 
+        // Test the Unit.factory() method.
+
+        printf("\nTesting the Unit.factory() method:");
+
+        Unit* unitObject = nullptr;
+
+        // Build JSON string for general and Leader specific Unit.factory()
+        // testing.
+
+        std::string newLeaderJSON(js2cc(JsonData::JSON_OBJECT_START));
+        std::string objectSeparator(js2cc(JsonData::JSON_OBJECT_SEPARATOR));
+
+        std::string factoryDescription  = "\"Description\":\"LEADER\"";
+        std::string factoryNationality  = "\"Nationality\":\"AMERICAN\"";
+        std::string factoryInfantryType = "\"Infantry Type\":\"NONE\"";
+        std::string factoryModifier     = "\"Modifier\":-1";
+
+        newLeaderJSON.append(factoryDescription + objectSeparator);
+        newLeaderJSON.append(factoryNationality + objectSeparator);
+        newLeaderJSON.append(factoryInfantryType + objectSeparator);
+        newLeaderJSON.append("\"Morale\":8,\n");
+        newLeaderJSON.append("\"Broken Morale\":8,\n");
+        newLeaderJSON.append(factoryModifier + objectSeparator);
+        newLeaderJSON.append(js2cc(JsonData::JSON_OBJECT_END));
+
+        // Start with a successful (at least expected to be) generation of a
+        // Leader using the new data.
+
+        unitObject = Unit::factory(cc2js(newLeaderJSON.c_str()),3);
+
+        // Display all of the entered values for the new Leader instance
+        // (created with Unit.factory()) using the toJSON() method.
+
+        printf("\n\n(Created with Unit.factory()) Leader.toJSON() output:\n\n");
+        printJavaString(unitObject->toJSON());
+
+        // Build JSON string for Squad specific Unit.factory() testing.
+
+        std::string newSquadJSON(js2cc(JsonData::JSON_OBJECT_START));
+
+        std::string factoryNormalRange    = "\"Normal Range\":6";
+        std::string factoryClassification = "\"Classification\":\"FIRST_LINE\"";
+
+        newSquadJSON.append("\"Description\":\"SQUAD\",\n");
+        newSquadJSON.append(factoryNationality + objectSeparator);
+        newSquadJSON.append(factoryInfantryType + objectSeparator);
+        newSquadJSON.append("\"Firepower\":6,\n");
+        newSquadJSON.append(factoryNormalRange + objectSeparator);
+        newSquadJSON.append("\"Morale\":6,\n");
+        newSquadJSON.append("\"Broken Morale\":6,\n");
+        newSquadJSON.append("\"Can Self Rally ?\":false,\n");
+        newSquadJSON.append("\"Basic Point Value\":11,\n");
+        newSquadJSON.append("\"Has Maximum ELR ?\":false,\n");
+        newSquadJSON.append(factoryClassification + objectSeparator);
+        newSquadJSON.append("\"Can Assault Fire ?\":true,\n");
+        newSquadJSON.append("\"Can Spray Fire ?\":false,\n");
+        newSquadJSON.append("\"Smoke Placement Exponent\":3");
+        newSquadJSON.append(js2cc(JsonData::JSON_OBJECT_END));
+
+        // Start with a successful (at least expected to be) generation of a
+        // Squad using the new data.
+
+        unitObject = Unit::factory(cc2js(newSquadJSON.c_str()),3);
+
+        // Display all of the entered values for the new Squad instance
+        // (created with Unit.factory()) using the toJSON() method.
+
+        printf("\n(Created with Unit.factory()) Squad.toJSON() output:\n\n");
+        printJavaString(unitObject->toJSON());
+
+        // (Attempt to) create Unit instances using Unit.factory() to test
+        // exceptions.
+
+        printf("\nTesting Exception handling for Unit.factory() method:\n");
+
+        printf("\nNull JSON input data:\n");
+
+        try
+        {
+            Unit::factory(nullptr,3);
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        std::vector<std::pair<std::string,std::string>> factoryTestStrings;
+
+        // Unit
+
+        validDescription = "\"Description\":\"LEADER\"";
+        validDescriptionLength = validDescription.length();
+        descriptionPosition = newLeaderJSON.find(validDescription);
+        descriptionValuePosition = validDescription.find(":") + 1;
+
+        testStringPair.first  = "Empty JSON input data";
+        testStringPair.second = "";
+
+        factoryTestStrings.push_back(testStringPair);
+
+        std::string modifiedLeaderJSON(newLeaderJSON);
+
+        testStringPair.first =
+            "Invalid (wrong case) Description value";
+        testStringPair.second =
+            modifiedLeaderJSON.replace(descriptionPosition,
+                                       validDescriptionLength,
+                                       validDescription.replace(descriptionValuePosition,
+                                                                8,"\"Leader\""));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedLeaderJSON = newLeaderJSON;
+
+        testStringPair.first =
+            "Invalid (non-string) Description value";
+        testStringPair.second =
+            modifiedLeaderJSON.replace(descriptionPosition,
+                                       validDescriptionLength,
+                                       validDescription.replace(descriptionValuePosition,
+                                                                8,"null"));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedLeaderJSON = newLeaderJSON;
+
+         // Leader
+
+        validNationality = "\"Nationality\":\"AMERICAN\"";
+        validNationalityLength = validNationality.length();
+        nationalityPosition = newLeaderJSON.find(validNationality);
+        nationalityValuePosition = validNationality.find(":") + 1;
+
+        validModifierLength = factoryModifier.length();
+        modifierPosition = newLeaderJSON.find(factoryModifier);
+        modifierValuePosition = factoryModifier.find(":") + 1;
+
+        testStringPair.first = "Invalid (wrong case) Nationality value";
+        testStringPair.second =
+            modifiedLeaderJSON.replace(nationalityPosition,
+                                       validNationalityLength,
+                                       validNationality.replace(nationalityValuePosition,
+                                                                10,"\"American\""));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedLeaderJSON = newLeaderJSON;
+
+        testStringPair.first = "Invalid (non-string) Nationality value";
+        testStringPair.second =
+            modifiedLeaderJSON.replace(nationalityPosition,
+                                       validNationalityLength,
+                                       validNationality.replace(nationalityValuePosition,
+                                                                10,"null"));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedLeaderJSON = newLeaderJSON;
+
+        testStringPair.first = "Invalid (less than minimum) modifier argument";
+        testStringPair.second =
+            modifiedLeaderJSON.replace(modifierPosition,
+                                       validModifierLength,
+                                       factoryModifier.replace(modifierValuePosition,
+                                                               2,"-4"));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedSquadJSON = newSquadJSON;
+
+         // Squad
+
+        validClassificationLength = factoryClassification.length();
+        classificationPosition = newSquadJSON.find(factoryClassification);
+        classificationValuePosition = factoryClassification.find(":") + 1;
+
+        testStringPair.first = "Invalid (for nationality) Classification value";
+        testStringPair.second =
+            modifiedSquadJSON.replace(classificationPosition,
+                                      validClassificationLength,
+                                      validClassification.replace(classificationValuePosition,
+                                                                  12,"\"SS\""));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedSquadJSON = newSquadJSON;
+
+        testStringPair.first = "Invalid (wrong case) Classification value";
+        testStringPair.second =
+            modifiedSquadJSON.replace(classificationPosition,
+                                      validClassificationLength,
+                                      validClassification.replace(classificationValuePosition,
+                                                                  4,"\"Green\""));
+        factoryTestStrings.push_back(testStringPair);
+
+        modifiedSquadJSON = newSquadJSON;
+
+        testStringPair.first = "Invalid (non-string) Classification value";
+        testStringPair.second =
+            modifiedSquadJSON.replace(classificationPosition,
+                                      validClassificationLength,
+                                      validClassification.replace(classificationValuePosition,
+                                                                  7,"null"));
+        factoryTestStrings.push_back(testStringPair);
+
+        for (std::pair<std::string,std::string> testPair : factoryTestStrings)
+        {
+            printf("\n%s:\n",testPair.first.c_str());
+
+            try
+            {
+                Unit::factory(cc2js(testPair.second.c_str()),3);
+            }
+
+            catch (jthrowable t)
+            {
+                printExceptionMessage(t);
+            }
+        }
+
         // Create an array of Unit objects. These will be used to reference a
         // Leader instance and several Squad instances. These class types are
         // derived from Unit.
@@ -1100,7 +1317,8 @@ int main(int argc, char *argv[])
         // to Java objects.
 /*
          using namespace java::lang;
-         JArray<Unit*>* UnitArray = (JArray<Unit*>*)JvNewObjectArray(4,&Unit::class$,NULL);
+         JArray<Unit*>* UnitArray =
+             (JArray<Unit*>*)JvNewObjectArray(4,&Unit::class$,nullptr);
 
         Unit** UnitList = elements(UnitArray);
 */
@@ -1180,7 +1398,7 @@ int main(int argc, char *argv[])
 
         // Null Identity (no error, just clears the existing one).
 
-        squad->setIdentity(NULL);
+        squad->setIdentity(nullptr);
 
         // Blank Identity (no error, just clears the existing one).
 
@@ -1467,7 +1685,7 @@ int main(int argc, char *argv[])
 
         printf("\nTesting Exception handling during Leader creation:\n");
 
-        Leader* Grandpa = NULL;
+        Leader* Grandpa = nullptr;
 
         nationality    = Nationalities::valueOf(cc2js("BRITISH"));
         unitType       = InfantryTypes::valueOf(cc2js("CANADIAN"));
@@ -1504,8 +1722,8 @@ int main(int argc, char *argv[])
 
         printf("\nTesting the execution of the Dice class:\n\n");
 
-        Dice*       theDice     = NULL;
-        const char* diceResults = NULL;
+        Dice*       theDice     = nullptr;
+        const char* diceResults = nullptr;
 
         for (int i = 0;i < 12;i++)
         {
@@ -1529,9 +1747,9 @@ int main(int argc, char *argv[])
 
     // Test the Scenario class.
 
-    printf("Testing Exception handling during Scenario creation:\n");
+    printf("\nTesting Exception handling during Scenario creation:\n");
 
-    Scenario* scenario = NULL;
+    Scenario* scenario = nullptr;
 
     // Invalid filename (tests the constructor that accepts a String).
 
