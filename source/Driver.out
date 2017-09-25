@@ -1,4 +1,4 @@
-Fri Jul 21 12:53:42 PDT 2017
+Thu Sep 14 11:49:37 PDT 2017
 
 Leader.toText() output:
 
@@ -405,6 +405,104 @@ Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not
       "Smoke Placement Exponent":0
 }
 
+Testing the Unit.factory() method:
+
+(Created with Unit.factory()) Leader.toJSON() output:
+
+{
+ "Description":"LEADER",
+ "Unit Label":"8-1 Leader",
+  "Nationality":"AMERICAN",
+  "Unit Type":"",
+  "Identity":"",
+  "Status":0,
+   "Movement":6,
+   "Portage Capacity":1,
+   "Portage Level":0,
+    "Firepower":"0",
+    "Firepower Equivalent":0,
+    "Normal Range":0,
+    "Morale":8,
+    "Broken Morale":8,
+    "Can Self Rally ?":true,
+    "Portage Value":0,
+    "Basic Point Value":0,
+    "Experience Level Rating":3,
+    "Infantry Type":"NONE",
+     "Modifier":-1
+}
+
+(Created with Unit.factory()) Squad.toJSON() output:
+
+{
+ "Description":"SQUAD",
+ "Unit Label":"6-6-6 Squad",
+  "Nationality":"AMERICAN",
+  "Unit Type":"",
+  "Identity":"",
+  "Status":0,
+   "Movement":4,
+   "Portage Capacity":3,
+   "Portage Level":0,
+    "Firepower":"6",
+    "Firepower Equivalent":6,
+    "Normal Range":6,
+    "Morale":6,
+    "Broken Morale":6,
+    "Can Self Rally ?":false,
+    "Portage Value":10,
+    "Basic Point Value":11,
+    "Experience Level Rating":3,
+    "Infantry Type":"NONE",
+     "Has Maximum ELR ?":false,
+     "Classification":"FIRST_LINE",
+      "Can Assault Fire ?":true,
+      "Can Spray Fire ?":false,
+      "Smoke Placement Exponent":3
+}
+
+Testing Exception handling for Unit.factory() method:
+
+Null JSON input data:
+
+Caught: java.lang.NullPointerException: Unit(factory) - Null argument received.
+
+Empty JSON input data:
+
+Caught: java.lang.IllegalArgumentException: Unit(factory) - Invalid argument received (zero length).
+
+Invalid (wrong case) Description value:
+
+Caught: java.lang.IllegalArgumentException: Unit(factory) - No enum constant jasl.counters.Description.Descriptions.Leader
+
+Invalid (non-string) Description value:
+
+Caught: org.json.JSONException: Unit(factory) - JSONObject["Description"] not a string.
+
+Invalid (wrong case) Nationality value:
+
+Caught: java.lang.IllegalArgumentException: Unit(factory) - No enum constant jasl.counters.Nationality.Nationalities.American
+
+Invalid (non-string) Nationality value:
+
+Caught: org.json.JSONException: Unit(factory) - JSONObject["Nationality"] not a string.
+
+Invalid (less than minimum) modifier argument:
+
+Caught: java.lang.IllegalArgumentException: Unit(factory) - Leader(constructor) - Invalid argument(s) received : -4
+
+Invalid (for nationality) Classification value:
+
+Caught: java.lang.IllegalArgumentException: Unit(factory) - Personnel(constructor) - Invalid argument(s) received : American and SS
+
+Invalid (wrong case) Classification value:
+
+Caught: java.lang.IllegalArgumentException: Unit(factory) - No enum constant jasl.counters.Classification.Classifications.Green
+
+Invalid (non-string) Classification value:
+
+Caught: org.json.JSONException: Unit(factory) - JSONObject["Classification"] not a string.
+
 Building Unit array with a Leader & 3 Squads
 
 Displaying Unit array with a Leader & 3 Squads
@@ -522,6 +620,23 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argume
 Invalid (greater than maximum) modifier argument:
 
 Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : 4
+
+Testing Exception handling during Scenario creation:
+
+Invalid filename:
+
+Caught: java.io.FileNotFoundException: scenarios/The Guard Counterattack.json (No such file or directory)
+
+Testing the operations of the Scenario class:
+
+Scenario.toText() output:
+
+Name:	The Guards Counterattack
+Turns:	5	Starting side:	Allies
+
+Scenario.toString() output:
+
+The Guards Counterattack
 
 Testing the operations of the Game class:
 
