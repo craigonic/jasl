@@ -23,6 +23,11 @@
 
 %apply SWIGTYPE* DISOWN { Unit* };
 
+// Add support for catching Java exceptions thrown by the (static) factory()
+// method.
+
+%exception factory JAVA_EXCEPTION
+
 // The public interface of the <A HREF="../../jasl/counters/Unit.html">Unit</A> class.
 
 class Unit
@@ -48,4 +53,6 @@ class Unit
         ::java::lang::String* toJSON();
 
         void fromJSON(::java::lang::String*);
+
+        static Unit* factory(::java::lang::String*,int);
 };
