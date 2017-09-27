@@ -21,7 +21,7 @@
 
 %include ../java-exception.swig
 
-// Add support for catching Java exceptions thrown by the constructor.
+// Add support for catching Java exceptions thrown by the methods below.
 
 %exception serializeToFile          JAVA_EXCEPTION
 %exception serializeToByteArray     JAVA_EXCEPTION
