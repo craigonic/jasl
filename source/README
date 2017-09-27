@@ -46,10 +46,10 @@ make test_gcj_dynamic
 make test_gcj_static
 make test_cpp_dynamic
 make test_cpp_static
-make test_cxx_dynamic
-make test_cxx_static
-make test_c_dynamic
-make test_c_static
+#make test_cxx_dynamic
+#make test_cxx_static
+#make test_c_dynamic
+#make test_c_static
 make test_perl
 make test_python
 
