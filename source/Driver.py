@@ -535,10 +535,127 @@ deserializedSquad.fromJSON(cc2js(deserializedSquadJSON))
 
 print "\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
 
+# Test the Unit.factory() method.
+
+print "Testing the Unit.factory() method:"
+
+unitObject = None
+
+# Build JSON string for general and Leader specific Unit.factory() testing.
+
+validDescription  = "\"Description\":\"LEADER\""
+validNationality  = "\"Nationality\":\"AMERICAN\""
+validInfantryType = "\"Infantry Type\":\"NONE\""
+validMorale       = "\"Morale\":8"
+validBrokenMorale = "\"Broken Morale\":8"
+validModifier     = "\"Modifier\":-1"
+
+jsonSeparator = ",\n"
+
+newLeaderJSON = "{\n" + validDescription + jsonSeparator + validNationality + \
+                jsonSeparator + validInfantryType + jsonSeparator + \
+                validMorale + jsonSeparator + validBrokenMorale + \
+                jsonSeparator + validModifier + "\n}"
+
+# Start with a successful (at least expected to be) generation of a Leader using
+# the new data.
+
+unitObject = Unit_factory(cc2js(newLeaderJSON),3)
+
+# Display all of the entered values for the new Leader instance (created with
+# Unit.factory()) using the toJSON() method.
+
+print "\n(Created with Unit.factory()) Leader.toJSON() output:\n\n%s\n" % js2cc(unitObject.toJSON())
+
+# Build JSON string for Squad specific Unit.factory() testing.
+
+validFirepower      = "\"Firepower\":6"
+validNormalRange    = "\"Normal Range\":6"
+validMorale         = "\"Morale\":6"
+validBrokenMorale   = "\"Broken Morale\":6"
+validCanSelfRally   = "\"Can Self Rally ?\":false"
+validBPV            = "\"Basic Point Value\":11"
+validHasMaxELR      = "\"Has Maximum ELR ?\":false"
+validClassification = "\"Classification\":\"FIRST_LINE\""
+validCanAssaultFire = "\"Can Assault Fire ?\":true"
+validCanSprayFire   = "\"Can Spray Fire ?\":false"
+validSPE            = "\"Smoke Placement Exponent\":3"
+
+newSquadJSON = "{\n" + "\"Description\":\"SQUAD\"" + jsonSeparator + \
+               validNationality + jsonSeparator + validInfantryType + \
+               jsonSeparator + validFirepower + jsonSeparator + \
+               validNormalRange + jsonSeparator + validMorale + \
+               jsonSeparator + validBrokenMorale + jsonSeparator + \
+               validCanSelfRally + jsonSeparator + validBPV + jsonSeparator + \
+               validHasMaxELR + jsonSeparator + validClassification + \
+               jsonSeparator + validCanAssaultFire + jsonSeparator + \
+               validCanSprayFire + jsonSeparator + validSPE + "\n}"
+
+# Start with a successful (at least expected to be) generation of a Squad using
+# the new data.
+
+unitObject = Unit_factory(cc2js(newSquadJSON),3)
+
+# Display all of the entered values for the new Squad instance (created with
+# Unit.factory()) using the toJSON() method.
+
+print "(Created with Unit.factory()) Squad.toJSON() output:\n\n%s\n" % js2cc(unitObject.toJSON())
+
+# Display all of the entered values for the new Squad instance (created with
+# (Attempt to) create Unit instances using Unit.factory() to test exceptions.
+
+print "Testing Exception handling for Unit.factory() method:"
+
+factoryTestStrings = [
+ # Unit
+
+  ["Null JSON input data",None],
+  ["Empty JSON input data",""],
+  ["Invalid (wrong case) Description value",
+   newLeaderJSON.replace(validDescription,
+                         validDescription.replace("\"LEADER\"","\"Leader\""))],
+  ["Invalid (non-string) Description value",
+   newLeaderJSON.replace(validDescription,
+                         validDescription.replace("\"LEADER\"","null"))],
+ # Leader
+
+  ["Invalid (wrong case) Nationality value",
+   newLeaderJSON.replace(validNationality,
+                         validNationality.replace("\"AMERICAN\"","\"American\""))],
+  ["Invalid (non-string) Nationality value",
+   newLeaderJSON.replace(validNationality,
+                         validNationality.replace("\"AMERICAN\"","null"))],
+  ["Invalid (less than minimum) modifier argument",
+   newLeaderJSON.replace(validModifier,validModifier.replace("-1","-4"))],
+
+ # Squad
+
+  ["Invalid (for nationality) Classification value",
+   newSquadJSON.replace(validClassification,
+                        validClassification.replace("\"FIRST_LINE\"",
+                                                    "\"SS\""))],
+  ["Invalid (wrong case) Classification value",
+   newSquadJSON.replace(validClassification,
+                        validClassification.replace("\"FIRST_LINE\"","\"Green\""))],
+  ["Invalid (non-string) Classification value",
+   newSquadJSON.replace(validClassification,
+                        validClassification.replace("\"FIRST_LINE\"","null"))]
+]
+
+for row in range(len(factoryTestStrings)):
+#   print "label: %s JSON: %s\n" % (factoryTestStrings[row][0],factoryTestStrings[row][1])
+
+    print "\n%s:" % factoryTestStrings[row][0]
+
+    try:
+        unitObject = Unit_factory(cc2js(factoryTestStrings[row][1]),3)
+    except ValueError as detail:
+        printException(detail)
+
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
-print "Building Unit array with a Leader & 3 Squads\n"
+print "\nBuilding Unit array with a Leader & 3 Squads\n"
 
 unitList = []
 
@@ -843,7 +960,7 @@ except ValueError as detail:
 
 # Test the Scenario class.
 
-print "Testing Exception handling during Scenario creation:\n"
+print "\nTesting Exception handling during Scenario creation:\n"
 
 # Invalid filename (tests the constructor that accepts a String).
 
@@ -873,7 +990,7 @@ print "%s\n" % (js2cc(scenario.toString()))
 
 # Test the Game class.
 
-print "\nTesting the operations of the Game class:"
+print "Testing the operations of the Game class:"
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))

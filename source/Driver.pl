@@ -658,10 +658,147 @@ $deserializedSquad->fromJSON(CniWrapper::cc2js($deserializedSquadJSON));
 printf("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n\n",
        CniWrapper::js2cc($deserializedSquad->toJSON()));
 
+# Test the Unit.factory() method.
+
+printf("Testing the Unit.factory() method:\n");
+
+my $unitObject = undef;
+
+# Build JSON string for general and Leader specific Unit.factory() testing.
+
+$validDescription  = "\"Description\":\"LEADER\"";
+$validNationality  = "\"Nationality\":\"AMERICAN\"";
+$validInfantryType = "\"Infantry Type\":\"NONE\"";
+$validMorale       = "\"Morale\":8";
+$validBrokenMorale = "\"Broken Morale\":8";
+$validModifier     = "\"Modifier\":-1";
+
+my $jsonSeparator = ",\n";
+
+my $newLeaderJSON =
+    join '',"{\n",$validDescription,$jsonSeparator,$validNationality,
+            $jsonSeparator,$validInfantryType,$jsonSeparator,$validMorale,
+            $jsonSeparator,$validBrokenMorale,$jsonSeparator,$validModifier,
+            "\n}";
+
+# Start with a successful (at least expected to be) generation of a Leader using
+# the new data.
+
+$unitObject = Counters::Unit::factory(CniWrapper::cc2js($newLeaderJSON),3);
+
+# Display all of the entered values for the new Leader instance (created with
+# Unit.factory()) using the toJSON() method.
+
+printf("\n(Created with Unit.factory()) Leader.toJSON() output:\n\n%s\n",
+       CniWrapper::js2cc($unitObject->toJSON()));
+
+# Build JSON string for Squad specific Unit.factory() testing.
+
+$validFirepower      = "\"Firepower\":6";
+$validNormalRange    = "\"Normal Range\":6";
+$validMorale         = "\"Morale\":6";
+$validBrokenMorale   = "\"Broken Morale\":6";
+$validCanSelfRally   = "\"Can Self Rally ?\":false";
+$validBPV            = "\"Basic Point Value\":11";
+$validHasMaxELR      = "\"Has Maximum ELR ?\":false";
+$validClassification = "\"Classification\":\"FIRST_LINE\"";
+$validCanAssaultFire = "\"Can Assault Fire ?\":true";
+$validCanSprayFire   = "\"Can Spray Fire ?\":false";
+$validSPE            = "\"Smoke Placement Exponent\":3";
+
+my $newSquadJSON =
+    join '',"{\n","\"Description\":\"SQUAD\"",$jsonSeparator,$validNationality,
+            $jsonSeparator,$validInfantryType,$jsonSeparator,$validFirepower,
+            $jsonSeparator,$validNormalRange,$jsonSeparator,$validMorale,
+            $jsonSeparator,$validBrokenMorale,$jsonSeparator,$validCanSelfRally,
+            $jsonSeparator,$validBPV,$jsonSeparator,$validHasMaxELR,
+            $jsonSeparator,$validClassification,$jsonSeparator,
+            $validCanAssaultFire,$jsonSeparator,$validCanSprayFire,
+            $jsonSeparator,$validSPE,"\n}";
+
+# Start with a successful (at least expected to be) generation of a Squad using
+# the new data.
+
+$unitObject = Counters::Unit::factory(CniWrapper::cc2js($newSquadJSON),3);
+
+# Display all of the entered values for the new Squad instance (created with
+# Unit.factory()) using the toJSON() method.
+
+printf("\n(Created with Unit.factory()) Squad.toJSON() output:\n\n%s\n",
+       CniWrapper::js2cc($unitObject->toJSON()));
+
+# (Attempt to) create Unit instances using Unit.factory() to test exceptions.
+
+printf("\nTesting Exception handling for Unit.factory() method:\n");
+
+# Unit
+
+($wrongCaseDescription = $newLeaderJSON) =~
+    s/$validDescription/"Description":"Leader"/;
+($invalidDescription = $newLeaderJSON) =~
+    s/$validDescription/"Description":null/;
+
+# Leader
+
+($wrongCaseNationality = $newLeaderJSON) =~
+    s/$validNationality/"Nationality":"American"/;
+($invalidNationality = $newLeaderJSON) =~
+    s/$validNationality/"Nationality":null/;
+($differentModifier = $newLeaderJSON) =~
+    s/$validModifier/"Modifier":-4/;
+
+# Squad
+
+($differentClassification = $newSquadJSON) =~
+    s/$validClassification/"Classification":"SS"/;
+($wrongCaseClassification = $newSquadJSON) =~
+    s/$validClassification/"Classification":"Green"/;
+($invalidClassification = $newSquadJSON) =~
+    s/$validClassification/"Classification":null/;
+
+my @factoryTestStrings =
+(
+ # Unit
+
+  ["Null JSON input data",undef],
+  ["Empty JSON input data",""],
+  ["Invalid (wrong case) Description value",$wrongCaseDescription],
+  ["Invalid (non-string) Description value",$invalidDescription],
+
+ # Leader
+
+  ["Invalid (wrong case) Nationality value",$wrongCaseNationality],
+  ["Invalid (non-string) Nationality value",$invalidNationality],
+  ["Invalid (less than minimum) modifier argument",$differentModifier],
+
+ # Squad
+
+  ["Invalid (for nationality) Classification value",$differentClassification],
+  ["Invalid (wrong case) Classification value",$wrongCaseClassification],
+  ["Invalid (non-string) Classification value",$invalidClassification]
+);
+
+for my $row (0..$#factoryTestStrings)
+{
+#   printf("label: %s JSON: %s\n",
+#          $factoryTestStrings[$row][0],
+#          $factoryTestStrings[$row][1]);
+
+    printf("\n%s:\n",$factoryTestStrings[$row][0]);
+
+    $status = eval
+    {
+        $unitObject =
+            Counters::Unit::factory(CniWrapper::cc2js($factoryTestStrings[$row][1]),3);
+    };
+
+    printException($@) if (!defined($status));
+}
+
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
-printf("Building Unit array with a Leader & 3 Squads\n");
+printf("\nBuilding Unit array with a Leader & 3 Squads\n");
 
 my @unitList = ();
 
@@ -1013,7 +1150,7 @@ printException($@) if (!defined($status));
 
 # Test the Scenario class.
 
-printf("Testing Exception handling during Scenario creation:\n");
+printf("\nTesting Exception handling during Scenario creation:\n");
 
 # Invalid filename (tests the constructor that accepts a String).
 
@@ -1049,7 +1186,7 @@ printf("\n%s\n\n",CniWrapper::js2cc($scenario->toString()));
 
 # Test the Game class.
 
-printf("\nTesting the operations of the Game class:\n");
+printf("Testing the operations of the Game class:\n");
 
 my $allies           = UiData::Sides::valueOf(CniWrapper::cc2js("ALLIES"));
 $nationality         = $Counters::Nationalities::AMERICAN;
