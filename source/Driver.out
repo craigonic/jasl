@@ -1,4 +1,4 @@
-Thu Sep 14 11:49:37 PDT 2017
+Wed Nov  8 16:27:17 PST 2017
 
 Leader.toText() output:
 
@@ -623,16 +623,28 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argume
 
 Testing Exception handling during Scenario creation:
 
+Null InputStream:
+
+Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
+
+Null filename:
+
+Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
+
 Invalid filename:
 
 Caught: java.io.FileNotFoundException: scenarios/The Guard Counterattack.json (No such file or directory)
+
+Null StringBuffer:
+
+Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
 
 Testing the operations of the Scenario class:
 
 Scenario.toText() output:
 
 Name:	The Guards Counterattack
-Turns:	5	Starting side:	Allies
+Starting side:	Allies
 
 Scenario.toString() output:
 

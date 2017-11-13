@@ -1186,23 +1186,58 @@ public class Driver
 
         System.out.println("\nTesting Exception handling during Scenario creation:\n");
 
-        Scenario scenario = null;
+        // Null InputStream (tests the load() method that accepts one).
 
-        // Invalid filename (tests the constructor that accepts a String).
-
-        System.out.println("Invalid filename:\n");
+        System.out.println("Null InputStream:\n");
 
         try
         {
-            scenario = new Scenario("scenarios/The Guard Counterattack.json");
+            Scenario.scenario().load((java.io.InputStream)null);
         }
 
-        catch (NullPointerException e)
+        catch (Exception e)
         {
             System.out.println("Caught: " + e);
         }
 
-        catch (IOException e)
+        // Null filename (tests the load() method that accepts a String).
+
+        System.out.println("\nNull filename:\n");
+
+        try
+        {
+            Scenario.scenario().load((String)null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Invalid filename (tests the load() method that accepts a String).
+
+        System.out.println("\nInvalid filename:\n");
+
+        try
+        {
+            Scenario.scenario().load("scenarios/The Guard Counterattack.json");
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Null string (tests the load() method that accepts a StringBuffer).
+
+        System.out.println("\nNull StringBuffer:\n");
+
+        try
+        {
+            Scenario.scenario().load((StringBuffer)null);
+        }
+
+        catch (Exception e)
         {
             System.out.println("Caught: " + e);
         }
@@ -1213,11 +1248,10 @@ public class Driver
 
         try
         {
-            scenario =
-                new Scenario(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
+            Scenario.scenario().load(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
         }
 
-        catch (Exception e) // Specific to reading the JSON data.
+        catch (Exception e) // Specific to reading the JSON data (not expected).
         {
             System.out.println("Caught: " + e);
         }
@@ -1226,13 +1260,13 @@ public class Driver
         // method.
 
         System.out.println("\nScenario.toText() output:\n");
-        System.out.print(scenario.toText());
+        System.out.print(Scenario.scenario().toText());
 
         // Display an abbreviated description of the scenario (its name) using
         // the toString() method.
 
         System.out.println("\nScenario.toString() output:\n");
-        System.out.println(scenario.toString());
+        System.out.println(Scenario.scenario().toString());
 
         // Test the Game class.
 
