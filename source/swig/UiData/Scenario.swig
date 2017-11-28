@@ -24,7 +24,7 @@
 
 // Add support for catching Java exceptions thrown by the constructor.
 
-%exception Scenario JAVA_EXCEPTION
+%exception load JAVA_EXCEPTION
 
 // The public interface of the <A HREF="../../jasl/ui/data/Scenario.html">Scenario</A> class.
 
@@ -32,13 +32,21 @@ class Scenario
 {
     public:
 
-        // Constructor.
+        // Method declarations. See the class documentation for more details on
+        // the operation of each one.
 
-        Scenario(::java::lang::String* filename);
+        static Scenario*              scenario();
 
-        int                           turns();
+        void                          load(::java::lang::String* filename);
+
         ::jasl::ui::data::Side$Sides* startingSide();
 
         ::java::lang::String*         toText();
         ::java::lang::String*         toString();
+
+    private:
+
+        // Constructor.
+
+        Scenario();
 };

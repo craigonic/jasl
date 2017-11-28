@@ -1152,16 +1152,24 @@ printException($@) if (!defined($status));
 
 printf("\nTesting Exception handling during Scenario creation:\n");
 
-# Invalid filename (tests the constructor that accepts a String).
+# Null filename.
 
-my $scenario = undef;
+printf("\nNull filename:\n");
+
+$status = eval
+{
+    UiData::Scenario::scenario()->load(undef);
+};
+
+printException($@) if (!defined($status));
+
+# Invalid filename.
 
 printf("\nInvalid filename:\n");
 
 $status = eval
 {
-    $scenario =
-        new UiData::Scenario(CniWrapper::cc2js("scenarios/The Guard Counterattack.json"));
+    UiData::Scenario::scenario()->load(CniWrapper::cc2js("scenarios/The Guard Counterattack.json"));
 };
 
 printException($@) if (!defined($status));
@@ -1170,19 +1178,18 @@ printException($@) if (!defined($status));
 
 printf("\nTesting the operations of the Scenario class:\n");
 
-$scenario =
-    new UiData::Scenario(CniWrapper::cc2js("../scenarios/The Guards Counterattack.json"));
+UiData::Scenario::scenario()->load(CniWrapper::cc2js("../scenarios/The Guards Counterattack.json"));
 
 # Display all of the attributes of the scenario using the toText() method.
 
 printf("\nScenario.toText() output:\n");
-printf("\n%s\n",CniWrapper::js2cc($scenario->toText()));
+printf("\n%s\n",CniWrapper::js2cc(UiData::Scenario::scenario()->toText()));
 
 # Display an abbreviated description of the scenario (its name) using the
 # toString() method.
 
 printf("Scenario.toString() output:\n");
-printf("\n%s\n\n",CniWrapper::js2cc($scenario->toString()));
+printf("\n%s\n\n",CniWrapper::js2cc(UiData::Scenario::scenario()->toString()));
 
 # Test the Game class.
 

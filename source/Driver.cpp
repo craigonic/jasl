@@ -1749,16 +1749,55 @@ int main(int argc, char *argv[])
 
     printf("\nTesting Exception handling during Scenario creation:\n");
 
-    Scenario* scenario = nullptr;
+    // Null InputStream (tests the load() method that accepts one).
 
-    // Invalid filename (tests the constructor that accepts a String).
+    printf("\nNull InputStream:\n");
+
+    try
+    {
+        Scenario::scenario()->load(static_cast<::java::io::InputStream*>(nullptr));
+    }
+
+    catch (jthrowable t)
+    {
+        printExceptionMessage(t);
+    }
+
+    // Null filename (tests the load() method that accepts a String).
+
+    printf("\nNull filename:\n");
+
+    try
+    {
+        Scenario::scenario()->load(static_cast<::java::lang::String*>(nullptr));
+    }
+
+    catch (jthrowable t)
+    {
+        printExceptionMessage(t);
+    }
+
+    // Invalid filename (tests the load() method that accepts a String).
 
     printf("\nInvalid filename:\n");
 
     try
     {
-        scenario =
-            new Scenario(cc2js("scenarios/The Guard Counterattack.json"));
+        Scenario::scenario()->load(cc2js("scenarios/The Guard Counterattack.json"));
+    }
+
+    catch (jthrowable t)
+    {
+        printExceptionMessage(t);
+    }
+
+    // Null string (tests the load() method that accepts a StringBuffer).
+
+    printf("\nNull StringBuffer:\n");
+
+    try
+    {
+        Scenario::scenario()->load(static_cast<::java::lang::StringBuffer*>(nullptr));
     }
 
     catch (jthrowable t)
@@ -1772,11 +1811,10 @@ int main(int argc, char *argv[])
 
     try
     {
-        scenario =
-            new Scenario(cc2js("scenarios/The Guards Counterattack.json"));
+        Scenario::scenario()->load(cc2js("scenarios/The Guards Counterattack.json"));
     }
 
-    catch (jthrowable t)
+    catch (jthrowable t) // Specific to reading the JSON data (not expected).
     {
         printExceptionMessage(t);
     }
@@ -1785,13 +1823,13 @@ int main(int argc, char *argv[])
     // method.
 
     printf("\n\nScenario.toText() output:\n\n");
-    printJavaString(scenario->toText());
+    printJavaString(Scenario::scenario()->toText());
 
     // Display an abbreviated description of the scenario (its name) using
     // the toString() method.
 
     printf("Scenario.toString() output:\n\n");
-    printJavaString(scenario->toString());
+    printJavaString(Scenario::scenario()->toString());
 
     // Test the Game class.
 

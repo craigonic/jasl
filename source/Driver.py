@@ -962,12 +962,21 @@ except ValueError as detail:
 
 print "\nTesting Exception handling during Scenario creation:\n"
 
-# Invalid filename (tests the constructor that accepts a String).
+# Null filename.
 
-print "Invalid filename:"
+print "Null filename:"
 
 try:
-    scenario = Scenario(cc2js("scenarios/The Guard Counterattack.json"))
+    Scenario_scenario().load(None)
+except ValueError as detail:
+    printException(detail)
+
+# Invalid filename.
+
+print "\nInvalid filename:"
+
+try:
+    Scenario_scenario().load(cc2js("scenarios/The Guard Counterattack.json"))
 except ValueError as detail:
     printException(detail)
 
@@ -975,18 +984,18 @@ except ValueError as detail:
 
 print "\nTesting the operations of the Scenario class:\n"
 
-scenario = Scenario(cc2js("../scenarios/The Guards Counterattack.json"))
+Scenario_scenario().load(cc2js("../scenarios/The Guards Counterattack.json"))
 
 # Display all of the attributes of the scenario using the toText() method.
 
 print "Scenario.toText() output:\n"
-print "%s" % (js2cc(scenario.toText()))
+print "%s" % (js2cc(Scenario_scenario().toText()))
 
 # Display an abbreviated description of the scenario (its name) using the
 # toString() method.
 
 print "Scenario.toString() output:\n"
-print "%s\n" % (js2cc(scenario.toString()))
+print "%s\n" % (js2cc(Scenario_scenario().toString()))
 
 # Test the Game class.
 
