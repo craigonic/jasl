@@ -34,15 +34,6 @@ class Unit
 {
     public:
 
-        // Constructor.
-        //
-        // Note that this constructor is intended strictly for use in
-        // referencing an existing derived class object (e.g. one that has been
-        // created using deserialization). If it is used directly, the behavior
-        // of the access methods is undefined.
-
-        Unit();
-
         // Method declarations. See the class documentation for more details on
         // the operation of each one.
 
@@ -55,4 +46,10 @@ class Unit
         void fromJSON(::java::lang::String*);
 
         static Unit* factory(::java::lang::String*,int);
+
+    private:
+
+        // Constructor.
+
+        Unit();
 };

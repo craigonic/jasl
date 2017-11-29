@@ -21,7 +21,7 @@ import jasl.utilities.Messages;
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 8.0
+ * @version 8.1
  * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
@@ -72,7 +72,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
 	// used by <A HREF="http://www.swig.org/">SWIG</A> to build bindings for scripting languages.
 
-	protected Unit() {}
+	private Unit() {}
 
 	// Public access methods
 
