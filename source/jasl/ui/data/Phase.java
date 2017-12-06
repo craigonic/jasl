@@ -15,11 +15,11 @@ package jasl.ui.data;
 /**
  * This interface is used to define the public constants, using an enum, and
  * required method associated with the phases within each half of a turn during
- * a jASL session. The method is intended for operation on a String member
+ * a jASL session. The method is intended for operation on a Phases enum member
  * variable within the implementing class.
  *
- * @version 1.0
- * @author Copyright (C) 2016 Craig R. Campbell (craigonic@gmail.com)
+ * @version 2.0
+ * @author Copyright (C) 2016-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Phase.html">Source code</A>
  */
 
@@ -28,7 +28,7 @@ public interface Phase
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the current
-	// phase using an objects toText() method.
+	// phase using an object's toText() method.
 
 	/**
 	 * Provides a label for a current phase : <B>Phase</B>
@@ -130,8 +130,8 @@ public interface Phase
 	/**
 	 * Return the current phase within a turn.
 	 *
-	 * @return a <CODE>String</CODE> specifying the phase.
+	 * @return a <CODE>Phases</CODE> value specifying the phase.
 	 */
 
-	public abstract String phase();
+	public abstract Phases phase();
 }
