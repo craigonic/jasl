@@ -27,8 +27,9 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and class files in/of/for
 # this package.
 
-JASL_UI_DATA_SRC_FILES := Position.java Stack.java Player.java Side.java \
-                          Phase.java Game.java Scenario.java
+JASL_UI_DATA_SRC_FILES := Position.java Stack.java Player.java \
+                          SniperActivationNumber.java Side.java Phase.java \
+                          Scenario.java Game.java
 
 GCJ_OBJECT_FILES       := ${JASL_UI_DATA_SRC_FILES:.java=.o}
 
@@ -70,7 +71,7 @@ hdr: include_directory
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(UI_DATA_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).5
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).7
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
