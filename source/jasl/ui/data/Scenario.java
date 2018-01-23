@@ -31,8 +31,8 @@ import jasl.utilities.Messages;
  * This singleton class is used to translate text data in the JSON format into
  * the objects and settings necessary to play a jASL scenario.
  *
- * @version 2.0
- * @author Copyright (C) 2016-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 2.1
+ * @author Copyright (C) 2016-2018 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jasl/ui/data/Scenario.html">Source code</A>
  */
 
@@ -64,7 +64,6 @@ public final class Scenario
 	private static final String STARTING_SIDE    = "starting side";
 	private static final String SIDES_ARRAY      = "sides";
 	private static final String SIDE             = "side";
-	private static final String SAN_NUMBER       = "SAN";
 	private static final String TURNS            = "turns";
 	private static final String SETS_UP_FIRST    = "sets up first";
 	private static final String FORMATIONS_ARRAY = "formations";
@@ -310,7 +309,13 @@ public final class Scenario
 
 			JSONObject jsonObject = new JSONObject(jsonData);
 
-			_name  = jsonObject.getString(NAME);
+			_name = jsonObject.getString(NAME);
+
+			if (_name.isEmpty())
+			{
+				throw new IllegalArgumentException("Scenario name is empty.");
+			}
+
 			_startingSide =
 				Side.Sides.valueOf(jsonObject.getString(STARTING_SIDE));
 
@@ -373,11 +378,21 @@ public final class Scenario
 
 		int sniperActivationNumber = 0;
 
-		if (jsonObject.has(SAN_NUMBER))
+		if (jsonObject.has(SniperActivationNumber.SAN_LABEL))
 		{
-			sniperActivationNumber = jsonObject.getInt(SAN_NUMBER);
+			sniperActivationNumber =
+				jsonObject.getInt(SniperActivationNumber.SAN_LABEL);
 
-			if (sniperActivationNumber < 0) sniperActivationNumber = 0;
+			if ((sniperActivationNumber < SniperActivationNumber.MIN_SAN) ||
+			    (sniperActivationNumber > SniperActivationNumber.MAX_SAN) ||
+			    (1 == sniperActivationNumber))
+			{
+				throw new IllegalArgumentException(Messages.INVALID_PARAMETER_MSG +
+				                                   SniperActivationNumber.SAN_LABEL +
+				                                   " (" + sniperActivationNumber + ") < " +
+				                                   SniperActivationNumber.MIN_SAN +
+				                                   ", 1, or > " + SniperActivationNumber.MAX_SAN);
+			}
 		}
 
 		int turns = jsonObject.getInt(TURNS);
@@ -429,7 +444,13 @@ public final class Scenario
 
 	private void parseFormationData(JSONObject jsonObject,int turns,int elr)
 	{
-		String name   = jsonObject.getString(NAME);
+		String name = jsonObject.getString(NAME);
+
+		if (name.isEmpty())
+		{
+			throw new IllegalArgumentException("Formation name is empty.");
+		}
+
 		int entryTurn = 0;
 
 		// If an entry turn is specified, verify that it falls within
@@ -441,18 +462,17 @@ public final class Scenario
 		{
 			entryTurn = jsonObject.getInt(ENTRY_TURN);
 
-			if ((entryTurn < 1) || (entryTurn > turns))
+			if ((entryTurn < 0) || (entryTurn > turns))
 			{
 				throw new IllegalArgumentException(Messages.INVALID_PARAMETER_MSG +
 				                                   ENTRY_TURN + " (" + entryTurn +
-				                                   ") < 1 or > " + turns);
+				                                   ") < 0 or > " + turns);
 			}
 		}
 
 		Formation formation = new Formation(name,entryTurn);
 
-		JSONArray jsonArray =
-			jsonObject.getJSONArray(UNITS_ARRAY);
+		JSONArray jsonArray = jsonObject.getJSONArray(UNITS_ARRAY);
 
 		for (int i = 0;i < jsonArray.length();++i)
 		{
