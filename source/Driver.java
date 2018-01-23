@@ -1184,7 +1184,128 @@ public class Driver
 */
         // Test the Scenario class.
 
-        System.out.println("\nTesting Exception handling during Scenario creation:\n");
+        // Build JSON string for Scenario (JSON) data exception handling tests.
+
+        StringBuffer scenarioTestJSON =
+            new StringBuffer(JsonData.JSON_OBJECT_START);
+
+        String scenarioName  = "\"name\":\"Test Scenario\"";
+        String startingSide  = "\"starting side\":\"ALLIES\"";
+        String sides         = "\"sides\":";
+        String alliedSide    = "\"side\":\"ALLIES\"";
+        String elr           = "\"Experience Level Rating\":3";
+        String san           = "\"SAN\":6";
+        String turns         = "\"turns\":5";
+        String setsUpFirst   = "\"sets up first\":false";
+        String formations    = "\"formations\":";
+        String formationName = "\"name\":\"A Platoon\"";
+        String entryTurn     = "\"entry turn\":1";
+        String units         = "\"units\":";
+        String copies        = "\"copies\":3";
+        String morale        = "\"Morale\":9";
+
+        scenarioTestJSON.append(scenarioName + JsonData.JSON_OBJECT_SEPARATOR);
+        scenarioTestJSON.append(startingSide + JsonData.JSON_OBJECT_SEPARATOR);
+
+         scenarioTestJSON.append("\"sides\":\n[\n");
+
+          scenarioTestJSON.append(JsonData.JSON_OBJECT_START + alliedSide +
+                                  JsonData.JSON_OBJECT_SEPARATOR);
+          scenarioTestJSON.append(elr + JsonData.JSON_OBJECT_SEPARATOR);
+          scenarioTestJSON.append(san + JsonData.JSON_OBJECT_SEPARATOR);
+          scenarioTestJSON.append(turns + JsonData.JSON_OBJECT_SEPARATOR);
+          scenarioTestJSON.append(setsUpFirst + JsonData.JSON_OBJECT_SEPARATOR);
+
+           scenarioTestJSON.append(formations + "\n" + "[\n" +
+                                   JsonData.JSON_OBJECT_START);
+
+           scenarioTestJSON.append(formationName +
+                                   JsonData.JSON_OBJECT_SEPARATOR);
+           scenarioTestJSON.append(entryTurn +
+                                   JsonData.JSON_OBJECT_SEPARATOR);
+            scenarioTestJSON.append(units + "\n" + "[\n");
+
+             scenarioTestJSON.append(JsonData.JSON_OBJECT_START +
+                                     factoryDescription +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append(factoryNationality +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append(factoryInfantryType +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append(morale + JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append("\"Broken Morale\":9,\n");
+             scenarioTestJSON.append(factoryModifier +
+                                     JsonData.JSON_OBJECT_END + ",\n");
+
+             scenarioTestJSON.append(JsonData.JSON_OBJECT_START +
+                                     copies + JsonData.JSON_OBJECT_SEPARATOR +
+                                     "\"Description\":\"SQUAD\"" +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append(factoryNationality +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append(factoryInfantryType +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append("\"Firepower\":6,\n");
+             scenarioTestJSON.append(factoryNormalRange +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append("\"Morale\":6,\n");
+             scenarioTestJSON.append("\"Broken Morale\":6,\n");
+             scenarioTestJSON.append("\"Can Self Rally ?\":false,\n");
+             scenarioTestJSON.append("\"Basic Point Value\":11,\n");
+             scenarioTestJSON.append("\"Has Maximum ELR ?\":false,\n");
+             scenarioTestJSON.append(factoryClassification +
+                                     JsonData.JSON_OBJECT_SEPARATOR);
+             scenarioTestJSON.append("\"Can Assault Fire ?\":true,\n");
+             scenarioTestJSON.append("\"Can Spray Fire ?\":false,\n");
+             scenarioTestJSON.append("\"Smoke Placement Exponent\":3");
+             scenarioTestJSON.append(JsonData.JSON_OBJECT_END);
+
+            scenarioTestJSON.append("\n]");
+
+           scenarioTestJSON.append(JsonData.JSON_OBJECT_END);
+           scenarioTestJSON.append("\n]");
+
+          scenarioTestJSON.append(JsonData.JSON_OBJECT_END);
+
+         scenarioTestJSON.append("\n]");
+
+        scenarioTestJSON.append(JsonData.JSON_OBJECT_END);
+
+        String scenarioTestJsonString = scenarioTestJSON.toString();
+
+        System.out.println("\nTesting the operations of the Scenario class:");
+
+        // Valid resource path / filename and data.
+
+//      System.out.println("\nscenarioTestJSON:\n" + scenarioTestJSON.toString());
+
+        try
+        {
+//          Scenario.scenario().load(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
+            Scenario.scenario().load(scenarioTestJSON);
+        }
+
+        catch (Exception e) // Specific to reading the JSON data (not expected).
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Display all of the attributes of the scenario using the toText()
+        // method.
+
+        System.out.println("\nScenario.toText() output:\n");
+        System.out.print(Scenario.scenario().toText());
+
+        // Display an abbreviated description of the scenario (its name) using
+        // the toString() method.
+
+        System.out.println("\nScenario.toString() output:\n");
+        System.out.println(Scenario.scenario().toString());
+
+        // (Attempt to) call Scenario.load() with various null objects, a bad
+        // filename, and modified JSON data to test exceptions.
+
+        System.out.println("\nTesting Exception handling for Scenario.load() method:\n");
 
         // Null InputStream (tests the load() method that accepts one).
 
@@ -1242,31 +1363,107 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Valid resource path / filename and data.
+        // Modified JSON data.
 
-        System.out.println("\nTesting the operations of the Scenario class:");
-
-        try
+        String scenarioTestStrings[][] =
         {
-            Scenario.scenario().load(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
-        }
+         {"Empty scenario name value",
+          scenarioTestJsonString.replaceAll(scenarioName,
+                                            scenarioName.replaceAll("\"Test Scenario\"",
+                                                                    "\"\""))},
+         {"Invalid (non-string) scenario name value",
+          scenarioTestJsonString.replaceAll(scenarioName,
+                                            scenarioName.replaceAll("\"Test Scenario\"",
+                                                                    "null"))},
+         {"Invalid (wrong case) starting side value",
+          scenarioTestJsonString.replaceAll(startingSide,
+                                            startingSide.replaceAll("\"ALLIES\"",
+                                                                    "\"Allies\""))},
+         {"Invalid (non-string) starting side value",
+          scenarioTestJsonString.replaceAll(startingSide,
+                                            startingSide.replaceAll("\"ALLIES\"",
+                                                                    "null"))},
+         {"Invalid sides array entry",
+          scenarioTestJsonString.replaceAll(sides,sides + "2")},
+         {"Invalid (wrong case) side value",
+          scenarioTestJsonString.replaceAll(alliedSide,
+                                            alliedSide.replaceAll("\"ALLIES\"",
+                                                                  "\"Allies\""))},
+         {"Invalid (non-string) side value",
+          scenarioTestJsonString.replaceAll(alliedSide,
+                                            alliedSide.replaceAll("\"ALLIES\"",
+                                                                  "null"))},
+         {"Less than minimum experience level rating",
+          scenarioTestJsonString.replaceAll(elr,elr.replaceAll("3","-1"))},
+         {"Greater than maximum experience level rating",
+          scenarioTestJsonString.replaceAll(elr,elr.replaceAll("3","6"))},
+         {"Invalid (non-integer) experience level rating",
+          scenarioTestJsonString.replaceAll(elr,elr.replaceAll("3","null"))},
+         {"Less than minimum sniper activation number",
+          scenarioTestJsonString.replaceAll(san,san.replaceAll("6","-1"))},
+         {"Initial sniper activation number of 1",
+          scenarioTestJsonString.replaceAll(san,san.replaceAll("6","1"))},
+         {"Greater than maximum sniper activation number",
+          scenarioTestJsonString.replaceAll(san,san.replaceAll("6","8"))},
+         {"Invalid (non-integer) sniper activation number",
+          scenarioTestJsonString.replaceAll(san,san.replaceAll("6","null"))},
+         {"Less than minimum number of turns",
+          scenarioTestJsonString.replaceAll(turns,turns.replaceAll("5","-5"))},
+         {"Invalid (non-integer) number of turns",
+          scenarioTestJsonString.replaceAll(turns,turns.replaceAll("5","null"))},
+         {"Invalid (non-boolean) sets up first setting",
+          scenarioTestJsonString.replaceAll(setsUpFirst,
+                                            setsUpFirst.replaceAll("false",
+                                                                   "null"))},
+         {"Invalid formations array entry",
+          scenarioTestJsonString.replaceAll(formations,formations + "3")},
+         {"Empty formation name value",
+          scenarioTestJsonString.replaceAll(formationName,
+                                            formationName.replaceAll("\"A Platoon\"",
+                                                                     "\"\""))},
+         {"Invalid (non-string) formation name value",
+          scenarioTestJsonString.replaceAll(formationName,
+                                            formationName.replaceAll("\"A Platoon\"",
+                                                                     "null"))},
+         {"Less than minimum entry turn value",
+          scenarioTestJsonString.replaceAll(entryTurn,
+                                            entryTurn.replaceAll("1","-1"))},
+         {"Greater than maximum entry turn value",
+          scenarioTestJsonString.replaceAll(entryTurn,
+                                            entryTurn.replaceAll("1","6"))},
+         {"Invalid (non-integer) entry turn value",
+          scenarioTestJsonString.replaceAll(entryTurn,
+                                            entryTurn.replaceAll("1","null"))},
+         {"Invalid units array entry",
+          scenarioTestJsonString.replaceAll(units,units + "3")},
+         {"Less than minimum copies value",
+          scenarioTestJsonString.replaceAll(copies,
+                                            copies.replaceAll("3","-1"))},
+         {"Invalid (non-integer) copies value",
+          scenarioTestJsonString.replaceAll(copies,
+                                            copies.replaceAll("3","null"))},
+         {"Out-of-range parameter value for new Unit object",
+          scenarioTestJsonString.replaceAll(morale,
+                                            morale.replaceAll("9","-1"))},
+         {"Invalid (non-integer) parameter value for new Unit object",
+          scenarioTestJsonString.replaceAll(morale,
+                                            morale.replaceAll("9","null"))},
+        };
 
-        catch (Exception e) // Specific to reading the JSON data (not expected).
+        for (int i = 0;i < scenarioTestStrings.length;++i)
         {
-            System.out.println("Caught: " + e);
+            System.out.println("\n" + scenarioTestStrings[i][0] + ":\n");
+
+            try
+            {
+                Scenario.scenario().load(new StringBuffer(scenarioTestStrings[i][1]));
+            }
+
+            catch (Exception e)
+            {
+                System.out.println("Caught: " + e);
+            }
         }
-
-        // Display all of the attributes of the scenario using the toText()
-        // method.
-
-        System.out.println("\nScenario.toText() output:\n");
-        System.out.print(Scenario.scenario().toText());
-
-        // Display an abbreviated description of the scenario (its name) using
-        // the toString() method.
-
-        System.out.println("\nScenario.toString() output:\n");
-        System.out.println(Scenario.scenario().toString());
 
         // Test the Game class.
 

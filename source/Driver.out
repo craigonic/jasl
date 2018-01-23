@@ -1,4 +1,4 @@
-Wed Nov  8 16:27:17 PST 2017
+Thu Jan 18 13:12:54 PST 2018
 
 Leader.toText() output:
 
@@ -621,7 +621,18 @@ Invalid (greater than maximum) modifier argument:
 
 Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : 4
 
-Testing Exception handling during Scenario creation:
+Testing the operations of the Scenario class:
+
+Scenario.toText() output:
+
+Name:	Test Scenario
+Starting side:	Allies
+
+Scenario.toString() output:
+
+Test Scenario
+
+Testing Exception handling for Scenario.load() method:
 
 Null InputStream:
 
@@ -639,16 +650,117 @@ Null StringBuffer:
 
 Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
 
-Testing the operations of the Scenario class:
+Empty scenario name value:
 
-Scenario.toText() output:
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Scenario name is empty.
 
-Name:	The Guards Counterattack
-Starting side:	Allies
+Invalid (non-string) scenario name value:
 
-Scenario.toString() output:
+Caught: org.json.JSONException: Scenario(load) - JSONObject["name"] not a string.
 
-The Guards Counterattack
+Invalid (wrong case) starting side value:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - No enum constant jasl.ui.data.Side.Sides.Allies
+
+Invalid (non-string) starting side value:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["starting side"] not a string.
+
+Invalid sides array entry:
+
+Caught: org.json.JSONException: Scenario(load) - Expected a ',' or '}' at 63 [character 1 line 5]
+
+Invalid (wrong case) side value:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - No enum constant jasl.ui.data.Side.Sides.Allies
+
+Invalid (non-string) side value:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["side"] not a string.
+
+Less than minimum experience level rating:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : Experience Level Rating (-1) < 0 or > 5
+
+Greater than maximum experience level rating:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : Experience Level Rating (6) < 0 or > 5
+
+Invalid (non-integer) experience level rating:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["Experience Level Rating"] is not an int.
+
+Less than minimum sniper activation number:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : SAN (-1) < 0, 1, or > 7
+
+Initial sniper activation number of 1:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : SAN (1) < 0, 1, or > 7
+
+Greater than maximum sniper activation number:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : SAN (8) < 0, 1, or > 7
+
+Invalid (non-integer) sniper activation number:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["SAN"] is not an int.
+
+Less than minimum number of turns:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : turns (-5) < 0
+
+Invalid (non-integer) number of turns:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["turns"] is not an int.
+
+Invalid (non-boolean) sets up first setting:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["sets up first"] is not a Boolean.
+
+Invalid formations array entry:
+
+Caught: org.json.JSONException: Scenario(load) - Expected a ',' or '}' at 170 [character 1 line 13]
+
+Empty formation name value:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Formation name is empty.
+
+Invalid (non-string) formation name value:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["name"] not a string.
+
+Less than minimum entry turn value:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : entry turn (-1) < 0 or > 5
+
+Greater than maximum entry turn value:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : entry turn (6) < 0 or > 5
+
+Invalid (non-integer) entry turn value:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["entry turn"] is not an int.
+
+Invalid units array entry:
+
+Caught: org.json.JSONException: Scenario(load) - Expected a ',' or '}' at 219 [character 1 line 18]
+
+Less than minimum copies value:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Invalid argument(s) received : copies (-1) < 1
+
+Invalid (non-integer) copies value:
+
+Caught: org.json.JSONException: Scenario(load) - JSONObject["copies"] is not an int.
+
+Out-of-range parameter value for new Unit object:
+
+Caught: java.lang.IllegalArgumentException: Scenario(load) - Unit(factory) - Infantry(constructor) - Invalid argument(s) received : -1
+
+Invalid (non-integer) parameter value for new Unit object:
+
+Caught: org.json.JSONException: Scenario(load) - Unit(factory) - JSONObject["Morale"] is not an int.
 
 Testing the operations of the Game class:
 
