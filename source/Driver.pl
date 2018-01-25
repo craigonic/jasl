@@ -1150,7 +1150,26 @@ printException($@) if (!defined($status));
 
 # Test the Scenario class.
 
-printf("\nTesting Exception handling during Scenario creation:\n");
+# Valid resource path / filename and data.
+
+printf("\nTesting the operations of the Scenario class:\n");
+
+UiData::Scenario::scenario()->load(CniWrapper::cc2js("../scenarios/The Guards Counterattack.json"));
+
+# Display all of the attributes of the scenario using the toText() method.
+
+printf("\nScenario.toText() output:\n");
+printf("\n%s\n",CniWrapper::js2cc(UiData::Scenario::scenario()->toText()));
+
+# Display an abbreviated description of the scenario (its name) using the
+# toString() method.
+
+printf("Scenario.toString() output:\n");
+printf("\n%s\n\n",CniWrapper::js2cc(UiData::Scenario::scenario()->toString()));
+
+# (Attempt to) call Scenario.load() with various a null and bad filename.
+
+printf("Testing Exception handling for Scenario.load() method:\n");
 
 # Null filename.
 
@@ -1174,26 +1193,9 @@ $status = eval
 
 printException($@) if (!defined($status));
 
-# Valid resource path / filename and data.
-
-printf("\nTesting the operations of the Scenario class:\n");
-
-UiData::Scenario::scenario()->load(CniWrapper::cc2js("../scenarios/The Guards Counterattack.json"));
-
-# Display all of the attributes of the scenario using the toText() method.
-
-printf("\nScenario.toText() output:\n");
-printf("\n%s\n",CniWrapper::js2cc(UiData::Scenario::scenario()->toText()));
-
-# Display an abbreviated description of the scenario (its name) using the
-# toString() method.
-
-printf("Scenario.toString() output:\n");
-printf("\n%s\n\n",CniWrapper::js2cc(UiData::Scenario::scenario()->toString()));
-
 # Test the Game class.
 
-printf("Testing the operations of the Game class:\n");
+printf("\nTesting the operations of the Game class:\n");
 
 my $allies           = UiData::Sides::valueOf(CniWrapper::cc2js("ALLIES"));
 $nationality         = $Counters::Nationalities::AMERICAN;

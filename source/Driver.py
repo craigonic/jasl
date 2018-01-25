@@ -960,7 +960,24 @@ except ValueError as detail:
 
 # Test the Scenario class.
 
-print "\nTesting Exception handling during Scenario creation:\n"
+# Valid resource path / filename and data.
+
+print "\nTesting the operations of the Scenario class:\n"
+
+Scenario_scenario().load(cc2js("../scenarios/The Guards Counterattack.json"))
+
+# Display all of the attributes of the scenario using the toText() method.
+
+print "Scenario.toText() output:\n"
+print "%s" % (js2cc(Scenario_scenario().toText()))
+
+# Display an abbreviated description of the scenario (its name) using the
+# toString() method.
+
+print "Scenario.toString() output:\n"
+print "%s\n" % (js2cc(Scenario_scenario().toString()))
+
+print "Testing Exception handling for Scenario.load() method:\n"
 
 # Null filename.
 
@@ -980,26 +997,9 @@ try:
 except ValueError as detail:
     printException(detail)
 
-# Valid resource path / filename and data.
-
-print "\nTesting the operations of the Scenario class:\n"
-
-Scenario_scenario().load(cc2js("../scenarios/The Guards Counterattack.json"))
-
-# Display all of the attributes of the scenario using the toText() method.
-
-print "Scenario.toText() output:\n"
-print "%s" % (js2cc(Scenario_scenario().toText()))
-
-# Display an abbreviated description of the scenario (its name) using the
-# toString() method.
-
-print "Scenario.toString() output:\n"
-print "%s\n" % (js2cc(Scenario_scenario().toString()))
-
 # Test the Game class.
 
-print "Testing the operations of the Game class:"
+print "\nTesting the operations of the Game class:"
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))

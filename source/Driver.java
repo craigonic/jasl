@@ -1184,6 +1184,95 @@ public class Driver
 */
         // Test the Scenario class.
 
+        // Valid resource path / filename and data.
+
+        System.out.println("\nTesting the operations of the Scenario class:");
+
+        try
+        {
+            Scenario.scenario().load(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
+        }
+
+        catch (Exception e) // Specific to reading the JSON data (not expected).
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Display all of the attributes of the scenario using the toText()
+        // method.
+
+        System.out.println("\nScenario.toText() output:\n");
+        System.out.print(Scenario.scenario().toText());
+
+        // Display an abbreviated description of the scenario (its name) using
+        // the toString() method.
+
+        System.out.println("\nScenario.toString() output:\n");
+        System.out.println(Scenario.scenario().toString());
+
+        // (Attempt to) call Scenario.load() with various null objects, a bad
+        // filename, and modified JSON data to test exceptions.
+
+        System.out.println("\nTesting Exception handling for Scenario.load() method:\n");
+
+        // Null filename (tests the load() method that accepts a String).
+
+        System.out.println("Null filename:\n");
+
+        try
+        {
+            Scenario.scenario().load((String)null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Invalid filename (tests the load() method that accepts a String).
+
+        System.out.println("\nInvalid filename:\n");
+
+        try
+        {
+            Scenario.scenario().load("scenarios/The Guard Counterattack.json");
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Null InputStream (tests the load() method that accepts one).
+
+        System.out.println("\nNull InputStream:\n");
+
+        try
+        {
+            Scenario.scenario().load((java.io.InputStream)null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Null string (tests the load() method that accepts a StringBuffer).
+
+        System.out.println("\nNull StringBuffer:\n");
+
+        try
+        {
+            Scenario.scenario().load((StringBuffer)null);
+        }
+
+        catch (Exception e)
+        {
+            System.out.println("Caught: " + e);
+        }
+
+        // Modified JSON data.
+
         // Build JSON string for Scenario (JSON) data exception handling tests.
 
         StringBuffer scenarioTestJSON =
@@ -1271,99 +1360,9 @@ public class Driver
 
         scenarioTestJSON.append(JsonData.JSON_OBJECT_END);
 
-        String scenarioTestJsonString = scenarioTestJSON.toString();
-
-        System.out.println("\nTesting the operations of the Scenario class:");
-
-        // Valid resource path / filename and data.
-
 //      System.out.println("\nscenarioTestJSON:\n" + scenarioTestJSON.toString());
 
-        try
-        {
-//          Scenario.scenario().load(Driver.class.getResourceAsStream("/scenarios/The Guards Counterattack.json"));
-            Scenario.scenario().load(scenarioTestJSON);
-        }
-
-        catch (Exception e) // Specific to reading the JSON data (not expected).
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Display all of the attributes of the scenario using the toText()
-        // method.
-
-        System.out.println("\nScenario.toText() output:\n");
-        System.out.print(Scenario.scenario().toText());
-
-        // Display an abbreviated description of the scenario (its name) using
-        // the toString() method.
-
-        System.out.println("\nScenario.toString() output:\n");
-        System.out.println(Scenario.scenario().toString());
-
-        // (Attempt to) call Scenario.load() with various null objects, a bad
-        // filename, and modified JSON data to test exceptions.
-
-        System.out.println("\nTesting Exception handling for Scenario.load() method:\n");
-
-        // Null InputStream (tests the load() method that accepts one).
-
-        System.out.println("Null InputStream:\n");
-
-        try
-        {
-            Scenario.scenario().load((java.io.InputStream)null);
-        }
-
-        catch (Exception e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Null filename (tests the load() method that accepts a String).
-
-        System.out.println("\nNull filename:\n");
-
-        try
-        {
-            Scenario.scenario().load((String)null);
-        }
-
-        catch (Exception e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Invalid filename (tests the load() method that accepts a String).
-
-        System.out.println("\nInvalid filename:\n");
-
-        try
-        {
-            Scenario.scenario().load("scenarios/The Guard Counterattack.json");
-        }
-
-        catch (Exception e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Null string (tests the load() method that accepts a StringBuffer).
-
-        System.out.println("\nNull StringBuffer:\n");
-
-        try
-        {
-            Scenario.scenario().load((StringBuffer)null);
-        }
-
-        catch (Exception e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Modified JSON data.
+        String scenarioTestJsonString = scenarioTestJSON.toString();
 
         String scenarioTestStrings[][] =
         {

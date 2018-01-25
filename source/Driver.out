@@ -1,4 +1,4 @@
-Thu Jan 18 13:12:54 PST 2018
+Thu Jan 25 08:52:00 PST 2018
 
 Leader.toText() output:
 
@@ -625,18 +625,14 @@ Testing the operations of the Scenario class:
 
 Scenario.toText() output:
 
-Name:	Test Scenario
+Name:	The Guards Counterattack
 Starting side:	Allies
 
 Scenario.toString() output:
 
-Test Scenario
+The Guards Counterattack
 
 Testing Exception handling for Scenario.load() method:
-
-Null InputStream:
-
-Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
 
 Null filename:
 
@@ -645,6 +641,10 @@ Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
 Invalid filename:
 
 Caught: java.io.FileNotFoundException: scenarios/The Guard Counterattack.json (No such file or directory)
+
+Null InputStream:
+
+Caught: java.lang.NullPointerException: Scenario(load) - Null argument received.
 
 Null StringBuffer:
 
