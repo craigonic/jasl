@@ -19,6 +19,7 @@
 #include "jasl/counters/Mobile.h"
 #include "jasl/utilities/JsonData.h"
 
+#include <java/lang/StringBuffer.h>
 #include <java/lang/Throwable.h>
 #include <java/util/List.h>
 
@@ -1738,129 +1739,585 @@ int main(int argc, char *argv[])
 
             printJavaString(theDice->toText());
         } */
+
+        // Test the Scenario class.
+
+        // Valid resource path / filename and data.
+
+        printf("\nTesting the operations of the Scenario class:");
+
+        try
+        {
+            Scenario::scenario()->load(cc2js("scenarios/The Guards Counterattack.json"));
+        }
+
+        catch (jthrowable t) // Specific to reading the JSON data (not expected).
+        {
+            printExceptionMessage(t);
+        }
+
+        // Display all of the attributes of the scenario using the toText()
+        // method.
+
+        printf("\n\nScenario.toText() output:\n\n");
+        printJavaString(Scenario::scenario()->toText());
+
+        // Display an abbreviated description of the scenario (its name) using
+        // the toString() method.
+
+        printf("Scenario.toString() output:\n\n");
+        printJavaString(Scenario::scenario()->toString());
+
+        // (Attempt to) call Scenario.load() with various null objects, a bad
+        // filename, and modified JSON data to test exceptions.
+
+        printf("\nTesting Exception handling for Scenario.load() method:\n");
+
+        // Null filename (tests the load() method that accepts a String).
+
+        printf("\nNull filename:\n");
+
+        try
+        {
+            Scenario::scenario()->load(static_cast<::java::lang::String*>(nullptr));
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Invalid filename (tests the load() method that accepts a String).
+
+        printf("\nInvalid filename:\n");
+
+        try
+        {
+            Scenario::scenario()->load(cc2js("scenarios/The Guard Counterattack.json"));
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Null InputStream (tests the load() method that accepts one).
+
+        printf("\nNull InputStream:\n");
+
+        try
+        {
+            Scenario::scenario()->load(static_cast<::java::io::InputStream*>(nullptr));
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Null string (tests the load() method that accepts a StringBuffer).
+
+        printf("\nNull StringBuffer:\n");
+
+        try
+        {
+            Scenario::scenario()->load(static_cast<::java::lang::StringBuffer*>(nullptr));
+        }
+
+        catch (jthrowable t)
+        {
+            printExceptionMessage(t);
+        }
+
+        // Modified JSON data.
+
+        // Build JSON string for Scenario (JSON) data exception handling tests.
+
+        std::string objectStart(js2cc(JsonData::JSON_OBJECT_START));
+        std::string objectEnd(js2cc(JsonData::JSON_OBJECT_END));
+        std::string scenarioTestJSON(objectStart);
+
+        std::string scenarioName  = "\"name\":\"Test Scenario\"";
+        std::string startingSide  = "\"starting side\":\"ALLIES\"";
+        std::string sides         = "\"sides\":";
+        std::string alliedSide    = "\"side\":\"ALLIES\"";
+        std::string elr           = "\"Experience Level Rating\":3";
+        std::string san           = "\"SAN\":6";
+        std::string turns         = "\"turns\":5";
+        std::string setsUpFirst   = "\"sets up first\":false";
+        std::string formations    = "\"formations\":";
+        std::string formationName = "\"name\":\"A Platoon\"";
+        std::string entryTurn     = "\"entry turn\":1";
+        std::string units         = "\"units\":";
+        std::string copies        = "\"copies\":3";
+        std::string morale        = "\"Morale\":9";
+
+        scenarioTestJSON.append(scenarioName + objectSeparator);
+        scenarioTestJSON.append(startingSide + objectSeparator);
+
+         scenarioTestJSON.append("\"sides\":\n[\n");
+
+          scenarioTestJSON.append(objectStart + alliedSide +
+                                  objectSeparator);
+          scenarioTestJSON.append(elr + objectSeparator);
+          scenarioTestJSON.append(san + objectSeparator);
+          scenarioTestJSON.append(turns + objectSeparator);
+          scenarioTestJSON.append(setsUpFirst + objectSeparator);
+
+           scenarioTestJSON.append(formations + "\n" + "[\n" +
+                                   objectStart);
+
+           scenarioTestJSON.append(formationName +
+                                   objectSeparator);
+           scenarioTestJSON.append(entryTurn +
+                                   objectSeparator);
+            scenarioTestJSON.append(units + "\n" + "[\n");
+
+             scenarioTestJSON.append(objectStart +
+                                     factoryDescription +
+                                     objectSeparator);
+             scenarioTestJSON.append(factoryNationality +
+                                     objectSeparator);
+             scenarioTestJSON.append(factoryInfantryType +
+                                     objectSeparator);
+             scenarioTestJSON.append(morale + objectSeparator);
+             scenarioTestJSON.append("\"Broken Morale\":9,\n");
+             scenarioTestJSON.append("\"Modifier\":-1" +
+                                     objectEnd + ",\n");
+
+             scenarioTestJSON.append(objectStart +
+                                     copies + objectSeparator +
+                                     "\"Description\":\"SQUAD\"" +
+                                     objectSeparator);
+             scenarioTestJSON.append(factoryNationality +
+                                     objectSeparator);
+             scenarioTestJSON.append(factoryInfantryType +
+                                     objectSeparator);
+             scenarioTestJSON.append("\"Firepower\":6,\n");
+             scenarioTestJSON.append(factoryNormalRange +
+                                     objectSeparator);
+             scenarioTestJSON.append("\"Morale\":6,\n");
+             scenarioTestJSON.append("\"Broken Morale\":6,\n");
+             scenarioTestJSON.append("\"Can Self Rally ?\":false,\n");
+             scenarioTestJSON.append("\"Basic Point Value\":11,\n");
+             scenarioTestJSON.append("\"Has Maximum ELR ?\":false,\n");
+             scenarioTestJSON.append(factoryClassification +
+                                     objectSeparator);
+             scenarioTestJSON.append("\"Can Assault Fire ?\":true,\n");
+             scenarioTestJSON.append("\"Can Spray Fire ?\":false,\n");
+             scenarioTestJSON.append("\"Smoke Placement Exponent\":3");
+             scenarioTestJSON.append(objectEnd);
+
+            scenarioTestJSON.append("\n]");
+
+           scenarioTestJSON.append(objectEnd);
+           scenarioTestJSON.append("\n]");
+
+          scenarioTestJSON.append(objectEnd);
+
+         scenarioTestJSON.append("\n]");
+
+        scenarioTestJSON.append(objectEnd);
+
+//      printf("\nscenarioTestJSON:\n%s\n",scenarioTestJSON.c_str());
+
+        std::string modifiedScenarioTestJSON(scenarioTestJSON);
+        std::vector<std::pair<std::string,std::string>> scenarioTestStrings;
+
+        std::string validScenarioName(scenarioName);
+        size_t validScenarioNameLength = validScenarioName.length();
+        size_t scenarioNamePosition = scenarioTestJSON.find(validScenarioName);
+        size_t scenarioNameValuePosition = validScenarioName.find(":") + 1;
+
+        testStringPair.first  = "Empty scenario name value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(scenarioNamePosition,
+                                             validScenarioNameLength,
+                                             validScenarioName.replace(scenarioNameValuePosition,
+                                                                       15,"\"\""));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-string) scenario name value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(scenarioNamePosition,
+                                             validScenarioNameLength,
+                                             validScenarioName.replace(scenarioNameValuePosition,
+                                                                       15,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validStartingSide(startingSide);
+        size_t validStartingSideLength = validStartingSide.length();
+        size_t startingSidePosition = scenarioTestJSON.find(validStartingSide);
+        size_t startingSideValuePosition = validStartingSide.find(":") + 1;
+
+        testStringPair.first  = "Invalid (wrong case) starting side value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(startingSidePosition,
+                                             validStartingSideLength,
+                                             validStartingSide.replace(startingSideValuePosition,
+                                                                       8,"\"Allies\""));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-string) starting side value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(startingSidePosition,
+                                             validStartingSideLength,
+                                             validStartingSide.replace(startingSideValuePosition,
+                                                                       8,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validSides(sides);
+        std::string invalidSides(validSides + "2");
+        size_t validSidesLength = validSides.length();
+        size_t sidesPosition = scenarioTestJSON.find(validSides);
+        size_t sidesValuePosition = validSides.find(":") + 1;
+
+        testStringPair.first  = "Invalid sides array entry";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(sidesPosition,validSidesLength,
+                                             invalidSides);
+
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validAlliedSide(alliedSide);
+        size_t validAlliedSideLength = validAlliedSide.length();
+        size_t alliedSidePosition = scenarioTestJSON.find(validAlliedSide);
+        size_t alliedSideValuePosition = validAlliedSide.find(":") + 1;
+
+        testStringPair.first  = "Invalid (wrong case) side value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(alliedSidePosition,
+                                             validAlliedSideLength,
+                                             validAlliedSide.replace(alliedSideValuePosition,
+                                                                     8,"\"Allies\""));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-string) side value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(alliedSidePosition,
+                                             validAlliedSideLength,
+                                             validAlliedSide.replace(alliedSideValuePosition,
+                                                                     8,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        validELR = elr;
+        validELRLength = validELR.length();
+        elrPosition = scenarioTestJSON.find(validELR);
+        elrValuePosition = validELR.find(":") + 1;
+
+        testStringPair.first  = "Less than minimum experience level rating";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(elrPosition,validELRLength,
+                                             validELR.replace(elrValuePosition,
+                                                              1,"-1"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Greater than maximum experience level rating";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(elrPosition,validELRLength,
+                                             validELR.replace(elrValuePosition,
+                                                              2,"6"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-integer) experience level rating";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(elrPosition,validELRLength,
+                                             validELR.replace(elrValuePosition,
+                                                              1,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validSAN(san);
+        size_t validSANLength = validSAN.length();
+        size_t sanPosition = scenarioTestJSON.find(validSAN);
+        size_t sanValuePosition = validSAN.find(":") + 1;
+
+        testStringPair.first  = "Less than minimum sniper activation number";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(sanPosition,validSANLength,
+                                             validSAN.replace(sanValuePosition,
+                                                              1,"-1"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Initial sniper activation number of 1";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(sanPosition,validSANLength,
+                                             validSAN.replace(sanValuePosition,
+                                                              2,"1"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Greater than maximum sniper activation number";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(sanPosition,validSANLength,
+                                             validSAN.replace(sanValuePosition,
+                                                              1,"8"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-integer) sniper activation number";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(sanPosition,validSANLength,
+                                             validSAN.replace(sanValuePosition,
+                                                              1,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validTurns(turns);
+        size_t validTurnsLength = validTurns.length();
+        size_t turnsPosition = scenarioTestJSON.find(validTurns);
+        size_t turnsValuePosition = validTurns.find(":") + 1;
+
+        testStringPair.first  = "Less than minimum number of turns";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(turnsPosition,validTurnsLength,
+                                             validTurns.replace(turnsValuePosition,
+                                                                1,"-5"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-integer) number of turns";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(turnsPosition,validTurnsLength,
+                                             validTurns.replace(turnsValuePosition,
+                                                                2,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validSetsUpFirst(setsUpFirst);
+        size_t validSetsUpFirstLength = validSetsUpFirst.length();
+        size_t setsUpFirstPosition = scenarioTestJSON.find(validSetsUpFirst);
+        size_t setsUpFirstValuePosition = validSetsUpFirst.find(":") + 1;
+
+        testStringPair.first  = "Invalid (non-boolean) sets up first setting";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(setsUpFirstPosition,
+                                             validSetsUpFirstLength,
+                                             validSetsUpFirst.replace(setsUpFirstValuePosition,
+                                                                      5,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validFormations(formations);
+        std::string invalidFormations(validFormations + "3");
+        size_t validFormationsLength = validFormations.length();
+        size_t formationsPosition = scenarioTestJSON.find(validFormations);
+        size_t formationsValuePosition = validFormations.find(":") + 1;
+
+        testStringPair.first  = "Invalid formations array entry";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(formationsPosition,
+                                             validFormationsLength,
+                                             invalidFormations);
+
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validFormationName(formationName);
+        size_t validFormationNameLength = validFormationName.length();
+        size_t formationNamePosition = scenarioTestJSON.find(validFormationName);
+        size_t formationNameValuePosition = validFormationName.find(":") + 1;
+
+        testStringPair.first  = "Empty formation name value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(formationNamePosition,
+                                             validFormationNameLength,
+                                             validFormationName.replace(formationNameValuePosition,
+                                                                        17,"\"\""));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-string) formation name value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(formationNamePosition,
+                                             validFormationNameLength,
+                                             validFormationName.replace(formationNameValuePosition,
+                                                                        17,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validEntryTurn(entryTurn);
+        size_t validEntryTurnLength = validEntryTurn.length();
+        size_t entryTurnPosition = scenarioTestJSON.find(validEntryTurn);
+        size_t entryTurnValuePosition = validEntryTurn.find(":") + 1;
+
+        testStringPair.first  = "Less than minimum entry turn value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(entryTurnPosition,
+                                             validEntryTurnLength,
+                                             validEntryTurn.replace(entryTurnValuePosition,
+                                                                    1,"-1"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Greater than maximum entry turn value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(entryTurnPosition,
+                                             validEntryTurnLength,
+                                             validEntryTurn.replace(entryTurnValuePosition,
+                                                                    2,"6"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+
+        testStringPair.first  = "Invalid (non-integer) entry turn value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(entryTurnPosition,
+                                             validEntryTurnLength,
+                                             validEntryTurn.replace(entryTurnValuePosition,
+                                                                    1,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validUnits(units);
+        std::string invalidUnits(validUnits + "3");
+        size_t validUnitsLength = validUnits.length();
+        size_t unitsPosition = scenarioTestJSON.find(validUnits);
+        size_t unitsValuePosition = validUnits.find(":") + 1;
+
+        testStringPair.first  = "Invalid units array entry";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(unitsPosition,validUnitsLength,
+                                             invalidUnits);
+
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        std::string validCopies(copies);
+        size_t validCopiesLength = validCopies.length();
+        size_t copiesPosition = scenarioTestJSON.find(validCopies);
+        size_t copiesValuePosition = validCopies.find(":") + 1;
+
+        testStringPair.first  = "Less than minimum copies value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(copiesPosition,validCopiesLength,
+                                             validCopies.replace(copiesValuePosition,
+                                                                 1,"-1"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  = "Invalid (non-integer) copies value";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(copiesPosition,validCopiesLength,
+                                             validCopies.replace(copiesValuePosition,
+                                                                 2,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        validMorale = morale;
+        validMoraleLength = validMorale.length();
+        moralePosition = scenarioTestJSON.find(validMorale);
+        moraleValuePosition = validMorale.find(":") + 1;
+
+        testStringPair.first  =
+            "Out-of-range parameter value for new Unit object";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(moralePosition,validMoraleLength,
+                                             validMorale.replace(moraleValuePosition,
+                                                                 1,"-1"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        testStringPair.first  =
+            "Invalid (non-integer) parameter value for new Unit object";
+        testStringPair.second =
+            modifiedScenarioTestJSON.replace(moralePosition,validMoraleLength,
+                                             validMorale.replace(moraleValuePosition,
+                                                                 2,"null"));
+        scenarioTestStrings.push_back(testStringPair);
+
+        modifiedScenarioTestJSON = scenarioTestJSON;
+
+        for (std::pair<std::string,std::string> testPair : scenarioTestStrings)
+        {
+            printf("\n%s:\n",testPair.first.c_str());
+
+            try
+            {
+                Scenario::scenario()->load(new ::java::lang::StringBuffer(cc2js(testPair.second.c_str())));
+            }
+
+            catch (jthrowable t)
+            {
+                printExceptionMessage(t);
+            }
+        }
+
+        // Create an array of Unit objects. These will be used to reference a
+        // Leader instance and several Squad instances. These class types are
+        // Test the Game class.
+
+        printf("\nTesting the operations of the Game class:\n\n");
+
+        Sides*         allies   = Sides::valueOf(cc2js("ALLIES"));
+        jstring        pixie    = cc2js("Pixie");
+        Nationalities* american = Nationalities::valueOf(cc2js("AMERICAN"));
+
+        Sides*         axis   = Sides::valueOf(cc2js("AXIS"));
+        jstring        buddy  = cc2js("Buddy");
+        Nationalities* german = Nationalities::valueOf(cc2js("GERMAN"));
+
+        Game::game()->addPlayer(allies,pixie,american,1);
+        Game::game()->addPlayer(axis,buddy,german,1);
+
+        Player* alliedPlayer = Game::game()->player(allies,pixie);
+
+        alliedPlayer->addUnit(cc2js("9-1 Leader"));
+        alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
+        alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
+        alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
+
+        Player* axisPlayer = Game::game()->player(axis,buddy);
+
+        axisPlayer->addUnit(cc2js("8-1 Leader"));
+        axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+        axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+        axisPlayer->addUnit(cc2js("6-5-8 Squad"));
+
+        printJavaString(Game::game()->toText());
     }
 
     catch (jthrowable t)
     {
         printExceptionMessage(t);
     }
-
-    // Test the Scenario class.
-
-    printf("\nTesting Exception handling during Scenario creation:\n");
-
-    // Null InputStream (tests the load() method that accepts one).
-
-    printf("\nNull InputStream:\n");
-
-    try
-    {
-        Scenario::scenario()->load(static_cast<::java::io::InputStream*>(nullptr));
-    }
-
-    catch (jthrowable t)
-    {
-        printExceptionMessage(t);
-    }
-
-    // Null filename (tests the load() method that accepts a String).
-
-    printf("\nNull filename:\n");
-
-    try
-    {
-        Scenario::scenario()->load(static_cast<::java::lang::String*>(nullptr));
-    }
-
-    catch (jthrowable t)
-    {
-        printExceptionMessage(t);
-    }
-
-    // Invalid filename (tests the load() method that accepts a String).
-
-    printf("\nInvalid filename:\n");
-
-    try
-    {
-        Scenario::scenario()->load(cc2js("scenarios/The Guard Counterattack.json"));
-    }
-
-    catch (jthrowable t)
-    {
-        printExceptionMessage(t);
-    }
-
-    // Null string (tests the load() method that accepts a StringBuffer).
-
-    printf("\nNull StringBuffer:\n");
-
-    try
-    {
-        Scenario::scenario()->load(static_cast<::java::lang::StringBuffer*>(nullptr));
-    }
-
-    catch (jthrowable t)
-    {
-        printExceptionMessage(t);
-    }
-
-    // Valid resource path / filename and data.
-
-    printf("\nTesting the operations of the Scenario class:");
-
-    try
-    {
-        Scenario::scenario()->load(cc2js("scenarios/The Guards Counterattack.json"));
-    }
-
-    catch (jthrowable t) // Specific to reading the JSON data (not expected).
-    {
-        printExceptionMessage(t);
-    }
-
-    // Display all of the attributes of the scenario using the toText()
-    // method.
-
-    printf("\n\nScenario.toText() output:\n\n");
-    printJavaString(Scenario::scenario()->toText());
-
-    // Display an abbreviated description of the scenario (its name) using
-    // the toString() method.
-
-    printf("Scenario.toString() output:\n\n");
-    printJavaString(Scenario::scenario()->toString());
-
-    // Test the Game class.
-
-    printf("\nTesting the operations of the Game class:\n\n");
-
-    Sides*  alliedSide      = Sides::valueOf(cc2js("ALLIES"));
-    jstring pixie           = cc2js("Pixie");
-    Nationalities* american = Nationalities::valueOf(cc2js("AMERICAN"));
-
-    Sides*  axisSide      = Sides::valueOf(cc2js("AXIS"));
-    jstring buddy         = cc2js("Buddy");
-    Nationalities* german = Nationalities::valueOf(cc2js("GERMAN"));
-
-    Game::game()->addPlayer(alliedSide,pixie,american,1);
-    Game::game()->addPlayer(axisSide,buddy,german,1);
-
-    Player* alliedPlayer = Game::game()->player(alliedSide,pixie);
-
-    alliedPlayer->addUnit(cc2js("9-1 Leader"));
-    alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
-    alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
-    alliedPlayer->addUnit(cc2js("7-4-7 Squad"));
-
-    Player* axisPlayer = Game::game()->player(axisSide,buddy);
-
-    axisPlayer->addUnit(cc2js("8-1 Leader"));
-    axisPlayer->addUnit(cc2js("6-5-8 Squad"));
-    axisPlayer->addUnit(cc2js("6-5-8 Squad"));
-    axisPlayer->addUnit(cc2js("6-5-8 Squad"));
-
-    printJavaString(Game::game()->toText());
 
 //  delete cniWrapper; // See note about this at the beginning of this function.
 }
