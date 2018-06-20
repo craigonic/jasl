@@ -27,9 +27,10 @@ include $(JASL_BASE)/util/jasl.make
 # this package.
 
 ORG_JSON_SRC_FILES     := JSONPointerException.java JSONPointer.java       \
-                          JSONArray.java JSONObject.java JSONStringer.java \
-                          JSONTokener.java JSONException.java              \
-                          JSONString.java JSONWriter.java
+                          JSONArray.java JSONPropertyIgnore.java           \
+                          JSONPropertyName.java JSONObject.java            \
+                          JSONStringer.java JSONTokener.java               \
+                          JSONException.java JSONString.java JSONWriter.java
 
 GCJ_OBJECT_FILES       := ${ORG_JSON_SRC_FILES:.java=.o}
 
