@@ -135,22 +135,12 @@ docs_all:
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(CNI_DOCS_PATH)/$$i.html ;\
 	done
 
-	$(MAKE) -C $(PROGRAM_NAME) $@
-
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(CNI_DOCS_PATH)
 	@$(HTLS) $(CNI_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
-	$(MAKE) -C $(PROGRAM_NAME) $@
 	@$(RM) $(CNI_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs
-
-# Create HTML documentation using doxygen.
-
-.PHONY : doxygen
-doxygen: docs_directory
-	@$(RM_RECURSIVE) $(CNI_DOXYGEN_DOC_PATH)
-	@$(DOXYGEN) $(CNI_DOXYGEN_DEF_FILE)

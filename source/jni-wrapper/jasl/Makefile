@@ -33,7 +33,7 @@ include $(JASL_BASE)/util/jasl.make
 .PHONY : clean_hdr
 .PHONY : clean_libs
 obj hdr libs clean clean_hdr clean_libs:
-	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
+#	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
 
 # Build either the shared or static libraries associated with each of the
@@ -68,24 +68,24 @@ clean_static_libs:
 # color coding. After the file is generated, the htls program is used to link it
 # to the files in the sub-directories on an HTML page.
 
-CNI_JASL_DOCS_PATH := $(SRC_DOCS_PATH)/$(CNI_DIRECTORY)/$(PROGRAM_NAME)
+JNI_JASL_DOCS_PATH := $(SRC_DOCS_PATH)/$(JNI_DIRECTORY)/$(PROGRAM_NAME)
 
 .PHONY : docs_all
 docs_all:
-	@$(INSTALL_DIR) $(CNI_JASL_DOCS_PATH)
-	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(CNI_JASL_DOCS_PATH)/$(MAKEFILE).html
+	@$(INSTALL_DIR) $(JNI_JASL_DOCS_PATH)
+	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(JNI_JASL_DOCS_PATH)/$(MAKEFILE).html
 
 	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
 
-	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(CNI_JASL_DOCS_PATH)
-	@$(HTLS) $(CNI_JASL_DOCS_PATH)
+	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(JNI_JASL_DOCS_PATH)
+	@$(HTLS) $(JNI_JASL_DOCS_PATH)
 
 .PHONY : clean_docs
 clean_docs:
 	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
-	@$(RM) $(CNI_JASL_DOCS_PATH)/$(HTLS_HEADER_FILE)
+	@$(RM) $(JNI_JASL_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
 docs: docs_all clean_docs

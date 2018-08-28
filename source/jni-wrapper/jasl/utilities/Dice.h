@@ -7,32 +7,27 @@
  * Written By: Craig R. Campbell  -  November 2010
  */
 
-#ifndef CNI_DICE_H
-#define CNI_DICE_H
+#pragma once
 
-#ifdef __cplusplus
+#include <jni.h>
+
 #include <memory>
 #include <string>
 
-namespace jasl
-{
-	namespace utilities
-	{
-		class Dice;
-	}
-}
-
 /**
- * \brief <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
+ * \brief <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface) wrapper.
  *
- * This class is used to simplify access to its namesake, which is implemented
- * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>. It also interacts with the
- * <A HREF="../../CniWrapper.h.html">CniWrapper</A>, which provides a JVM to execute the library code, as well as
- * string conversion methods.
+ * This class is used to provide access to its namesake, which is implemented
+ * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
+ * provides a JVM to execute the library code, as well as string conversion
+ * methods.
  *
- * @version 2.0
- * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
- * @see <A HREF="../../../source/cni-wrapper/jasl/utilities/Dice.h.html">Source code</A>
+ * Note that all interactions with the JVM are expected to work, so in the event
+ * of failure, the program will assert.
+ *
+ * @version 3.0
+ * @author Copyright (C) 2010-2018 Craig R. Campbell (craigonic@gmail.com)
+ * @see <A HREF="../../../../source/jni-wrapper/jasl/utilities/Dice.h.html">Source code</A>
  */
 
 class Dice final
@@ -51,38 +46,38 @@ class Dice final
 		/**
 		 * \brief Destructor.
 		 *
-		 * The "wrapped" object is freed through garbage collection by
-		 * the virtual machine managed by the CniWrapper.
+		 * The "wrapped" instance is <B>not</B> automatically freed through
+		 * garbage collection until the virtual machine (managed by the
+		 * JniWrapper) is informed, which is done here.
 		 */
 
-		~Dice() = default;
+		~Dice();
 
-		// Disable the generation of a copy constructor, and "="
+		// Disable the generation of a copy constructor and "="
 		// operator.
 
 		Dice(Dice& dice) = delete;
 		Dice& operator=(const Dice& dice) = delete;
 
-		/** <A NAME="_WHITE_DIE_VALUE_"></A>
+		/**
 		 * \brief Return the result of rolling the white die.
 		 */
 
-		int whiteDieValue() const;
+		int whiteDieValue() const noexcept;
 
-		/** <A NAME="_COLORED_DIE_VALUE_"></A>
+		/**
 		 * \brief Return the result of rolling the colored die.
 		 */
 
-		int coloredDieValue() const;
+		int coloredDieValue() const noexcept;
 
-		/** <A NAME="_COMBINED_RESULT_"></A>
-		 * \brief Return the result of combining the values of the two
-		 * dice.
+		/**
+		 * \brief Return the result of combining the values of the two dice.
 		 */
 
-		int combinedResult() const;
+		int combinedResult() const noexcept;
 
-		/** <A NAME="_TO_STRING_"></A>
+		/**
 		 * \brief Return a text representation of the attributes and
 		 * current state of this Dice instance.
 		 *
@@ -90,94 +85,39 @@ class Dice final
 		 * member defined for the Dice class.
 		 */
 
-		const std::string& toText();
+		const std::string& toText() noexcept;
 
 	private:
 
 		/**
-		 * \brief Pointer to an instance of the "wrapped" class.
+		 * Pointer to an instance of the "wrapped" class.
 		 *
-		 * This item is set in the constructor.
+		 * This item is set in the constructor. The memory associated
+		 * with it is freed by the virtual machine after notification
+		 * is given in the destructor.
 		 */
 
-		jasl::utilities::Dice* _dice;
+		jobject _diceObject;
+
+		/**
+		 * Reference to the "wrapped" class in the Java code.
+		 *
+		 * This item is set in the constructor and applied in the
+		 * constructor and the methods to locate the corresponding
+		 * (bytecode) class items via the virtual machine.
+		 */
+
+		jclass _diceClass;
 
 		/**
 		 * The text representation of the attributes and current state
 		 * for this Dice instance.
 		 *
-		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>, converted to
-		 * the indicated type using the <A HREF="../../CniWrapper.h.html#_JS2CC_">js2cc</A>() function. The copy is
+		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>, converted to
+		 * the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function. The copy is
 		 * generated during the initial call to the toText() method.
 		 * Subsequent calls only return the generated copy.
 		 */
 
 		std::unique_ptr<std::string> _dump;
 };
-#else
-/******************************************************************************/
-
-// The typedef and functions declared below are intended for use by C programs
-// to access Dice objects.
-
-/**
- * \typedef struct Dice Dice
- * \brief Declaration to provide access to Dice objects from C programs.
- */
-
-typedef struct Dice Dice;
-#endif // __cplusplus
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
-/**
- * \brief Create an instance of a Dice object, which automatically rolls them.
- */
-
-extern Dice* rollDice(void);
-
-/**
- * \brief Free the memory associated with the specified object.
- */
-
-extern void deleteDice(Dice* dice);
-
-/**
- * \brief Return the result of rolling the white die.
- *
- * This function calls the <A HREF="#_WHITE_DIE_VALUE_">whiteDieValue</A>() method of the indicated object.
- */
-
-extern int whiteDieValue(Dice* dice);
-
-/**
- * \brief Return the result of rolling the colored die.
- *
- * This function calls the <A HREF="#_COLORED_DIE_VALUE_">coloredDieValue</A>() method of the indicated object.
- */
-
-extern int coloredDieValue(Dice* dice);
-
-/**
- * \brief Return the result of combining the values of the two dice.
- *
- * This function calls the <A HREF="#_COMBINED_RESULT_">combinedResult</A>() method of the indicated object.
- */
-
-extern int combinedResult(Dice* dice);
-
-/**
- * \brief Return a text representation of the current state of the Dice.
- *
- * This function calls the <A HREF="#_TO_STRING_">toText</A>() method of the indicated object.
- *
- * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
- * OF THE DESTRUCTION OF THE Dice OBJECT.</B>
- */
-
-extern const char* toText(Dice* dice);
-#ifdef __cplusplus
-}
-#endif // __cplusplus
-#endif // CNI_DICE_H
