@@ -13,7 +13,7 @@ import java.util.List;
 
 import jasl.counters.*;
 import jasl.ui.data.*;
-import jasl.utilities.Dice;
+//import jasl.utilities.Dice;
 import jasl.utilities.Serialization;
 
 public class Driver
