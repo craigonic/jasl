@@ -66,7 +66,7 @@ GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES) \
 
 ## Build #######################################################################
 
-# Build the java bytecode for all programs. This will also compile the files in
+# Build the Java bytecode for all programs. This will also compile the files in
 # the jasl directory and its sub-directories.
 
 .PHONY : all
@@ -175,7 +175,7 @@ gcj_dynamic: $(DRIVER_DYNAMIC)
 .PHONY : gcj_static
 gcj_static: $(DRIVER_STATIC)
 
-# Build the java version of the Driver program, which is used to test the
+# Build the Java version of the Driver program, which is used to test the
 # classes defined in the jasl directory and its sub-directories.
 
 $(DRIVER_CLASS): bin_directory
@@ -471,14 +471,6 @@ javadocs: docs_directory
 	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
 	                     $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
-# Create HTML documentation using gjdoc.
-
-.PHONY : gjdocs
-gjdocs: docs_directory
-	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
-	@$(GJDOC) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
-	          $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
-
 # Create HTML documentation using doxygen.
 
 .PHONY : doxygen
@@ -497,8 +489,7 @@ htags: global
 	@$(HTAGS_FIND_CNV_CMD)
 	@$(HTAGS_ADDLINKS_CMD)
 
-# Create all the forms of documentation, except gjdoc, which places its output
-# in the same directory as javadoc.
+# Create all the forms of documentation.
 
 all_docs: javadocs doxygen htags docs
 
