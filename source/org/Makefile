@@ -163,14 +163,14 @@ clean_docs:
 .PHONY : docs
 docs: docs_all clean_docs
 
-# A reference implementation for using JSON in Java must be "cloned" into the
-# json sub-directory. The following targets are used to get the code and refresh
-# the local copy of the (git) repository.
+# A reference implementation for using JSON in Java. It is a git submodule,
+# managed in the json sub-directory. The following targets are used to get the
+# code and refresh the local copy of the repository.
 
 .PHONY : clone
 clone:
-	@git clone https://github.com/douglascrockford/JSON-java.git json
+	@git submodule init
 
 .PHONY : refresh
 refresh:
-	@(cd json;git pull)
+	@(git submodule update)
