@@ -21,13 +21,14 @@ variable, which is necessary for <TT><U>make</U></TT> to work properly, can be
 set as follows: <TT>export JASL_BASE=/home/craig/jasl</TT>
 <P>
 <LI><I>Optional. </I>
-<A HREF=http://gcc.gnu.org/>GCC</A> (or another C++ compiler). If it is used to
+<A HREF=http://gcc.gnu.org/>GCC</A> (using another C++ compiler is possible, but
+doing so will (obviously) require changes to the build system). If it is used to
 build the <A HREF="jni-wrapper/jni-wrapper.html">libraries</A> that use the
 <A HREF=https://docs.oracle.com/javase/8/docs/technotes/guides/jni/>JNI</A> to
 interact with the Java bytecode, it must be
-<A HREF=https://en.wikipedia.org/wiki/C%2B%2B14>C++14</A> compliant. The
+<A HREF=https://en.wikipedia.org/wiki/C%2B%2B14>C++14</A> compliant. Setting the
 <B><I>JAVA_HOME</I></B> environment variable (e.g.
-<TT>export JAVA_HOME=/opt/java</TT>) must also be set.
+<TT>export JAVA_HOME=/opt/java</TT>) is also necessary.
 <LI><I>Optional. </I>
 <A HREF=https://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/>GCJ</A> (available with
 <U>GCC</U> version 6.4 and earlier). It is used to build (from Java source
