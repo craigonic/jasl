@@ -18,11 +18,10 @@ respective output directory as follows:
 <UL>
 <LI><I>none</I> or <TT>all</TT> - compiles selected source files in the
 <B>json</B> sub-directory using
-<TT>
-<A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/javac.html#BHCBDCJI>javac</A></TT>,
+<TT> <A HREF=https://docs.oracle.com/javase/10/tools/javac.htm#JSWOR627>javac</A></TT>,
 placing the bytecode (.class) files in the directory noted above.
 <LI><TT>jar</TT> - create an executable
-<TT><A HREF=http://docs.oracle.com/javase/8/docs/technotes/tools/unix/jar.html#BGBFFFGG>jar</A></TT>
+<TT><A HREF=https://docs.oracle.com/javase/10/tools/jar.htm#JSWOR614>jar</A></TT>
 archive containing the bytecode (.class) files generated with the <TT>all</TT>
 target.
 <LI><TT>obj</TT> - compiles bytecode (.class) files using
@@ -60,7 +59,8 @@ HTML files.
 <P>
 <I>The following targets are used to get and update a reference
 <A HREF=https://github.com/douglascrockford/JSON-java>implementation</A> of a
-JSON package in Java. It is "cloned" into the <B>json</B> sub-directory.</I>
+JSON package in Java. It is managed as a <A HREF=https://git-scm.com/>git</A>
+submodule, "cloned" into the <B>json</B> sub-directory.</I>
 <LI><TT>clone</TT> - create a local copy of the source repository.
 <LI><TT>refresh</TT> - get the latest updates.
 </UL>
