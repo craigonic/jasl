@@ -1,16 +1,11 @@
 // ************************************************************************** //
 // Driver.cpp - This file contains the Driver program, which is used to test  //
-//              the functionality of the Java classes defined in the jasl     //
-//              package hierarchy, accessed as a library generated using <A HREF="http://gcc.gnu.org/java/">GCJ</A>, //
-//              through the <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface).                  //
-//                                                                            //
-//              NOTE: This program is based on Advanced Squad Leader, which   //
-//                    was created by The Avalon Hill Game Company, and lives  //
-//                    on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                           //
+//              the functionality of the public <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> classes defined in the   //
+//              <A HREF="jasl/jasl.html">jasl</A> package hierarchy, accessed as a library generated using //
+//              <A HREF="https://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/">GCJ</A>, through the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface).             //
 //                                                                            //
 // Written By: Craig R. Campbell  -  April 2007                               //
 // ************************************************************************** //
-
 
 #include "jasl/cni/CniWrapper.h"
 #include "jasl/cni/JaslErrorMessage.h"
@@ -1508,8 +1503,7 @@ int main(int argc, char *argv[])
 
         printf("\nTesting the execution of the Dice class:\n\n");
 
-        Dice*       theDice     = NULL;
-        const char* diceResults = NULL;
+        Dice* theDice = NULL;
 
         for (int i = 0;i < 12;i++)
         {
@@ -1522,10 +1516,12 @@ int main(int argc, char *argv[])
 //                 theDice->coloredDieValue(),
 //                 theDice->combinedResult());
 
-
+            printJavaString(theDice->toText());
+        }
+*/
         // Test the Player and Stack classes.
 
-        printf("Testing Exception handling during Player creation:\n");
+        printf("\nTesting Exception handling during Player creation:\n");
 
         Player* playerObject = NULL;
 
@@ -1533,7 +1529,7 @@ int main(int argc, char *argv[])
 
         // Null Name
 
-        printf("\nNull name parameter:\n");
+        printf("\nNull name argument:\n");
 
         try
         {
@@ -1547,7 +1543,7 @@ int main(int argc, char *argv[])
 
         // Blank Name
 
-        printf("\nZero-length name parameter:\n");
+        printf("\nZero-length name argument:\n");
 
         try
         {
@@ -1575,11 +1571,11 @@ int main(int argc, char *argv[])
 
         printf("\nTesting Exception handling for Player methods:\n");
 
-        // Null Unit parameter to addUnit()
+        // Null Unit argument to addUnit()
 
         playerObject = new Player(cc2js("Dr. Pepper"),nationality,1);
 
-        printf("\nNull Unit parameter to addUnit():\n");
+        printf("\nNull Unit argument to addUnit():\n");
 
         try
         {
@@ -1591,9 +1587,9 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Null Stack parameter to addStack()
+        // Null Stack argument to addStack()
 
-        printf("\nNull Stack parameter to addStack():\n");
+        printf("\nNull Stack argument to addStack():\n");
 
         try
         {
@@ -1629,7 +1625,7 @@ int main(int argc, char *argv[])
 
         ::java::util::List* unitList = playerObject->stackList();
 
-        // Invalid index parameter to takeStack()
+        // Invalid index argument to takeStack()
 
         Stack* temporaryStack = NULL;
 
@@ -1655,7 +1651,7 @@ int main(int argc, char *argv[])
 
         // Null Unit
 
-        printf("\nNull Unit parameter:\n");
+        printf("\nNull Unit argument:\n");
 
         try
         {
@@ -1669,7 +1665,7 @@ int main(int argc, char *argv[])
 
         // Null Stack
 
-        printf("\nNull Stack parameter:\n");
+        printf("\nNull Stack argument:\n");
 
         try
         {
@@ -1698,7 +1694,7 @@ int main(int argc, char *argv[])
 
         // Invalid Stack
 
-        printf("\nInvalid Stack parameter:\n");
+        printf("\nInvalid Stack argument:\n");
 
         try
         {
@@ -1712,9 +1708,9 @@ int main(int argc, char *argv[])
 
         printf("\nTesting Exception handling for Stack methods:\n");
 
-        // Null Stack parameter to addPortagedItem()
+        // Null Stack argument to addPortagedItem()
 
-        printf("\nNull Stack parameter to addPortagedItem():\n");
+        printf("\nNull Stack argument to addPortagedItem():\n");
 
         try
         {
@@ -1726,9 +1722,9 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Invalid Stack parameter to addPortagedItem()
+        // Invalid Stack argument to addPortagedItem()
 
-        printf("\nInvalid Stack parameter to addPortagedItem():\n");
+        printf("\nInvalid Stack argument to addPortagedItem():\n");
 
         try
         {
@@ -1770,9 +1766,9 @@ int main(int argc, char *argv[])
         printf("\nPlayer.toText() output:\n\n");
         printJavaString(playerObject->toText());
 
-        // Null Stack parameter to addSubStack()
+        // Null Stack argument to addSubStack()
 
-        printf("Null Stack parameter to Stack.addSubStack():\n");
+        printf("Null Stack argument to Stack.addSubStack():\n");
 
         try
         {
@@ -1784,9 +1780,9 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Invalid Stack parameter to addSubStack()
+        // Invalid Stack argument to addSubStack()
 
-        printf("\nInvalid Stack parameter to Stack.addSubStack():\n");
+        printf("\nInvalid Stack argument to Stack.addSubStack():\n");
 
         try
         {

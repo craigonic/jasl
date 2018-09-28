@@ -1,4 +1,4 @@
-Fri Jul 21 12:53:42 PDT 2017
+Fri Sep 21 13:12:36 PDT 2018
 
 Leader.toText() output:
 
@@ -521,31 +521,31 @@ Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argume
 
 Invalid (greater than maximum) modifier argument:
 
-Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : 4
+Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : 4
 
 Testing Exception handling during Player creation:
 
-Null name parameter:
+Null name argument:
 
-Caught: java.lang.NullPointerException: Player(constructor) - Null parameter received.
+Caught: java.lang.NullPointerException: Player(constructor) - Null argument received.
 
-Zero-length name parameter:
+Zero-length name argument:
 
-Caught: java.lang.IllegalArgumentException: Player(constructor) - Invalid parameter received (zero length).
+Caught: java.lang.IllegalArgumentException: Player(constructor) - Invalid argument received (zero length).
 
 Invalid (less than 1) entry turn:
 
-Caught: java.lang.IllegalArgumentException: Player(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Player(constructor) - Invalid argument(s) received : -1
 
 Testing Exception handling for Player methods:
 
-Null Unit parameter to addUnit():
+Null Unit argument to addUnit():
 
-Caught: java.lang.NullPointerException: Player(addUnit) - Null parameter received.
+Caught: java.lang.NullPointerException: Player(addUnit) - Null argument received.
 
-Null Stack parameter to addStack():
+Null Stack argument to addStack():
 
-Caught: java.lang.NullPointerException: Player(addStack) - Null parameter received.
+Caught: java.lang.NullPointerException: Player(addStack) - Null argument received.
 
 Assign some Units to the Player:
 
@@ -565,31 +565,31 @@ Player:	Dr. Pepper
 
 Invalid (Stack) list index:
 
-Caught: java.lang.IndexOutOfBoundsException: Player(takeStack) - Invalid parameter(s) received : 5
+Caught: java.lang.IndexOutOfBoundsException: Player(takeStack) - Invalid argument(s) received : 5
 
 Testing Exception handling during Stack creation:
 
-Null Unit parameter:
+Null Unit argument:
 
-Caught: java.lang.NullPointerException: Stack(constructor) - Null parameter received.
+Caught: java.lang.NullPointerException: Stack(constructor) - Null argument received.
 
-Null Stack parameter:
+Null Stack argument:
 
-Caught: java.lang.NullPointerException: Stack(constructor) - Null parameter received.
+Caught: java.lang.NullPointerException: Stack(constructor) - Null argument received.
 
-Invalid Stack parameter:
+Invalid Stack argument:
 
-Caught: java.lang.IllegalArgumentException: Stack(constructor) - Invalid parameter(s) received : 6+1 Leader (Sgt. Stedenko)
+Caught: java.lang.IllegalArgumentException: Stack(constructor) - Invalid argument(s) received : 6+1 Leader (Sgt. Stedenko)
 
 Testing Exception handling for Stack methods:
 
-Null Stack parameter to addPortagedItem():
+Null Stack argument to addPortagedItem():
 
-Caught: java.lang.NullPointerException: Stack(addPortagedItem) - Null parameter received.
+Caught: java.lang.NullPointerException: Stack(addPortagedItem) - Null argument received.
 
-Invalid Stack parameter to addPortagedItem():
+Invalid Stack argument to addPortagedItem():
 
-Caught: java.lang.IllegalArgumentException: Stack(addPortagedItem) - Invalid parameter(s) received : 6+1 Leader (Sgt. Stedenko)
+Caught: java.lang.IllegalArgumentException: Stack(addPortagedItem) - Invalid argument(s) received : 6+1 Leader (Sgt. Stedenko)
 
 Testing the operations of the Player and Stack classes:
 
@@ -625,13 +625,13 @@ Player:	Dr. Pepper
 		Stack (0,0):	3-3-7 Squad (B)
 		Stack (0,0):	3-3-7 Squad (C)
 
-Null Stack parameter to Stack.addSubStack():
+Null Stack argument to Stack.addSubStack():
 
-Caught: java.lang.NullPointerException: Stack(addSubStack) - Null parameter received.
+Caught: java.lang.NullPointerException: Stack(addSubStack) - Null argument received.
 
-Invalid Stack parameter to Stack.addSubStack():
+Invalid Stack argument to Stack.addSubStack():
 
-Caught: java.lang.IllegalArgumentException: Stack(addSubStack) - Invalid parameter(s) received : 6+1 Leader (Sgt. Stedenko)
+Caught: java.lang.IllegalArgumentException: Stack(addSubStack) - Invalid argument(s) received : 6+1 Leader (Sgt. Stedenko)
 
 All of the Units in a single stack:
 

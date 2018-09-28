@@ -1,10 +1,7 @@
 // ************************************************************************** //
 // Driver.java - This file contains the Driver class, which is used to test   //
-//               the basic functionality of the classes and methods in jASL.  //
-//                                                                            //
-//               NOTE: This program is based on Advanced Squad Leader, which  //
-//                     was created by The Avalon Hill Game Company, and lives //
-//                     on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                          //
+//               the functionality of the public classes defined in the <A HREF="jasl/jasl.html">jasl</A>  //
+//               package hierarchy.
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 // ************************************************************************** //
@@ -1026,7 +1023,7 @@ public class Driver
 
         Dice theDice;
 
-        for (int i = 0; i < 12; i++)
+        for (int i = 0;i < 12;i++)
         {
             try
             {
@@ -1045,13 +1042,13 @@ public class Driver
 */
         // Test the Player and Stack classes.
 
-        System.out.println("Testing Exception handling during Player creation:");
+        System.out.println("\nTesting Exception handling during Player creation:");
 
         Player playerObject = null;
 
         // Null Name
 
-        System.out.println("\nNull name parameter:\n");
+        System.out.println("\nNull name argument:\n");
 
         try
         {
@@ -1066,7 +1063,7 @@ public class Driver
 
         // Blank Name
 
-        System.out.println("\nZero-length name parameter:\n");
+        System.out.println("\nZero-length name argument:\n");
 
         try
         {
@@ -1095,12 +1092,12 @@ public class Driver
 
         System.out.println("\nTesting Exception handling for Player methods:");
 
-        // Null Unit parameter to addUnit()
+        // Null Unit argument to addUnit()
 
         playerObject = new Player("Dr. Pepper",
                                   Nationality.Nationalities.PARTISAN,1);
 
-        System.out.println("\nNull Unit parameter to addUnit():\n");
+        System.out.println("\nNull Unit argument to addUnit():\n");
 
         try
         {
@@ -1112,9 +1109,9 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Null Stack parameter to addStack()
+        // Null Stack argument to addStack()
 
-        System.out.println("\nNull Stack parameter to addStack():\n");
+        System.out.println("\nNull Stack argument to addStack():\n");
 
         try
         {
@@ -1150,7 +1147,7 @@ public class Driver
 
         List<Stack> unitList = playerObject.stackList();
 
-        // Invalid index parameter to takeStack()
+        // Invalid index argument to takeStack()
 
         Stack temporaryStack;
 
@@ -1176,7 +1173,7 @@ public class Driver
 
         // Null Unit
 
-        System.out.println("\nNull Unit parameter:\n");
+        System.out.println("\nNull Unit argument:\n");
 
         try
         {
@@ -1190,7 +1187,7 @@ public class Driver
 
         // Null Stack
 
-        System.out.println("\nNull Stack parameter:\n");
+        System.out.println("\nNull Stack argument:\n");
 
         try
         {
@@ -1219,7 +1216,7 @@ public class Driver
 
         // Invalid Stack
 
-        System.out.println("\nInvalid Stack parameter:\n");
+        System.out.println("\nInvalid Stack argument:\n");
 
         try
         {
@@ -1233,9 +1230,9 @@ public class Driver
 
         System.out.println("\nTesting Exception handling for Stack methods:");
 
-        // Null Stack parameter to addPortagedItem()
+        // Null Stack argument to addPortagedItem()
 
-        System.out.println("\nNull Stack parameter to addPortagedItem():\n");
+        System.out.println("\nNull Stack argument to addPortagedItem():\n");
 
         try
         {
@@ -1247,9 +1244,9 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Invalid Stack parameter to addPortagedItem()
+        // Invalid Stack argument to addPortagedItem()
 
-        System.out.println("\nInvalid Stack parameter to addPortagedItem():\n");
+        System.out.println("\nInvalid Stack argument to addPortagedItem():\n");
 
         try
         {
@@ -1290,9 +1287,9 @@ public class Driver
         System.out.println("\nPlayer.toText() output:\n\n" +
                            playerObject.toText());
 
-        // Null Stack parameter to addSubStack()
+        // Null Stack argument to addSubStack()
 
-        System.out.println("Null Stack parameter to Stack.addSubStack():\n");
+        System.out.println("Null Stack argument to Stack.addSubStack():\n");
 
         try
         {
@@ -1304,9 +1301,9 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Invalid Stack parameter to addSubStack()
+        // Invalid Stack argument to addSubStack()
 
-        System.out.println("\nInvalid Stack parameter to Stack.addSubStack():\n");
+        System.out.println("\nInvalid Stack argument to Stack.addSubStack():\n");
 
         try
         {
