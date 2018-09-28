@@ -14,18 +14,23 @@ package jasl.counters;
 
 import java.io.Serializable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import jasl.utilities.JsonData;
 import jasl.utilities.Messages;
 
 /**
  * This class is used to define the basic components of a counter. It is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 5.1
- * @author Copyright (C) 1998-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 7.0
+ * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Unit.html">Source code</A>
  */
 
-public abstract class Unit implements Serializable, TextOutput, Description
+public abstract class Unit implements Serializable, TextOutput, JsonData,
+                                      Description
 {
 	// Symbolic constants
 
@@ -57,7 +62,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	// Constructors.
 
-	// During the instantiation of derived concrete classes the parameter
+	// During the instantiation of derived concrete classes the argument
 	// is passed up the inheritance tree from the constructor of the object
 	// type being created.
 
@@ -67,7 +72,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	}
 
 	// This declaration is redundant for Java and C++ usage, but it is
-	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
+	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
 	// used by <A HREF="http://www.swig.org/">SWIG</A> to build bindings for scripting languages.
 
 	protected Unit() {}
@@ -75,9 +80,8 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	// Public access methods
 
 	/**
-	 * Display the value of each of the private data members that describe
-	 * the current instance.
-	 *
+	 * Display a plain text representation of an instance of this class.
+	 * <P>
 	 * Each value is preceded by a label defined in this class or the
 	 * interface associated with the item. There are no more than two
 	 * values, including labels, in each line of output.
@@ -100,7 +104,7 @@ public abstract class Unit implements Serializable, TextOutput, Description
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(description(),
+		returnString.append(Messages.formatTextString(description().toString(),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
@@ -115,31 +119,32 @@ public abstract class Unit implements Serializable, TextOutput, Description
 	/**
 	 * Return an abbreviated description, which may include attributes, of a
 	 * unit.
-	 *
+	 * <P>
 	 * This method overrides the parent implementation, and it is intended
 	 * that derived public classes provide their own version. If not, this
-	 * one will return the same value as description().
+	 * one will return the same value as description().toString().
 	 *
 	 * @return a <CODE>String</CODE> specifying a simple description of the unit.
 	 */
 
 	public String toString()
 	{
-		return description();
+		return description().toString();
 	}
 
 	/**
-	 * Display the JSON representation each of the private data members that
-	 * describe the current instance.
-	 *
+	 * Generate a JSON representation of an instance of this class.
+	 * <P>
 	 * Each value is preceded by a label (key) defined in this class or the
-	 * the interface associated with the item. The parameters are grouped in
-	 * a JSON object, with this method (the top level) adding the initial
-	 * '{' and the "bottom" (public) class implementation appending the
-	 * closing '}'. Entries at each level are successively indented to
-	 * provide hierarchical formatting of the output.
+	 * the interface associated with the item. The elements are grouped in a
+	 * JSON object, with this method (the top level) adding the initial '{'
+	 * and the "bottom" (public) class implementation appending the closing
+	 * '}'. Entries at each level are successively indented to provide
+	 * hierarchical formatting of the output.
 	 *
 	 * @return a <CODE>String</CODE> containing the JSON data.
+	 *
+	 * @see #fromJSON
 	 */
 
 	public String toJSON()
@@ -156,10 +161,10 @@ public abstract class Unit implements Serializable, TextOutput, Description
 		String INDENT = " ";
 
 		returnString.append(INDENT +
-		                    buildJSONPair(DESCRIPTION_LABEL,description()) +
+		                    JsonOutput.buildJSONPair(DESCRIPTION_LABEL,description().name()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    buildJSONPair(UNIT_LABEL,toString()) +
+		                    JsonOutput.buildJSONPair(UNIT_LABEL,toString()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -169,154 +174,101 @@ public abstract class Unit implements Serializable, TextOutput, Description
 
 	/**
 	 * Return the description of a unit.
+	 * <P>
+	 * Use the toString() method of the enum to retrieve the label
+	 * associated with the value (e.g. "Crew" for CREW). The name() method
+	 * returns its text representation (e.g. "CREW").
 	 *
-	 * @return a <CODE>String</CODE> specifying the unit description.
+	 * @return a <CODE>Descriptions</CODE> value specifying the unit description.
 	 */
 
-	public final String description()
+	public final Descriptions description()
 	{
-		return _description.toString();
+		return _description;
 	}
 
-	// Other methods
-
-	// The following methods are intended for use by the toJSON()
-	// implementations is this class and those derived from it.
+	// Update methods
 
 	/**
-	 * Generate a JSON name/value pair that includes the specified
-	 * parameters.
+	 * Update an instance of this class to reflect the settings within the
+	 * specified JSON data.
+	 * <P>
+	 * The setting for each attribute is checked against the corresponding
+	 * input value.
 	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
+	 * @param jsonData JSON formatted text <CODE>String</CODE>.
 	 *
-	 * @throws NullPointerException in the case of a null name or value
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
+	 * @throws NullPointerException in the case of a null argument.
+	 * @throws IllegalArgumentException in the case of a zero length
+	 * argument or where non-matching data values are found within it.
+	 * @throws JSONException in the case where the text is not valid JSON or
+	 * an expected "key" is not found.
+	 *
+	 * @see #toJSON
 	 */
 
-	protected final String buildJSONPair(String name,String value)
+	public void fromJSON(String jsonData)
 	{
-		// Define local constants.
-
-		String METHOD_NAME = "buildJSONPair (String value)";
-
-		// Check the value parameter received and throw the appropriate
-		// exception if necessary. The validity of the name parameter
-		// will be checked in buildJSONName().
-
-		if (null == value)
-		{
-			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                          METHOD_NAME,
-			                                                          Messages.NULL_PARAMETER_MSG));
-		}
-
-		// Create a buffer to store the string to be returned.
-
-		StringBuffer returnString =
-			new StringBuffer(buildJSONName(name));
-
-		returnString.append(JSON_KEY_STRING_VALUE_SEPARATOR);
-		returnString.append(value);
-		returnString.append(JSON_DOUBLE_QUOTE);
-
-		// Return the completed string to calling program.
-
-		return returnString.toString();
-	}
-
-	/**
-	 * Generate a JSON name/value pair that includes the specified
-	 * parameters.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	protected final String buildJSONPair(String name,int value)
-	{
-		// Create a buffer to store the string to be returned. The
-		// validity of the name parameter will be checked in
-		// buildJSONName().
-
-		StringBuffer returnString =
-			new StringBuffer(buildJSONName(name));
-
-		returnString.append(JSON_KEY_OTHER_VALUE_SEPARATOR);
-		returnString.append(value);
-
-		// Return the completed string to calling program.
-
-		return returnString.toString();
-	}
-
-	/**
-	 * Generate a JSON name/value pair that includes the specified
-	 * parameters.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	protected final String buildJSONPair(String name,boolean value)
-	{
-		// Create a buffer to store the string to be returned. The
-		// validity of the name parameter will be checked in
-		// buildJSONName().
-
-		StringBuffer returnString =
-			new StringBuffer(buildJSONName(name));
-
-		returnString.append(JSON_KEY_OTHER_VALUE_SEPARATOR);
-		returnString.append(Messages.getTruthLabel(value).toLowerCase());
-
-		// Return the completed string to calling program.
-
-		return returnString.toString();
-	}
-
-	/**
-	 * Generate a JSON name entry using the specified parameter.
-	 *
-	 * This method is intended only for use from the buildJSONPair()
-	 * methods.
-	 *
-	 * @return a <CODE>String</CODE> containing the JSON pair data.
-	 *
-	 * @throws NullPointerException in the case of a null name
-	 * @throws IllegalArgumentException in the case of an empty (zero
-	 * length) name
-	 */
-
-	private String buildJSONName(String name)
-	{
-		// Define local constants.
-
-		String METHOD_NAME = "buildJSONName";
-
-		// Check the parameters received and throw the appropriate
+		// Check the argument received and throw the appropriate
 		// exception if necessary.
 
-		if (null == name)
+		if (null == jsonData)
 		{
 			throw new NullPointerException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                          METHOD_NAME,
+			                                                          JsonData.FROM_JSON_METHOD_NAME,
 			                                                          Messages.NULL_PARAMETER_MSG));
 		}
 
-		if (0 == name.length())
+		if (jsonData.isEmpty())
 		{
 			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
-			                                                              METHOD_NAME,
+			                                                              JsonData.FROM_JSON_METHOD_NAME,
 			                                                              Messages.ZERO_LENGTH_PARAMETER_MSG));
 		}
 
-		return JSON_DOUBLE_QUOTE + name;
+		// Check the values specific to this class.
+
+		String exceptionDetails = "";
+
+		try
+		{
+			JSONObject jsonObject = new JSONObject(jsonData);
+
+			Descriptions description =
+				Descriptions.valueOf(jsonObject.getString(DESCRIPTION_LABEL));
+
+			if (description != _description)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					description.name() +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					DESCRIPTION_LABEL;
+			}
+
+			if (!exceptionDetails.isEmpty())
+			{
+				throw new IllegalArgumentException(exceptionDetails);
+			}
+		}
+
+		catch (IllegalArgumentException exception)
+		{
+			if (exceptionDetails.isEmpty())
+			{
+				exceptionDetails = exception.getMessage();
+			}
+
+			throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                              JsonData.FROM_JSON_METHOD_NAME,
+			                                                              exceptionDetails));
+		}
+
+		catch (JSONException exception)
+		{
+			throw new JSONException(Messages.buildErrorMessage(CLASS_NAME,
+			                                                   JsonData.FROM_JSON_METHOD_NAME,
+			                                                   exception.getMessage()));
+		}
 	}
 }

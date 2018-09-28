@@ -16,6 +16,18 @@
 
 %module Serialization;
 
+// This file allows the text from a Java exception to be included in a message
+// shown by a scripting language.
+
+%include ../java-exception.swig
+
+// Add support for catching Java exceptions thrown by the constructor.
+
+%exception serializeToFile          JAVA_EXCEPTION
+%exception serializeToByteArray     JAVA_EXCEPTION
+%exception deserializeFromFile      JAVA_EXCEPTION
+%exception deserializeFromByteArray JAVA_EXCEPTION
+
 // The public interface of the <A HREF="../../jasl/utilities/Serialization.html">Serialization</A> class.
 
 class Serialization
@@ -24,5 +36,7 @@ class Serialization
 
         static void                  serializeToFile(::java::lang::Object*,
                                                      ::java::lang::String*);
+        static JArray<jbyte>*        serializeToByteArray(::java::lang::Object*);
         static ::java::lang::Object* deserializeFromFile(::java::lang::String*);
+        static ::java::lang::Object* deserializeFromByteArray(JArray<jbyte>*);
 };

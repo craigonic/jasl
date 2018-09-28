@@ -1,13 +1,8 @@
 // ************************************************************************** //
 // Driver.cxx - This file contains the Driver program, which is used to test  //
 //              the functionality of the Java classes defined in the jasl     //
-//              package hierarchy. It is implemented to use wrapper classes   //
-//              that interact with libraries generated using <A HREF="http://gcc.gnu.org/java/">GCJ</A>, through the //
-//              <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface).                              //
-//                                                                            //
-//              The calls within this file are specific to the C++ API of the //
-//              wrapper classes. A C++11 compiler is required to build this   //
-//              program.                                                      //
+//              package hierarchy, accessed through libraries that interact   //
+//              with the Java bytecode via the <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface).   //
 //                                                                            //
 //              NOTE: This program is based on Advanced Squad Leader, which   //
 //                    was created by The Avalon Hill Game Company, and lives  //
@@ -16,34 +11,27 @@
 // Written By: Craig R. Campbell  -  August 2015                              //
 // ************************************************************************** //
 
-#include <memory>   // For unique_ptr().
-#include <stdio.h>  // For printf().
+#include "jasl/jni/utilities/Dice.h"
 
-#include "jasl/cni/CniWrapper.h"
-#include "jasl/cni/utilities/Dice.h"
+#include <assert.h>
 
-int main(int argc,char *argv[])
+int main(int argc,char* argv[])
 {
-    auto cniWrapper = std::unique_ptr<CniWrapper>(CniWrapper::instance());
-
     // Test the Dice class.
 
     printf("\nTesting the execution of the Dice class:\n\n");
 
     for (int i = 0;i < 12;i++)
     {
-        auto theDice = std::unique_ptr<Dice>(new Dice);
+        const auto& theDice = std::make_unique<Dice>();
 
-        if (theDice)
-        {
-//          printf("White: %d Colored: %d Combined: %2d\n",
-//                 theDice->whiteDieValue(),
-//                 theDice->coloredDieValue(),
-//                 theDice->combinedResult());
+        assert(nullptr != theDice);
 
-            printf("%s\n",theDice->toText().c_str());
-        }
+//      printf("White: %d Colored: %d Combined: %2d\n",
+//             theDice->whiteDieValue(),
+//             theDice->coloredDieValue(),
+//             theDice->combinedResult());
 
-        else printf("New Dice object generation failed\n");
+        printf("%s\n",theDice->toText().c_str());
     }
 }

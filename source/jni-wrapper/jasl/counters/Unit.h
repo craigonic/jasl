@@ -2,7 +2,7 @@
  * \file Unit.h
  *
  * This file declares a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://java.sun.com/">Java</A>.
+ * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
  *
  * Written By: Craig R. Campbell  -  January 2010
  */
@@ -22,10 +22,10 @@ namespace jasl
 }
 
 /**
- * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
+ * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
  *
  * This class is used to simplify access to its namesake, which is implemented
- * in <A HREF="http://java.sun.com/">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/java/">GCJ</A>. It also interacts with the
+ * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/wiki/GCJ/">GCJ</A>. It also interacts with the
  * <A HREF="../../CniWrapper.h.html">CniWrapper</A> and <A HREF="../../JaslErrorMessage.h.html">JaslErrorMessage</A> classes, which are used both to enable Java
  * support and keep it "behind the scenes".
  *

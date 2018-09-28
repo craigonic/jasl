@@ -33,4 +33,14 @@ Unit* fromObject(::java::lang::Object* object)
 {
     return (Unit*)object;
 }
+
+Leader* unitToLeader(Unit* unit)
+{
+    return (Leader*)unit;
+}
+
+Squad* unitToSquad(Unit* unit)
+{
+    return (Squad*)unit;
+}
 %}

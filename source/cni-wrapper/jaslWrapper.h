@@ -2,16 +2,16 @@
  * \file jaslWrapper.h
  *
  * This file contains a set of typedef declarations intended to simplify the use
- * of the public classes in the jasl libraries when accessed through the <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A>
+ * of the public classes in the jasl libraries when accessed through the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcj/About-CNI.html#About-CNI">CNI</A>
  * (Compiled Native Interface) wrapper.
  *
  * Written By: Craig R. Campbell  -  June 2007
  */
 
-#ifndef JASL_WRAPPER_H
-#define JASL_WRAPPER_H
+#pragma once
 
 #include "jasl/counters/Classification$Classifications.h"
+#include "jasl/counters/Description$Descriptions.h"
 #include "jasl/counters/Nationality$Nationalities.h"
 #include "jasl/counters/UnitType$InfantryTypes.h"
 #include "jasl/counters/Status$States.h"
@@ -36,6 +36,13 @@
  */
 
 typedef jasl::counters::Classification$Classifications Classifications;
+
+/**
+ * \typedef jasl::counters::Description$Descriptions Descriptions
+ * \brief Shorthand declaration for the <A HREF="../../source/jasl/counters/Description.html">Descriptions</A> enum.
+ */
+
+typedef jasl::counters::Description$Descriptions Descriptions;
 
 /**
  * \typedef jasl::counters::Nationality$Nationalities Nationalities
@@ -124,5 +131,3 @@ typedef jasl::utilities::Dice Dice;
  */
 
 typedef jasl::utilities::Serialization Serialization;
-
-#endif // JASL_WRAPPER_H

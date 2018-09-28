@@ -2,7 +2,7 @@
  * \file Unit.cpp
  *
  * This file defines a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://java.sun.com/">Java</A>.
+ * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
  *
  * Written By: Craig R. Campbell  -  January 2010
  */
@@ -36,7 +36,7 @@ const char* Unit::description()
 {
 	if (0 == _description)
 	{
-		_description = js2cc(_unit->description());
+		_description = js2cc(_unit->description()->toString());
 	}
 
 	return _description;
@@ -46,7 +46,7 @@ const char* Unit::description()
 
 Descriptions Unit::descriptionType()
 {
-	return Descriptions(jasl::counters::Description$Descriptions::valueOf(_unit->description())->ordinal());
+	return Descriptions(_unit->description()->ordinal());
 }
 
 // toText: Return a text representation of the attributes and current state of

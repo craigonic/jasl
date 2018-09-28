@@ -17,11 +17,11 @@ package jasl.counters;
 /**
  * This interface is used to define public constants, using an enum, and
  * required method associated with the classification of <A HREF="Personnel.html">Personnel</A> units. The
- * method is intended for operation on a String member variable within the
- * implementing class.
+ * method is intended for operation on a Classifications enum member variable
+ * within the implementing class.
  *
- * @version 3.0
- * @author Copyright (C) 2006-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 5.0
+ * @author Copyright (C) 2006-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Classification.html">Source code</A>
  */
 
@@ -30,7 +30,7 @@ public interface Classification
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the
-	// classification of a <A HREF="Personnel.html">Personnel</A> unit using an objects toText()
+	// classification of a <A HREF="Personnel.html">Personnel</A> unit using an object's toText()
 	// method.
 
 	/**
@@ -50,7 +50,7 @@ public interface Classification
 	{
 		/** <A NAME="_SS_"></A>
 		 * Indicates that the classification of a unit is <B>SS</B>.
-		 *
+		 * <P>
 		 * This value is applicable (obviously) only when the
 		 * nationality of the unit is <B>German</B>.
 		 *
@@ -87,7 +87,19 @@ public interface Classification
 		 * Indicates that the classification of a unit is <B>Conscript</B>.
 		 */
 
-		CONSCRIPT("Conscript");
+		CONSCRIPT("Conscript"),
+
+		/** <A NAME="_NONE_"></A>
+		 * Indicates that a classification does not apply to a Personnel
+		 * unit.
+		 * <P>
+		 * This value is applicable only when the "nationality" of the
+		 * unit is <B>Partisan</B>.
+		 *
+		 * @see Nationality.Nationalities#PARTISAN
+		 */
+
+		NONE("");
 
 		// Private data members
 
@@ -110,7 +122,7 @@ public interface Classification
 		 * @return the <CODE>String</CODE> associated with the constant.
 		 */
 
-		public String toString()
+		public final String toString()
 		{
 			return _label;
 		}
@@ -119,12 +131,13 @@ public interface Classification
 	// Access methods
 
 	/**
-	 * Return the classification of a unit. This is indicated on the front
-	 * of the physical counter by an alphanumeric character in the upper
-	 * right corner.
+	 * Return the classification of a unit.
+	 * <P>
+	 * This is indicated on the front of the physical counter by an
+	 * alphanumeric character in the upper right corner.
 	 *
-	 * @return a <CODE>String</CODE> specifying the unit classification.
+	 * @return a <CODE>Classifications</CODE> value specifying the unit classification.
 	 */
 
-	public abstract String classification();
+	public abstract Classifications classification();
 }

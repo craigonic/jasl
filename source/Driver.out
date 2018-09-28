@@ -1,39 +1,53 @@
-Fri Apr  7 22:57:25 PDT 2017
+Fri Jul 21 12:53:42 PDT 2017
 
 Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
-Identity          :                  
-Status            : Normal                                                      
+Identity          :                                                             
+Status            : [Broken]                                                    
 Movement          : 6                
-Portage Capacity  : 1                Portage Level           : 0                
+Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
 Normal Range      : 0                
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
 Basic Point Value : 0                Experience Level Rating : 4                
+Infantry Type     : NONE                                                        
 Modifier          : -1               
 
 Leader.toString() output:
 
 9-1 Leader
 
+Testing Exception handling for serialization to and from a file:
+
+Caught: java.lang.NullPointerException: Serialization(serializeToFile) - Null argument received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(serializeToFile) - Invalid argument received (zero length).
+
+Caught: java.lang.NullPointerException: Serialization(deserializeFromFile) - Null argument received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromFile) - Invalid argument received (zero length).
+
+Caught: java.io.FileNotFoundException: /tmp/NonExistentFile (No such file or directory)
+
 (Deserialized) Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
-Identity          : Col. Klink       
-Status            : Normal                                                      
+Identity          : Col. Klink                                                  
+Status            : []                                                          
 Movement          : 6                
-Portage Capacity  : 1                Portage Level           : 0                
+Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
 Normal Range      : 0                
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
 Basic Point Value : 0                Experience Level Rating : 4                
+Infantry Type     : NONE                                                        
 Modifier          : -1               
 
 (Deserialized) Leader.toString() output:
@@ -43,15 +57,15 @@ Modifier          : -1
 (Deserialized) Leader.toJSON() output:
 
 {
- "Description":"Leader",
+ "Description":"LEADER",
  "Unit Label":"9-1 Leader (Col. Klink)",
-  "Nationality":"German",
+  "Nationality":"GERMAN",
   "Unit Type":"",
   "Identity":"Col. Klink",
-  "Status":"Normal",
+  "Status":0,
    "Movement":6,
    "Portage Capacity":1,
-   "Portage Level":0,
+   "Portage Level":2,
     "Firepower":"0",
     "Firepower Equivalent":0,
     "Normal Range":0,
@@ -61,6 +75,7 @@ Modifier          : -1
     "Portage Value":0,
     "Basic Point Value":0,
     "Experience Level Rating":4,
+    "Infantry Type":"NONE",
      "Modifier":-1
 }
 
@@ -68,8 +83,8 @@ Squad.toText() output:
 
 Description       : Squad            
 Nationality       : Russian          Unit Type               : Guards           
-Identity          : A                
-Status            : Normal                                                      
+Identity          :                                                             
+Status            : [Desperate]                                                 
 Movement          : 4                
 Portage Capacity  : 3                Portage Level           : 0                
 Firepower         : 6                Firepower Equivalent    : 6                
@@ -78,23 +93,55 @@ Morale            : 8                Broken Morale           : 8
 Can Self Rally ?  : No               
 Portage Value     : 10               
 Basic Point Value : 12               Experience Level Rating : 4                
+Infantry Type     : GUARDS                                                      
 Has Maximum ELR ? : No               Classification          : Elite            
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
 Smoke Placement Ex: 0                
 
 Squad.toString() output:
 
+6-2-8 Squad
+
+Testing Exception handling for serialization to and from a byte array:
+
+Caught: java.lang.NullPointerException: Serialization(serializeToByteArray) - Null argument received.
+
+Caught: java.lang.NullPointerException: Serialization(deserializeFromByteArray) - Null argument received.
+
+Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromByteArray) - Invalid argument received (zero length).
+
+(Deserialized) Squad.toText() output:
+
+Description       : Squad            
+Nationality       : Russian          Unit Type               : Guards           
+Identity          : A                                                           
+Status            : [Broken]                                                    
+Movement          : 4                
+Portage Capacity  : 3                Portage Level           : 0                
+Firepower         : 6                Firepower Equivalent    : 6                
+Normal Range      : 2                
+Morale            : 8                Broken Morale           : 8                
+Can Self Rally ?  : No               
+Portage Value     : 10               
+Basic Point Value : 12               Experience Level Rating : 4                
+Infantry Type     : GUARDS                                                      
+Has Maximum ELR ? : No               Classification          : Elite            
+Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
+Smoke Placement Ex: 0                
+
+(Deserialized) Squad.toString() output:
+
 6-2-8 Squad (A)
 
-Squad.toJSON() output:
+(Deserialized) Squad.toJSON() output:
 
 {
- "Description":"Squad",
+ "Description":"SQUAD",
  "Unit Label":"6-2-8 Squad (A)",
-  "Nationality":"Russian",
+  "Nationality":"RUSSIAN",
   "Unit Type":"Guards",
   "Identity":"A",
-  "Status":"Normal",
+  "Status":1,
    "Movement":4,
    "Portage Capacity":3,
    "Portage Level":0,
@@ -107,8 +154,252 @@ Squad.toJSON() output:
     "Portage Value":10,
     "Basic Point Value":12,
     "Experience Level Rating":4,
+    "Infantry Type":"GUARDS",
      "Has Maximum ELR ?":false,
-     "Classification":"Elite",
+     "Classification":"ELITE",
+      "Can Assault Fire ?":true,
+      "Can Spray Fire ?":true,
+      "Smoke Placement Exponent":0
+}
+
+Testing the fromJSON() method:
+
+Null JSON input data:
+
+Caught: java.lang.NullPointerException: Unit(fromJSON) - Null argument received.
+
+Empty JSON input data:
+
+Caught: java.lang.IllegalArgumentException: Unit(fromJSON) - Invalid argument received (zero length).
+
+Updating a Squad with Leader data:
+
+Caught: java.lang.IllegalArgumentException: Unit(fromJSON) - Non-matching value (LEADER) for Description
+
+Updating a Squad with an invalid (wrong case) description:
+
+Caught: java.lang.IllegalArgumentException: Unit(fromJSON) - No enum constant jasl.counters.Description.Descriptions.Squad
+
+Updating a Squad with an invalid (non-string) description:
+
+Caught: org.json.JSONException: Unit(fromJSON) - JSONObject["Description"] not a string.
+
+Updating a Squad with a different nationality:
+
+Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - Non-matching value (GERMAN) for Nationality
+
+Updating a Squad with an invalid (wrong case) nationality:
+
+Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - No enum constant jasl.counters.Nationality.Nationalities.Russian
+
+Updating a Squad with an invalid (non-string) nationality:
+
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Nationality"] not a string.
+
+Updating a Squad with a different unit type:
+
+Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - Non-matching value (Gurkha) for Unit Type
+
+Updating a Squad with an invalid (non-string) unit type:
+
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Unit Type"] not a string.
+
+Updating a Squad with an invalid (non-string) identity:
+
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Identity"] not a string.
+
+Updating a Squad with an invalid (negative) status:
+
+Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - Invalid value (-2) for Status
+
+Updating a Squad with an invalid (non-integer) status:
+
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Status"] is not an int.
+
+Updating a Squad with a different movement value:
+
+Caught: java.lang.IllegalArgumentException: Mobile(fromJSON) - Non-matching value (3) for Movement
+
+Updating a Squad with an invalid (non-integer) movement value:
+
+Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Movement"] is not an int.
+
+Updating a Squad with a different portage capacity:
+
+Caught: java.lang.IllegalArgumentException: Mobile(fromJSON) - Non-matching value (5) for Portage Capacity
+
+Updating a Squad with an invalid (non-integer) portage capacity:
+
+Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Capacity"] is not an int.
+
+Updating a Squad with an invalid (negative) portage level:
+
+Caught: java.lang.IllegalArgumentException: Mobile(fromJSON) - Invalid value (-1) for Portage Level
+
+Updating a Squad with an invalid (non-integer) portage level:
+
+Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Level"] is not an int.
+
+Updating a Squad with a different firepower value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (4) for Firepower
+
+Updating a Squad with an invalid (non-string) firepower value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower"] not a string.
+
+Updating a Squad with a different firepower equivalent value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (4) for Firepower Equivalent
+
+Updating a Squad with an invalid (non-integer) firepower equivalent value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower Equivalent"] is not an int.
+
+Updating a Squad with a different normal range value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (4) for Normal Range
+
+Updating a Squad with an invalid (non-integer) normal range value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Normal Range"] is not an int.
+
+Updating a Squad with a different morale value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (7) for Morale
+
+Updating a Squad with an invalid (non-integer) morale value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Morale"] is not an int.
+
+Updating a Squad with a different broken morale value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (7) for Broken Morale
+
+Updating a Squad with an invalid (non-integer) broken morale value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Broken Morale"] is not an int.
+
+Updating a Squad with a different can self rally setting:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (true) for Can Self Rally ?
+
+Updating a Squad with an invalid (non-boolean) can self rally setting:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Can Self Rally ?"] is not a Boolean.
+
+Updating a Squad with a different portage value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (9) for Portage Value
+
+Updating a Squad with an invalid (non-integer) portage value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Portage Value"] is not an int.
+
+Updating a Squad with a different basic point value:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (52) for Basic Point Value
+
+Updating a Squad with an invalid (non-integer) basic point value:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Basic Point Value"] is not an int.
+
+Updating a Squad with a different experience level rating:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (3) for Experience Level Rating
+
+Updating a Squad with an invalid (non-integer) experience level rating:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Experience Level Rating"] is not an int.
+
+Updating a Squad with a different infantry type:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (NONE) for Infantry Type
+
+Updating a Squad with an invalid (wrong case) infantry type:
+
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - No enum constant jasl.counters.UnitType.InfantryTypes.Guards
+
+Updating a Squad with an invalid (non-string) infantry type:
+
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Infantry Type"] not a string.
+
+Updating a Squad with a different has maximum ELR setting:
+
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (true) for Has Maximum ELR ?
+
+Updating a Squad with an invalid (non-boolean) has maximum ELR setting:
+
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Has Maximum ELR ?"] is not a Boolean.
+
+Updating a Squad with a different classification:
+
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (FIRST_LINE) for Classification
+
+Updating a Squad with an invalid (wrong case) classification:
+
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - No enum constant jasl.counters.Classification.Classifications.Elite
+
+Updating a Squad with an invalid (non-string) classification:
+
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Classification"] not a string.
+
+Updating a Squad with a different can assault fire setting:
+
+Caught: java.lang.IllegalArgumentException: Squad(fromJSON) - Non-matching value (false) for Can Assault Fire ?
+
+Updating a Squad with an invalid (non-boolean) can assault fire setting:
+
+Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Can Assault Fire ?"] is not a Boolean.
+
+Updating a Squad with a different can spray fire setting:
+
+Caught: java.lang.IllegalArgumentException: Squad(fromJSON) - Non-matching value (false) for Can Spray Fire ?
+
+Updating a Squad with an invalid (non-boolean) can spray fire setting:
+
+Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Can Spray Fire ?"] is not a Boolean.
+
+Updating a Squad with a different smoke placement exponent value:
+
+Caught: java.lang.IllegalArgumentException: Squad(fromJSON) - Non-matching value (3) for Smoke Placement Exponent
+
+Updating a Squad with an invalid (non-integer) smoke placement exponent value:
+
+Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Smoke Placement Exponent"] is not an int.
+
+Updating a Leader with a different modifier value:
+
+Caught: java.lang.IllegalArgumentException: Leader(fromJSON) - Non-matching value (-2) for Modifier
+
+Updating a Leader with an invalid (non-integer) modifier value:
+
+Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not an int.
+
+(Updated with fromJSON()) Squad.toJSON() output:
+
+{
+ "Description":"SQUAD",
+ "Unit Label":"6-2-8 Squad (B)",
+  "Nationality":"RUSSIAN",
+  "Unit Type":"Guards",
+  "Identity":"B",
+  "Status":0,
+   "Movement":4,
+   "Portage Capacity":3,
+   "Portage Level":2,
+    "Firepower":"6",
+    "Firepower Equivalent":6,
+    "Normal Range":2,
+    "Morale":8,
+    "Broken Morale":8,
+    "Can Self Rally ?":false,
+    "Portage Value":10,
+    "Basic Point Value":12,
+    "Experience Level Rating":4,
+    "Infantry Type":"GUARDS",
+     "Has Maximum ELR ?":false,
+     "Classification":"ELITE",
       "Can Assault Fire ?":true,
       "Can Spray Fire ?":true,
       "Smoke Placement Exponent":0
@@ -118,135 +409,119 @@ Building Unit array with a Leader & 3 Squads
 
 Displaying Unit array with a Leader & 3 Squads
 
-UnitList[0]:	9-1 Leader (Sgt. Slaughter)
+UnitList[0]:	9-0 Commissar (Commissar Ryzhiy)
 
 Leader
-Sgt. Slaughter
-
+Commissar Ryzhiy
+Commissar
 6
-Normal
+[]
 
-UnitList[1]:	6-6-6 Squad (X)
+UnitList[1]:	6-2-8 Squad (X)
 
 Squad
 X
-
+Guards
 4
-Normal
+[]
 
-UnitList[2]:	6-6-6 Squad (Y)
+UnitList[2]:	4-4-7 Squad (Y)
 
 Squad
 Y
 
 4
-Normal
+[Broken]
 
-UnitList[3]:	6-6-6 Squad (Z)
+UnitList[3]:	4-2-6 Squad (Z)
 
 Squad
 Z
 
-4
-Normal
+3
+[Desperate]
+
+Testing Exception handling for Squad update methods:
+
+Invalid portage level argument:
+
+Caught: java.lang.IllegalArgumentException: Mobile(setPortageLevel) - Invalid argument(s) received : -1
 
 Testing Exception handling during Squad creation:
 
-Incompatible nationality and unitType parameters:
+Incompatible nationality and unitType arguments:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : British and Engineers
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : British and Engineers
 
-Incompatible description and unitType parameters:
+Incompatible description and unitType arguments:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : Squad and Commissar
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : Squad and Commissar
 
-Invalid (less than 0) firepower parameter:
+Invalid (less than 0) firepower argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
-Invalid (greater than maximum) firepower parameter:
+Invalid (greater than maximum) firepower argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 11
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
 
-Invalid (less than 0) normal range parameter:
+Invalid (less than 0) normal range argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -255
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -255
 
-Invalid (less than 0) morale parameter:
+Invalid (less than 0) morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
-Invalid (greater than maximum) morale parameter:
+Invalid (greater than maximum) morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 11
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
 
-Invalid (less than 0) broken morale parameter:
+Invalid (less than 0) broken morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -7
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -7
 
-Invalid (greater than maximum) broken morale parameter:
+Invalid (greater than maximum) broken morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 17
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 17
 
 Invalid (less than zero) Basic Point Value (BPV):
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
 Invalid (less than zero) Experience Level Rating (ELR):
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : -1
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
 
 Invalid (greater than maximum) Experience Level Rating (ELR):
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid parameter(s) received : 6
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 6
 
-Incompatible classification parameter:
+Incompatible classification argument (nationality mismatch):
 
-Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid parameter(s) received : Italian and SS
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Italian and SS
+
+Incompatible classification argument (invalid setting):
+
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Partisan and Elite
 
 Invalid (less than zero) Smoke Placement Exponent:
 
-Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid parameter(s) received : -4
+Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid argument(s) received : -4
 
 Invalid (greater than maximum) Smoke Placement Exponent:
 
-Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid parameter(s) received : 4
+Caught: java.lang.IllegalArgumentException: Squad(constructor) - Invalid argument(s) received : 4
 
 Testing Exception handling during Leader creation:
 
-Invalid (less than minimum) modifier parameter:
+Invalid (less than minimum) modifier argument:
 
-Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : -4
+Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid argument(s) received : -4
 
-Invalid (greater than maximum) modifier parameter:
+Invalid (greater than maximum) modifier argument:
 
 Caught: java.lang.IllegalArgumentException: Leader(constructor) - Invalid parameter(s) received : 4
-
-Testing the execution of the Dice class:
-
-White Die         : 5    Colored Die       : 1    Combined Result   : 6    
-
-White Die         : 3    Colored Die       : 2    Combined Result   : 5    
-
-White Die         : 5    Colored Die       : 6    Combined Result   : 11   
-
-White Die         : 4    Colored Die       : 3    Combined Result   : 7    
-
-White Die         : 5    Colored Die       : 3    Combined Result   : 8    
-
-White Die         : 1    Colored Die       : 1    Combined Result   : 2    
-
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
-
-White Die         : 1    Colored Die       : 3    Combined Result   : 4    
-
-White Die         : 3    Colored Die       : 6    Combined Result   : 9    
-
-White Die         : 2    Colored Die       : 3    Combined Result   : 5    
-
-White Die         : 6    Colored Die       : 3    Combined Result   : 9    
-
-White Die         : 5    Colored Die       : 6    Combined Result   : 11   
 
 Testing Exception handling during Player creation:
 

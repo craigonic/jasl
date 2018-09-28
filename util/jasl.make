@@ -39,6 +39,7 @@ OBJ_SUB_DIRECTORY  := .obj
 # The following are sub-directories of the source directory.
 
 CNI_DIRECTORY      := cni-wrapper
+JNI_DIRECTORY      := jni-wrapper
 SWIG_DIRECTORY     := swig
 PERL_DIRECTORY     := perljASL
 PYTHON_DIRECTORY   := pyjASL
@@ -69,11 +70,20 @@ GCJ_CLASSPATH_CMD  := --classpath=$(BIN_PATH)
 OUTPUT_DIR_CMD     := -d $(BIN_PATH)
 
 JAVA_OPTIMIZE      := -O
-GCJ_OPTIMIZE       := -O3 -s -pipe -fPIC
+GCJ_OPTIMIZE       := -O2 -s -pipe -fPIC
 
 JAVA_OPTIONS       := $(JAVA_COMPILER) $(JAVA_OPTIMIZE) \
                       ${ANDROID_SOURCE_VERSION} ${ANDROID_TARGET_VERSION} \
                       $(OUTPUT_DIR_CMD) $(CLASSPATH_CMD)
+
+# If the JASL_COMPILER_FLAGS environment variable is set, it will be applied
+# instead of the default above. This is intended primarily for use in building
+# the code to gather coverage data. See the README file in the source directory
+# for more details.
+
+ifdef JASL_COMPILER_FLAGS
+    GCJ_OPTIMIZE   := ${JASL_COMPILER_FLAGS} -fPIC
+endif
 
 GCC_BUILD_CMD      := $(GCC_COMPILER) $(GCJ_OPTIMIZE)
 GCC_COMPILE_CMD    := $(GCC_BUILD_CMD) -c
@@ -146,8 +156,8 @@ DOXYGEN              := doxygen
 DOXYGEN_DOC_PATH     := $(DOCS_PATH)/doxygen
 DOXYGEN_DEF_FILE     := $(UTIL_PATH)/doxygen.jasl
 
-CNI_DOXYGEN_DOC_PATH := $(DOCS_PATH)/cni-doxygen
-CNI_DOXYGEN_DEF_FILE := $(UTIL_PATH)/cni-doxygen.jasl
+JNI_DOXYGEN_DOC_PATH := $(DOCS_PATH)/jni-doxygen
+JNI_DOXYGEN_DEF_FILE := $(UTIL_PATH)/jni-doxygen.jasl
 
 # global (gtags and htags)
 
@@ -159,7 +169,7 @@ GTAGS_PATH         := $(SRC_PATH)/$(GTAGS)
 HTAGS              := htags
 HTAGS_DOCS_PATH    := $(DOCS_PATH)/global
 HTAGS_TITLE        := "jASL Source Navigation"
-HTAGS_OPTIONS      := -h -I -T --tabs 4 -F -x --title $(HTAGS_TITLE) \
+HTAGS_OPTIONS      := -h -I -T --tabs 4 -F --title $(HTAGS_TITLE) \
                       -d ${GTAGSDBPATH} $(HTAGS_DOCS_PATH)
 HTAGS_OUTPUT_PATH  := $(HTAGS_DOCS_PATH)/HTML
 HTAGS_SED_CMD      := $(SED_CONV_CMD) --in-place
@@ -171,6 +181,7 @@ HTAGS_ADDLINKS_CMD := $(UTIL_PATH)/addlinks $(HTAGS_OUTPUT_PATH)
 ## Library and package path and file descriptions.
 
 CNI_PREFIX                   := cni
+JNI_PREFIX                   := jni
 LIB_PREFIX                   := lib
 
 # CNI (Compiled Native Interface) wrapper.
@@ -182,6 +193,21 @@ CNI_WRAPPER_HDR_FILES        := $(CNI_HDR_PATH)/*.h
 CNI_WRAPPER_BASE_LIB_NAME    := $(CNI_DIRECTORY)
 CNI_WRAPPER_STATIC_LIB_NAME  := $(LIB_PREFIX)$(CNI_WRAPPER_BASE_LIB_NAME).a
 CNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(CNI_WRAPPER_STATIC_LIB_NAME)
+
+# JNI (Java Native Interface) wrapper.
+
+JNI_HDR_PATH                 := $(INCLUDE_PATH)/$(PROGRAM_NAME)/$(JNI_PREFIX)
+
+JNI_WRAPPER_HDR_FILES        := $(JNI_HDR_PATH)/*.h
+
+JNI_WRAPPER_BASE_LIB_NAME    := $(JNI_DIRECTORY)
+JNI_WRAPPER_STATIC_LIB_NAME  := $(LIB_PREFIX)$(JNI_WRAPPER_BASE_LIB_NAME).a
+JNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(JNI_WRAPPER_STATIC_LIB_NAME)
+
+JNI_INCLUDE_DIRECTIVES       := -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
+JNI_BUILD_CMD                := $(GCC_BUILD_CMD) $(JNI_INCLUDE_DIRECTIVES)
+JNI_LIBRARY_PATH             := ${JAVA_HOME}/lib/server
+JNI_LINK_OPTIONS             := -L$(JNI_LIBRARY_PATH) -ljvm -lstdc++
 
 # counters package.
 
@@ -201,14 +227,14 @@ COUNTERS_BASE_LIB_NAME       := $(PROGRAM_NAME)-$(COUNTERS_PKG_NAME)
 COUNTERS_STATIC_LIB_NAME     := $(LIB_PREFIX)$(COUNTERS_BASE_LIB_NAME).a
 COUNTERS_STATIC_LIB_PATH     := $(LIB_PATH)/$(COUNTERS_STATIC_LIB_NAME)
 
-# CNI wrapper library for the counters package.
+# JNI wrapper library for the counters package.
 
-CNI_COUNTERS_HDR_PATH        := $(CNI_HDR_PATH)/$(COUNTERS_PKG_NAME)
-CNI_COUNTERS_HDR_FILES       := $(CNI_COUNTERS_HDR_PATH)/*.h
+JNI_COUNTERS_HDR_PATH        := $(JNI_HDR_PATH)/$(COUNTERS_PKG_NAME)
+JNI_COUNTERS_HDR_FILES       := $(JNI_COUNTERS_HDR_PATH)/*.h
 
-CNI_COUNTERS_BASE_LIB_NAME   := $(CNI_PREFIX)-$(COUNTERS_BASE_LIB_NAME)
-CNI_COUNTERS_STATIC_LIB_NAME := $(LIB_PREFIX)$(CNI_COUNTERS_BASE_LIB_NAME).a
-CNI_COUNTERS_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_COUNTERS_STATIC_LIB_NAME)
+JNI_COUNTERS_BASE_LIB_NAME   := $(JNI_PREFIX)-$(COUNTERS_BASE_LIB_NAME)
+JNI_COUNTERS_STATIC_LIB_NAME := $(LIB_PREFIX)$(JNI_COUNTERS_BASE_LIB_NAME).a
+JNI_COUNTERS_STATIC_LIB_PATH := $(LIB_PATH)/$(JNI_COUNTERS_STATIC_LIB_NAME)
 
 # utilities package.
 
@@ -228,14 +254,14 @@ UTILITIES_BASE_LIB_NAME      := $(PROGRAM_NAME)-$(UTILITIES_PKG_NAME)
 UTILITIES_STATIC_LIB_NAME    := $(LIB_PREFIX)$(UTILITIES_BASE_LIB_NAME).a
 UTILITIES_STATIC_LIB_PATH    := $(LIB_PATH)/$(UTILITIES_STATIC_LIB_NAME)
 
-# CNI wrapper library for the utilities package.
+# JNI wrapper library for the utilities package.
 
-CNI_UTILITIES_HDR_PATH        := $(CNI_HDR_PATH)/$(UTILITIES_PKG_NAME)
-CNI_UTILITIES_HDR_FILES       := $(CNI_UTILITIES_HDR_PATH)/*.h
+JNI_UTILITIES_HDR_PATH        := $(JNI_HDR_PATH)/$(UTILITIES_PKG_NAME)
+JNI_UTILITIES_HDR_FILES       := $(JNI_UTILITIES_HDR_PATH)/*.h
 
-CNI_UTILITIES_BASE_LIB_NAME   := $(CNI_PREFIX)-$(UTILITIES_BASE_LIB_NAME)
-CNI_UTILITIES_STATIC_LIB_NAME := $(LIB_PREFIX)$(CNI_UTILITIES_BASE_LIB_NAME).a
-CNI_UTILITIES_STATIC_LIB_PATH := $(LIB_PATH)/$(CNI_UTILITIES_STATIC_LIB_NAME)
+JNI_UTILITIES_BASE_LIB_NAME   := $(JNI_PREFIX)-$(UTILITIES_BASE_LIB_NAME)
+JNI_UTILITIES_STATIC_LIB_NAME := $(LIB_PREFIX)$(JNI_UTILITIES_BASE_LIB_NAME).a
+JNI_UTILITIES_STATIC_LIB_PATH := $(LIB_PATH)/$(JNI_UTILITIES_STATIC_LIB_NAME)
 
 # ui "package" (really just a parent directory for component packages?)
 
@@ -261,6 +287,28 @@ UI_DATA_STATIC_LIB_PATH       := $(LIB_PATH)/$(UI_DATA_STATIC_LIB_NAME)
 
 ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH) \
                                  $(UI_DATA_PKG_PATH)
+
+# org "package" (really just a parent directory for external packages?)
+
+ORG_PKG_NAME                  := org
+
+# org.json package.
+
+ORG_JSON_PKG_NAME             := json
+
+ORG_JSON_PKG_PATH             := $(ORG_PKG_NAME)/$(ORG_JSON_PKG_NAME)
+ORG_JSON_OBJ_PATH             := $(SRC_PATH)/$(ORG_JSON_PKG_PATH)
+ORG_JSON_BIN_PATH             := $(BIN_PATH)/$(ORG_JSON_PKG_PATH)
+ORG_JSON_INCLUDE_PATH         := $(INCLUDE_PATH)/$(ORG_JSON_PKG_PATH)
+
+ORG_JSON_CLASS_FILES          := $(ORG_JSON_BIN_PATH)/*.class
+ORG_JSON_OBJ_FILES            := $(ORG_JSON_OBJ_PATH)/$(OBJ_SUB_DIRECTORY)/*.o
+ORG_JSON_HDR_FILES            := $(ORG_JSON_INCLUDE_PATH)/*.h
+
+ORG_JSON_BASE_LIB_NAME        := $(ORG_PKG_NAME)-$(ORG_JSON_PKG_NAME)
+ORG_JSON_STATIC_LIB_NAME      := $(LIB_PREFIX)$(ORG_JSON_BASE_LIB_NAME).a
+ORG_JSON_STATIC_LIB_PATH      := $(LIB_PATH)/$(ORG_JSON_STATIC_LIB_NAME)
+
 ## Scenarios
 
 SCENARIOS_DIRECTORY           := scenarios
@@ -331,7 +379,7 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 # GCC compile commands with options specific to each target language.
 
 #GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.18.2/i686-linux/CORE
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.18.0/x86_64-linux-thread-multi/CORE
+GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.24.0/x86_64-linux/CORE
 GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
 
 # GCC build/link options common to all libraries and target languages.

@@ -19,8 +19,8 @@ package jasl.utilities;
  * This is a utility class used to provide the simulated result(s) of rolling
  * one or two six sided dice.
  *
- * @version 3.0
- * @author Copyright (C) 1999-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 3.1
+ * @author Copyright (C) 1999-2017 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Dice.html">Source code</A>
  */
 
@@ -30,7 +30,7 @@ public final class Dice
 
 	// These constants are used to define the minimum and maximum possible
 	// result values for a single die. The MAX_ROLL constant is also used in
-	// the rollIt() method to set the maximum random value.
+	// the constructor to set the maximum random value.
 
 	private static final int MIN_ROLL = 1;
 	private static final int MAX_ROLL = 6;
@@ -39,129 +39,67 @@ public final class Dice
 
 	// This variable contains the result of rolling the white die.
 
-	private int whiteDieValue;
+	private int _whiteDieValue;
 
 	// This variable contains the result of rolling the colored die.
 
-	private int coloredDieValue;
+	private int _coloredDieValue;
 
 	// This variable contains the combined result of rolling the two dice.
 
-	private int combinedResult;
-
-	// This variable is used to store the result of "rolling" a die while it
-	// is checked to verify that it falls within the expected range.
-
-	private int tmpResult;
-
-	// The following string is used as a message for any exceptions that may
-	// result during the simulated roll of the dice.
-
-	private static final String badResultError =
-		Messages.buildErrorMessage("Dice",Messages.CONSTRUCTOR,
-		                           "Invalid result : ");
+	private int _combinedResult;
 
 	// Constructor
 
 	/**
-	 * Construct a new <CODE>Dice</CODE> instance. When the object is created, both dice
-	 * are "rolled" automatically.
-	 *
-	 * @throws IllegalStateException in the case of an invalid result on one
-	 * or both of the dice.
+	 * Construct a new <CODE>Dice</CODE> instance.
+	 * <P>
+	 * When the object is created, both dice are "rolled" automatically.
 	 */
 
 	public Dice()
 	{
-		// Initialize the data members.
-
-		whiteDieValue   = 0;
-		coloredDieValue = 0;
-		combinedResult  = 0;
-		tmpResult       = 0;
-
-		// Roll the dice. If the method fails, assume that a failure has
-		// occurred in calculating one of the die rolls (the result did
-		// not fall within the expected range). If this happens, throw
-		// the exception.
-
-		if (!(rollEm()))
-		{
-			throw new IllegalStateException(badResultError + tmpResult);
-		}
-	}
-
-	// Private methods
-
-	// rollEm - A method to roll each die, verify that a valid result
-	//          occurs, and copy the value to the appropriate member
-	//          variable. If an invalid result occurs, the method returns
-	//          false, which causes the constructor to throw an exception.
-
-	private boolean rollEm()
-	{
 		// Roll the white die.
 
-		tmpResult = rollIt();
+		int tmpResult = (int)Math.ceil(Math.random() * MAX_ROLL);
 
-		// Check the result and return false if it does not fall within
-		// the expected range.
+		// Check the result and assert if it does not fall within the
+		// expected range.
 
-		if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
-		{
-			return false;
-		}
+		assert((tmpResult >= MIN_ROLL) && (tmpResult <= MAX_ROLL));
 
-		// Copy the result to the whiteDieValue member variable.
+		// Copy the result to the _whiteDieValue member variable.
 
-		whiteDieValue = tmpResult;
-
-		// Reset the tmpResult variable.
-
-		tmpResult = 0;
+		_whiteDieValue = tmpResult;
 
 		// Roll the colored die.
 
-		tmpResult = rollIt();
+		tmpResult = (int)Math.ceil(Math.random() * MAX_ROLL);
 
-		// Check the result and return false if it does not fall within
-		// the expected range.
+		// Check the result and assert if it does not fall within the
+		// expected range.
 
-		if ((tmpResult < MIN_ROLL) || (tmpResult > MAX_ROLL))
-		{
-			return false;
-		}
+		assert((tmpResult >= MIN_ROLL) && (tmpResult <= MAX_ROLL));
 
-		// Copy the result to the coloredDieValue member variable.
+		// Copy the result to the _coloredDieValue member variable.
 
-		coloredDieValue = tmpResult;
+		_coloredDieValue = tmpResult;
 
 		// Sum the white and colored dice rolls and copy the value to
-		// the combinedResult member variable.
+		// the _combinedResult member variable.
 
-		combinedResult = whiteDieValue + coloredDieValue;
-
-		// Return true to indicate that all of the die rolls were
-		// completed successfully.
-
-		return true;
-	}
-
-	// rollIt - A method to roll a single die.
-
-	private int rollIt()
-	{
-		return (int)Math.ceil(Math.random() * MAX_ROLL);
+		_combinedResult = _whiteDieValue + _coloredDieValue;
 	}
 
 	// Public access methods
 
 	/**
 	 * Display the value of each of the private data members that describe
-	 * the current instance. Each value is preceded by a label.
+	 * the current instance.
+	 * <P>
+	 * Each value is preceded by a label.
 	 *
-	 * @return a <CODE>String</CODE> describing the result of the last roll of
-	 * the dice.
+	 * @return a <CODE>String</CODE> describing the result of the last roll of the dice.
 	 */
 
 	public String toText()
@@ -220,7 +158,7 @@ public final class Dice
 
 	public int whiteDieValue()
 	{
-		return whiteDieValue;
+		return _whiteDieValue;
 	}
 
 	/**
@@ -231,7 +169,7 @@ public final class Dice
 
 	public int coloredDieValue()
 	{
-		return coloredDieValue;
+		return _coloredDieValue;
 	}
 
 	/**
@@ -243,6 +181,6 @@ public final class Dice
 
 	public int combinedResult()
 	{
-		return combinedResult;
+		return _combinedResult;
 	}
 }

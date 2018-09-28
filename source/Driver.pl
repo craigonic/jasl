@@ -18,6 +18,8 @@
 
 #use diagnostics;
 #use diagnostics -verbose;
+use strict;
+use warnings;
 
 use CniWrapper;
 use Counters;
@@ -32,16 +34,29 @@ use Utilities;
 # A call to the valueOf() method of each of the following enums is necessary in
 # order to use the constants associated with the type/object directly.
 
-$nationality = Counters::Nationalities::valueOf(CniWrapper::cc2js("AMERICAN"));
-$unitType = Counters::InfantryTypes::valueOf(CniWrapper::cc2js("NONE"));
-$classification = Counters::Classifications::valueOf(CniWrapper::cc2js("GREEN"));
-$state = Counters::States::valueOf(CniWrapper::cc2js("NORMAL"));
+my $description = Counters::Descriptions::valueOf(CniWrapper::cc2js("LEADER"));
+my $nationality = Counters::Nationalities::valueOf(CniWrapper::cc2js("AMERICAN"));
+my $unitType = Counters::InfantryTypes::valueOf(CniWrapper::cc2js("NONE"));
+my $classification = Counters::Classifications::valueOf(CniWrapper::cc2js("GREEN"));
+my $brokenState = Counters::States::valueOf(CniWrapper::cc2js("BROKEN"));
+my $desperateState = Counters::States::valueOf(CniWrapper::cc2js("DESPERATE"));
 
 # Create an instance of a German Leader.
 
-$germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
-                                     $Counters::InfantryTypes_NONE,
-                                     9,9,4,-1);
+my $germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
+                                        $Counters::InfantryTypes_NONE,
+                                        9,9,4,-1);
+
+$germanLeader->setStatus($brokenState);
+$germanLeader->setPortageLevel(2);
+
+# (Silently) verify that the status that was just set is not (successfully) set
+# again (i.e. it worked the first time).
+
+if ($germanLeader->setStatus($brokenState))
+{
+    die "Status changed when existing state specified again!";
+}
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -51,7 +66,7 @@ printf("\nLeader.toText() output:\n\n%s\n",
 # Display an abbreviated description of this instance using the toString()
 # method.
 
-printf("Leader.toString() output:\n\n%s\n\n",
+printf("Leader.toString() output:\n\n%s\n",
        CniWrapper::js2cc($germanLeader->toString()));
 
 # Display the output of all of the access methods declared for the Leader class
@@ -59,15 +74,19 @@ printf("Leader.toString() output:\n\n%s\n\n",
 
 #printf("Leader class access methods and output :\n");
 
-#printf("\n\tdescription(): %s\n",
-#       CniWrapper::js2cc($germanLeader->description()));
+#printf("\n\tdescription() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($germanLeader->description()->name()),
+#       CniWrapper::js2cc($germanLeader->description()->toString()));
 
 #printf("\tidentity(): %s\n",
 #       CniWrapper::js2cc($germanLeader->identity()));
-#printf("\tnationality(): %s\n",
-#       CniWrapper::js2cc($germanLeader->nationality()));
-#printf("\tstatus(): %s\n",
-#       CniWrapper::js2cc($germanLeader->status()));
+#printf("\tnationality() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($germanLeader->nationality()->name()),
+#       CniWrapper::js2cc($germanLeader->nationality()->toString()));
+#my @statusList = @{$germanLeader->status()};
+#printf("\tstatus() - name: %s label: %s\n",
+#       CniWrapper::js2cc($statusList[0]->name()),
+#       CniWrapper::js2cc($statusList[0]->toString()));
 #printf("\tunitType(): %s\n",
 #       CniWrapper::js2cc($germanLeader->unitType()));
 
@@ -83,11 +102,62 @@ printf("Leader.toString() output:\n\n%s\n\n",
 #printf("\tfirepower(): %s\n",
 #       CniWrapper::js2cc($germanLeader->firepower()));
 #printf("\tfirepowerEquivalent(): %d\n",$germanLeader->firepowerEquivalent());
+#printf("\tinfantryType() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($germanLeader->infantryType()->name()),
+#       CniWrapper::js2cc($germanLeader->infantryType()->toString()));
 #printf("\tmorale(): %d\n",$germanLeader->morale());
 #printf("\tnormalRange(): %d\n",$germanLeader->normalRange());
 #printf("\tportageValue(): %d\n",$germanLeader->portageValue());
 
 #printf("\tmodifier(): %d\n\n",$germanLeader->modifier());
+
+# Test the exception handling within the Serialization class, specifically the
+# methods associated with serializing to and deserializing from a file.
+
+printf("\nTesting Exception handling for serialization to and from a file:\n");
+
+my $serializationFile = CniWrapper::cc2js("");
+
+my $status = eval
+{
+    Utilities::Serialization::serializeToFile(undef,$serializationFile);
+};
+
+printException($@) if (!defined($status));
+
+$status = eval
+{
+    Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
+                                              $serializationFile);
+};
+
+printException($@) if (!defined($status));
+
+my $deserializedLeader = undef;
+
+$status = eval
+{
+    $deserializedLeader =
+        Utilities::Serialization::deserializeFromFile(undef);
+};
+
+printException($@) if (!defined($status));
+
+$status = eval
+{
+     $deserializedLeader =
+         Utilities::Serialization::deserializeFromFile($serializationFile);
+};
+
+printException($@) if (!defined($status));
+
+$status = eval
+{
+     $deserializedLeader =
+         Utilities::Serialization::deserializeFromFile(CniWrapper::cc2js("/tmp/NonExistentFile"));
+};
+
+printException($@) if (!defined($status));
 
 # Serialize the Leader object, write the data to a file (Leader.ser), then
 # deserialize the data into a new object.
@@ -96,38 +166,56 @@ $germanLeader->setIdentity(CniWrapper::cc2js("Col. Klink"));
 
 $serializationFile = CniWrapper::cc2js("/tmp/Leader.ser");
 
-Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
-                                          $serializationFile);
+$status = eval
+{
+    Utilities::Serialization::serializeToFile(Counters::toObject($germanLeader),
+                                              $serializationFile);
+};
 
-$unit =
-    Counters::fromObject(Utilities::Serialization::deserializeFromFile($serializationFile));
+printException($@) if (!defined($status)); # Not expected.
+
+$deserializedLeader = undef;
+
+$status = eval
+{
+    $deserializedLeader =
+        Counters::unitToLeader(Counters::fromObject(Utilities::Serialization::deserializeFromFile($serializationFile)));
+};
+
+printException($@) if (!defined($status)); # Not expected.
+
+# Retrieve the leader's status and then use the value to restore to "normal".
+
+my @statusList = @{$deserializedLeader->status()};
+
+$deserializedLeader->clearStatus($statusList[0]);
 
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
 printf("(Deserialized) Leader.toText() output:\n\n%s\n",
-       CniWrapper::js2cc($unit->toText()));
+       CniWrapper::js2cc($deserializedLeader->toText()));
 
 # Display an abbreviated description of the deserialized instance using the
 # toString() method.
 
 printf("(Deserialized) Leader.toString() output:\n\n%s\n\n",
-       CniWrapper::js2cc($unit->toString()));
+       CniWrapper::js2cc($deserializedLeader->toString()));
 
 # Display all of the entered values for the deserialized instance using the
 # toJSON() method.
 
 printf("(Deserialized) Leader.toJSON() output:\n\n%s\n\n",
-       CniWrapper::js2cc($unit->toJSON()));
+       CniWrapper::js2cc($deserializedLeader->toJSON()));
 
 # Create an instance of a Russian Squad.
 
-$russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
-                                    $Counters::InfantryTypes::GUARDS,
-                                    6,2,8,8,0,12,4,0,
-                                    $Counters::Classifications::ELITE,1,1,0);
+my $russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
+                                       $Counters::InfantryTypes::GUARDS,
+                                       6,2,8,8,0,12,4,0,
+                                       $Counters::Classifications::ELITE,1,1,0);
 
-$russianSquad->setIdentity(CniWrapper::cc2js("A"));
+$russianSquad->setStatus($desperateState);
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -140,25 +228,24 @@ printf("Squad.toText() output:\n\n%s\n",
 printf("Squad.toString() output:\n\n%s\n\n",
        CniWrapper::js2cc($russianSquad->toString()));
 
-# Display all of the entered values for this instance using the toJSON() method.
-
-printf("Squad.toJSON() output:\n\n%s\n\n",
-       CniWrapper::js2cc($russianSquad->toJSON()));
-
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
 
 #printf("Squad class access methods and output :\n");
 
-#printf("\n\tdescription(): %s\n",
-#       CniWrapper::js2cc($russianSquad->description()));
+#printf("\n\tdescription() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($russianSquad->description()->name()),
+#       CniWrapper::js2cc($russianSquad->description()->toString()));
 
 #printf("\tidentity(): %s\n",
 #       CniWrapper::js2cc($russianSquad->identity()));
-#printf("\tnationality(): %s\n",
-#       CniWrapper::js2cc($russianSquad->nationality()));
-#printf("\tstatus(): %s\n",
-#       CniWrapper::js2cc($russianSquad->status()));
+#printf("\tnationality() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($russianSquad->nationality()->name()),
+#       CniWrapper::js2cc($russianSquad->nationality()->toString()));
+#my @statusList = @{$russianSquad->status()};
+#printf("\tstatus() - name: %s label: %s\n",
+#       CniWrapper::js2cc($statusList[0]->name()),
+#       CniWrapper::js2cc($statusList[0]->toString()));
 #printf("\tunitType(): %s\n",
 #       CniWrapper::js2cc($russianSquad->unitType()));
 
@@ -174,62 +261,495 @@ printf("Squad.toJSON() output:\n\n%s\n\n",
 #printf("\tfirepower(): %s\n",
 #       CniWrapper::js2cc($russianSquad->firepower()));
 #printf("\tfirepowerEquivalent(): %d\n",$russianSquad->firepowerEquivalent());
+#printf("\tinfantryType() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($russianSquad->infantryType()->name()),
+#       CniWrapper::js2cc($russianSquad->infantryType()->toString()));
 #printf("\tmorale(): %d\n",$russianSquad->morale());
 #printf("\tnormalRange(): %d\n",$russianSquad->normalRange());
 #printf("\tportageValue(): %d\n",$russianSquad->portageValue());
 
-#printf("\tclassification(): %s\n",
-#       CniWrapper::js2cc($russianSquad->classification()));
+#printf("\tclassification() - name: %s\tlabel: %s\n",
+#       CniWrapper::js2cc($russianSquad->classification()->name()),
+#       CniWrapper::js2cc($russianSquad->classification()->toString()));
 #printf("\thasMaximumELR(): %d\n",$russianSquad->hasMaximumELR());
 #printf("\tcanAssaultFire(): %d\n",$russianSquad->canAssaultFire());
 #printf("\tcanSprayFire(): %d\n",$russianSquad->canSprayFire());
 #printf("\tsmokePlacementExponent(): %d\n",
 #       $russianSquad->smokePlacementExponent());
 
+# Test the exception handling within the Serialization class, specifically the
+# methods associated with serializing to and deserializing from a byte array.
+
+printf("Testing Exception handling for serialization to and from a byte array:\n");
+
+$status = eval
+{
+    Utilities::Serialization::serializeToByteArray(undef);
+};
+
+printException($@) if (!defined($status));
+
+my $deserializedSquad = undef;
+
+$status = eval
+{
+    $deserializedSquad =
+        Utilities::Serialization::deserializeFromByteArray(undef);
+};
+
+printException($@) if (!defined($status));
+
+# Serialize the Squad object, writing the data to a byte array, and then
+# deserialize the data into a new object.
+
+$russianSquad->setIdentity(CniWrapper::cc2js("A"));
+
+my $serializedSquad = undef;
+
+$status = eval
+{
+    $serializedSquad =
+        Utilities::Serialization::serializeToByteArray(Counters::toObject($russianSquad));
+};
+
+printException($@) if (!defined($status)); # Not expected.
+
+$deserializedSquad = undef;
+
+$status = eval
+{
+    $deserializedSquad =
+        Counters::unitToSquad(Counters::fromObject(Utilities::Serialization::deserializeFromByteArray($serializedSquad)));
+};
+
+printException($@) if (!defined($status)); # Not expected.
+
+# (Silently) verify that if a Unit is subject to desperation morale, it's broken
+# status can't be (underhandedly) removed.
+
+if ($deserializedSquad->clearStatus($brokenState))
+{
+    die "Broken status cleared when subject to desperation morale!";
+}
+
+# Retrieve the squad's status and then use the value to "reduce" it to "broken".
+
+@statusList = @{$deserializedSquad->status()};
+
+$deserializedSquad->clearStatus($statusList[0]);
+
+# (Silently) verify that the status that was just cleared is not (successfully)
+# cleared again (i.e. it worked the first time).
+
+if ($deserializedSquad->clearStatus($statusList[0]))
+{
+    die "Status cleared when previous state specified again!";
+}
+
+# Display all of the entered values for the deserialized instance using the
+# toText() method.
+
+printf("\n(Deserialized) Squad.toText() output:\n\n%s\n",
+       CniWrapper::js2cc($deserializedSquad->toText()));
+
+# Display an abbreviated description of the deserialized instance using the
+# toString() method.
+
+printf("(Deserialized) Squad.toString() output:\n\n%s\n\n",
+       CniWrapper::js2cc($deserializedSquad->toString()));
+
+# Display all of the entered values for the deserialized instance using the
+# toJSON() method.
+
+printf("(Deserialized) Squad.toJSON() output:\n\n%s\n\n",
+       CniWrapper::js2cc($deserializedSquad->toJSON()));
+
+# Test the fromJSON() method.
+
+printf("Testing the fromJSON() method:\n");
+
+my $deserializedSquadJSON  = CniWrapper::js2cc($deserializedSquad->toJSON());
+my $deserializedLeaderJSON = CniWrapper::js2cc($deserializedLeader->toJSON());
+
+my $validDescription    = "\"Description\":\"SQUAD\"";
+my $validNationality    = "\"Nationality\":\"RUSSIAN\"";
+my $validUnitType       = "\"Unit Type\":\"Guards\"";
+my $validIdentity       = "\"Identity\":\"A\"";
+my $validStatus         = "\"Status\":1";
+my $validMovement       = "\"Movement\":4";
+my $validPortageCap     = "\"Portage Capacity\":3";
+my $validPortageLevel   = "\"Portage Level\":0";
+my $validFirepower      = "\"Firepower\":\"6\"";
+my $validFpEquivalent   = "\"Firepower Equivalent\":6";
+my $validNormalRange    = "\"Normal Range\":2";
+my $validMorale         = "\"Morale\":8";
+my $validBrokenMorale   = "\"Broken Morale\":8";
+my $validCanSelfRally   = "\"Can Self Rally \\?\":false";
+my $validPortageValue   = "\"Portage Value\":10";
+my $validBPV            = "\"Basic Point Value\":12";
+my $validELR            = "\"Experience Level Rating\":4";
+my $validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
+my $validHasMaxELR      = "\"Has Maximum ELR \\?\":false";
+my $validClassification = "\"Classification\":\"ELITE\"";
+my $validCanAssaultFire = "\"Can Assault Fire \\?\":true";
+my $validCanSprayFire   = "\"Can Spray Fire \\?\":true";
+my $validSPE            = "\"Smoke Placement Exponent\":0";
+
+# Unit
+
+(my $wrongCaseDescription = $deserializedSquadJSON) =~
+    s/$validDescription/"Description":"Squad"/;
+(my $invalidDescription = $deserializedSquadJSON) =~
+    s/$validDescription/"Description":null/;
+
+# Fighting
+
+(my $differentNationality = $deserializedSquadJSON) =~
+    s/$validNationality/"Nationality":"GERMAN"/;
+(my $wrongCaseNationality = $deserializedSquadJSON) =~
+    s/$validNationality/"Nationality":"Russian"/;
+(my $invalidNationality = $deserializedSquadJSON) =~
+    s/$validNationality/"Nationality":null/;
+
+(my $differentUnitType = $deserializedSquadJSON) =~
+    s/$validUnitType/"Unit Type":"Gurkha"/;
+(my $invalidUnitType = $deserializedSquadJSON) =~
+    s/$validUnitType/"Unit Type":null/;
+
+(my $invalidIdentity = $deserializedSquadJSON) =~
+    s/$validIdentity/"Identity":null/;
+
+(my $negativeStatus = $deserializedSquadJSON) =~
+    s/$validStatus/"Status":-2/;
+(my $invalidStatus = $deserializedSquadJSON) =~
+    s/$validStatus/"Status":null/;
+
+# Mobile
+
+(my $differentMovement = $deserializedSquadJSON) =~
+    s/$validMovement/"Movement":3/;
+(my $invalidMovement = $deserializedSquadJSON) =~
+    s/$validMovement/"Movement":null/;
+
+(my $differentPortageCapacity = $deserializedSquadJSON) =~
+    s/$validPortageCap/"Portage Capacity":5/;
+(my $invalidPortageCapacity = $deserializedSquadJSON) =~
+    s/$validPortageCap/"Portage Capacity":null/;
+
+(my $negativePortageLevel = $deserializedSquadJSON) =~
+    s/$validPortageLevel/"Portage Level":-1/;
+(my $invalidPortageLevel = $deserializedSquadJSON) =~
+    s/$validPortageLevel/"Portage Level":null/;
+
+# Infantry
+
+(my $differentFirepower = $deserializedSquadJSON) =~
+    s/$validFirepower/"Firepower":"4"/;
+(my $invalidFirepower = $deserializedSquadJSON) =~
+    s/$validFirepower/"Firepower":null/;
+
+(my $differentFpEquivalent = $deserializedSquadJSON) =~
+    s/$validFpEquivalent/"Firepower Equivalent":4/;
+(my $invalidFpEquivalent = $deserializedSquadJSON) =~
+    s/$validFpEquivalent/"Firepower Equivalent":null/;
+
+(my $differentNormalRange = $deserializedSquadJSON) =~
+    s/$validNormalRange/"Normal Range":4/;
+(my $invalidNormalRange = $deserializedSquadJSON) =~
+    s/$validNormalRange/"Normal Range":null/;
+
+(my $differentMorale = $deserializedSquadJSON) =~
+    s/$validMorale/"Morale":7/;
+(my $invalidMorale = $deserializedSquadJSON) =~
+    s/$validMorale/"Morale":null/;
+
+(my $differentBrokenMorale = $deserializedSquadJSON) =~
+    s/$validBrokenMorale/"Broken Morale":7/;
+(my $invalidBrokenMorale = $deserializedSquadJSON) =~
+    s/$validBrokenMorale/"Broken Morale":null/;
+
+(my $differentCanSelfRally = $deserializedSquadJSON) =~
+    s/$validCanSelfRally/"Can Self Rally ?":true/;
+(my $invalidCanSelfRally = $deserializedSquadJSON) =~
+    s/$validCanSelfRally/"Can Self Rally ?":null/;
+
+(my $differentPortageValue = $deserializedSquadJSON) =~
+    s/$validPortageValue/"Portage Value":9/;
+(my $invalidPortageValue = $deserializedSquadJSON) =~
+    s/$validPortageValue/"Portage Value":null/;
+
+(my $differentBPV = $deserializedSquadJSON) =~
+    s/$validBPV/"Basic Point Value":52/;
+(my $invalidBPV = $deserializedSquadJSON) =~
+    s/$validBPV/"Basic Point Value":null/;
+
+(my $differentELR = $deserializedSquadJSON) =~
+    s/$validELR/"Experience Level Rating":3/;
+(my $invalidELR = $deserializedSquadJSON) =~
+    s/$validELR/"Experience Level Rating":null/;
+
+(my $differentInfantryType = $deserializedSquadJSON) =~
+    s/$validInfantryType/"Infantry Type":"NONE"/;
+(my $wrongCaseInfantryType = $deserializedSquadJSON) =~
+    s/$validInfantryType/"Infantry Type":"Guards"/;
+(my $invalidInfantryType = $deserializedSquadJSON) =~
+    s/$validInfantryType/"Infantry Type":null/;
+
+# Personnel
+
+(my $differentHasMaxELR = $deserializedSquadJSON) =~
+    s/$validHasMaxELR/"Has Maximum ELR ?":true/;
+(my $invalidHasMaxELR = $deserializedSquadJSON) =~
+    s/$validHasMaxELR/"Has Maximum ELR ?":null/;
+
+(my $differentClassification = $deserializedSquadJSON) =~
+    s/$validClassification/"Classification":"FIRST_LINE"/;
+(my $wrongCaseClassification = $deserializedSquadJSON) =~
+    s/$validClassification/"Classification":"Elite"/;
+(my $invalidClassification = $deserializedSquadJSON) =~
+    s/$validClassification/"Classification":null/;
+
+# Squad
+
+(my $differentCanAssaultFire = $deserializedSquadJSON) =~
+    s/$validCanAssaultFire/"Can Assault Fire ?":false/;
+(my $invalidCanAssaultFire = $deserializedSquadJSON) =~
+    s/$validCanAssaultFire/"Can Assault Fire ?":null/;
+
+(my $differentCanSprayFire = $deserializedSquadJSON) =~
+    s/$validCanSprayFire/"Can Spray Fire ?":false/;
+(my $invalidCanSprayFire = $deserializedSquadJSON) =~
+    s/$validCanSprayFire/"Can Spray Fire ?":null/;
+
+(my $differentSPE = $deserializedSquadJSON) =~
+    s/$validSPE/"Smoke Placement Exponent":3/;
+(my $invalidSPE = $deserializedSquadJSON) =~
+    s/$validSPE/"Smoke Placement Exponent":null/;
+
+my @fromJsonSquadTestStrings =
+(
+ # Unit
+
+  ["Null JSON input data",undef],
+  ["Empty JSON input data",""],
+
+  ["Updating a Squad with Leader data",$deserializedLeaderJSON],
+  ["Updating a Squad with an invalid (wrong case) description",$wrongCaseDescription],
+  ["Updating a Squad with an invalid (non-string) description",$invalidDescription],
+
+ # Fighting
+
+  ["Updating a Squad with a different nationality",$differentNationality],
+  ["Updating a Squad with an invalid (wrong case) nationality",$wrongCaseNationality],
+  ["Updating a Squad with an invalid (non-string) nationality",$invalidNationality],
+  ["Updating a Squad with a different unit type",$differentUnitType],
+  ["Updating a Squad with an invalid (non-string) unit type",$invalidUnitType],
+  ["Updating a Squad with an invalid (non-string) identity",$invalidIdentity],
+  ["Updating a Squad with an invalid (negative) status",$negativeStatus],
+  ["Updating a Squad with an invalid (non-integer) status",$invalidStatus],
+
+ # Mobile
+
+  ["Updating a Squad with a different movement value",$differentMovement],
+  ["Updating a Squad with an invalid (non-integer) movement value",$invalidMovement],
+  ["Updating a Squad with a different portage capacity",$differentPortageCapacity],
+  ["Updating a Squad with an invalid (non-integer) portage capacity",$invalidPortageCapacity],
+  ["Updating a Squad with an invalid (negative) portage level",$negativePortageLevel],
+  ["Updating a Squad with an invalid (non-integer) portage level",$invalidPortageLevel],
+
+ # Infantry
+
+  ["Updating a Squad with a different firepower value",$differentFirepower],
+  ["Updating a Squad with an invalid (non-string) firepower value",$invalidFirepower],
+  ["Updating a Squad with a different firepower equivalent value",$differentFpEquivalent],
+  ["Updating a Squad with an invalid (non-integer) firepower equivalent value",$invalidFpEquivalent],
+  ["Updating a Squad with a different normal range value",$differentNormalRange],
+  ["Updating a Squad with an invalid (non-integer) normal range value",$invalidNormalRange],
+  ["Updating a Squad with a different morale value",$differentMorale],
+  ["Updating a Squad with an invalid (non-integer) morale value",$invalidMorale],
+  ["Updating a Squad with a different broken morale value",$differentBrokenMorale],
+  ["Updating a Squad with an invalid (non-integer) broken morale value",$invalidBrokenMorale],
+  ["Updating a Squad with a different can self rally setting",$differentCanSelfRally],
+  ["Updating a Squad with an invalid (non-boolean) can self rally setting",$invalidCanSelfRally],
+  ["Updating a Squad with a different portage value",$differentPortageValue],
+  ["Updating a Squad with an invalid (non-integer) portage value",$invalidPortageValue],
+  ["Updating a Squad with a different basic point value",$differentBPV],
+  ["Updating a Squad with an invalid (non-integer) basic point value",$invalidBPV],
+  ["Updating a Squad with a different experience level rating",$differentELR],
+  ["Updating a Squad with an invalid (non-integer) experience level rating",$invalidELR],
+  ["Updating a Squad with a different infantry type",$differentInfantryType],
+  ["Updating a Squad with an invalid (wrong case) infantry type",$wrongCaseInfantryType],
+  ["Updating a Squad with an invalid (non-string) infantry type",$invalidInfantryType],
+
+ # Personnel
+
+  ["Updating a Squad with a different has maximum ELR setting",$differentHasMaxELR],
+  ["Updating a Squad with an invalid (non-boolean) has maximum ELR setting",$invalidHasMaxELR],
+  ["Updating a Squad with a different classification",$differentClassification],
+  ["Updating a Squad with an invalid (wrong case) classification",$wrongCaseClassification],
+  ["Updating a Squad with an invalid (non-string) classification",$invalidClassification],
+
+ # Squad
+
+  ["Updating a Squad with a different can assault fire setting",$differentCanAssaultFire],
+  ["Updating a Squad with an invalid (non-boolean) can assault fire setting",$invalidCanAssaultFire],
+  ["Updating a Squad with a different can spray fire setting",$differentCanSprayFire],
+  ["Updating a Squad with an invalid (non-boolean) can spray fire setting",$invalidCanSprayFire],
+  ["Updating a Squad with a different smoke placement exponent value",$differentSPE],
+  ["Updating a Squad with an invalid (non-integer) smoke placement exponent value",$invalidSPE]
+);
+
+for my $row (0..$#fromJsonSquadTestStrings)
+{
+#   printf("label: %s JSON: %s\n",
+#          $fromJsonSquadTestStrings[$row][0],
+#          $fromJsonSquadTestStrings[$row][1]);
+
+    printf("\n%s:\n",$fromJsonSquadTestStrings[$row][0]);
+
+    $status = eval
+    {
+        $deserializedSquad->fromJSON(CniWrapper::cc2js($fromJsonSquadTestStrings[$row][1]));
+    };
+
+    printException($@) if (!defined($status));
+}
+
+# Leader
+
+my $validModifier = "\"Modifier\":-1";
+
+(my $differentModifier = $deserializedLeaderJSON) =~
+    s/$validModifier/"Modifier":-2/;
+(my $invalidModifier = $deserializedLeaderJSON) =~
+    s/$validModifier/"Modifier":null/;
+
+my @fromJsonLeaderTestStrings =
+(
+  ["Updating a Leader with a different modifier value",$differentModifier],
+  ["Updating a Leader with an invalid (non-integer) modifier value",$invalidModifier]
+);
+
+for my $row (0..$#fromJsonLeaderTestStrings)
+{
+#   printf("label: %s JSON: %s\n",
+#          $fromJsonLeaderTestStrings[$row][0],
+#          $fromJsonLeaderTestStrings[$row][1]);
+
+    printf("\n%s:\n",$fromJsonLeaderTestStrings[$row][0]);
+
+    $status = eval
+    {
+        $deserializedLeader->fromJSON(CniWrapper::cc2js($fromJsonLeaderTestStrings[$row][1]));
+    };
+
+    printException($@) if (!defined($status));
+}
+
+# Verify that all of the values for the Squad instance that can be changed using
+# the fromJSON() method (Identity, Status, and Portage Level) work as expected.
+
+$deserializedSquadJSON =~ s/$validIdentity/"Identity":"B"/;
+$deserializedSquadJSON =~ s/$validStatus/"Status":0/;
+$deserializedSquadJSON =~ s/$validPortageLevel/"Portage Level":2/;
+
+$deserializedSquad->fromJSON(CniWrapper::cc2js($deserializedSquadJSON));
+
+printf("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n\n",
+       CniWrapper::js2cc($deserializedSquad->toJSON()));
+
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
 printf("Building Unit array with a Leader & 3 Squads\n");
 
-@unitList = ();
+my @unitList = ();
 
-$nationality    = $Counters::Nationalities::AMERICAN;
+$nationality    = $Counters::Nationalities::RUSSIAN;
+$unitType       = $Counters::InfantryTypes::COMMISSAR;
+
+push @unitList,new Counters::Leader($nationality,$unitType,9,9,3,0);
+
+$unitList[0]->setIdentity(CniWrapper::cc2js("Commissar Ryzhiy"));
+
+$unitType       = $Counters::InfantryTypes::GUARDS;
+$classification = $Counters::Classifications::ELITE;
+
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   6,2,8,8,0,12,3,0,$classification,1,1,0);
+
 $unitType       = $Counters::InfantryTypes::NONE;
 $classification = $Counters::Classifications::FIRST_LINE;
 
-push @unitList,new Counters::Leader($nationality,$unitType,9,9,4,-1);
+push @unitList,new Counters::Squad($nationality,$unitType,
+                                   4,4,7,7,0,7,3,0,$classification,0,0,0);
 
-$unitList[0]->setIdentity(CniWrapper::cc2js("Sgt. Slaughter"));
+$classification = $Counters::Classifications::CONSCRIPT;
 
 push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
-push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
-push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,6,6,6,0,11,4,0,$classification,1,1,0);
+                                   4,2,6,5,0,4,3,0,$classification,0,0,0);
 
 $unitList[1]->setIdentity(CniWrapper::cc2js("X"));
 $unitList[2]->setIdentity(CniWrapper::cc2js("Y"));
+$unitList[2]->setStatus($brokenState);
 $unitList[3]->setIdentity(CniWrapper::cc2js("Z"));
+$unitList[3]->setStatus($desperateState);
 
 printf("\nDisplaying Unit array with a Leader & 3 Squads\n");
 
-$unitIndex = 0;
+my $unitIndex = 0;
 
-foreach $unit (@unitList)
+foreach my $unit (@unitList)
 {
+    my @statusList   = @{$unit->status()};
+    my $statusString = "";
+
+    # Note that this would not be a good solution if the list was expected to
+    # contain more than one entry, but it works here for testing purposes.
+
+    foreach (@statusList)
+    {
+        $statusString = CniWrapper::js2cc($_->toString());
+    }
+
     printf("\nUnitList[%d]:\t%s\n",
            $unitIndex++,CniWrapper::js2cc($unit->toString()));
 
-    printf("\n%s\n%s\n%s\n%s\n%s\n",
-           CniWrapper::js2cc($unit->description()),
+    printf("\n%s\n%s\n%s\n%d\n[%s]\n",
+           CniWrapper::js2cc($unit->description()->toString()),
            CniWrapper::js2cc($unit->identity()),
            CniWrapper::js2cc($unit->unitType()),
-           $unit->movement(),
-           CniWrapper::js2cc($unit->status()));
+           $unit->movement(),$statusString);
 }
 
 # Create an instance of a German Squad (that throws some exceptions).
+
+printf("\nTesting Exception handling for Squad update methods:\n");
+
+$nationality    = $Counters::Nationalities::GERMAN;
+$unitType       = $Counters::InfantryTypes::NONE;
+
+my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+                                $classification,1,0,0);
+
+# Null Identity (no error, just clears the existing one).
+
+$squad->setIdentity(undef);
+
+# Blank Identity (no error, just clears the existing one).
+
+$squad->setIdentity(CniWrapper::cc2js(""));
+
+# Invalid portage level
+
+printf("\nInvalid portage level argument:\n");
+
+$status = eval
+{
+    $squad->setPortageLevel(-1);
+};
+
+printException($@) if (!defined($status));
 
 printf("\nTesting Exception handling during Squad creation:\n");
 
@@ -239,7 +759,7 @@ $classification = $Counters::Classifications::FIRST_LINE;
 
 # Incompatible nationality and unitType
 
-printf("\nIncompatible nationality and unitType parameters:\n");
+printf("\nIncompatible nationality and unitType arguments:\n");
 
 $status = eval
 {
@@ -255,7 +775,7 @@ $classification = $Counters::Classifications::GREEN;
 
 # Incompatible description and unitType
 
-printf("\nIncompatible description and unitType parameters:\n");
+printf("\nIncompatible description and unitType arguments:\n");
 
 $status = eval
 {
@@ -271,7 +791,7 @@ $classification = $Counters::Classifications::FIRST_LINE;
 
 # Invalid Firepower
 
-printf("\nInvalid (less than 0) firepower parameter:\n");
+printf("\nInvalid (less than 0) firepower argument:\n");
 
 $status = eval
 {
@@ -281,7 +801,7 @@ $status = eval
 
 printException($@) if (!defined($status));
 
-printf("\nInvalid (greater than maximum) firepower parameter:\n");
+printf("\nInvalid (greater than maximum) firepower argument:\n");
 
 $status = eval
 {
@@ -293,7 +813,7 @@ printException($@) if (!defined($status));
 
 # Invalid Range
 
-printf("\nInvalid (less than 0) normal range parameter:\n");
+printf("\nInvalid (less than 0) normal range argument:\n");
 
 $status = eval
 {
@@ -305,7 +825,7 @@ printException($@) if (!defined($status));
 
 # Invalid Morale (Minimum)
 
-printf("\nInvalid (less than 0) morale parameter:\n");
+printf("\nInvalid (less than 0) morale argument:\n");
 
 $status = eval
 {
@@ -317,7 +837,7 @@ printException($@) if (!defined($status));
 
 # Invalid Morale (Maximum)
 
-printf("\nInvalid (greater than maximum) morale parameter:\n");
+printf("\nInvalid (greater than maximum) morale argument:\n");
 
 $status = eval
 {
@@ -329,7 +849,7 @@ printException($@) if (!defined($status));
 
 # Invalid Broken Morale (Minimum)
 
-printf("\nInvalid (less than 0) broken morale parameter:\n");
+printf("\nInvalid (less than 0) broken morale argument:\n");
 
 $status = eval
 {
@@ -341,7 +861,7 @@ printException($@) if (!defined($status));
 
 # Invalid Broken Morale (Maximum)
 
-printf("\nInvalid (greater than maximum) broken morale parameter:\n");
+printf("\nInvalid (greater than maximum) broken morale argument:\n");
 
 $status = eval
 {
@@ -390,14 +910,29 @@ printException($@) if (!defined($status));
 $nationality    = $Counters::Nationalities::ITALIAN;
 $classification = $Counters::Classifications::SS;
 
-# Incompatible Classification
+# Incompatible Classification (only German units can be SS)
 
-printf("\nIncompatible classification parameter:\n");
+printf("\nIncompatible classification argument (nationality mismatch):\n");
 
 $status = eval
 {
     $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
                                  $classification,1,0,0);
+};
+
+printException($@) if (!defined($status));
+
+$nationality    = $Counters::Nationalities::PARTISAN;
+$classification = $Counters::Classifications::ELITE;
+
+# Incompatible Classification (Partisan units must have empty classification)
+
+printf("\nIncompatible classification argument (invalid setting):\n");
+
+$status = eval
+{
+    $squad = new Counters::Squad($nationality,$unitType,3,3,7,6,0,6,3,0,
+                                 $classification,0,0,0);
 };
 
 printException($@) if (!defined($status));
@@ -440,41 +975,41 @@ $unitType       = $Counters::InfantryTypes::CANADIAN;
 
 # Invalid Modifier (Minimum)
 
-printf("\nInvalid (less than minimum) modifier parameter:\n");
+printf("\nInvalid (less than minimum) modifier argument:\n");
 
 $status = eval
 {
-    $leader = new Counters::Leader($nationality,$unitType,10,10,5,-4);
+    my $leader = new Counters::Leader($nationality,$unitType,10,10,5,-4);
 };
 
 printException($@) if (!defined($status));
 
 # Invalid Modifier (Maximum)
 
-printf("\nInvalid (greater than maximum) modifier parameter:\n");
+printf("\nInvalid (greater than maximum) modifier argument:\n");
 
 $status = eval
 {
-    $leader = new Counters::Leader($nationality,$unitType,10,10,5,4);
+    my $leader = new Counters::Leader($nationality,$unitType,10,10,5,4);
 };
 
 printException($@) if (!defined($status));
 
 # Test the Dice class.
 
-printf("\nTesting the execution of the Dice class:\n\n");
+#printf("\nTesting the execution of the Dice class:\n\n");
 
-for ($i = 0;$i < 12;$i++)
-{
-    $theDice = new Utilities::Dice();
+#for (my $i = 0;$i < 12;$i++)
+#{
+#    my $theDice = new Utilities::Dice();
 
-#   printf("Access methods test - White: %d Colored: %d Combined: %2d\n",
-#          $theDice->whiteDieValue(),
-#          $theDice->coloredDieValue(),
-#          $theDice->combinedResult());
+##   printf("Access methods test - White: %d Colored: %d Combined: %2d\n",
+##          $theDice->whiteDieValue(),
+##          $theDice->coloredDieValue(),
+##          $theDice->combinedResult());
 
-    printf("%s\n",CniWrapper::js2cc($theDice->toText()));
-}
+#    printf("%s\n",CniWrapper::js2cc($theDice->toText()));
+#}
 
 # Test the Player and Stack classes.
 
@@ -782,33 +1317,33 @@ printf("\n%s\n",CniWrapper::js2cc($player->toText()));
 
 # Test the Game class.
 
-printf("Testing the operations of the Game class:\n");
+printf("\nTesting the operations of the Game class:\n");
 
-$allies           = UiData::Sides::valueOf(CniWrapper::cc2js("ALLIES"));
-$nationality      = $Counters::Nationalities::AMERICAN;
-$alliedPlayerName = CniWrapper::cc2js("Pixie");
+my $allies           = UiData::Sides::valueOf(CniWrapper::cc2js("ALLIES"));
+$nationality         = $Counters::Nationalities::AMERICAN;
+my $alliedPlayerName = CniWrapper::cc2js("Pixie");
 
-$game = UiData::Game::game();
+my $game = UiData::Game::game();
 
 $game->addPlayer($allies,$alliedPlayerName,$nationality,1);
 
-$axis           = $UiData::Sides::AXIS;
-$nationality    = $Counters::Nationalities::GERMAN;
-$axisPlayerName = CniWrapper::cc2js("Buddy");
+my $axis           = $UiData::Sides::AXIS;
+$nationality       = $Counters::Nationalities::GERMAN;
+my $axisPlayerName = CniWrapper::cc2js("Buddy");
 
 $game->addPlayer($axis,$axisPlayerName,$nationality,1);
 
-$alliedPlayer = $game->player($allies,$alliedPlayerName);
+my $alliedPlayer = $game->player($allies,$alliedPlayerName);
 
-$leader = CniWrapper::cc2js("9-1 Leader");
-$squad  = CniWrapper::cc2js("7-4-7 Squad");
+my $leader = CniWrapper::cc2js("9-1 Leader");
+$squad     = CniWrapper::cc2js("7-4-7 Squad");
 
 $alliedPlayer->addUnit($leader);
 $alliedPlayer->addUnit($squad);
 $alliedPlayer->addUnit($squad);
 $alliedPlayer->addUnit($squad);
 
-$axisPlayer = $game->player($axis,$axisPlayerName);
+my $axisPlayer = $game->player($axis,$axisPlayerName);
 
 $leader = CniWrapper::cc2js("8-1 Leader");
 $squad  = CniWrapper::cc2js("6-5-8 Squad");
@@ -831,7 +1366,7 @@ printf("\n%s\n",CniWrapper::js2cc($game->toText()));
 
 sub printException
 {
-    local($inputString) = @_;
+    my $inputString = shift;
 
     $inputString =~ s/ValueError/Caught:/;
     $inputString =~ s/ at .*\.pm line \d+\.//;

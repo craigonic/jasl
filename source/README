@@ -8,50 +8,83 @@ cd $JASL_BASE/source
 # Clean everything.
 
 (cd cni-wrapper;make clean_hdr clean_libs)
+(cd jni-wrapper;make clean_hdr clean_libs)
 (cd org;make clean clean_jar clean_hdr clean_libs)
 make clean_all
 (cd jasl;make clean_hdr clean_libs)
-(cd cni-wrapper/jasl;make clean_hdr clean_libs)
+(cd jni-wrapper/jasl;make clean_hdr clean_libs)
 (cd swig;make clean_all)
 (cd scenarios;make clean)
 
+# Determine what can and can't be built based on the current compiler version.
+
+GCC_VERSION=$(gcc --version | head -n1 | cut -d" " -f3 | sed 's/\.//g')
+LAST_GCJ_VERSION=640
+
 # Build the libraries and install the header files.
 
-(cd cni-wrapper;make libs hdr)
-(cd org;make jar libs hdr)
-(cd jasl;make libs hdr)
-(cd cni-wrapper/jasl;make libs hdr)
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	(cd cni-wrapper;make libs hdr)
+fi
+
+(cd jni-wrapper;make libs hdr)
+(cd org;make jar)
+
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	(cd org;make libs hdr)
+	(cd jasl;make libs hdr)
+fi
+
+(cd jni-wrapper/jasl;make libs hdr)
 
 # Build the wrapper libraries. Note that the Makefile may require editing to set
 # the correct path(s) for the Perl and/or Python headers.
 
 make clean_all
-(cd swig;make libs)
+
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	(cd swig;make libs)
+fi
 
 # Build all the executables and install the scenarios.
 
-make build_all
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	make build_all
+else
+	make build_cxx_dynamic build_cxx_static org.craigonic.jasl.jar scenarios
+fi
 
 # Install the scripts. Note that the installed version of Driver.py may require
 # editing to set the correct system path.
 
-make perl python
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	make perl python
+fi
 
 # Test everything.
 
 make test_jar
 make test
-make test_gcj
-make test_gcj_dynamic
-make test_gcj_static
-make test_cpp_dynamic
-make test_cpp_static
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	make test_gcj
+	make test_gcj_dynamic
+	make test_gcj_static
+	make test_cpp_dynamic
+	make test_cpp_static
+fi
 make test_cxx_dynamic
 make test_cxx_static
-make test_c_dynamic
-make test_c_static
-make test_perl
-make test_python
+if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+then
+	make test_perl
+	make test_python
+fi
 
 # Build all of the documentation. This requires a network connection for
 # javadoc to work correctly.
@@ -61,3 +94,45 @@ make -k all_docs
 # Update the ctags file.
 
 make ctags
+
+## Instructions for creating a build to test code coverage. Note that this will
+## require the installation of lcov or gcovr, either of which can be used to
+## generated summarized results. The following commands should be executed from
+## this directory (source).
+
+# Run this file as a script. This will clean everything and do a full rebuild.
+
+#	sh -x README
+
+# 	export JASL_COMPILER_FLAGS="-O0 --coverage"
+
+# Change the OBJ_SUB_DIRECTORY setting in ../util/jasl.make from ".obj" to ".".
+
+# Build the jasl libraries again as follows. This, along with the change to
+# OBJ_SUB_DIRECTORY, is necessary for the .gcno and .gcda files to be generated
+# and work correctly.
+
+#	(cd jasl/utilities;make clean_libs;make dynamic_lib)
+#	(cd jasl/counters;make clean_libs;make dynamic_lib)
+#	(cd jasl/ui/data;make clean_libs;make dynamic_lib)
+
+# 	make build_cpp_dynamic
+
+# 	make test_cpp_dynamic
+
+# The following command uses gcovr to create an HTML summary of the coverage
+# statistics in /tmp. Adjust accordingly if using lcov.
+
+#	gcovr -r . --html --html-details -o /tmp/jasl_coverage.html
+
+# Cleanup. Restore the original setting for OBJ_SUB_DIRECTORY and run the
+# following commands.
+
+#	find . -type f -name "*.gcda" -exec rm {} \;
+#	find . -type f -name "*.gcno" -exec rm {} \;
+#	find . -type f -name "*.o" -exec rm {} \;
+#	unset JASL_COMPILER_FLAGS
+
+# Rebuild everything for "normal" development / operation.
+
+#	sh -x README
