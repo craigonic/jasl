@@ -71,24 +71,20 @@ int Dice::combinedResult() const noexcept
 // toText: Return a text representation of the attributes and current state of
 //         this Dice instance.
 
-const std::string& Dice::toText() noexcept
+std::string Dice::toText() noexcept
 {
-	if (nullptr == _dump)
-	{
-		const jmethodID methodID =
-			jniEnv().GetMethodID(_diceClass,"toText",
-			                     "()Ljava/lang/String;");
-		assert(nullptr != methodID);
+	const jmethodID methodID =
+		jniEnv().GetMethodID(_diceClass,"toText",
+		                     "()Ljava/lang/String;");
+	assert(nullptr != methodID);
 
-		const jstring javaString =
-			static_cast<jstring>(jniEnv().CallObjectMethod(_diceObject,methodID));
-		assert(nullptr != javaString);
+	const jstring javaString =
+		static_cast<jstring>(jniEnv().CallObjectMethod(_diceObject,methodID));
+	assert(nullptr != javaString);
 
-		_dump = std::make_unique<std::string>(std::move(js2ss(javaString)));
-		assert(nullptr != _dump);
+	std::string returnString(std::move(js2ss(javaString)));
 
-		jniEnv().DeleteLocalRef(javaString);
-	}
+	jniEnv().DeleteLocalRef(javaString);
 
-	return *_dump;
+	return returnString;
 }

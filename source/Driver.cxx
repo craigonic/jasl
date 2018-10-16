@@ -14,6 +14,7 @@
 #include "jasl/jni/utilities/Dice.h"
 
 #include <assert.h>
+#include <memory>
 
 int main(int argc,char* argv[])
 {

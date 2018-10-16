@@ -11,7 +11,6 @@
 
 #include <jni.h>
 
-#include <memory>
 #include <string>
 
 /**
@@ -25,7 +24,7 @@
  * Note that all interactions with the JVM are expected to work, so in the event
  * of failure, the program will assert.
  *
- * @version 3.0
+ * @version 4.0
  * @author Copyright (C) 2010-2018 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jni-wrapper/jasl/utilities/Dice.h.html">Source code</A>
  */
@@ -81,11 +80,11 @@ class Dice final
 		 * \brief Return a text representation of the attributes and
 		 * current state of this Dice instance.
 		 *
-		 * The returned string includes a label and value for each data
-		 * member defined for the Dice class.
+		 * The returned string is a copy of a Java <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>, converted to
+		 * the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function.
 		 */
 
-		const std::string& toText() noexcept;
+		std::string toText() noexcept;
 
 	private:
 
@@ -108,16 +107,4 @@ class Dice final
 		 */
 
 		jclass _diceClass;
-
-		/**
-		 * The text representation of the attributes and current state
-		 * for this Dice instance.
-		 *
-		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>, converted to
-		 * the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function. The copy is
-		 * generated during the initial call to the toText() method.
-		 * Subsequent calls only return the generated copy.
-		 */
-
-		std::unique_ptr<std::string> _dump;
 };
