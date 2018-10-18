@@ -84,7 +84,7 @@ class Dice final
 		 * the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function.
 		 */
 
-		std::string toText() noexcept;
+		std::string toText() const noexcept;
 
 	private:
 

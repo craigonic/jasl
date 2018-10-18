@@ -71,7 +71,7 @@ int Dice::combinedResult() const noexcept
 // toText: Return a text representation of the attributes and current state of
 //         this Dice instance.
 
-std::string Dice::toText() noexcept
+std::string Dice::toText() const noexcept
 {
 	const jmethodID methodID =
 		jniEnv().GetMethodID(_diceClass,"toText",
