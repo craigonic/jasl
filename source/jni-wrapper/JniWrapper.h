@@ -20,10 +20,10 @@
  * Machine). This allows a C++ program to access native <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> code via the JNI.
  *
  * The friend functions are provided to convert a <A HREF="http://en.cppreference.com/w/cpp/string/basic_string">std::string</A> to a Java <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>
- * and vice-versa, as well as to access the JNI <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
-.
+ * and vice-versa, implement common calls for methods that return a Java String
+ * and that set up interactions with the Java code, and to access the JNI <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
  *
- * @version 1.0
+ * @version 2.0
  * @author Craig R. Campbell
  * @see <A HREF="../../source/jni-wrapper/JniWrapper.h.html">Source code</A>
  */
@@ -38,6 +38,12 @@ class JniWrapper final
 
 		friend std::string js2ss(jstring javaString);
 		friend const jstring ss2js(const std::string& stdString);
+		friend std::string toString(const jmethodID javaMethodId,
+		                            const jobject javaObject);
+		friend jmethodID methodID(const jclass javaClass,
+		                          const char* methodName,
+		                          const char* methodSignature,
+		                          bool isStaticMethod);
 		friend JNIEnv& jniEnv();
 
 	private:
@@ -91,8 +97,8 @@ class JniWrapper final
 
 		static const JniWrapper& instance();
 
-		// These methods are accessed using the js2ss(), ss2js(), and
-		// jniEnv() functions, respectively.
+		// These methods are accessed using the js2ss(), ss2js(),
+		// toString(), methodID(), and jniEnv() functions, respectively.
 
 		/** <A NAME="_STRINGTOSTDSTRING_"></A>
 		 * Return the std::string representation of the specified Java
@@ -112,6 +118,28 @@ class JniWrapper final
 
 		const jstring stdStringToString(const std::string& stdString) const noexcept;
 
+		/** <A NAME="_RETURNSTRINGRESULT_"></A>
+		 * Return the result of a call to the indicated method in the
+		 * specified object, which is expected to return a Java String.
+		 *
+		 * See <A HREF="#_TOSTRING_">toString</A>() for more details.
+		 */
+
+		std::string returnStringResult(const jmethodID javaMethodId,
+		                               const jobject javaObject) const noexcept;
+
+		/** <A NAME="_CREATEMETHODID_"></A>
+		 * Return a reference to the method with the specified
+		 * attributes in the indicated class.
+		 *
+		 * See <A HREF="#_METHODID_">methodID</A>() for more details.
+		 */
+
+		jmethodID createMethodID(const jclass javaClass,
+		                         const char* methodName,
+		                         const char* methodSignature,
+		                         bool isStaticMethod) const noexcept;
+
 		/** <A NAME="_JNIENV_"></A>
 		 * Return a reference to the Java Native Interface API.
 		 *
@@ -123,8 +151,7 @@ class JniWrapper final
 };
 
 /** <A NAME="_JS2SS_"></A>
- * \brief Return the std::string string representation of the specified <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>
- * object.
+ * \brief Return the std::string representation of the specified <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A> object.
  *
  * This function calls the <A HREF="#_STRINGTOSTDSTRING_">stringToStdString</A>() method of the JniWrapper,
  * returning a copy of the text managed by the argument object. If the
@@ -153,6 +180,47 @@ inline const jstring ss2js(const std::string& stdString)
 	return JniWrapper::instance().stdStringToString(stdString);
 }
 
+/** <A NAME="_TOSTRING_"></A>
+ * \brief Return the result of a call to the indicated method in the specified object,
+ * which is expected to return a Java String.
+ *
+ * This function calls the <A HREF="#_RETURNSTRINGRESULT_">returnStringResult</A>() method of the JniWrapper, which
+ * performs the operation described above and converts the Java String into the
+ * return type. If the JniWrapper object does not yet exist, it is created. NULL
+ * arguments or any failure in the call will stop the program (via assertion).
+ */
+
+inline std::string toString(const jmethodID javaMethodId,
+                            const jobject javaObject)
+{
+	return JniWrapper::instance().returnStringResult(javaMethodId,javaObject);
+}
+
+/** <A NAME="_METHODID_"></A>
+ * \brief Return a reference to the method with the specified attributes in the
+ * indicated class.
+ *
+ * This function calls the <A HREF="#_CREATEMETHODID_">createMethodID</A>() method of the JniWrapper, which
+ * performs the operation described above. It is intended for use in the most
+ * general cases of generating an item of this type and to support the caching
+ * of them (by the caller). If the JniWrapper object does not yet exist, it is
+ * created. The return value is NULL if any of the arguments are or a failure
+ * occurs in generating the method ID item.
+ *
+ * Note a that the use of const char* instead of std::string for the name and
+ * signature parameter types is a conscious choice, as it is expected that the
+ * arguments will most likely be specified as string literals in the caller.
+ */
+
+inline jmethodID methodID(const jclass javaClass,
+                          const char* methodName,const char* methodSignature,
+                          bool isStaticMethod = false)
+{
+	return JniWrapper::instance().createMethodID(javaClass,methodName,
+	                                             methodSignature,
+	                                             isStaticMethod);
+}
+
 /**
  * \brief Return a reference to the Java Native Interface <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
  *
@@ -163,3 +231,13 @@ inline JNIEnv& jniEnv()
 {
 	return JniWrapper::instance().jniNativeInterface();
 }
+
+/**
+ * \brief Call signature for Java methods that have no parameters and return a
+ * Java String.
+ *
+ * This item is associated with the ubiquitous (within Java) toString() method
+ * and is intended for use as an argument to methodID().
+ */
+
+static constexpr const char* const toStringSignature = "()Ljava/lang/String;";

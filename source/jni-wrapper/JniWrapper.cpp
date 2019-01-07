@@ -88,6 +88,66 @@ const jstring JniWrapper::stdStringToString(const std::string& stdString) const 
 	return _jniNativeInterface->NewStringUTF(stdString.c_str());
 }
 
+// returnStringResult: Return the result of a call to the indicated method in
+//                     the specified object, which is expected to return a Java
+//                     String.
+//
+// This method is (intended to be) accessed using the toString() function. The
+// parameter types are defined in the JNI.
+
+std::string JniWrapper::returnStringResult(const jmethodID javaMethodId,
+                                           const jobject javaObject) const noexcept
+{
+	assert(nullptr != javaMethodId);
+	assert(nullptr != javaObject);
+
+	const jstring javaString =
+		static_cast<jstring>(jniEnv().CallObjectMethod(javaObject,
+		                                               javaMethodId));
+	assert(nullptr != javaString);
+
+	std::string returnString(std::move(stringToStdString(javaString)));
+
+	jniEnv().DeleteLocalRef(javaString);
+
+	return returnString;
+}
+
+// createMethodID: Return a reference to the method with the specified
+//                 attributes in the indicated class.
+//
+// This method is (intended to be) accessed using the methodID() function. The
+// jclass parameter type is defined in the JNI.
+
+jmethodID JniWrapper::createMethodID(const jclass javaClass,
+                                     const char* methodName,
+                                     const char* methodSignature,
+                                     bool isStaticMethod) const noexcept
+{
+	jmethodID methodID = nullptr;
+
+	if (javaClass && methodName && methodSignature)
+	{
+		if (isStaticMethod)
+		{
+			methodID =
+				_jniNativeInterface->GetStaticMethodID(javaClass,
+				                                       methodName,
+				                                       methodSignature);
+		}
+
+		else
+		{
+			methodID =
+				_jniNativeInterface->GetMethodID(javaClass,
+				                                 methodName,
+				                                 methodSignature);
+		}
+	}
+
+	return methodID;
+}
+
 // jniNativeInterface: Return a reference to the Java Native Interface API.
 //
 // This method is (intended to be) accessed using the jniEnv() function.
