@@ -25,23 +25,16 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and header files in/of/for
 # this package.
 
-DICE_SRC  := Dice.cpp
-DICE_HDR  := ${DICE_SRC:.cpp=.h}
-DICE_OBJ  := ${DICE_SRC:.cpp=.o}
-
-CPP_FILES := $(DICE_SRC)
+CPP_FILES := Dice.cpp
 
 HDR_FILES := ${CPP_FILES:.cpp=.h}
 OBJ_FILES := ${CPP_FILES:.cpp=.o}
 SRC_FILES := $(HDR_FILES) $(CPP_FILES)
 
-# Compile individual object files.
+# Build all of the individual object files.
 
-$(DICE_OBJ): $(DICE_HDR) $(DICE_SRC)
-	$(JNI_BUILD_CMD) -I$(INCLUDE_PATH) -c $(DICE_SRC) \
-	                 -o $(OBJ_SUB_DIRECTORY)/$(DICE_OBJ)
-
-# Build all of the object files.
+%.o: %.cpp
+	$(JNI_BUILD_CMD) -I$(INCLUDE_PATH) -c $^ -o $(OBJ_SUB_DIRECTORY)/$@
 
 .PHONY : obj
 obj: obj_sub_directory $(OBJ_FILES)
@@ -58,7 +51,7 @@ hdr: $(HDR_FILES)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(JNI_UTILITIES_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).1
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).2
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output

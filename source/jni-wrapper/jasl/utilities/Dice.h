@@ -18,13 +18,13 @@
  *
  * This class is used to provide access to its namesake, which is implemented
  * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
- * provides a JVM to execute the library code, as well as string conversion
- * methods.
+ * provides a JVM to execute the library code, as well as string conversion and
+ * other helper methods.
  *
  * Note that all interactions with the JVM are expected to work, so in the event
  * of failure, the program will assert.
  *
- * @version 4.0
+ * @version 4.1
  * @author Copyright (C) 2010-2018 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../../source/jni-wrapper/jasl/utilities/Dice.h.html">Source code</A>
  */
@@ -107,4 +107,15 @@ class Dice final
 		 */
 
 		jclass _diceClass;
+
+		// These items are used to "cache" the method identifiers
+		// (returned by a call to GetMethodID()). They are initialized
+		// to NULL and set the first time that their respective method
+		// is called.
+
+		static jmethodID _constructorID;
+		static jmethodID _whiteDieValueMethodID;
+		static jmethodID _coloredDieValueMethodID;
+		static jmethodID _combinedResultMethodID;
+		static jmethodID _toTextMethodID;
 };

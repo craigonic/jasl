@@ -13,6 +13,14 @@
 
 #include <assert.h>
 
+// Initialize static member variables.
+
+jmethodID Dice::_constructorID           = nullptr;
+jmethodID Dice::_whiteDieValueMethodID   = nullptr;
+jmethodID Dice::_coloredDieValueMethodID = nullptr;
+jmethodID Dice::_combinedResultMethodID  = nullptr;
+jmethodID Dice::_toTextMethodID          = nullptr;
+
 // Constructor.
 
 Dice::Dice()
@@ -20,11 +28,14 @@ Dice::Dice()
 	_diceClass = jniEnv().FindClass("jasl/utilities/Dice");
 	assert(nullptr != _diceClass);
 
-	const jmethodID constructorID =
-		jniEnv().GetMethodID(_diceClass,"<init>","()V");
-	assert(nullptr != constructorID);
+	if (nullptr == _constructorID)
+	{
+		_constructorID = methodID(_diceClass,"<init>","()V");
+	}
 
-	_diceObject = jniEnv().NewObject(_diceClass,constructorID);
+	assert(nullptr != _constructorID);
+
+	_diceObject = jniEnv().NewObject(_diceClass,_constructorID);
 	assert(nullptr != _diceObject);
 }
 
@@ -39,33 +50,45 @@ Dice::~Dice()
 
 int Dice::whiteDieValue() const noexcept
 {
-	const jmethodID methodID =
-		jniEnv().GetMethodID(_diceClass,"whiteDieValue","()I");
-	assert(nullptr != methodID);
+	if (nullptr == _whiteDieValueMethodID)
+	{
+		_whiteDieValueMethodID =
+			methodID(_diceClass,"whiteDieValue","()I");
+	}
 
-	return jniEnv().CallIntMethod(_diceObject,methodID);
+	assert(nullptr != _whiteDieValueMethodID);
+
+	return jniEnv().CallIntMethod(_diceObject,_whiteDieValueMethodID);
 }
 
 // coloredDieValue: Return the result of rolling the colored die.
 
 int Dice::coloredDieValue() const noexcept
 {
-	const jmethodID methodID =
-		jniEnv().GetMethodID(_diceClass,"coloredDieValue","()I");
-	assert(nullptr != methodID);
+	if (nullptr == _coloredDieValueMethodID)
+	{
+		_coloredDieValueMethodID =
+			methodID(_diceClass,"coloredDieValue","()I");
+	}
 
-	return jniEnv().CallIntMethod(_diceObject,methodID);
+	assert(nullptr != _coloredDieValueMethodID);
+
+	return jniEnv().CallIntMethod(_diceObject,_coloredDieValueMethodID);
 }
 
 // combinedResult: Return the result of combining the values of the two dice.
 
 int Dice::combinedResult() const noexcept
 {
-	const jmethodID methodID =
-		jniEnv().GetMethodID(_diceClass,"combinedResult","()I");
-	assert(nullptr != methodID);
+	if (nullptr == _combinedResultMethodID)
+	{
+		_combinedResultMethodID =
+			methodID(_diceClass,"combinedResult","()I");
+	}
 
-	return jniEnv().CallIntMethod(_diceObject,methodID);
+	assert(nullptr != _combinedResultMethodID);
+
+	return jniEnv().CallIntMethod(_diceObject,_combinedResultMethodID);
 }
 
 // toText: Return a text representation of the attributes and current state of
@@ -73,18 +96,13 @@ int Dice::combinedResult() const noexcept
 
 std::string Dice::toText() const noexcept
 {
-	const jmethodID methodID =
-		jniEnv().GetMethodID(_diceClass,"toText",
-		                     "()Ljava/lang/String;");
-	assert(nullptr != methodID);
+	if (nullptr == _toTextMethodID)
+	{
+		_toTextMethodID =
+			methodID(_diceClass,"toText",toStringSignature);
+	}
 
-	const jstring javaString =
-		static_cast<jstring>(jniEnv().CallObjectMethod(_diceObject,methodID));
-	assert(nullptr != javaString);
+	assert(nullptr != _toTextMethodID);
 
-	std::string returnString(std::move(js2ss(javaString)));
-
-	jniEnv().DeleteLocalRef(javaString);
-
-	return returnString;
+	return toString(_toTextMethodID,_diceObject);
 }
