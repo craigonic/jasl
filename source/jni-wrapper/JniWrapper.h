@@ -24,7 +24,7 @@
  * and that set up interactions with the Java code, and to access the JNI <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
  *
  * @version 2.0
- * @author Craig R. Campbell
+ * @author Copyright (C) 2018 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../source/jni-wrapper/JniWrapper.h.html">Source code</A>
  */
 
