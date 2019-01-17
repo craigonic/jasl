@@ -205,7 +205,8 @@ JNI_WRAPPER_STATIC_LIB_NAME  := $(LIB_PREFIX)$(JNI_WRAPPER_BASE_LIB_NAME).a
 JNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(JNI_WRAPPER_STATIC_LIB_NAME)
 
 JNI_INCLUDE_DIRECTIVES       := -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
-JNI_BUILD_CMD                := $(GCC_BUILD_CMD) $(JNI_INCLUDE_DIRECTIVES)
+JNI_BUILD_CMD                := $(GCC_BUILD_CMD) $(JNI_INCLUDE_DIRECTIVES) \
+                                -std=c++17
 JNI_LIBRARY_PATH             := ${JAVA_HOME}/lib/server
 JNI_LINK_OPTIONS             := -L$(JNI_LIBRARY_PATH) -ljvm -lstdc++
 
