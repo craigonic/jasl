@@ -33,7 +33,7 @@ include $(JASL_BASE)/util/jasl.make
 .PHONY : clean_hdr
 .PHONY : clean_libs
 obj hdr libs clean clean_hdr clean_libs:
-#	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
+	$(MAKE) -C $(COUNTERS_PKG_NAME)  $@
 	$(MAKE) -C $(UTILITIES_PKG_NAME) $@
 
 # Build either the shared or static libraries associated with each of the
