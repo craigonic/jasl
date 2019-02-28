@@ -62,7 +62,7 @@ PYTHON_LIB_PATH    := $(LIB_PATH)/python
 ##     export ANDROID_TARGET_VERSION="-target 1.7"
 
 JAVA_COMPILER      := javac
-GCC_COMPILER       := gcc
+GCC_COMPILER       := gcc -Wall -Wextra
 GCJ_COMPILER       := gcj
 
 CLASSPATH_CMD      := -classpath $(BIN_PATH)
