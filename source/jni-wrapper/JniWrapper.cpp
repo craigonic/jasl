@@ -83,7 +83,7 @@ std::string JniWrapper::stringToStdString(jstring javaString) const noexcept
 // This method is (intended to be) accessed using the ss2js() function. jstring
 // is equivalent to ::java::lang::String*
 
-const jstring JniWrapper::stdStringToString(const std::string& stdString) const noexcept
+jstring JniWrapper::stdStringToString(const std::string& stdString) const noexcept
 {
 	return _jniNativeInterface->NewStringUTF(stdString.c_str());
 }
@@ -106,7 +106,7 @@ std::string JniWrapper::returnStringResult(const jmethodID javaMethodId,
 		                                               javaMethodId));
 	assert(nullptr != javaString);
 
-	std::string returnString(std::move(stringToStdString(javaString)));
+	std::string returnString(stringToStdString(javaString));
 
 	jniEnv().DeleteLocalRef(javaString);
 

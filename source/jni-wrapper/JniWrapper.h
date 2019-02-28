@@ -23,7 +23,7 @@
  * and vice-versa, implement common calls for methods that return a Java String
  * and that set up interactions with the Java code, and to access the JNI <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
  *
- * @version 2.0
+ * @version 3.0
  * @author Copyright (C) 2018 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../source/jni-wrapper/JniWrapper.h.html">Source code</A>
  */
@@ -37,7 +37,7 @@ class JniWrapper final
 		// start the JVM.
 
 		friend std::string js2ss(jstring javaString);
-		friend const jstring ss2js(const std::string& stdString);
+		friend jstring ss2js(const std::string& stdString);
 		friend std::string toString(const jmethodID javaMethodId,
 		                            const jobject javaObject);
 		friend jmethodID methodID(const jclass javaClass,
@@ -116,7 +116,7 @@ class JniWrapper final
 		 * See <A HREF="#_SS2JS_">ss2js</A>() for more details.
 		 */
 
-		const jstring stdStringToString(const std::string& stdString) const noexcept;
+		jstring stdStringToString(const std::string& stdString) const noexcept;
 
 		/** <A NAME="_RETURNSTRINGRESULT_"></A>
 		 * Return the result of a call to the indicated method in the
@@ -175,7 +175,7 @@ inline std::string js2ss(jstring javaString)
  * matching return value.
  */
 
-inline const jstring ss2js(const std::string& stdString)
+inline jstring ss2js(const std::string& stdString)
 {
 	return JniWrapper::instance().stdStringToString(stdString);
 }
