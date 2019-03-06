@@ -142,6 +142,11 @@ docs_all:
 			(cd $(DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(UI_DATA_PKG_PATH)/$$i.html) ;\
 		fi \
 	done
+
+	@# This link helps some of the relative links from other packages to work
+	@# when accessed from Doxygen output.
+	@(cd $(DOCS_PATH);$(LN) source/$(UI_DATA_PKG_PATH))
+
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(UI_DATA_DOCS_PATH)
 	@$(HTLS) $(UI_DATA_DOCS_PATH)
 

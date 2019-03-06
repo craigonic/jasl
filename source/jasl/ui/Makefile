@@ -75,6 +75,10 @@ docs_all:
 
 	$(MAKE) -C $(UI_DATA_PKG_NAME) $@
 
+	@# This link helps some of the relative links from other packages to work
+	@# when accessed from Doxygen output.
+	@(cd $(DOCS_PATH);$(LN) source/$(PROGRAM_NAME)/$(UI_PKG_NAME))
+
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(JASL_DOCS_PATH)
 	@$(HTLS) $(JASL_DOCS_PATH)
 
