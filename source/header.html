@@ -13,7 +13,7 @@ Alternatives for build automation are left as an exercise.
 The following conditions are assumed about the system used to process the files
 in the source directory and its sub-directories:
 <UL>
-<LI>A <A HREF=http://docs.oracle.com/javase/10/>Java SE</A> SDK is installed.
+<LI>A <A HREF=http://docs.oracle.com/javase>Java SE</A> SDK is installed.
 <LI>The original directory structure for this system is in place.
 <A NAME="JASL_BASE"></A>The top level directory is <TT>jasl</TT>, which is
 referred to as <B><I>$JASL_BASE</I></B> in this document. An environment
@@ -24,22 +24,24 @@ set as follows: <TT>export JASL_BASE=/home/craig/jasl</TT>
 <A HREF=http://gcc.gnu.org/>GCC</A> (using another C++ compiler is possible, but
 doing so will (obviously) require changes to the build system). If it is used to
 build the <A HREF="jni-wrapper/jni-wrapper.html">libraries</A> that use the
-<A HREF=https://docs.oracle.com/javase/8/docs/technotes/guides/jni/>JNI</A> to
+<A HREF=https://docs.oracle.com/en/java/javase/11/docs/specs/jni/intro.html>JNI</A> to
 interact with the Java bytecode, it must be
 <A HREF=https://en.wikipedia.org/wiki/C%2B%2B17>C++17</A> compliant. Setting the
 <B><I>JAVA_HOME</I></B> environment variable (e.g.
-<TT>export JAVA_HOME=/opt/java</TT>) is also necessary.
+<TT>export JAVA_HOME=/opt/java</TT>) is also necessary in order to find the
+<U>JNI</U> headers and library.
 <LI><I>Optional. </I>
-<A HREF=https://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/>GCJ</A> (available with
-<U>GCC</U> version 6.4 and earlier). It is used to build (from Java source
+<A HREF=https://gcc.gnu.org/onlinedocs/gcc-6.5.0/gcj/>GCJ</A> (available with
+<U>GCC</U> version 6.5 and earlier). It is used to build (from Java .class
 files) the native executable versions of this program, static and shared
-libraries, and header files.
+libraries, and header files. Note that it requires compilation of the Java
+source files with JDK <B>8</B> or <U>older</U>.
 <LI><I>Optional. </I>
-<A HREF="http://www.swig.org/">SWIG</A>, which is used, along with <U>GCC</U>,
-to <A HREF="#SWIG_LIBS">build</A> wrapper modules and libraries that allow
-access to the (<I><U>GCJ</U> generated</I>) shared libraries by scripting
-languages such as <A HREF="http://www.perl.org/">perl</A> and
-<A HREF="http://www.python.org/">python</A>.
+<A HREF="http://www.swig.org/">SWIG</A>, which is used, along with <U>GCC</U>
+(6.5 and earlier), to <A HREF="#SWIG_LIBS">build</A> wrapper modules and
+libraries that allow access to the (<I><U>GCJ</U> generated</I>) shared
+libraries by scripting languages such as <A HREF="http://www.perl.org/">perl</A>
+and <A HREF="http://www.python.org/">python</A>.
 <LI><I>Optional. </I>
 <A HREF=http://www.gnu.org/software/src-highlite/>GNU Source-highlight</A>.
 This program is used to create HTML versions of the source files.
@@ -60,18 +62,17 @@ Using this program requires the following environment variables to be set:
 </UL>
 <P>
 The function of each target defined in the <A HREF=Makefile.html>Makefile</A> is
-described below. The executables, object files, and scripts are written or
-copied to (and deleted from) the output directory (<B><I>$JASL_BASE</I>/bin</B>)
-and its sub-directories. All of the libraries referenced are found in
+described below. The executables and scripts are written or copied to (and
+deleted from) the output directory (<B><I>$JASL_BASE</I>/bin</B>) and its
+sub-directories. All of the libraries referenced are found in
 <B><I>$JASL_BASE/lib/jasl</I></B> and its sub-directories.
 <UL>
 <LI><I>none</I> or <TT>all</TT> - compiles all of the .java source files using
-<TT><A HREF=https://docs.oracle.com/javase/10/tools/javac.htm#JSWOR627>javac</A></TT>,
-placing the java bytecode (.class) files in the output directory. The Java
-bytecode files in each sub-directory are also generated.
+<TT><A HREF=https://docs.oracle.com/en/java/javase/11/tools/javac.html#GUID-AEEC9F07-CB49-4E96-8BC7-BCC2C7F725C9>javac</A></TT>,
+placing the java bytecode (.class) files in the output directory.
 <P>
 <LI><TT>build_jar</TT> - create an executable
-<TT><A HREF=https://docs.oracle.com/javase/10/tools/jar.htm#JSWOR614>jar</A></TT>
+<TT><A HREF=https://docs.oracle.com/en/java/javase/11/tools/jar.html#GUID-51C11B76-D9F6-4BC2-A805-3C847E857867>jar</A></TT>
 archive of the jASL program.
 <P>
 <LI><TT>build_gcj</TT> - executes the actions defined for the <TT>gcj</TT>
@@ -88,26 +89,26 @@ files created by the build.
 <TT>gcj_dynamic</TT>.
 <P>
 <LI><TT>build_cpp_dynamic</TT> - compiles the .cpp source file(s) using
-<TT><A HREF=http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/Invoking-gcj.html#Invoking-gcj>gcj</A></TT>
-and links them with <I>shared</I> versions of one or more of the
+<TT><A HREF=http://gcc.gnu.org/onlinedocs/gcc-6.5.0/gcj/Invoking-gcj.html#Invoking-gcj>gcj</A></TT>
+and links them with <I>shared</I> versions of the
 <TT><A HREF="jasl/jasl.html">jasl</A></TT> libraries and the
 <TT><A HREF="cni-wrapper/cni-wrapper.html">cni-wrapper</A></TT> library. These
 native executable(s) have a "_cpp_dynamic" suffix and are placed in the output
 directory.
 <LI><TT>build_cpp_static</TT> - performs a similar function to the
-<TT>build_cpp_dynamic</TT> target, except the linking is with the appropriate
-<I>static</I> libraries and each output filename ends with "_cpp_static".
+<TT>build_cpp_dynamic</TT> target, except the linking is with the <I>static</I>
+libraries and each output filename ends with "_cpp_static".
 <P>
 <LI><TT>build_cxx_dynamic</TT> - compiles the .cxx source file(s) using
 <TT><A HREF=https://gcc.gnu.org/onlinedocs/>gcc</A></TT> (or another C++
 compiler) and links them with <I>shared</I> versions of the
-<TT><A HREF="jni-wrapper/jni-wrapper.html">jni-wrapper</A></TT> library and one
-or more of the <TT><A HREF="jni-wrapper/jasl/jasl.html">jni-jasl</A></TT>
-libraries, These native executable(s) have a "_cxx_dynamic" suffix and are
-placed in the output directory.
+<TT><A HREF="jni-wrapper/jasl/jasl.html">jni-jasl</A></TT> and
+<TT><A HREF="jni-wrapper/jni-wrapper.html">jni-wrapper</A></TT> libraries. These
+native executable(s) have a "_cxx_dynamic" suffix and are placed in the output
+directory.
 <LI><TT>build_cxx_static</TT> - performs a similar function to the
-<TT>build_cxx_dynamic</TT> target, except the linking is with the appropriate
-<I>static</I> libraries and each output filename ends with "_cxx_static".
+<TT>build_cxx_dynamic</TT> target, except the linking is with the <I>static</I>
+libraries and each output filename ends with "_cxx_static".
 <P>
 <P>
 <LI><TT>obj</TT> - compiles all of the .class files generated within the
@@ -117,19 +118,18 @@ the object (.o) files in corresponding .obj sub-directories.
 then builds native executable(s), linked with the individual object (.o) files,
 using <TT><U>gcj</U></TT>. The file(s) are placed in the output directory.
 <LI><TT>gcj_dynamic</TT> - executes the actions defined for the <TT>all</TT>
-target. When this is complete, native executable(s), linked with one or more of
-the <I>shared</I> <TT><U>jasl</U></TT> libraries, are
-generated using <TT><U>gcj</U></TT>. The file(s), which have a "_dynamic"
-suffix, are placed in the output directory.
+target. When this is complete, native executable(s), linked with the
+<I>shared</I> <TT><U>jasl</U></TT> libraries, are generated using
+<TT><U>gcj</U></TT>. The file(s), which have a "_dynamic" suffix, are placed in
+the output directory.
 <LI><TT>gcj_static</TT> - performs a similar function to the
-<TT>gcj_dynamic</TT> target, except the linking is with the appropriate
-<I>static</I> <TT><U>jasl</U></TT> libraries and each output filename ends with
-"_static".
+<TT>gcj_dynamic</TT> target, except the linking is with the <I>static</I>
+<TT><U>jasl</U></TT> libraries and each output filename ends with "_static".
 <P>
 <A NAME="SWIG_LIBS"></A><I>The following targets install scripts that require
 modules and libraries generated with <U>SWIG</U>
 (see <A HREF="swig/swig.html">here</A> for details), which link with the shared
-versions of one or more of the <TT><U>jasl</U></TT> libraries and the
+versions of the <TT><U>jasl</U></TT> libraries and the
 <TT><U>cni-wrapper</U></TT> library. The scripts are copied to the indicated
 sub-directories of the output directory.</I>
 <LI><TT>perl</TT> - <B><I>perljASL</I></B>
@@ -151,24 +151,24 @@ sub-directory (i.e. all of the <A HREF="jasl/jasl.html">package</A> bytecode
 <P>
 <LI><TT>clean_class</TT> - the java bytecode (.class) file(s).
 <LI><TT>clean_jar</TT> - the <TT><U>jar</U></TT> archive.
-<LI><TT>clean_gcj</TT> - the native (from .java source and linked with
+<LI><TT>clean_gcj</TT> - the native (from .class bytecode and linked with
 individual object (.o) files) executable(s).
-<LI><TT>clean_gcj_dynamic</TT> - the native (from .java source and linked with
-one or more of the <I>shared</I> <TT><U>jasl</U></TT> libraries) executable(s).
-<LI><TT>clean_gcj_static</TT> - the native (from .java source and linked with
-one or more of the <I>static</I> <TT><U>jasl</U></TT> libraries) executable(s).
+<LI><TT>clean_gcj_dynamic</TT> - the native (from .class bytecode and linked
+with the <I>shared</I> <TT><U>jasl</U></TT> libraries) executable(s).
+<LI><TT>clean_gcj_static</TT> - the native (from .class bytecode and linked with
+the <I>static</I> <TT><U>jasl</U></TT> libraries) executable(s).
 <LI><TT>clean_cpp_dynamic</TT> - the native (from .cpp source and linked with
-the <I>shared</I> versions of one or more of the <TT><U>jasl</U></TT> libraries
-and the <TT><U>cni-wrapper</U></TT> library) executable(s).
+the <I>shared</I> versions of the <TT><U>jasl</U></TT> libraries and the
+<TT><U>cni-wrapper</U></TT> library) executable(s).
 <LI><TT>clean_cpp_static</TT> - the native (from .cpp source and linked with the
-<I>static</I> versions of one or more of the <TT><U>jasl</U></TT> libraries
-and the <TT><U>cni-wrapper</U></TT> library) executable(s).
+<I>static</I> versions of the <TT><U>jasl</U></TT> libraries and the
+<TT><U>cni-wrapper</U></TT> library) executable(s).
 <LI><TT>clean_cxx_dynamic</TT> - the native (from .cxx source and linked with
-the <I>shared</I> versions of the <TT><U>jni-wrapper</U></TT> library and one or
-more of the <TT><U>jni-jasl</U></TT> libraries) executable(s).
+the <I>shared</I> versions of the <TT><U>jni-jasl</U></TT> and
+<TT><U>jni-wrapper</U></TT> libraries) executable(s).
 <LI><TT>clean_cxx_static</TT> - the native (from .cxx source and linked with the
-<I>static</I> versions of the <TT><U>jni-wrapper</U></TT> library and one or
-more of the <TT><U>jni-jasl</U></TT> libraries) executable(s).
+<I>static</I> versions of the <TT><U>jni-jasl</U></TT> and
+<TT><U>jni-wrapper</U></TT> libraries) executable(s).
 <LI><TT>clean_perl</TT> - the <TT><U>perl</U></TT> script(s) (see above for
 sub-directory name).
 <LI><TT>clean_python</TT> - the <TT><U>python</U></TT> script(s) (see above for
@@ -182,22 +182,22 @@ saved file.</I>
 <LI><TT>test_jar</TT> - the <TT><U>jar</U></TT> archive.
 <LI><TT>test_gcj</TT> - the native executable(s), linked with individual object
 (.o) files.
-<LI><TT>test_gcj_dynamic</TT> - the native (from .java source) executable(s),
-linked with one or more of the <I>shared</I> <TT><U>jasl</U></TT> libraries.
-<LI><TT>test_gcj_static</TT> - the native (from .java source) executable(s),
-linked with one or more of the <I>static</I> <TT><U>jasl</U></TT> libraries.
+<LI><TT>test_gcj_dynamic</TT> - the native (from .class bytecode) executable(s),
+linked with  the <I>shared</I> <TT><U>jasl</U></TT> libraries.
+<LI><TT>test_gcj_static</TT> - the native (from .class bytecode) executable(s),
+linked with  the <I>static</I> <TT><U>jasl</U></TT> libraries.
 <LI><TT>test_cpp_dynamic</TT> - the native (from .cpp source) executable(s),
-linked with the <I>shared</I> versions of one or more of the
+linked with the <I>shared</I> versions of  the
 <TT><U>jasl</U></TT> libraries and the <TT><U>cni-wrapper</U></TT> library.
 <LI><TT>test_cpp_static</TT> - the native (from .cpp source) executable(s),
-linked with the <I>static</I> versions of one or more of the
+linked with the <I>static</I> versions of  the
 <TT><U>jasl</U></TT> libraries and the <TT><U>cni-wrapper</U></TT> library.
 <LI><TT>test_cxx_dynamic</TT> - the native (from .cxx source) executable(s),
-linked with the <I>shared</I> versions of the <TT><U>jni-wrapper</U></TT>
-library and one or more of the <TT><U>jni-jasl</U></TT> libraries.
+linked with the <I>shared</I> versions of the <TT><U>jni-jasl</U></TT> and
+<TT><U>jni-wrapper</U></TT> libraries.
 <LI><TT>test_cxx_static</TT> - the native (from .cxx source) executable(s),
-linked with the <I>static</I> versions of the <TT><U>jni-wrapper</U></TT>
-library and one or more of the <TT><U>jni-jasl</U></TT> libraries.
+linked with the <I>static</I> versions of the <TT><U>jni-jasl</U></TT> and
+<TT><U>jni-wrapper</U></TT> libraries.
 <LI><TT>test_perl</TT> - the <TT><U>perl</U></TT> script(s).
 <LI><TT>test_python</TT> - the <TT><U>python</U></TT> script(s).
 <P>
@@ -212,7 +212,7 @@ placing the output files in
 generated, and includes links to all of the HTML files in their respective
 sub-directories.
 <LI><TT>javadocs</TT> - generate class documentation for this program using
-<TT><A HREF=https://docs.oracle.com/javase/10/javadoc/javadoc.htm#JSJAV-GUID-7A344353-3BBF-45C4-8B28-15025DDCC643>javadoc</A></TT>,
+<TT><A HREF=https://docs.oracle.com/en/java/javase/11/javadoc/javadoc.html#GUID-7A344353-3BBF-45C4-8B28-15025DDCC643>javadoc</A></TT>,
 placing the output files in <B><A HREF=../javadocs/index.html>javadocs</A></B>.
 <LI><TT>doxygen</TT> - generates class documentation for this program using
 <TT><A HREF=http://www.doxygen.nl/manual/index.html>doxygen</A></TT>,
