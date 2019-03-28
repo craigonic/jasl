@@ -7,258 +7,143 @@
  * Written By: Craig R. Campbell  -  January 2010
  */
 
-#ifndef CNI_UNIT_H
-#define CNI_UNIT_H
+#pragma once
 
-#include "Descriptions.h"
+#include "JaslEnums.h"
 
-#ifdef __cplusplus
-namespace jasl
-{
-	namespace counters
-	{
-		class Unit;
-	}
-}
+#include <jni.h>
+
+#include <string>
 
 /**
- * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
+ * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface) wrapper.
  *
- * This class is used to simplify access to its namesake, which is implemented
- * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/wiki/GCJ/">GCJ</A>. It also interacts with the
- * <A HREF="../../CniWrapper.h.html">CniWrapper</A> and <A HREF="../../JaslErrorMessage.h.html">JaslErrorMessage</A> classes, which are used both to enable Java
- * support and keep it "behind the scenes".
+ * This class is used to provide access to its namesake, which is implemented
+ * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
+ * provides a JVM to execute the library code, as well as string conversion and
+ * other helper methods.
  *
- * @version 0.3
- * @author Copyright (C) 2010-2015 Craig R. Campbell (craigonic@gmail.com)
- * @see <A HREF="../../../source/cni-wrapper/jasl/counters/Unit.h.html">Source code</A>
+ * Note that all interactions with the JVM are expected to work, so in the event
+ * of failure, the program will assert.
+ *
+ * @version 0.4
+ * @author Copyright (C) 2010-2019 Craig R. Campbell (craigonic@gmail.com)
+ * @see <A HREF="../../source/jni-wrapper/jasl/counters/Unit.h.html">Source code</A>
  */
 
 class Unit
 {
 	public:
 
-		/** <A NAME="_DESCRIPTION_"></A>
-		 * \brief Return the description of this Unit.
-		 *
-		 * The returned string matches (mostly, since it may include
-		 * extra space) the name of the concrete class type. The names
-		 * are listed <A HREF="../../../jasl/counters/Description.html">here</A>. <B>IT SHOULD NOT BE DELETED, AS THIS OCCURS AS
-		 * PART OF THE DESTRUCTION OF THE OBJECT.</B>
-		 */
+		// The returned string from each of the "to" methods is a copy
+		// of a Java <A HREF="https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/lang/String.html">String</A>, converted to the indicated type using the
+		// <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function.
 
-		const char* description();
-
-		/** <A NAME="_DESCRIPTION_TYPE_"></A>
-		 * \brief Return the basic type of this Unit.
-		 *
-		 * The returned value is the <A HREF="Descriptions.h.html">constant</A> associated with the
-		 * description() string.
-		 */
-
-		Descriptions descriptionType();
-
-		/** <A NAME="_TO_TEXT_"></A>
+		/**
 		 * \brief Return a text representation of the attributes and
 		 * current state of this Unit.
 		 *
 		 * The returned string includes a label and value for each data
-		 * member defined for the concrete class type. <B>IT SHOULD NOT BE
-		 * DELETED, AS THIS OCCURS AS PART OF THE DESTRUCTION OF THE
-		 * OBJECT.</B>
+		 * member defined for the concrete class type.
 		 */
 
-		const char* toText();
+		std::string toText() const noexcept;
 
-		/** <A NAME="_TO_STRING_"></A>
+		/**
 		 * \brief Return an abbreviated description, which may include
 		 * attributes, of this Unit.
 		 *
 		 * The returned string includes data specific to the concrete
-		 * class type. <B>IT SHOULD NOT BE DELETED, AS THIS OCCURS AS PART
-		 * OF THE DESTRUCTION OF THE OBJECT.</B>
+		 * class type.
 		 */
 
-		const char* toString();
+		std::string toString() const noexcept;
 
-		/** <A NAME="_TO_JSON_"></A>
+		/**
 		 * \brief Return a JSON representation of the attributes and
 		 * current state of this Unit.
 		 *
 		 * The returned string includes a label (key) and value for each
-		 * data member defined for the concrete class type. <B>IT SHOULD
-		 * NOT BE DELETED, AS THIS OCCURS AS PART OF THE DESTRUCTION OF
-		 * THE OBJECT.</B>
+		 * data member defined for the concrete class type.
 		 */
 
-		const char* toJSON();
+		std::string toJSON() const noexcept;
 
+		/**
+		 * \brief Return the <A HREF="../../../jasl/counters/Description.html">description</A> of this Unit.
+		 *
+		 * The returned item is an enum representing its Java
+		 * counterpart. See <A HREF="JaslEnums.h.html">here</A> for details.
+		 */
+
+		Descriptions description() const noexcept;
+
+		/**
+		 * \brief Update an instance of this class to reflect the settings
+		 * within the specified JSON data.
+		 *
+		 * The setting for each attribute is checked against the
+		 * corresponding input value. An exception will be thrown if the
+		 * argument is empty, has non-matching data values, or is not
+		 * valid JSON.
+		 */
+
+		void fromJSON(const std::string& jsonData);
+/// @cond TEST
+		/**
+		 * \brief Release the reference to the instance of the "wrapped" class.
+		 *
+		 * The "wrapped" instance is <B>not</B> automatically freed through
+		 * garbage collection until the virtual machine (managed by the
+		 * JniWrapper) is informed, which is done here.
+		 *
+		 * This method is included for testing purposes only. It is
+		 * assumed that in normal use, the memory management for the
+		 * underlying item will be handled within the Java code,
+		 * particularly when items of this type are managed through the
+		 * <A HREF="../../../jasl/ui/data/data.html">ui.data</A> package.
+		 */
+
+		void release() const noexcept;
+/// @endcond
+
+/// @cond DEVELOPER
 	protected:
 
 		/**
-		 * \brief Pointer to an instance of the "wrapped" class.
+		 * Reference to an instance of the "wrapped" class.
 		 *
-		 * This item is set in the constructor of a derived concrete
-		 * class.
+		 * This item is set in the (derived) concrete class constructor.
+		 * The memory associated with it is freed by the virtual
+		 * machine.
 		 */
 
-		jasl::counters::Unit* _unit;
+		jobject unitObject = nullptr;
 
 		/**
-		 * \brief Constructor.
+		 * Reference to the "wrapped" class <B>type</B> in the Java code.
 		 *
-		 * The constructor is used only to initialize the member data
-		 * pointers declared in this class.
+		 * This item is set in the (derived) concrete class constructor
+		 * and applied there and in methods throughout the hierarchy to
+		 * locate the corresponding (bytecode) class items via the
+		 * virtual machine.
 		 */
 
-		Unit();
-
-		/**
-		 * \brief Destructor.
-		 *
-		 * The destructor frees the memory associated with the strings
-		 * returned by the access methods. The "wrapped" object is freed
-		 * through garbage collection by the virtual machine managed by
-		 * the CniWrapper.
-		 */
-
-		virtual ~Unit();
+		jclass unitClass = nullptr;
+/// @endcond
 
 	private:
 
-		/**
-		 * The description setting for this Unit instance.
-		 *
-		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>, converted to
-		 * the indicated type using the <A HREF="../../CniWrapper.h.html#_JS2CC_">js2cc</A>() function. The copy is
-		 * generated during the initial call to the description()
-		 * method. Subsequent calls return this item. The memory is
-		 * freed in the destructor.
-		 */
+		// These items are used to "cache" the method identifiers
+		// (returned by a call to GetMethodID()). They are initialized
+		// to NULL and set the first time that their respective method
+		// is called.
 
-		const char* _description;
-
-		/**
-		 * The text representation of the attributes and current state
-		 * for this Unit instance.
-		 *
-		 * This item references a copy of a Java String, converted to
-		 * the indicated type using the js2cc() function. The copy is
-		 * generated during the each call to the toText() method.
-		 * Subsequent calls destroy the old string, create a new one,
-		 * and return it. The memory for the results of the last call to
-		 * toText() is freed in the destructor.
-		 */
-
-		const char* _dump;
-
-		/**
-		 * The abbreviated description, which may include attributes, of
-		 * this Unit.
-		 *
-		 * This item references a copy of a Java String, converted to
-		 * the indicated type using the js2cc() function. The copy is
-		 * generated during the each call to the toString() method.
-		 * Subsequent calls destroy the old string, create a new one,
-		 * and return it. The memory for the results of the last call to
-		 * toString() is freed in the destructor.
-		 */
-
-		const char* _label;
-
-		/**
-		 * The JSON representation of the attributes and current state
-		 * for this Unit instance.
-		 *
-		 * This item references a copy of a Java String, converted to
-		 * the indicated type using the js2cc() function. The copy is
-		 * generated during the each call to the toJSON() method.
-		 * Subsequent calls destroy the old string, create a new one,
-		 * and return it. The memory for the results of the last call to
-		 * toJSON() is freed in the destructor.
-		 */
-
-		const char* _json;
-
-		// Disable the generation of a copy constructor, and "="
-		// operator.
-
-		Unit(const Unit& unit);
-		Unit& operator=(const Unit& unit);
+//		static jmethodID _constructorID;
+		static jmethodID _toTextMethodID;
+		static jmethodID _toStringMethodID;
+		static jmethodID _toJSONMethodID;
+		static jmethodID _descriptionMethodID;
+		static jmethodID _descriptionOrdinalMethodID;
+		static jmethodID _fromJSONMethodID;
 };
-#else
-/******************************************************************************/
-
-// The typedef and functions declared below are intended for use by C programs
-// to access Unit objects.
-
-/**
- * \typedef struct Unit Unit
- * \brief Declaration to provide access to Unit objects from C programs.
- */
-
-typedef struct Unit Unit;
-#endif // __cplusplus
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-/**
- * \brief Return the description of the specified Unit.
- *
- * This function calls the <A HREF="#_DESCRIPTION_">description</A>() method of the indicated object.
- *
- * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
- * OF THE DESTRUCTION OF THE Unit OBJECT.</B>
- */
-
-extern const char* description(Unit* unit);
-
-/**
- * \brief Return the basic type of the specified Unit.
- *
- * This function calls the <A HREF="#_DESCRIPTION_TYPE_">descriptionType</A>() method of the indicated object. If
- * the Unit pointer argument is NULL, the first element of the Descriptions enum
- * will be returned.
- */
-
-extern Descriptions descriptionType(Unit* unit);
-
-/**
- * \brief Return a text representation of the attributes and current state of
- * the specified Unit.
- *
- * This function calls the <A HREF="#_TO_TEXT_">toText</A>() method of the indicated object.
- *
- * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
- * OF THE DESTRUCTION OF THE Unit OBJECT.</B>
- */
-
-extern const char* toText(Unit* unit);
-
-/**
- * \brief Return an abbreviated description, which may include attributes, of
- * the specified Unit.
- *
- * This function calls the <A HREF="#_TO_STRING_">toString</A>() method of the indicated object.
- *
- * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
- * OF THE DESTRUCTION OF THE Unit OBJECT.</B>
- */
-
-extern const char* toString(Unit* unit);
-
-/**
- * \brief Return a JSON representation of the attributes and current state of
- * the specified Unit.
- *
- * This function calls the <A HREF="#_TO_JSON_">toJSON</A>() method of the indicated object.
- *
- * <B>NOTE: THE RETURNED STRING SHOULD NOT BE DELETED OR FREED. IT OCCURS AS PART
- * OF THE DESTRUCTION OF THE Unit OBJECT.</B>
- */
-
-extern const char* toJSON(Unit* unit);
-#ifdef __cplusplus
-}
-#endif // __cplusplus
-#endif // CNI_UNIT_H

@@ -7,123 +7,152 @@
  * Written By: Craig R. Campbell  -  January 2010
  */
 
-#include "jasl/cni/CniWrapper.h"
-#include "jasl/counters/Description$Descriptions.h"
-#include "jasl/counters/Unit.h"
-
 #include "Unit.h"
 
-// Constructor.
+#include "jasl/jni/JniWrapper.h"
 
-Unit::Unit() :
-	_unit(0),_description(0),_dump(0),_label(0),_json(0)
-{
-}
+#include <assert.h>
 
-// Destructor.
+// Initialize static member variables.
 
-Unit::~Unit()
-{
-	delete [] _description;
-	delete [] _dump;
-	delete [] _label;
-	delete [] _json;
-}
-
-// description: Return the description of this Unit.
-
-const char* Unit::description()
-{
-	if (0 == _description)
-	{
-		_description = js2cc(_unit->description()->toString());
-	}
-
-	return _description;
-}
-
-// description: Return the basic type of this Unit.
-
-Descriptions Unit::descriptionType()
-{
-	return Descriptions(_unit->description()->ordinal());
-}
+//jmethodID Unit::_constructorID              = nullptr;
+jmethodID Unit::_toTextMethodID             = nullptr;
+jmethodID Unit::_toStringMethodID           = nullptr;
+jmethodID Unit::_toJSONMethodID             = nullptr;
+jmethodID Unit::_descriptionMethodID        = nullptr;
+jmethodID Unit::_descriptionOrdinalMethodID = nullptr;
+jmethodID Unit::_fromJSONMethodID           = nullptr;
 
 // toText: Return a text representation of the attributes and current state of
 //         this Unit.
 
-const char* Unit::toText()
+std::string Unit::toText() const noexcept
 {
-	if (_dump) delete [] _dump;
+	if (nullptr == unitObject) return std::string();
 
-	_dump = js2cc(_unit->toText());
+	if (nullptr == _toTextMethodID)
+	{
+		_toTextMethodID =
+			methodID(unitClass,"toText",toStringSignature);
+	}
 
-	return _dump;
+	assert(nullptr != _toTextMethodID);
+
+	using ::toString; // From JniWrapper.
+
+	return toString(_toTextMethodID,unitObject);
 }
 
 // toString: Return an abbreviated description, which may include attributes, of
 //           this Unit.
 
-const char* Unit::toString()
+std::string Unit::toString() const noexcept
 {
-	if (_label) delete [] _label;
+	if (nullptr == unitObject) return std::string();
 
-	_label = js2cc(_unit->toString());
+	if (nullptr == _toStringMethodID)
+	{
+		_toStringMethodID =
+			methodID(unitClass,"toString",toStringSignature);
+	}
 
-	return _label;
+	assert(nullptr != _toStringMethodID);
+
+	using ::toString; // From JniWrapper.
+
+	return toString(_toStringMethodID,unitObject);
 }
 
 // toJSON: Return a JSON representation of the attributes and current state of
 //         this Unit.
 
-const char* Unit::toJSON()
+std::string Unit::toJSON() const noexcept
 {
-	if (_json) delete [] _json;
+	if (nullptr == unitObject) return std::string();
 
-	_json = js2cc(_unit->toJSON());
+	if (nullptr == _toJSONMethodID)
+	{
+		_toJSONMethodID =
+			methodID(unitClass,"toJSON",toStringSignature);
+	}
 
-	return _json;
+	assert(nullptr != _toJSONMethodID);
+
+	using ::toString; // From JniWrapper.
+
+	return toString(_toJSONMethodID,unitObject);
 }
 
-/******************************************************************************/
+// description: Return the description of this Unit.
 
-// These functions are intended for use by C programs to access Unit objects,
-// which are treated as a struct.
+/// @cond DEVELOPER
+static const std::string descriptionsEnumPath =
+	"jasl/counters/Description$Descriptions";
+/// @endcond
 
-// description: Return the description of the specified Unit.
-
-const char* description(Unit* unit)
+Descriptions Unit::description() const noexcept
 {
-	return (unit) ? unit->description() : 0;
+	if (nullptr == unitObject) return Descriptions::SQUAD;
+
+	if (nullptr == _descriptionMethodID)
+	{
+		std::string descriptionSignature =
+			"()[L" + descriptionsEnumPath + ";";
+
+		_descriptionMethodID =
+			methodID(unitClass,"description",
+			         descriptionSignature.c_str());
+	}
+
+	assert(nullptr != _descriptionMethodID);
+
+	const jobject enumObject =
+		static_cast<jobject>(jniEnv().CallObjectMethod(unitClass,
+		                                              _descriptionMethodID));
+	assert(nullptr != enumObject);
+
+	if (nullptr == _descriptionOrdinalMethodID)
+	{
+		jclass enumClass =
+			jniEnv().FindClass(descriptionsEnumPath.c_str());
+		assert(nullptr != enumClass);
+
+		_descriptionOrdinalMethodID =
+			methodID(enumClass,"ordinal","()I");
+	}
+
+	assert(nullptr != _descriptionOrdinalMethodID);
+
+	return static_cast<Descriptions>(jniEnv().CallIntMethod(enumObject,
+	                                                        _descriptionOrdinalMethodID));
 }
 
-// descriptionType: Return the basic type of the specified Unit.
+// fromJSON: Update an instance of this class to reflect the settings within the
+//           specified JSON data.
 
-Descriptions descriptionType(Unit* unit)
+void Unit::fromJSON(const std::string& jsonData)
 {
-	return (unit) ? unit->descriptionType() : Descriptions(0);
+	if (nullptr == unitObject) return;
+
+	if (nullptr == _fromJSONMethodID)
+	{
+		_fromJSONMethodID =
+			jniEnv().GetMethodID(unitClass,"fromJSON",
+			                     "(Ljava/lang/String;)V");
+	}
+
+	assert(nullptr != _fromJSONMethodID);
+
+	// TODO: Handle exception.
+
+	jniEnv().CallObjectMethod(unitObject,_fromJSONMethodID,ss2js(jsonData));
 }
 
-// toText: Return a text representation of the attributes and current state of
-//         the specified Unit.
+/// @cond TEST
+// release: Release the reference to the instance of the "wrapped" class.
 
-const char* toText(Unit* unit)
+void Unit::release() const noexcept
 {
-	return (unit) ? unit->toText() : 0;
+	if (unitObject) jniEnv().DeleteLocalRef(unitObject);
 }
-
-// toString: Return an abbreviated description, which may include attributes, of
-//           the specified Unit.
-
-const char* toString(Unit* unit)
-{
-	return (unit) ? unit->toString() : 0;
-}
-
-// toJSON: Return a JSON representation of the attributes and current state of
-//         the specified Unit.
-
-const char* toJSON(Unit* unit)
-{
-	return (unit) ? unit->toJSON() : 0;
-}
+/// @endcond
