@@ -72,14 +72,6 @@ GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES) \
 .PHONY : all
 all: $(ALL_CLASSES)
 
-# Build both the Java and native executable versions of all programs, along with
-# a jar archive of the Java .class files. Clean up the object files at then end.
-
-.PHONY : build_all
-build_all: gcj gcj_dynamic gcj_static build_cpp_dynamic build_cpp_static \
-           build_cxx_dynamic build_cxx_static $(JASL_JAR_ARCHIVE) \
-           clean_obj scenarios
-
 # Build the jar archive(s) and remove all .class files in this directory and its
 # sub-directories.
 
