@@ -21,6 +21,13 @@
 use strict;
 use warnings;
 
+# The following statements allow the script the access modules in the same /
+# current directory. This used to be automatically allowed with older versions
+# of Perl, but isn't now for security reasons.
+
+use FindBin 1.51 qw( $RealBin );
+use lib $RealBin;
+
 use CniWrapper;
 use Counters;
 use UiData;

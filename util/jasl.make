@@ -380,8 +380,8 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 # GCC compile commands with options specific to each target language.
 
 #GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.18.2/i686-linux/CORE
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.24.0/x86_64-linux/CORE
-GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
+GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.26.1/x86_64-linux-thread-multi/CORE
+GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/local/include/python2.7
 
 # GCC build/link options common to all libraries and target languages.
 
