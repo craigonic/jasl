@@ -440,6 +440,7 @@ docs_all:
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
 	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
+	$(MAKE) -C $(PYTHON_DIRECTORY) $@
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
@@ -458,6 +459,7 @@ clean_docs:
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
 	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
+	$(MAKE) -C $(PYTHON_DIRECTORY) $@
 	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
@@ -491,7 +493,7 @@ htags: global
 
 # Create all the forms of documentation.
 
-all_docs: javadocs doxygen htags docs
+all_docs: javadocs doxygen docs
 
 ## Scenarios ###################################################################
 
