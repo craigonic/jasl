@@ -41,8 +41,8 @@ OBJ_SUB_DIRECTORY  := .obj
 CNI_DIRECTORY      := cni-wrapper
 JNI_DIRECTORY      := jni-wrapper
 SWIG_DIRECTORY     := swig
-PERL_DIRECTORY     := perljASL
-PYTHON_DIRECTORY   := pyjASL
+PERL_DIRECTORY     := perl-jasl
+PYTHON_DIRECTORY   := py-jasl
 
 PERL_BIN_PATH      := $(BIN_PATH)/$(PERL_DIRECTORY)
 PERL_LIB_PATH      := $(LIB_PATH)/perl
@@ -158,6 +158,9 @@ DOXYGEN_DEF_FILE     := $(UTIL_PATH)/doxygen.jasl
 
 JNI_DOXYGEN_DOC_PATH := $(DOCS_PATH)/jni-doxygen
 JNI_DOXYGEN_DEF_FILE := $(UTIL_PATH)/jni-doxygen.jasl
+
+PY_DOXYGEN_DOC_PATH  := $(DOCS_PATH)/py-doxygen
+PY_DOXYGEN_DEF_FILE  := $(UTIL_PATH)/py-doxygen.jasl
 
 # global (gtags and htags)
 
@@ -410,3 +413,7 @@ perl_lib_directory:
 .PHONY : python_lib_directory
 python_lib_directory:
 	$(INSTALL_DIR) $(PYTHON_LIB_PATH)
+
+# Python scripts / implementation
+
+PYCACHE_SUB_DIRECTORY := __pycache__
