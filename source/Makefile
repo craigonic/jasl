@@ -440,7 +440,9 @@ docs_all:
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
 	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
-	$(MAKE) -C $(PYTHON_DIRECTORY) $@
+	@if [ -f $(PYTHON_DIRECTORY)/Makefile ]; then \
+		$(MAKE) -C $(PYTHON_DIRECTORY) $@; \
+	fi
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
@@ -459,7 +461,9 @@ clean_docs:
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
 	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
-	$(MAKE) -C $(PYTHON_DIRECTORY) $@
+	@if [ -f $(PYTHON_DIRECTORY)/Makefile ]; then \
+		$(MAKE) -C $(PYTHON_DIRECTORY) $@; \
+	fi
 	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
