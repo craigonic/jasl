@@ -21,14 +21,16 @@ PROGRAM_NAME       := jasl
 
 INSTALL_DIRECTORY  := ${JASL_BASE}
 
+SRC_PATH           := ${JASL_BASE}/source
+TOOLS_PATH         := ${JASL_BASE}/tools
+UTIL_PATH          := ${JASL_BASE}/util
+
 BIN_PATH           := $(INSTALL_DIRECTORY)/bin
 DOCS_PATH          := $(INSTALL_DIRECTORY)/share/$(PROGRAM_NAME)/doc
 DATA_PATH          := $(INSTALL_DIRECTORY)/share/$(PROGRAM_NAME)/data
 INCLUDE_PATH       := $(INSTALL_DIRECTORY)/include
 LIB_PATH           := $(INSTALL_DIRECTORY)/lib/$(PROGRAM_NAME)
-
-SRC_PATH           := ${JASL_BASE}/source
-UTIL_PATH          := ${JASL_BASE}/util
+TOOLS_LIB_PATH     := $(TOOLS_PATH)/lib
 
 # The name of the sub-directory in each directory where object files generated
 # for the purpose of building the correponding libraries (shared and static) are
@@ -36,7 +38,8 @@ UTIL_PATH          := ${JASL_BASE}/util
 
 OBJ_SUB_DIRECTORY  := .obj
 
-# The following are sub-directories of the source directory.
+# The following are sub-directories of the source directory. The ones associated
+# with Perl and Python are also used to name the SWIG output directories.
 
 CNI_DIRECTORY      := cni-wrapper
 JNI_DIRECTORY      := jni-wrapper
@@ -62,8 +65,9 @@ PYTHON_LIB_PATH    := $(LIB_PATH)/python
 ##     export ANDROID_TARGET_VERSION="-target 1.7"
 
 JAVA_COMPILER      := javac
-GCC_COMPILER       := gcc
-GCJ_COMPILER       := gcj
+GCC_COMPILER       := $(TOOLS_PATH)/bin/gcc
+GCJ_COMPILER       := $(TOOLS_PATH)/bin/gcj
+GCJ_LIBRARIES      := $(TOOLS_PATH)/lib
 
 CLASSPATH_CMD      := -classpath $(BIN_PATH)
 GCJ_CLASSPATH_CMD  := --classpath=$(BIN_PATH)
@@ -85,14 +89,21 @@ ifdef JASL_COMPILER_FLAGS
     GCJ_OPTIMIZE   := ${JASL_COMPILER_FLAGS} -fPIC
 endif
 
+# The following LD_LIBRARY_PATH variables are used to build and test executables
+# that rely on the jASL and/or gcj libraries.
+#
+JASL_LD_LIB_PATH   := LD_LIBRARY_PATH=$(LIB_PATH)
+GCJ_LD_LIB_PATH    := LD_LIBRARY_PATH=$(TOOLS_LIB_PATH)
+LD_LIB_PATH        := LD_LIBRARY_PATH=$(LIB_PATH):$(TOOLS_LIB_PATH)
+
 GCC_BUILD_CMD      := $(GCC_COMPILER) $(GCJ_OPTIMIZE)
 GCC_COMPILE_CMD    := $(GCC_BUILD_CMD) -c
 
 GCJ_BUILD_CMD      := $(GCJ_COMPILER) $(GCJ_CLASSPATH_CMD) $(GCJ_OPTIMIZE)
 GCJ_COMPILE_CMD    := $(GCJ_BUILD_CMD) -c
 
-GCJH_CMD           := gcjh -force
-GJAVAH_CMD         := gjavah -verbose -cni -force -d $(INCLUDE_PATH) -all
+GCJH_CMD           := $(TOOLS_PATH)/bin/gcjh -force
+GJAVAH_CMD         := $(TOOLS_PATH)/bin/gjavah -verbose -cni -force -d $(INCLUDE_PATH) -all
 
 SHARED_LIB_OPTIONS := $(GCJ_OPTIMIZE) -shared -o
 GCC_LIB_BUILD_CMD  := $(GCC_COMPILER) $(SHARED_LIB_OPTIONS)
@@ -199,6 +210,8 @@ CNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(CNI_WRAPPER_STATIC_LIB_NAME)
 
 # JNI (Java Native Interface) wrapper.
 
+JNI_GCC_COMPILER             := ${JASL_BASE}/tools/bin/gcc
+
 JNI_HDR_PATH                 := $(INCLUDE_PATH)/$(PROGRAM_NAME)/$(JNI_PREFIX)
 
 JNI_WRAPPER_HDR_FILES        := $(JNI_HDR_PATH)/*.h
@@ -208,9 +221,16 @@ JNI_WRAPPER_STATIC_LIB_NAME  := $(LIB_PREFIX)$(JNI_WRAPPER_BASE_LIB_NAME).a
 JNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(JNI_WRAPPER_STATIC_LIB_NAME)
 
 JNI_INCLUDE_DIRECTIVES       := -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
-JNI_BUILD_CMD                := $(GCC_BUILD_CMD) $(JNI_INCLUDE_DIRECTIVES)
+#JNI_BUILD_CMD                := /usr/bin/gcc $(GCJ_OPTIMIZE) -Wall -Wextra \
+#                                $(JNI_INCLUDE_DIRECTIVES) -std=c++17
+JNI_BUILD_CMD                := $(JNI_GCC_COMPILER) $(GCJ_OPTIMIZE) \
+                                $(JNI_INCLUDE_DIRECTIVES) -std=c++14
 JNI_LIBRARY_PATH             := ${JAVA_HOME}/lib/server
 JNI_LINK_OPTIONS             := -L$(JNI_LIBRARY_PATH) -ljvm -lstdc++
+
+JNI_LIB_BUILD_CMD            := $(JNI_GCC_COMPILER) $(GCJ_OPTIMIZE) -shared -o
+
+JNI_LD_LIB_PATH              := LD_LIBRARY_PATH=$(LIB_PATH):$(JNI_LIBRARY_PATH)
 
 # counters package.
 
@@ -381,9 +401,8 @@ SWIG_PYTHON_CMD := $(SWIG_CMD) -python -shadow -outdir $(PYTHON_BIN_PATH)
 
 # GCC compile commands with options specific to each target language.
 
-#GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib/perl5/5.18.2/i686-linux/CORE
-GCC_PERL_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/lib64/perl5/5.24.0/x86_64-linux/CORE
-GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python2.7
+GCC_PERL_COMPILE_CMD   := $(GCC_COMPILE_CMD) -I/usr/lib/x86_64-linux-gnu/perl/5.32.1/CORE
+GCC_PYTHON_COMPILE_CMD := $(GCC_COMPILE_CMD) -I/usr/include/python3.9
 
 # GCC build/link options common to all libraries and target languages.
 

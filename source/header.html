@@ -30,8 +30,8 @@ interact with the Java bytecode, it must be
 <B><I>JAVA_HOME</I></B> environment variable (e.g.
 <TT>export JAVA_HOME=/opt/java</TT>) is also necessary.
 <LI><I>Optional. </I>
-<A HREF=https://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/>GCJ</A> (available with
-<U>GCC</U> version 6.4 and earlier). It is used to build (from Java source
+<A HREF=https://gcc.gnu.org/onlinedocs/gcc-6.5.0/gcj/>GCJ</A> (available with
+<U>GCC</U> version 6.5 and earlier). It is used to build (from Java source
 files) the native executable versions of this program, static and shared
 libraries, and header files.
 <LI><I>Optional. </I>
@@ -88,7 +88,7 @@ files created by the build.
 <TT>gcj_dynamic</TT>.
 <P>
 <LI><TT>build_cpp_dynamic</TT> - compiles the .cpp source file(s) using
-<TT><A HREF=http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/Invoking-gcj.html#Invoking-gcj>gcj</A></TT>
+<TT><A HREF=http://gcc.gnu.org/onlinedocs/gcc-6.5.0/gcj/Invoking-gcj.html#Invoking-gcj>gcj</A></TT>
 and links them with <I>shared</I> versions of one or more of the
 <TT><A HREF="jasl/jasl.html">jasl</A></TT> libraries and the
 <TT><A HREF="cni-wrapper/cni-wrapper.html">cni-wrapper</A></TT> library. These
@@ -132,8 +132,8 @@ modules and libraries generated with <U>SWIG</U>
 versions of one or more of the <TT><U>jasl</U></TT> libraries and the
 <TT><U>cni-wrapper</U></TT> library. The scripts are copied to the indicated
 sub-directories of the output directory.</I>
-<LI><TT>perl</TT> - <B><I>perljASL</I></B>
-<LI><TT>python</TT> - <B><I>pyjASL</I></B>
+<LI><TT>perl</TT> - <B><I>perl-jasl</I></B>
+<LI><TT>python</TT> - <B><I>py-jasl</I></B>
 <P>
 <I>The </I><TT>clean</TT><I> targets remove the specified files from the output
 directory and/or its sub-directories unless otherwise noted.</I>

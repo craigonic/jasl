@@ -16,14 +16,9 @@ make clean_all
 (cd swig;make clean_all)
 (cd scenarios;make clean)
 
-# Determine what can and can't be built based on the current compiler version.
-
-GCC_VERSION=$(gcc --version | head -n1 | cut -d" " -f3 | sed 's/\.//g')
-LAST_GCJ_VERSION=640
-
 # Build the libraries and install the header files.
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	(cd cni-wrapper;make libs hdr)
 fi
@@ -31,7 +26,7 @@ fi
 (cd jni-wrapper;make libs hdr)
 (cd org;make jar)
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	(cd org;make libs hdr)
 	(cd jasl;make libs hdr)
@@ -44,24 +39,25 @@ fi
 
 make clean_all
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	(cd swig;make libs)
 fi
 
 # Build all the executables and install the scenarios.
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	make build_all
-else
-	make build_cxx_dynamic build_cxx_static org.craigonic.jasl.jar scenarios
 fi
+
+make build_cxx_dynamic build_cxx_static
+make org.craigonic.jasl.jar scenarios
 
 # Install the scripts. Note that the installed version of Driver.py may require
 # editing to set the correct system path.
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	make perl python
 fi
@@ -70,7 +66,7 @@ fi
 
 make test_jar
 make test
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	make test_gcj
 	make test_gcj_dynamic
@@ -80,7 +76,7 @@ then
 fi
 make test_cxx_dynamic
 make test_cxx_static
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	make test_perl
 	make test_python
