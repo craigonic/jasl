@@ -16,68 +16,52 @@ make clean_all
 (cd swig;make clean_all)
 (cd scenarios;make clean)
 
-# Determine what can and can't be built based on the current compiler version.
-# Note that gcj doesn't work with versions of java newer than 1.8.
-
-$(command gcj -v > /dev/null 2>&1)
-GCJ_INSTALLED="$?"
-
-GCC_VERSION=$(gcc --version | head -n1 | cut -d" " -f3 | sed 's/\.//g')
-LAST_GCJ_VERSION=650
-
 # Build the libraries and install the header files.
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	(cd cni-wrapper;make libs hdr)
-else
-	(cd jni-wrapper;make libs hdr)
 fi
 
+(cd jni-wrapper;make libs hdr)
 (cd org;make jar)
 
-if [ $GCJ_INSTALLED == 0 ]
+if [ -e $JASL_BASE/tools ]
 then
 	(cd org;make libs hdr)
 	(cd jasl;make libs hdr)
 fi
 
-if [ "$GCC_VERSION" -gt "$LAST_GCJ_VERSION" ]
-then
 	(cd jni-wrapper/jasl;make libs hdr)
-fi
 
 # Build the wrapper libraries. Note that the Makefile may require editing to set
 # the correct path(s) for the Perl and/or Python headers.
 
 make clean_all
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	(cd swig;make libs)
 fi
 
 # Build all the executables and install the scenarios.
 
-make all
-
-if [ $GCJ_INSTALLED == 0 ]
+if [ -e $JASL_BASE/tools ]
 then
-	make gcj gcj_dynamic gcj_static
-fi
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
-then
-	make build_cpp_dynamic build_cpp_static
+	make gcj gcj_dynamic gcj_static build_cpp_dynamic build_cpp_static
 else
-	make build_cxx_dynamic build_cxx_static
+	make all
 fi
 
-make org.craigonic.jasl.jar clean_obj scenarios
+make build_cxx_dynamic
+make build_cxx_static
+make org.craigonic.jasl.jar
+make scenarios
 
 # Install the scripts. Note that the installed version of Driver.py may require
 # editing to set the correct system path.
 
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+if [ -e $JASL_BASE/tools ]
 then
 	make perl python
 fi
@@ -86,21 +70,17 @@ fi
 
 make test_jar
 make test
-if [ $GCJ_INSTALLED == 0 ]
+if [ -e $JASL_BASE/tools ]
 then
 	make test_gcj
 	make test_gcj_dynamic
 	make test_gcj_static
-fi
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
-then
 	make test_cpp_dynamic
 	make test_cpp_static
-else
-	make test_cxx_dynamic
-	make test_cxx_static
 fi
-if [ "$GCC_VERSION" -le "$LAST_GCJ_VERSION" ]
+make test_cxx_dynamic
+make test_cxx_static
+if [ -e $JASL_BASE/tools ]
 then
 	make test_perl
 	make test_python
@@ -117,9 +97,8 @@ make ctags
 
 ## Instructions for creating a build to test code coverage. Note that this will
 ## require the installation of lcov or gcovr, either of which can be used to
-## generated summarized results. It only works if the installed version of GCC
-## supports GCJ (i.e. "-le "$LAST_GCJ_VERSION""). The following commands should
-## be executed from this directory (source).
+## generated summarized results. The following commands should be executed from
+## this directory (source).
 
 # Run this file as a script. This will clean everything and do a full rebuild.
 

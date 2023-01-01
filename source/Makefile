@@ -196,12 +196,14 @@ DRIVER_BUILD_OPTIONS := --main=$(DRIVER_EXEC) -o $(BIN_PATH)/
 # Build and link with the individual object files.
 
 $(DRIVER_EXEC): $(DRIVER_CLASS)
+	$(GCJ_LD_LIB_PATH) \
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_EXEC) $(DRIVER_SRC) \
 	                 $(GCJ_OBJECT_FILES)
 
 # Build and link with the dynamic libraries.
 
 $(DRIVER_DYNAMIC): $(DRIVER_CLASS)
+	$(GCJ_LD_LIB_PATH) \
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_DYNAMIC) $(DRIVER_SRC) \
 	                 -L$(LIB_PATH) -l$(COUNTERS_BASE_LIB_NAME) \
 	                 -l$(UTILITIES_BASE_LIB_NAME) \
@@ -211,6 +213,7 @@ $(DRIVER_DYNAMIC): $(DRIVER_CLASS)
 # Build and link with the static libraries.
 
 $(DRIVER_STATIC): $(DRIVER_CLASS)
+	$(GCJ_LD_LIB_PATH) \
 	$(GCJ_BUILD_CMD) $(DRIVER_BUILD_OPTIONS)$(DRIVER_STATIC) $(DRIVER_SRC) \
 	                 $(COUNTERS_STATIC_LIB_PATH) \
 	                 $(UTILITIES_STATIC_LIB_PATH) \
@@ -230,6 +233,7 @@ DRIVER_CPP_DYNAMIC_LIBS  := -lgcj -lstdc++
 # Build and link with the dynamic libraries.
 
 $(DRIVER_CPP_DYNAMIC): bin_directory
+	$(GCJ_LD_LIB_PATH) \
 	$(GCC_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CPP_DYNAMIC) \
 	                 $(DRIVER_CPP_SRC) -L$(LIB_PATH) \
 	                 $(DRIVER_CPP_DYNAMIC_LIBS) \
@@ -242,6 +246,7 @@ $(DRIVER_CPP_DYNAMIC): bin_directory
 # Build and link with the static libraries.
 
 $(DRIVER_CPP_STATIC): bin_directory
+	$(GCJ_LD_LIB_PATH) \
 	$(GCC_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CPP_STATIC) \
 	                 $(DRIVER_CPP_SRC) $(DRIVER_CPP_DYNAMIC_LIBS) \
 	                 $(CNI_WRAPPER_STATIC_LIB_PATH) \
@@ -266,6 +271,9 @@ $(DRIVER_CXX_STATIC): bin_directory
 	$(JNI_BUILD_CMD) \
 	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_STATIC) \
 	                 $(DRIVER_CXX_SRC) $(JNI_LINK_OPTIONS) \
+	                 -L$(LIB_PATH) \
+	                 -l$(JNI_WRAPPER_BASE_LIB_NAME) \
+	                 -l$(JNI_UTILITIES_BASE_LIB_NAME) \
 	                 $(JNI_COUNTERS_STATIC_LIB_PATH) \
 	                 $(JNI_UTILITIES_STATIC_LIB_PATH) \
 	                 $(JNI_WRAPPER_STATIC_LIB_PATH)
@@ -373,40 +381,40 @@ test_jar: TEST_EXEC := $(JAR_RUN_CMD) $(JASL_JAR_ARCHIVE)
 test_jar: $(BIN_PATH)/$(JASL_JAR_ARCHIVE) run_test
 
 .PHONY : test_gcj
-test_gcj: TEST_EXEC := ./$(DRIVER_EXEC)
+test_gcj: TEST_EXEC := /bin/sh -c "$(GCJ_LD_LIB_PATH) ./$(DRIVER_EXEC)"
 test_gcj: $(BIN_PATH)/$(DRIVER_EXEC) run_test
 
 .PHONY : test_gcj_dynamic
-test_gcj_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_DYNAMIC)"
+test_gcj_dynamic: TEST_EXEC := /bin/sh -c "$(LD_LIB_PATH) ./$(DRIVER_DYNAMIC)"
 test_gcj_dynamic: $(BIN_PATH)/$(DRIVER_DYNAMIC) run_test
 
 .PHONY : test_gcj_static
-test_gcj_static: TEST_EXEC := ./$(DRIVER_STATIC)
+test_gcj_static: TEST_EXEC := /bin/sh -c "$(GCJ_LD_LIB_PATH) ./$(DRIVER_STATIC)"
 test_gcj_static: $(BIN_PATH)/$(DRIVER_STATIC) run_test
 
 .PHONY : test_cpp_dynamic
-test_cpp_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH) ./$(DRIVER_CPP_DYNAMIC)"
+test_cpp_dynamic: TEST_EXEC := /bin/sh -c "$(LD_LIB_PATH) ./$(DRIVER_CPP_DYNAMIC)"
 test_cpp_dynamic: $(BIN_PATH)/$(DRIVER_CPP_DYNAMIC) run_test
 
 .PHONY : test_cpp_static
-test_cpp_static: TEST_EXEC := ./$(DRIVER_CPP_STATIC)
+test_cpp_static: TEST_EXEC := /bin/sh -c "$(GCJ_LD_LIB_PATH) ./$(DRIVER_CPP_STATIC)"
 test_cpp_static: $(BIN_PATH)/$(DRIVER_CPP_STATIC) run_test
 
 .PHONY : test_cxx_dynamic
-test_cxx_dynamic: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH):$(JNI_LIBRARY_PATH) ./$(DRIVER_CXX_DYNAMIC)"
+test_cxx_dynamic: TEST_EXEC := /bin/sh -c "$(JNI_LD_LIB_PATH) ./$(DRIVER_CXX_DYNAMIC)"
 test_cxx_dynamic: $(BIN_PATH)/$(DRIVER_CXX_DYNAMIC) run_test
 
 .PHONY : test_cxx_static
-test_cxx_static: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(JNI_LIBRARY_PATH) ./$(DRIVER_CXX_STATIC)"
+test_cxx_static: TEST_EXEC := /bin/sh -c "$(JNI_LD_LIB_PATH) ./$(DRIVER_CXX_STATIC)"
 test_cxx_static: $(BIN_PATH)/$(DRIVER_CXX_STATIC) run_test
 
 .PHONY : test_perl
-test_perl: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH):$(PERL_LIB_PATH) ./$(DRIVER_EXEC)"
+test_perl: TEST_EXEC := /bin/sh -c "$(LD_LIB_PATH):$(PERL_LIB_PATH) ./$(DRIVER_EXEC)"
 test_perl: EXEC_PATH := $(PERL_BIN_PATH)
 test_perl: $(PERL_BIN_PATH)/$(DRIVER_EXEC) run_test
 
 .PHONY : test_python
-test_python: TEST_EXEC := /bin/sh -c "LD_LIBRARY_PATH=$(LIB_PATH):$(PYTHON_LIB_PATH) python ./$(DRIVER_EXEC)"
+test_python: TEST_EXEC := /bin/sh -c "$(LD_LIB_PATH):$(PYTHON_LIB_PATH) python3 ./$(DRIVER_EXEC)"
 test_python: EXEC_PATH := $(PYTHON_BIN_PATH)
 test_python: $(PYTHON_BIN_PATH)/$(DRIVER_EXEC) run_test
 
@@ -434,6 +442,9 @@ docs_all:
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
 	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
+	@if [ -f $(PYTHON_DIRECTORY)/Makefile ]; then \
+		$(MAKE) -C $(PYTHON_DIRECTORY) $@; \
+	fi
 	@$(INSTALL_STD_FILE) $(HTLS_HEADER_FILE) $(SRC_DOCS_PATH)
 	@$(HTLS) $(SRC_DOCS_PATH)
 	@$(INSTALL_STD_FILE) vim.png $(SRC_DOCS_PATH)
@@ -452,6 +463,9 @@ clean_docs:
 	$(MAKE) -C $(PROGRAM_NAME) $@
 	$(MAKE) -C org $@
 	$(MAKE) -C $(SCENARIOS_DIRECTORY) $@
+	@if [ -f $(PYTHON_DIRECTORY)/Makefile ]; then \
+		$(MAKE) -C $(PYTHON_DIRECTORY) $@; \
+	fi
 	@$(RM) $(SRC_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs
