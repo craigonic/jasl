@@ -72,14 +72,6 @@ GCJ_OBJECT_FILES   := $(COUNTERS_OBJ_FILES) $(UTILITIES_OBJ_FILES) \
 .PHONY : all
 all: $(ALL_CLASSES)
 
-# Build both the Java and native executable versions of all programs, along with
-# a jar archive of the Java .class files. Clean up the object files at then end.
-
-.PHONY : build_all
-build_all: gcj gcj_dynamic gcj_static build_cpp_dynamic build_cpp_static \
-           build_cxx_dynamic build_cxx_static $(JASL_JAR_ARCHIVE) \
-           clean_obj scenarios
-
 # Build the jar archive(s) and remove all .class files in this directory and its
 # sub-directories.
 
@@ -266,23 +258,21 @@ $(DRIVER_CPP_STATIC): bin_directory
 # Build and link with the dynamic (JNI) wrapper libraries.
 
 $(DRIVER_CXX_DYNAMIC): bin_directory
-	$(JNI_BUILD_CMD) \
-	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_DYNAMIC) \
-	                 $(DRIVER_CXX_SRC) -L$(LIB_PATH) $(JNI_LINK_OPTIONS) \
+	$(JNI_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_DYNAMIC) \
+	                 $(DRIVER_CXX_SRC) \
+	                 -L$(LIB_PATH) \
+	                 -l$(JNI_UTILITIES_BASE_LIB_NAME) \
 	                 -l$(JNI_WRAPPER_BASE_LIB_NAME) \
-	                 -l$(JNI_UTILITIES_BASE_LIB_NAME)
+	                 $(JNI_LINK_OPTIONS)
 
 # Build and link with the static (JNI) wrapper libraries.
 
 $(DRIVER_CXX_STATIC): bin_directory
-	$(JNI_BUILD_CMD) \
-	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_STATIC) \
-	                 $(DRIVER_CXX_SRC) $(JNI_LINK_OPTIONS) \
-	                 -L$(LIB_PATH) \
-	                 -l$(JNI_WRAPPER_BASE_LIB_NAME) \
-	                 -l$(JNI_UTILITIES_BASE_LIB_NAME) \
+	$(JNI_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_STATIC) \
+	                 $(DRIVER_CXX_SRC) \
 	                 $(JNI_UTILITIES_STATIC_LIB_PATH) \
-	                 $(JNI_WRAPPER_STATIC_LIB_PATH)
+	                 $(JNI_WRAPPER_STATIC_LIB_PATH) \
+	                 $(JNI_LINK_OPTIONS)
 
 ## Install #####################################################################
 

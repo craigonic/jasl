@@ -48,11 +48,19 @@ fi
 
 if [ -e $JASL_BASE/tools ]
 then
-	make build_all
+	make gcj
+	make gcj_dynamic
+	make gcj_static
+	make build_cpp_dynamic
+	make build_cpp_static
 fi
 
-make build_cxx_dynamic build_cxx_static
-make org.craigonic.jasl.jar scenarios
+make build_cxx_dynamic
+make build_cxx_static
+make org.craigonic.jasl.jar
+make scenarios
+
+make clean_obj
 
 # Install the scripts. Note that the installed version of Driver.py may require
 # editing to set the correct system path.

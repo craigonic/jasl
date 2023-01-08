@@ -210,7 +210,7 @@ CNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(CNI_WRAPPER_STATIC_LIB_NAME)
 
 # JNI (Java Native Interface) wrapper.
 
-JNI_GCC_COMPILER             := ${JASL_BASE}/tools/bin/gcc
+JNI_GCC_COMPILER             := /usr/bin/gcc
 
 JNI_HDR_PATH                 := $(INCLUDE_PATH)/$(PROGRAM_NAME)/$(JNI_PREFIX)
 
@@ -221,10 +221,9 @@ JNI_WRAPPER_STATIC_LIB_NAME  := $(LIB_PREFIX)$(JNI_WRAPPER_BASE_LIB_NAME).a
 JNI_WRAPPER_STATIC_LIB_PATH  := $(LIB_PATH)/$(JNI_WRAPPER_STATIC_LIB_NAME)
 
 JNI_INCLUDE_DIRECTIVES       := -I${JAVA_HOME}/include -I${JAVA_HOME}/include/linux
-#JNI_BUILD_CMD                := /usr/bin/gcc $(GCJ_OPTIMIZE) -Wall -Wextra \
-#                                $(JNI_INCLUDE_DIRECTIVES) -std=c++17
 JNI_BUILD_CMD                := $(JNI_GCC_COMPILER) $(GCJ_OPTIMIZE) \
-                                $(JNI_INCLUDE_DIRECTIVES) -std=c++14
+                                -Wall -Wextra \
+                                $(JNI_INCLUDE_DIRECTIVES) -std=c++17
 JNI_LIBRARY_PATH             := ${JAVA_HOME}/lib/server
 JNI_LINK_OPTIONS             := -L$(JNI_LIBRARY_PATH) -ljvm -lstdc++
 
