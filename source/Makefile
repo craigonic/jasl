@@ -258,25 +258,23 @@ $(DRIVER_CPP_STATIC): bin_directory
 # Build and link with the dynamic (JNI) wrapper libraries.
 
 $(DRIVER_CXX_DYNAMIC): bin_directory
-	$(JNI_BUILD_CMD) \
-	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_DYNAMIC) \
-	                 $(DRIVER_CXX_SRC) -L$(LIB_PATH) $(JNI_LINK_OPTIONS) \
-	                 -l$(JNI_WRAPPER_BASE_LIB_NAME) \
+	$(JNI_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_DYNAMIC) \
+	                 $(DRIVER_CXX_SRC) \
+	                 -L$(LIB_PATH) \
 	                 -l$(JNI_COUNTERS_BASE_LIB_NAME) \
-	                 -l$(JNI_UTILITIES_BASE_LIB_NAME)
+	                 -l$(JNI_UTILITIES_BASE_LIB_NAME) \
+	                 -l$(JNI_WRAPPER_BASE_LIB_NAME) \
+	                 $(JNI_LINK_OPTIONS)
 
 # Build and link with the static (JNI) wrapper libraries.
 
 $(DRIVER_CXX_STATIC): bin_directory
-	$(JNI_BUILD_CMD) \
-	                 $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_STATIC) \
-	                 $(DRIVER_CXX_SRC) $(JNI_LINK_OPTIONS) \
-	                 -L$(LIB_PATH) \
-	                 -l$(JNI_WRAPPER_BASE_LIB_NAME) \
-	                 -l$(JNI_UTILITIES_BASE_LIB_NAME) \
+	$(JNI_BUILD_CMD) $(DRIVER_CPP_BUILD_OPTIONS)$(DRIVER_CXX_STATIC) \
+	                 $(DRIVER_CXX_SRC) \
 	                 $(JNI_COUNTERS_STATIC_LIB_PATH) \
 	                 $(JNI_UTILITIES_STATIC_LIB_PATH) \
-	                 $(JNI_WRAPPER_STATIC_LIB_PATH)
+	                 $(JNI_WRAPPER_STATIC_LIB_PATH) \
+	                 $(JNI_LINK_OPTIONS)
 
 ## Install #####################################################################
 
