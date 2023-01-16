@@ -13,7 +13,7 @@
 ################################################################################
 
 import sys
-sys.path.append("/home/campbell/jasl/lib/jasl/python")
+sys.path.append("/home/craig/jasl/lib/jasl/python")
 
 from CniWrapper import *
 from Counters   import *
@@ -25,7 +25,7 @@ from Utilities  import *
 # match that of the other test programs.
 
 def printException(detail):
-    print "\nCaught: %s" % detail
+    print("\nCaught: %s" % detail)
 
 # The following call is necessary only if either the js2cc() or cc2js() function
 # is NOT called (invoking either one will start the CniWrapper).
@@ -56,47 +56,47 @@ assert(False == germanLeader.setStatus(brokenState))
 
 # Display all of the entered values for this instance using the toText() method.
 
-print "\nLeader.toText() output:\n\n%s" % js2cc(germanLeader.toText())
+print("\nLeader.toText() output:\n\n%s" % js2cc(germanLeader.toText()))
 
 # Display an abbreviated description of this instance using the toString()
 # method.
 
-print "Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString())
+print("Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString()))
 
 # Display the output of all of the access methods declared for the Leader class
 # using the instance created above.
 
-#print "Leader class access methods and output :\n"
+#print("Leader class access methods and output :\n")
 
-#print "\tdescription() - name: %s\tlabel: %s" % (js2cc(germanLeader.description().name()),js2cc(germanLeader.description().toString()))
+#print("\tdescription() - name: %s\tlabel: %s" % (js2cc(germanLeader.description().name()),js2cc(germanLeader.description().toString())))
 
-#print "\tidentity(): %s"              % js2cc(germanLeader.identity())
-#print "\tnationality() - name: %s\tlabel: %s" % (js2cc(germanLeader.nationality().name()),js2cc(germanLeader.nationality().toString()))
+#print("\tidentity(): %s"              % js2cc(germanLeader.identity()))
+#print("\tnationality() - name: %s\tlabel: %s" % (js2cc(germanLeader.nationality().name()),js2cc(germanLeader.nationality().toString())))
 #statusList = germanLeader.status()
-#print "\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString()))
-#print "\tunitType(): %s"              % js2cc(germanLeader.unitType())
+#print("\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString())))
+#print("\tunitType(): %s"              % js2cc(germanLeader.unitType()))
 
-#print "\tmovement(): %d"              % germanLeader.movement()
-#print "\tportageCapacity(): %d"       % germanLeader.portageCapacity()
-#print "\tportageLevel(): %d"          % germanLeader.portageLevel()
+#print("\tmovement(): %d"              % germanLeader.movement())
+#print("\tportageCapacity(): %d"       % germanLeader.portageCapacity())
+#print("\tportageLevel(): %d"          % germanLeader.portageLevel())
 
-#print "\tbasicPointValue(): %d"       % germanLeader.basicPointValue()
-#print "\tbrokenMorale(): %d"          % germanLeader.brokenMorale()
-#print "\tcanSelfRally(): %d"          % germanLeader.canSelfRally()
-#print "\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating()
-#print "\tfirepower(): %s"             % js2cc(germanLeader.firepower())
-#print "\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent()
-#print "\tinfantryType() - name: %s\tlabel: %s" % (js2cc(germanLeader.infantryType().name()),js2cc(germanLeader.infantryType().toString()))
-#print "\tmorale(): %d"                % germanLeader.morale()
-#print "\tnormalRange(): %d"           % germanLeader.normalRange()
-#print "\tportageValue(): %d"          % germanLeader.portageValue()
+#print("\tbasicPointValue(): %d"       % germanLeader.basicPointValue())
+#print("\tbrokenMorale(): %d"          % germanLeader.brokenMorale())
+#print("\tcanSelfRally(): %d"          % germanLeader.canSelfRally())
+#print("\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating())
+#print("\tfirepower(): %s"             % js2cc(germanLeader.firepower()))
+#print("\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent())
+#print("\tinfantryType() - name: %s\tlabel: %s" % (js2cc(germanLeader.infantryType().name()),js2cc(germanLeader.infantryType().toString())))
+#print("\tmorale(): %d"                % germanLeader.morale())
+#print("\tnormalRange(): %d"           % germanLeader.normalRange())
+#print("\tportageValue(): %d"          % germanLeader.portageValue())
 
-#print "\tmodifier(): %d"              % germanLeader.modifier()
+#print("\tmodifier(): %d"              % germanLeader.modifier())
 
 # Test the exception handling within the Serialization class, specifically the
 # methods associated with serializing to and deserializing from a file.
 
-print "Testing Exception handling for serialization to and from a file:"
+print("Testing Exception handling for serialization to and from a file:")
 
 serializationFile = cc2js("")
 
@@ -151,17 +151,17 @@ deserializedLeader.clearStatus(statusList[0])
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
-print "\n(Deserialized) Leader.toText() output:\n\n%s" % js2cc(deserializedLeader.toText())
+print("\n(Deserialized) Leader.toText() output:\n\n%s" % js2cc(deserializedLeader.toText()))
 
 # Display an abbreviated description of the deserialized instance using the
 # toString() method.
 
-print "(Deserialized) Leader.toString() output:\n\n%s\n" % js2cc(deserializedLeader.toString())
+print("(Deserialized) Leader.toString() output:\n\n%s\n" % js2cc(deserializedLeader.toString()))
 
 # Display all of the entered values for the deserialized instance using the
 # toJSON() method.
 
-print "(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(deserializedLeader.toJSON())
+print("(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(deserializedLeader.toJSON()))
 
 # Create an instance of a Russian Squad.
 
@@ -175,52 +175,52 @@ russianSquad.setStatus(desperateState)
 
 # Display all of the entered values for this instance using the toText() method.
 
-print "Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText())
+print("Squad.toText() output:\n\n%s" % js2cc(russianSquad.toText()))
 
 # Display an abbreviated description of this instance using the toString()
 # method.
 
-print "Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString())
+print("Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString()))
 
 # Display the output of all of the access methods declared for the Squad class
 # using the instance created above.
 
-#print "Squad class access methods and output :\n"
+#print("Squad class access methods and output :\n")
 
-#print "\tdescription() - name: %s\tlabel: %s" % (js2cc(russianSquad.description().name()),js2cc(russianSquad.description().toString()))
+#print("\tdescription() - name: %s\tlabel: %s" % (js2cc(russianSquad.description().name()),js2cc(russianSquad.description().toString())))
 
-#print "\tidentity(): %s"               % js2cc(russianSquad.identity())
-#print "\tnationality() - name: %s\tlabel: %s" % (js2cc(russianSquad.nationality().name()),js2cc(russianSquad.nationality().toString()))
+#print("\tidentity(): %s"               % js2cc(russianSquad.identity()))
+#print("\tnationality() - name: %s\tlabel: %s" % (js2cc(russianSquad.nationality().name()),js2cc(russianSquad.nationality().toString())))
 #statusList = russianSquad.status()
-#print "\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString()))
-#print "\tunitType(): %s"               % js2cc(russianSquad.unitType())
+#print("\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString())))
+#print("\tunitType(): %s"               % js2cc(russianSquad.unitType()))
 
-#print "\tmovement(): %d"               % russianSquad.movement()
-#print "\tportageCapacity(): %d"        % russianSquad.portageCapacity()
-#print "\tportageLevel(): %d"           % russianSquad.portageLevel()
+#print("\tmovement(): %d"               % russianSquad.movement())
+#print("\tportageCapacity(): %d"        % russianSquad.portageCapacity())
+#print("\tportageLevel(): %d"           % russianSquad.portageLevel())
 
-#print "\tbasicPointValue(): %d"        % russianSquad.basicPointValue()
-#print "\tbrokenMorale(): %d"           % russianSquad.brokenMorale()
-#print "\tcanSelfRally(): %d"           % russianSquad.canSelfRally()
-#print "\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating()
-#print "\tfirepower(): %s"              % js2cc(russianSquad.firepower())
-#print "\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent()
-#print "\tinfantryType() - name: %s\tlabel: %s" % (js2cc(russianSquad.infantryType().name()),js2cc(russianSquad.infantryType().toString()))
-#print "\tmorale(): %d"                 % russianSquad.morale()
-#print "\tnormalRange(): %d"            % russianSquad.normalRange()
-#print "\tportageValue(): %d"           % russianSquad.portageValue()
+#print("\tbasicPointValue(): %d"        % russianSquad.basicPointValue())
+#print("\tbrokenMorale(): %d"           % russianSquad.brokenMorale())
+#print("\tcanSelfRally(): %d"           % russianSquad.canSelfRally())
+#print("\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating())
+#print("\tfirepower(): %s"              % js2cc(russianSquad.firepower()))
+#print("\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent())
+#print("\tinfantryType() - name: %s\tlabel: %s" % (js2cc(russianSquad.infantryType().name()),js2cc(russianSquad.infantryType().toString())))
+#print("\tmorale(): %d"                 % russianSquad.morale())
+#print("\tnormalRange(): %d"            % russianSquad.normalRange())
+#print("\tportageValue(): %d"           % russianSquad.portageValue())
 
-#print "\tclassification() - name: %s\tlabel: %s" % (js2cc(russianSquad.classification().name()),js2cc(russianSquad.classification().toString()))
-#print "\thasMaximumELR(): %d"          % russianSquad.hasMaximumELR()
+#print("\tclassification() - name: %s\tlabel: %s" % (js2cc(russianSquad.classification().name()),js2cc(russianSquad.classification().toString())))
+#print("\thasMaximumELR(): %d"          % russianSquad.hasMaximumELR())
 
-#print "\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire()
-#print "\tcanSprayFire(): %d"           % russianSquad.canSprayFire()
-#print "\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent()
+#print("\tcanAssaultFire(): %d"         % russianSquad.canAssaultFire())
+#print("\tcanSprayFire(): %d"           % russianSquad.canSprayFire())
+#print("\tsmokePlacementExponent(): %d" % russianSquad.smokePlacementExponent())
 
 # Test the exception handling within the Serialization class, specifically the
 # methods associated with serializing to and deserializing from a byte array.
 
-print "Testing Exception handling for serialization to and from a byte array:"
+print("Testing Exception handling for serialization to and from a byte array:")
 
 try:
     Serialization_serializeToByteArray(None)
@@ -266,21 +266,21 @@ assert(False == deserializedSquad.clearStatus(statusList[0]))
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
-print "\n(Deserialized) Squad.toText() output:\n\n%s" % js2cc(deserializedSquad.toText())
+print("\n(Deserialized) Squad.toText() output:\n\n%s" % js2cc(deserializedSquad.toText()))
 
 # Display an abbreviated description of the deserialized instance using the
 # toString() method.
 
-print "(Deserialized) Squad.toString() output:\n\n%s\n" % js2cc(deserializedSquad.toString())
+print("(Deserialized) Squad.toString() output:\n\n%s\n" % js2cc(deserializedSquad.toString()))
 
 # Display all of the entered values for the deserialized instance using the
 # toJSON() method.
 
-print "(Deserialized) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
+print("(Deserialized) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON()))
 
 # Test the fromJSON() method.
 
-print "Testing the fromJSON() method:"
+print("Testing the fromJSON() method:")
 
 deserializedSquadJSON  = js2cc(deserializedSquad.toJSON())
 deserializedLeaderJSON = js2cc(deserializedLeader.toJSON())
@@ -488,9 +488,9 @@ fromJsonSquadTestStrings = [
 ]
 
 for row in range(len(fromJsonSquadTestStrings)):
-#   print "label: %s JSON: %s\n" % (fromJsonSquadTestStrings[row][0],fromJsonSquadTestStrings[row][1])
+#   print("label: %s JSON: %s\n" % (fromJsonSquadTestStrings[row][0],fromJsonSquadTestStrings[row][1]))
 
-    print "\n%s:" % fromJsonSquadTestStrings[row][0]
+    print("\n%s:" % fromJsonSquadTestStrings[row][0])
 
     try:
         deserializedSquad.fromJSON(cc2js(fromJsonSquadTestStrings[row][1]))
@@ -511,9 +511,9 @@ fromJsonLeaderTestStrings = [
 ]
 
 for row in range(len(fromJsonLeaderTestStrings)):
-#   print "label: %s JSON: %s\n" % (fromJsonLeaderTestStrings[row][0],fromJsonLeaderTestStrings[row][1])
+#   print("label: %s JSON: %s\n" % (fromJsonLeaderTestStrings[row][0],fromJsonLeaderTestStrings[row][1]))
 
-    print "\n%s:" % fromJsonLeaderTestStrings[row][0]
+    print("\n%s:" % fromJsonLeaderTestStrings[row][0])
 
     try:
         deserializedLeader.fromJSON(cc2js(fromJsonLeaderTestStrings[row][1]))
@@ -533,11 +533,11 @@ deserializedSquadJSON = deserializedSquadJSON.replace(validPortageLevel,
 
 deserializedSquad.fromJSON(cc2js(deserializedSquadJSON))
 
-print "\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON())
+print("\n(Updated with fromJSON()) Squad.toJSON() output:\n\n%s\n" % js2cc(deserializedSquad.toJSON()))
 
 # Test the Unit.factory() method.
 
-print "Testing the Unit.factory() method:"
+print("Testing the Unit.factory() method:")
 
 unitObject = None
 
@@ -565,7 +565,7 @@ unitObject = Unit_factory(cc2js(newLeaderJSON),3)
 # Display all of the entered values for the new Leader instance (created with
 # Unit.factory()) using the toJSON() method.
 
-print "\n(Created with Unit.factory()) Leader.toJSON() output:\n\n%s\n" % js2cc(unitObject.toJSON())
+print("\n(Created with Unit.factory()) Leader.toJSON() output:\n\n%s\n" % js2cc(unitObject.toJSON()))
 
 # Build JSON string for Squad specific Unit.factory() testing.
 
@@ -599,12 +599,12 @@ unitObject = Unit_factory(cc2js(newSquadJSON),3)
 # Display all of the entered values for the new Squad instance (created with
 # Unit.factory()) using the toJSON() method.
 
-print "(Created with Unit.factory()) Squad.toJSON() output:\n\n%s\n" % js2cc(unitObject.toJSON())
+print("(Created with Unit.factory()) Squad.toJSON() output:\n\n%s\n" % js2cc(unitObject.toJSON()))
 
 # Display all of the entered values for the new Squad instance (created with
 # (Attempt to) create Unit instances using Unit.factory() to test exceptions.
 
-print "Testing Exception handling for Unit.factory() method:"
+print("Testing Exception handling for Unit.factory() method:")
 
 factoryTestStrings = [
  # Unit
@@ -643,9 +643,9 @@ factoryTestStrings = [
 ]
 
 for row in range(len(factoryTestStrings)):
-#   print "label: %s JSON: %s\n" % (factoryTestStrings[row][0],factoryTestStrings[row][1])
+#   print("label: %s JSON: %s\n" % (factoryTestStrings[row][0],factoryTestStrings[row][1]))
 
-    print "\n%s:" % factoryTestStrings[row][0]
+    print("\n%s:" % factoryTestStrings[row][0])
 
     try:
         unitObject = Unit_factory(cc2js(factoryTestStrings[row][1]),3)
@@ -655,7 +655,7 @@ for row in range(len(factoryTestStrings)):
 # Create an array of Unit objects. These will be used to reference a Leader
 # instance and several Squad instances. These class types are derived from Unit.
 
-print "\nBuilding Unit array with a Leader & 3 Squads\n"
+print("\nBuilding Unit array with a Leader & 3 Squads\n")
 
 unitList = []
 
@@ -689,9 +689,9 @@ unitList[2].setStatus(brokenState)
 unitList[3].setIdentity(cc2js("Z"))
 unitList[3].setStatus(desperateState)
 
-print "Displaying Unit array with a Leader & 3 Squads"
+print("Displaying Unit array with a Leader & 3 Squads")
 
-for unitIndex in xrange(4):
+for unitIndex in iter(range(4)):
     unit = unitList[unitIndex]
 
     statusList   = unit.status()
@@ -703,17 +703,17 @@ for unitIndex in xrange(4):
     for status in statusList:
         statusString = js2cc(status.toString())
 
-    print "\nUnitList[%d]:\t%s" % (unitIndex,js2cc(unit.toString()))
+    print("\nUnitList[%d]:\t%s" % (unitIndex,js2cc(unit.toString())))
 
-    print "\n%s" % js2cc(unit.description().toString())
-    print "%s"   % js2cc(unit.identity())
-    print "%s"   % js2cc(unit.unitType())
-    print "%d"   % unit.movement()
-    print "[%s]" % statusString
+    print("\n%s" % js2cc(unit.description().toString()))
+    print("%s"   % js2cc(unit.identity()))
+    print("%s"   % js2cc(unit.unitType()))
+    print("%d"   % unit.movement())
+    print("[%s]" % statusString)
 
 # Create an instance of a German Squad (that throws some exceptions).
 
-print "\nTesting Exception handling for Squad update methods:"
+print("\nTesting Exception handling for Squad update methods:")
 
 nationality = Nationalities_valueOf(cc2js("GERMAN"))
 unitType    = InfantryTypes_valueOf(cc2js("NONE"))
@@ -731,21 +731,21 @@ squad.setIdentity(cc2js(""))
 
 # Invalid portage level
 
-print "\nInvalid portage level argument:"
+print("\nInvalid portage level argument:")
 
 try:
     squad.setPortageLevel(-1)
 except ValueError as detail:
     printException(detail)
 
-print "\nTesting Exception handling during Squad creation:"
+print("\nTesting Exception handling during Squad creation:")
 
 nationality = Nationalities_valueOf(cc2js("BRITISH"))
 unitType    = InfantryTypes_valueOf(cc2js("ENGINEERS"))
 
 # Incompatible nationality and unitType
 
-print "\nIncompatible nationality and unitType arguments:"
+print("\nIncompatible nationality and unitType arguments:")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
@@ -759,7 +759,7 @@ classification = Classifications_valueOf(cc2js("GREEN"))
 
 # Incompatible description and unitType
 
-print "\nIncompatible description and unitType arguments:"
+print("\nIncompatible description and unitType arguments:")
 
 try:
     squad = Squad(nationality,unitType,4,4,7,7,False,10,3,False,classification,
@@ -773,7 +773,7 @@ classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
 # Invalid Firepower
 
-print "\nInvalid (less than 0) firepower argument:"
+print("\nInvalid (less than 0) firepower argument:")
 
 try:
     squad = Squad(nationality,unitType,-1,6,7,7,False,10,3,False,classification,
@@ -781,7 +781,7 @@ try:
 except ValueError as detail:
     printException(detail)
 
-print "\nInvalid (greater than maximum) firepower argument:"
+print("\nInvalid (greater than maximum) firepower argument:")
 
 try:
     squad = Squad(nationality,unitType,11,6,7,7,False,10,3,False,classification,
@@ -791,7 +791,7 @@ except ValueError as detail:
 
 # Invalid Range
 
-print "\nInvalid (less than 0) normal range argument:"
+print("\nInvalid (less than 0) normal range argument:")
 
 try:
     squad = Squad(nationality,unitType,4,-255,7,7,False,10,3,False,
@@ -801,7 +801,7 @@ except ValueError as detail:
 
 # Invalid Morale (Minimum)
 
-print "\nInvalid (less than 0) morale argument:"
+print("\nInvalid (less than 0) morale argument:")
 
 try:
     squad = Squad(nationality,unitType,4,6,-1,7,False,10,3,False,classification,
@@ -811,7 +811,7 @@ except ValueError as detail:
 
 # Invalid Morale (Maximum)
 
-print "\nInvalid (greater than maximum) morale argument:"
+print("\nInvalid (greater than maximum) morale argument:")
 
 try:
     squad = Squad(nationality,unitType,4,6,11,7,False,10,3,False,classification,
@@ -821,7 +821,7 @@ except ValueError as detail:
 
 # Invalid Broken Morale (Minimum)
 
-print "\nInvalid (less than 0) broken morale argument:"
+print("\nInvalid (less than 0) broken morale argument:")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,-7,False,10,3,False,classification,
@@ -831,7 +831,7 @@ except ValueError as detail:
 
 # Invalid Broken Morale (Maximum)
 
-print "\nInvalid (greater than maximum) broken morale argument:"
+print("\nInvalid (greater than maximum) broken morale argument:")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,17,False,10,3,False,classification,
@@ -841,7 +841,7 @@ except ValueError as detail:
 
 # Invalid Basic Point Value (BPV)
 
-print "\nInvalid (less than zero) Basic Point Value (BPV):"
+print("\nInvalid (less than zero) Basic Point Value (BPV):")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,-1,3,False,classification,
@@ -851,7 +851,7 @@ except ValueError as detail:
 
 # Invalid Experience Level Rating (Minimum)
 
-print "\nInvalid (less than zero) Experience Level Rating (ELR):"
+print("\nInvalid (less than zero) Experience Level Rating (ELR):")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,-1,False,classification,
@@ -861,7 +861,7 @@ except ValueError as detail:
 
 # Invalid Experience Level Rating (Maximum)
 
-print "\nInvalid (greater than maximum) Experience Level Rating (ELR):"
+print("\nInvalid (greater than maximum) Experience Level Rating (ELR):")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,6,False,classification,
@@ -874,7 +874,7 @@ classification = Classifications_valueOf(cc2js("SS"))
 
 # Incompatible Classification (only German units can be SS)
 
-print "\nIncompatible classification argument (nationality mismatch):"
+print("\nIncompatible classification argument (nationality mismatch):")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
@@ -887,7 +887,7 @@ classification = Classifications_valueOf(cc2js("ELITE"))
 
 # Incompatible Classification (Partisan units must have empty classification)
 
-print "\nIncompatible classification argument (invalid setting):"
+print("\nIncompatible classification argument (invalid setting):")
 
 try:
     squad = Squad(nationality,unitType,3,3,7,6,False,10,3,False,classification,
@@ -900,7 +900,7 @@ classification = Classifications_valueOf(cc2js("SECOND_LINE"))
 
 # Invalid Smoke Placement Exponent (Minimum)
 
-print "\nInvalid (less than zero) Smoke Placement Exponent:"
+print("\nInvalid (less than zero) Smoke Placement Exponent:")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,6,3,False,classification,
@@ -910,7 +910,7 @@ except ValueError as detail:
 
 # Invalid Smoke Placement Exponent (Maximum)
 
-print "\nInvalid (greater than maximum) Smoke Placement Exponent:"
+print("\nInvalid (greater than maximum) Smoke Placement Exponent:")
 
 try:
     squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
@@ -922,14 +922,14 @@ except ValueError as detail:
 # NOTE: It is only necessary to test the modifier, since all the other
 #       exceptions have been tested above as part of the creation of a Squad.
 
-print "\nTesting Exception handling during Leader creation:"
+print("\nTesting Exception handling during Leader creation:")
 
 nationality = Nationalities_valueOf(cc2js("BRITISH"))
 unitType    = InfantryTypes_valueOf(cc2js("CANADIAN"))
 
 # Invalid Modifier (Minimum)
 
-print "\nInvalid (less than minimum) modifier argument:"
+print("\nInvalid (less than minimum) modifier argument:")
 
 try:
     leader = Leader(nationality,unitType,10,10,5,-4)
@@ -938,7 +938,7 @@ except ValueError as detail:
 
 # Invalid Modifier (Maximum)
 
-print "\nInvalid (greater than maximum) modifier argument:"
+print("\nInvalid (greater than maximum) modifier argument:")
 
 try:
     leader = Leader(nationality,unitType,10,10,5,4)
@@ -947,41 +947,41 @@ except ValueError as detail:
 
 # Test the Dice class.
 
-#print "\nTesting the execution of the Dice class:\n"
+#print("\nTesting the execution of the Dice class:\n")
 
 #for i in (list(range(12))):
 #    dice = Dice()
 
-##   print "Access methods test - White: %d" % dice.whiteDieValue() + \
+##   print("Access methods test - White: %d" % dice.whiteDieValue() + \)
 ##         " Colored: %d"  % dice.coloredDieValue() + \
 ##         " Combined: %2d" % dice.combinedResult()
 
-#    print "%s" % (js2cc(dice.toText()))
+#    print("%s" % (js2cc(dice.toText())))
 
 # Test the Scenario class.
 
 # Valid resource path / filename and data.
 
-print "\nTesting the operations of the Scenario class:\n"
+print("\nTesting the operations of the Scenario class:\n")
 
 Scenario_scenario().load(cc2js("../scenarios/The Guards Counterattack.json"))
 
 # Display all of the attributes of the scenario using the toText() method.
 
-print "Scenario.toText() output:\n"
-print "%s" % (js2cc(Scenario_scenario().toText()))
+print("Scenario.toText() output:\n")
+print("%s" % (js2cc(Scenario_scenario().toText())))
 
 # Display an abbreviated description of the scenario (its name) using the
 # toString() method.
 
-print "Scenario.toString() output:\n"
-print "%s\n" % (js2cc(Scenario_scenario().toString()))
+print("Scenario.toString() output:\n")
+print("%s\n" % (js2cc(Scenario_scenario().toString())))
 
-print "Testing Exception handling for Scenario.load() method:\n"
+print("Testing Exception handling for Scenario.load() method:\n")
 
 # Null filename.
 
-print "Null filename:"
+print("Null filename:")
 
 try:
     Scenario_scenario().load(None)
@@ -990,7 +990,7 @@ except ValueError as detail:
 
 # Invalid filename.
 
-print "\nInvalid filename:"
+print("\nInvalid filename:")
 
 try:
     Scenario_scenario().load(cc2js("scenarios/The Guard Counterattack.json"))
@@ -999,7 +999,7 @@ except ValueError as detail:
 
 # Test the Game class.
 
-print "\nTesting the operations of the Game class:"
+print("\nTesting the operations of the Game class:")
 
 allies           = Sides_valueOf(cc2js("ALLIES"))
 nationality      = Nationalities_valueOf(cc2js("AMERICAN"))
@@ -1035,4 +1035,4 @@ axisPlayer.addUnit(squad)
 axisPlayer.addUnit(squad)
 axisPlayer.addUnit(squad)
 
-print "\n%s" % js2cc(game.toText())
+print("\n%s" % js2cc(game.toText()))

@@ -13,13 +13,11 @@
 # Written By: Craig R. Campbell  -  August 2008                                #
 ################################################################################
 
-#$PERLLIB_INC = "/home/campbell/java/jasl/lib";
-#unshift(@INC,$PERLLIB_INC);
-
 #use diagnostics;
 #use diagnostics -verbose;
 use strict;
 use warnings;
+use lib '/home/craig/jasl/bin/perl-jasl';
 
 use CniWrapper;
 use Counters;
