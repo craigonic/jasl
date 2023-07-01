@@ -1,5 +1,5 @@
 // ************************************************************************** //
-// Dice.java - This class is used to simulate the rolling of two standard     //
+// Dice.java - This class is used to simulate the rolling of three standard   //
 //             dice. It is intended to support the classes more directly      //
 //             associated with the game itself.                               //
 //                                                                            //
@@ -7,8 +7,8 @@
 //             automatically when an instance of the Dice class is            //
 //             instantiated. No interpretation of the result is performed by  //
 //             this class. The calling program may only retrieve the results  //
-//             of the rolling of the white and colored dice individually, as  //
-//             well as the combined result.                                   //
+//             of the rolling of each die individually, as well as the        //
+//             combined result of the white and colored dice.                 //
 //                                                                            //
 // Written By: Craig R. Campbell  -  September 1999                           //
 // ************************************************************************** //
@@ -17,10 +17,10 @@ package jasl.utilities;
 
 /**
  * This is a utility class used to provide the simulated result(s) of rolling
- * one or two six sided dice.
+ * one to three six sided dice.
  *
- * @version 3.1
- * @author Copyright (C) 1999-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 4.0
+ * @author Copyright (C) 1999-2022 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/utilities/Dice.html">Source code</A>
  */
 
@@ -45,16 +45,21 @@ public final class Dice
 
 	private int _coloredDieValue;
 
-	// This variable contains the combined result of rolling the two dice.
+	// This variable contains the combined result of rolling the white and
+	// colored dice.
 
 	private int _combinedResult;
+
+	// This variable contains the result of rolling the "subsequent" die.
+
+	private int _subsequentDieValue;
 
 	// Constructor
 
 	/**
 	 * Construct a new <CODE>Dice</CODE> instance.
 	 * <P>
-	 * When the object is created, both dice are "rolled" automatically.
+	 * When the object is created, all three dice are "rolled" automatically.
 	 */
 
 	public Dice()
@@ -89,6 +94,19 @@ public final class Dice
 		// the _combinedResult member variable.
 
 		_combinedResult = _whiteDieValue + _coloredDieValue;
+
+		// Roll the subsequent die.
+
+		tmpResult = (int)Math.ceil(Math.random() * MAX_ROLL);
+
+		// Check the result and assert if it does not fall within the
+		// expected range.
+
+		assert((tmpResult >= MIN_ROLL) && (tmpResult <= MAX_ROLL));
+
+		// Copy the result to the _subsequentDieValue member variable.
+
+		_subsequentDieValue = tmpResult;
 	}
 
 	// Public access methods
@@ -109,6 +127,7 @@ public final class Dice
 		String WHITE_DIE_LABEL       = "White Die";
 		String COLORED_DIE_LABEL     = "Colored Die";
 		String COMBINED_RESULT_LABEL = "Combined Result";
+		String SUBSEQUENT_DIE_LABEL  = "Subsequent Die";
 
 		int    LABEL_WIDTH           = 20;
 		int    VALUE_WIDTH           =  5;
@@ -143,6 +162,14 @@ public final class Dice
 		                    LABEL_WIDTH,true,false));
 
 		returnString.append(Messages.formatTextString(Integer.toString(combinedResult()),
+		                    VALUE_WIDTH,false,false));
+
+		// Subsequent Die
+
+		returnString.append(Messages.formatTextString(SUBSEQUENT_DIE_LABEL,
+		                    LABEL_WIDTH,true,false));
+
+		returnString.append(Messages.formatTextString(Integer.toString(subsequentDieValue()),
 		                    VALUE_WIDTH,false,true));
 
 		// Return the completed string to calling program.
@@ -173,7 +200,8 @@ public final class Dice
 	}
 
 	/**
-	 * Return the result of combining the values of the two dice.
+	 * Return the result of combining the values of the white and colored
+	 * dice.
 	 *
 	 * @return an <CODE>int</CODE> specifying the sum of the white and colored die
 	 * values.
@@ -182,5 +210,16 @@ public final class Dice
 	public int combinedResult()
 	{
 		return _combinedResult;
+	}
+
+	/**
+	 * Return the result of rolling the subsequent die.
+	 *
+	 * @return an <CODE>int</CODE> specifying the subsequent die value.
+	 */
+
+	public int subsequentDieValue()
+	{
+		return _subsequentDieValue;
 	}
 }
