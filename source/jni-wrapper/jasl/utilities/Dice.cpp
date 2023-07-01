@@ -2,7 +2,7 @@
  * \file Dice.cpp
  *
  * This file defines a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
+ * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in Java.
  *
  * Written By: Craig R. Campbell  -  December 2010
  */

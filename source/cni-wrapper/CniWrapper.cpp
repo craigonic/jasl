@@ -2,7 +2,7 @@
  * \file CniWrapper.cpp
  *
  * This file defines the class infrastructure used to create and manage the
- * connection and interaction with a <A HREF="http://java.sun.com/">Java</A> Virtual Machine.
+ * connection and interaction with a Java Virtual Machine.
  *
  * Written By: Craig R. Campbell  -  April 2007
  */

@@ -2,11 +2,11 @@
 // Driver.cxx - This file contains the Driver program, which is used to test  //
 //              the functionality of the Java classes defined in the jasl     //
 //              package hierarchy, accessed through libraries that interact   //
-//              with the Java bytecode via the <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface).   //
+//              with the Java bytecode via the JNI (Java Native Interface).   //
 //                                                                            //
 //              NOTE: This program is based on Advanced Squad Leader, which   //
 //                    was created by The Avalon Hill Game Company, and lives  //
-//                    on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                           //
+//                    on at Multi-Man Publishing.                             //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2015                              //
 // ************************************************************************** //

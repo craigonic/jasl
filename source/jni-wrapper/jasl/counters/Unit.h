@@ -2,7 +2,7 @@
  * \file Unit.h
  *
  * This file declares a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
+ * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in Java.
  *
  * Written By: Craig R. Campbell  -  January 2010
  */
@@ -22,10 +22,10 @@ namespace jasl
 }
 
 /**
- * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) wrapper.
+ * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class CNI (Compiled Native Interface) wrapper.
  *
  * This class is used to simplify access to its namesake, which is implemented
- * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/wiki/GCJ/">GCJ</A>. It also interacts with the
+ * in Java and compiled into a library with GCJ. It also interacts with the
  * <A HREF="../../CniWrapper.h.html">CniWrapper</A> and <A HREF="../../JaslErrorMessage.h.html">JaslErrorMessage</A> classes, which are used both to enable Java
  * support and keep it "behind the scenes".
  *
@@ -129,7 +129,7 @@ class Unit
 		/**
 		 * The description setting for this Unit instance.
 		 *
-		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A>, converted to
+		 * This item references a copy of a Java String, converted to
 		 * the indicated type using the <A HREF="../../CniWrapper.h.html#_JS2CC_">js2cc</A>() function. The copy is
 		 * generated during the initial call to the description()
 		 * method. Subsequent calls return this item. The memory is

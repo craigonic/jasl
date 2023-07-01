@@ -1,16 +1,15 @@
 // ************************************************************************** //
 // Driver.cpp - This file contains the Driver program, which is used to test  //
 //              the functionality of the Java classes defined in the jasl     //
-//              package hierarchy, accessed as a library generated using <A HREF="http://gcc.gnu.org/java/">GCJ</A>, //
-//              through the <A HREF="http://gcc.gnu.org/onlinedocs/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface).                  //
+//              package hierarchy, accessed as a library generated using GCJ, //
+//              through the CNI (Compiled Native Interface).                  //
 //                                                                            //
 //              NOTE: This program is based on Advanced Squad Leader, which   //
 //                    was created by The Avalon Hill Game Company, and lives  //
-//                    on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                           //
+//                    on at Multi-Man Publishing.                             //
 //                                                                            //
 // Written By: Craig R. Campbell  -  April 2007                               //
 // ************************************************************************** //
-
 
 #include "jasl/cni/CniWrapper.h"
 #include "jasl/cni/JaslErrorMessage.h"
@@ -1096,7 +1095,7 @@ int main(int argc, char *argv[])
         printf("\nBuilding Unit array with a Leader & 3 Squads\n\n");
 
         // The following commented code demonstrates, based on the CNI
-        // documentation, the correct/preferred way to create <A HREF="http://gcc.gnu.org/onlinedocs/gcj/Arrays.html#Arrays">arrays</A> of pointers
+        // documentation, the correct/preferred way to create arrays of pointers
         // to Java objects.
 /*
          using namespace java::lang;

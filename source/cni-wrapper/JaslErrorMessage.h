@@ -1,7 +1,7 @@
 /**
  * \file JaslErrorMessage.h
  *
- * This file declares a generic C++ exception class to "wrap" a <A HREF="http://java.sun.com/">Java</A> <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html">Throwable</A>
+ * This file declares a generic C++ exception class to "wrap" a Java Throwable
  * object, providing a copy of the detailed description of the error it
  * represents.
  *
@@ -24,7 +24,7 @@ namespace java
  * \brief jASL exception wrapper.
  *
  * This class is used to create a generic C++ exception to provide access to the
- * message in the <A HREF="http://java.sun.com/">Java</A> <A HREF="http://download.oracle.com/javase/6/docs/api/java/lang/Throwable.html">Throwable</A> object specified to the constructor, leaving
+ * message in the Java Throwable object specified to the constructor, leaving
  * all of its other, mostly non-essential, functionality behind.
  *
  * @version 1.0

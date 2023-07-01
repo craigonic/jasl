@@ -2,7 +2,7 @@
  * \file Dice.h
  *
  * This file declares a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
+ * programs to the <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class, which is implemented in Java.
  *
  * Written By: Craig R. Campbell  -  November 2010
  */
@@ -15,10 +15,10 @@
 #include <string>
 
 /**
- * \brief <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface) wrapper.
+ * \brief <A HREF="../../../jasl/utilities/Dice.html">Dice</A> class JNI (Java Native Interface) wrapper.
  *
  * This class is used to provide access to its namesake, which is implemented
- * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
+ * in Java, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
  * provides a JVM to execute the library code, as well as string conversion
  * methods.
  *
@@ -113,7 +113,7 @@ class Dice final
 		 * The text representation of the attributes and current state
 		 * for this Dice instance.
 		 *
-		 * This item references a copy of a Java <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>, converted to
+		 * This item references a copy of a Java String, converted to
 		 * the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function. The copy is
 		 * generated during the initial call to the toText() method.
 		 * Subsequent calls only return the generated copy.

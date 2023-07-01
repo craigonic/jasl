@@ -3,7 +3,7 @@
 //                   used to generate libraries that link to the <A HREF="../../cni-wrapper/cni-wrapper.html">cni-wrapper</A>  //
 //                   library. These libraries, along with the other files     //
 //                   that are generated, are used to create, manage, and      //
-//                   close a JVM (<A HREF="http://java.sun.com/">Java</A> Virtual Machine). The JVM is required  //
+//                   close a JVM (Java Virtual Machine). The JVM is required  //
 //                   to use the objects referenced by the other libraries     //
 //                   generated in this directory from the supported scripting //
 //                   languages (<A HREF="http://www.perl.org/">Perl</A> and <A HREF="http://www.python.org/">Python</A>).                             //
@@ -20,7 +20,7 @@
 %}
 
 // The stringToConstChar() method and the js2cc() function allocate memory to
-// store the data copied from the <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory
+// store the data copied from the String object. This typemap causes that memory
 // to be freed in the wrapper function after it creates the native data item to
 // store the string.
 

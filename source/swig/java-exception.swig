@@ -48,7 +48,7 @@ static const char* js2cc(::java::lang::String* javaString)
 %}
 
 // The js2cc() function allocates memory to store the data copied from the
-// <A HREF="http://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</A> object. This typemap causes that memory to be freed in the wrapper
+// String object. This typemap causes that memory to be freed in the wrapper
 // function after it creates the native data item to store the string.
 
 %newobject js2cc(::java::lang::String* javaString);

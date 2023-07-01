@@ -14,13 +14,13 @@
 #include <string>
 
 /**
- * \brief <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface) wrapper.
+ * \brief JNI (Java Native Interface) wrapper.
  *
  * This <A HREF="http://en.wikipedia.org/wiki/Singleton_pattern">Singleton</A> class is used to create, manage, and close a <A HREF="https://en.wikipedia.org/wiki/Java_virtual_machine">JVM</A> (Java Virtual
- * Machine). This allows a C++ program to access native <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> code via the JNI.
+ * Machine). This allows a C++ program to access native Java code via the JNI.
  *
- * The friend functions are provided to convert a <A HREF="http://en.cppreference.com/w/cpp/string/basic_string">std::string</A> to a Java <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>
- * and vice-versa, as well as to access the JNI <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
+ * The friend functions are provided to convert a std::string to a Java String
+ * and vice-versa, as well as to access the JNI API.
 .
  *
  * @version 1.0
@@ -123,7 +123,7 @@ class JniWrapper final
 };
 
 /** <A NAME="_JS2SS_"></A>
- * \brief Return the std::string string representation of the specified <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> <A HREF="http://docs.oracle.com/javase/10/docs/api/java/lang/String.html">String</A>
+ * \brief Return the std::string representation of the specified Java String
  * object.
  *
  * This function calls the <A HREF="#_STRINGTOSTDSTRING_">stringToStdString</A>() method of the JniWrapper,
@@ -138,7 +138,7 @@ inline std::string js2ss(jstring javaString)
 }
 
 /** <A NAME="_SS2JS_"></A>
- * \brief Return a Java String object containing the specified <A HREF="http://en.cppreference.com/w/cpp/string/basic_string">std::string</A>.
+ * \brief Return a Java String object containing the specified <std::string.
  *
  * This function calls the <A HREF="#_STDSTRINGTOSTRING_">stdStringtoString</A>() method of the JniWrapper,
  * returning a pointer to a Java String object, which manages a copy of the
@@ -154,7 +154,7 @@ inline const jstring ss2js(const std::string& stdString)
 }
 
 /**
- * \brief Return a reference to the Java Native Interface <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#interface_function_table">API</A>.
+ * \brief Return a reference to the Java Native Interface API.
  *
  * This function calls the <A HREF="#_JNIENV_">jniNativeInterface</A>() method of the JniWrapper,
  */
