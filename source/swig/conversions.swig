@@ -5,8 +5,6 @@
 //                    of a specific type.                                     //
 //                                                                            //
 // Written By: Craig R. Campbell  -  August 2008                              //
-//                                                                            //
-// $Id: conversions.swig,v 1.1 2008/08/28 23:34:11 campbell Exp $
 // ************************************************************************** //
 
 // Convert perl string to a Java String using JvNewStringLatin1 and vice-versa.
