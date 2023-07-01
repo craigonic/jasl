@@ -117,7 +117,10 @@ INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.py \
                          *.pyw
 RECURSIVE              = YES
-EXCLUDE                =
+EXCLUDE                = jasl/__init__.py \
+                         jasl/ui/__init__.py \
+                         jasl/ui/data/__init__.py \
+                         jasl/utilities/__init__.py
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        =
@@ -133,7 +136,7 @@ USE_MDFILE_AS_MAINPAGE =
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
 #---------------------------------------------------------------------------
-SOURCE_BROWSER         = YES
+SOURCE_BROWSER         = NO
 INLINE_SOURCES         = NO
 STRIP_CODE_COMMENTS    = YES
 REFERENCED_BY_RELATION = NO
