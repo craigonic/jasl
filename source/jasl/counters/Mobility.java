@@ -6,7 +6,7 @@
 //                                                                            //
 //                 NOTE: This program is based on Advanced Squad Leader,      //
 //                       which was created by The Avalon Hill Game Company,   //
-//                       and lives on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">Multi-Man Publishing</A>.                //
+//                       and lives on at Multi-Man Publishing.                //
 //                                                                            //
 // Written By: Craig R. Campbell  -  March 2012                               //
 // ************************************************************************** //

@@ -5,7 +5,7 @@
 //                                                                            //
 //             NOTE: This program is based on Advanced Squad Leader, which    //
 //                   was created by The Avalon Hill Game Company, and lives   //
-//                   on at <A HREF="http://www.multimanpublishing.com/Products/tabid/58/CategoryID/4/Default.aspx">MultimanPublishing.com</A>.                            //
+//                   on at Multi-Man Publishing.                              //
 //                                                                            //
 // Written By: Craig R. Campbell  -  December 1998                            //
 // ************************************************************************** //
@@ -72,7 +72,7 @@ public abstract class Unit implements Serializable, TextOutput, JsonData,
 	}
 
 	// This declaration is redundant for Java and C++ usage, but it is
-	// necessary in order for it to appear in the <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcj/About-CNI.html#About-CNI">CNI</A> header file, which is
+	// necessary in order for it to appear in the CNI header file, which is
 	// used by <A HREF="http://www.swig.org/">SWIG</A> to build bindings for scripting languages.
 
 	protected Unit() {}
