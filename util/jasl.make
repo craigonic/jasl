@@ -151,7 +151,7 @@ HTLS_HEADER_FILE   := header.html
 
 JAVADOC_COMPILER   := javadoc
 JAVADOCS_PATH      := $(DOCS_PATH)/javadocs
-JAVADOCS_LINK      := -link http://docs.oracle.com/javase/8/docs/api
+JAVADOCS_LINK      := -link https://docs.oracle.com/en/java/javase/21/docs/api
 JAVADOC_OPTIONS    := -version -author -package -nodeprecatedlist -use \
                       -breakiterator
 JAVADOC_TITLE      := -windowtitle "jASL Programming Documentation"
@@ -322,7 +322,9 @@ ORG_JSON_PKG_PATH             := $(ORG_PKG_NAME)/$(ORG_JSON_PKG_NAME)
 ORG_JSON_OBJ_PATH             := $(SRC_PATH)/$(ORG_JSON_PKG_PATH)
 ORG_JSON_BIN_PATH             := $(BIN_PATH)/$(ORG_JSON_PKG_PATH)
 ORG_JSON_INCLUDE_PATH         := $(INCLUDE_PATH)/$(ORG_JSON_PKG_PATH)
+ORG_JSON_SRC_PATH             := $(ORG_JSON_PKG_PATH)/src/main/java/$(ORG_JSON_PKG_PATH)
 
+ORG_JSON_SRC_FILES            := $(ORG_JSON_SRC_PATH)/*.java
 ORG_JSON_CLASS_FILES          := $(ORG_JSON_BIN_PATH)/*.class
 ORG_JSON_OBJ_FILES            := $(ORG_JSON_OBJ_PATH)/$(OBJ_SUB_DIRECTORY)/*.o
 ORG_JSON_HDR_FILES            := $(ORG_JSON_INCLUDE_PATH)/*.h
