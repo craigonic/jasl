@@ -1,4 +1,4 @@
-Fri Jul 21 12:53:42 PDT 2017
+Sat 21 Oct 2023 09:51:32 PM PDT
 
 Leader.toText() output:
 
@@ -182,7 +182,7 @@ Caught: java.lang.IllegalArgumentException: Unit(fromJSON) - No enum constant ja
 
 Updating a Squad with an invalid (non-string) description:
 
-Caught: org.json.JSONException: Unit(fromJSON) - JSONObject["Description"] not a string.
+Caught: org.json.JSONException: Unit(fromJSON) - JSONObject["Description"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different nationality:
 
@@ -194,7 +194,7 @@ Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - No enum constan
 
 Updating a Squad with an invalid (non-string) nationality:
 
-Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Nationality"] not a string.
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Nationality"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different unit type:
 
@@ -202,11 +202,11 @@ Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-string) unit type:
 
-Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Unit Type"] not a string.
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Unit Type"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with an invalid (non-string) identity:
 
-Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Identity"] not a string.
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Identity"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with an invalid (negative) status:
 
@@ -214,7 +214,7 @@ Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - Invalid value (
 
 Updating a Squad with an invalid (non-integer) status:
 
-Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Status"] is not an int.
+Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Status"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different movement value:
 
@@ -222,7 +222,7 @@ Caught: java.lang.IllegalArgumentException: Mobile(fromJSON) - Non-matching valu
 
 Updating a Squad with an invalid (non-integer) movement value:
 
-Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Movement"] is not an int.
+Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Movement"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different portage capacity:
 
@@ -230,7 +230,7 @@ Caught: java.lang.IllegalArgumentException: Mobile(fromJSON) - Non-matching valu
 
 Updating a Squad with an invalid (non-integer) portage capacity:
 
-Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Capacity"] is not an int.
+Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Capacity"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with an invalid (negative) portage level:
 
@@ -238,7 +238,7 @@ Caught: java.lang.IllegalArgumentException: Mobile(fromJSON) - Invalid value (-1
 
 Updating a Squad with an invalid (non-integer) portage level:
 
-Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Level"] is not an int.
+Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Level"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different firepower value:
 
@@ -246,7 +246,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-string) firepower value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower"] not a string.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different firepower equivalent value:
 
@@ -254,7 +254,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) firepower equivalent value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower Equivalent"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower Equivalent"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different normal range value:
 
@@ -262,7 +262,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) normal range value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Normal Range"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Normal Range"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different morale value:
 
@@ -270,7 +270,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) morale value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Morale"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Morale"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different broken morale value:
 
@@ -278,7 +278,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) broken morale value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Broken Morale"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Broken Morale"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different can self rally setting:
 
@@ -286,7 +286,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-boolean) can self rally setting:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Can Self Rally ?"] is not a Boolean.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Can Self Rally ?"] is not a Boolean (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different portage value:
 
@@ -294,7 +294,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) portage value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Portage Value"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Portage Value"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different basic point value:
 
@@ -302,7 +302,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) basic point value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Basic Point Value"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Basic Point Value"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different experience level rating:
 
@@ -310,7 +310,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching va
 
 Updating a Squad with an invalid (non-integer) experience level rating:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Experience Level Rating"] is not an int.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Experience Level Rating"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different infantry type:
 
@@ -322,7 +322,7 @@ Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - No enum constan
 
 Updating a Squad with an invalid (non-string) infantry type:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Infantry Type"] not a string.
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Infantry Type"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different has maximum ELR setting:
 
@@ -330,7 +330,7 @@ Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching v
 
 Updating a Squad with an invalid (non-boolean) has maximum ELR setting:
 
-Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Has Maximum ELR ?"] is not a Boolean.
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Has Maximum ELR ?"] is not a Boolean (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different classification:
 
@@ -342,7 +342,7 @@ Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - No enum consta
 
 Updating a Squad with an invalid (non-string) classification:
 
-Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Classification"] not a string.
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Classification"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different can assault fire setting:
 
@@ -350,7 +350,7 @@ Caught: java.lang.IllegalArgumentException: Squad(fromJSON) - Non-matching value
 
 Updating a Squad with an invalid (non-boolean) can assault fire setting:
 
-Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Can Assault Fire ?"] is not a Boolean.
+Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Can Assault Fire ?"] is not a Boolean (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different can spray fire setting:
 
@@ -358,7 +358,7 @@ Caught: java.lang.IllegalArgumentException: Squad(fromJSON) - Non-matching value
 
 Updating a Squad with an invalid (non-boolean) can spray fire setting:
 
-Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Can Spray Fire ?"] is not a Boolean.
+Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Can Spray Fire ?"] is not a Boolean (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different smoke placement exponent value:
 
@@ -366,7 +366,7 @@ Caught: java.lang.IllegalArgumentException: Squad(fromJSON) - Non-matching value
 
 Updating a Squad with an invalid (non-integer) smoke placement exponent value:
 
-Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Smoke Placement Exponent"] is not an int.
+Caught: org.json.JSONException: Squad(fromJSON) - JSONObject["Smoke Placement Exponent"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Leader with a different modifier value:
 
@@ -374,7 +374,7 @@ Caught: java.lang.IllegalArgumentException: Leader(fromJSON) - Non-matching valu
 
 Updating a Leader with an invalid (non-integer) modifier value:
 
-Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not an int.
+Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not a int (class org.json.JSONObject$Null : null).
 
 (Updated with fromJSON()) Squad.toJSON() output:
 

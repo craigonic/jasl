@@ -40,7 +40,7 @@ ORG_JSON_JAR_ARCHIVE   := org.json.jar
 
 .PHONY : all
 all: bin_directory
-	@(cd json;$(JAVA_OPTIONS) $(ORG_JSON_SRC_FILES))
+	@(cd json/src/main/java/org/json;$(JAVA_OPTIONS) $(ORG_JSON_SRC_FILES))
 
 # Create a jar archive containing all of the .class files generated from the
 # source files selected from the json sub-directory (ORG_JSON_SRC_FILES).
