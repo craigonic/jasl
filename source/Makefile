@@ -473,8 +473,7 @@ docs: docs_all clean_docs
 javadocs: docs_directory
 	@$(RM_RECURSIVE) $(JAVADOCS_PATH)
 	@$(JAVADOC_COMPILER) $(JAVADOC_CMD_LIST) $(COUNTERS_SRC_FILES) \
-	                     $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES) \
-	                     $(ORG_JSON_SRC_FILES)
+	                     $(UTILITIES_SRC_FILES) $(UI_DATA_SRC_FILES)
 
 # Create HTML documentation using doxygen.
 

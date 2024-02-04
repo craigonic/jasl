@@ -155,8 +155,9 @@ JAVADOCS_LINK      := -link https://docs.oracle.com/en/java/javase/21/docs/api
 JAVADOC_OPTIONS    := -version -author -package -nodeprecatedlist -use \
                       -breakiterator
 JAVADOC_TITLE      := -windowtitle "jASL Programming Documentation"
+JAVADOC_CLASSPATH  := -classpath $(BIN_PATH)/org.json.jar
 JAVADOC_CMD_LIST   := -d $(JAVADOCS_PATH) $(JAVADOCS_LINK) $(JAVADOC_OPTIONS) \
-                      $(JAVADOC_TITLE)
+                      $(JAVADOC_TITLE) $(JAVADOC_CLASSPATH)
 # gjdoc.
 
 GJDOC              := gjdoc
