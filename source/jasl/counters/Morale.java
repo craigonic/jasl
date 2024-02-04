@@ -19,8 +19,8 @@ package jasl.counters;
  * The methods are intended for operation on integer and boolean member
  * variables within the implementing class.
  *
- * @version 1.0
- * @author Copyright (C) 2012-2015 Craig R. Campbell (craigonic@gmail.com)
+ * @version 2.0
+ * @author Copyright (C) 2012-2024 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Morale.html">Source code</A>
  */
 
@@ -72,8 +72,6 @@ public interface Morale
 	 * Return the morale level of a unit when it is in its normal state.
 	 *
 	 * @return an <CODE>int</CODE> specifying the normal morale level of the unit.
-	 *
-	 * @see Status.States#NORMAL
 	 */
 
 	public abstract int morale();
@@ -82,8 +80,6 @@ public interface Morale
 	 * Return the morale level of a unit when it is in the broken state.
 	 *
 	 * @return an <CODE>int</CODE> specifying the broken morale level of the unit.
-	 *
-	 * @see Status.States#BROKEN
 	 */
 
 	public abstract int brokenMorale();
@@ -99,38 +95,4 @@ public interface Morale
 	 */
 
 	public abstract boolean canSelfRally();
-
-	// Update methods
-
-	/**
-	 * Perform a morale or task check on a unit.
-	 *
-	 * @param modifier the applicable dice roll modifier (DRM) for the check.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
-	 * a result of calling this method.
-	 *
-	 * @see Leadership
-	 * @see Status
-	 */
-
-	public abstract boolean check(int modifier);
-
-	/**
-	 * Attempt to restore a unit's status to normal.
-	 *
-	 * @param leaderPresent indicates if a leader is present, which may
-	 * determine if a restoration attempt can be made or not.
-	 * @param modifier the applicable dice roll modifier for the attempt.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
-	 * a result of calling this method.
-	 *
-	 * @see Leadership
-	 * @see Status
-	 */
-
-	public abstract boolean restore(boolean leaderPresent,int modifier);
 }

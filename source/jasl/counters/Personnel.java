@@ -25,8 +25,8 @@ import jasl.utilities.Messages;
  * game, these units are referred to as multi-man counters (MMC). This class is
  * intended strictly as a superclass, not to be instantiated directly.
  *
- * @version 7.1
- * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 8.0
+ * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
 
@@ -61,7 +61,7 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 	// Private data members
 
 	// This variable is used to indicate that the unit that this object
-	// represents is automatically given the <A HREF="ExperienceLevelRating.html#_MAX_ELR_">maximum ELR</A>. This flag affects
+	// represents is automatically given the maximum ELR. This flag affects
 	// how the unit is replaced/reduced. It is indicated on the physical
 	// counter by an underscored morale value.
 
@@ -69,7 +69,7 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 
 	// The purpose of the classification variable is to describe the
 	// experience level of the object that it represents. It applies only to
-	// multi-man units (squads, crews, etc).
+	// squads and half-squads.
 
 	private Classifications _classification;
 
@@ -83,10 +83,10 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 	                    InfantryTypes unitType,int firepower,
 	                    int normalRange,int morale,int brokenMorale,
 	                    boolean canSelfRally,int basicPointValue,
-	                    int experienceLevelRating,boolean hasMaximumELR,
+	                    boolean hasMaximumELR,
 	                    Classifications classification)
 	{
-		// Pass the first 10 arguments to the superclass constructor.
+		// Pass the first 9 arguments to the superclass constructor.
 		// Note that one or more variables has been set with symbolic
 		// constants. These are defined at the beginning of this class
 		// and its superclasses. If any exceptions are thrown, assume
@@ -95,8 +95,7 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 
 		super(description,nationality,unitType,MOVEMENT_ALLOWANCE,
 		      PORTAGE_CAPACITY,firepower,normalRange,morale,
-		      brokenMorale,canSelfRally,PORTAGE_VALUE,basicPointValue,
-		      experienceLevelRating);
+		      brokenMorale,canSelfRally,PORTAGE_VALUE,basicPointValue);
 
 		// Check the value of each remaining argument and copy the value
 		// to the local copy of the corresponding variable if an

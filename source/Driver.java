@@ -9,8 +9,6 @@
 // Written By: Craig R. Campbell  -  December 1998                            //
 // ************************************************************************** //
 
-import java.util.List;
-
 import jasl.counters.*;
 import jasl.ui.data.*;
 //import jasl.utilities.Dice;
@@ -23,16 +21,9 @@ public class Driver
         // Create an instance of a German Leader.
 
         Leader germanLeader = new Leader(Nationality.Nationalities.GERMAN,
-                                         UnitType.InfantryTypes.NONE,
-                                         9,9,4,-1);
+                                         UnitType.InfantryTypes.NONE,9,9,-1);
 
-        germanLeader.setStatus(Status.States.BROKEN);
         germanLeader.setPortageLevel(2);
-
-        // (Silently) verify that the status that was just set is not
-        // (successfully) set again (i.e. it worked the first time).
-
-        assert(!germanLeader.setStatus(Status.States.BROKEN));
 
         // Display all of the entered values for this instance using the
         // toText() method.
@@ -137,13 +128,6 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // Retrieve the leader's status and then use the value to restore to
-        // "normal".
-
-        List<Status.States> statusList = ((Leader)deserializedLeader).status();
-
-        ((Leader)deserializedLeader).clearStatus((Status.States)statusList.get(0));
-
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
 
@@ -166,11 +150,9 @@ public class Driver
 
         Squad russianSquad = new Squad(Nationality.Nationalities.RUSSIAN,
                                        UnitType.InfantryTypes.GUARDS,
-                                       6,2,8,8,false,12,4,false,
+                                       6,2,8,8,false,12,false,
                                        Classification.Classifications.ELITE,
                                        true,true,0);
-
-        russianSquad.setStatus(Status.States.DESPERATE);
 
         // Display all of the entered values for this instance using the
         // toText() method.
@@ -254,23 +236,6 @@ public class Driver
             System.out.println("Caught: " + e);
         }
 
-        // (Silently) verify that if a Unit is subject to desperation morale,
-        // it's broken status can't be (underhandedly) removed.
-
-        assert(!((Squad)deserializedSquad).clearStatus(Status.States.BROKEN));
-
-        // Retrieve the squad's status and then use the value to "reduce" it to
-        // "broken".
-
-        statusList = ((Squad)deserializedSquad).status();
-
-        ((Squad)deserializedSquad).clearStatus((Status.States)statusList.get(0));
-
-        // (Silently) verify that the status that was just cleared is not
-        // (successfully) cleared again (i.e. it worked the first time).
-
-        assert(!((Squad)deserializedSquad).clearStatus((Status.States)(statusList.get(0))));
-
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
 
@@ -299,7 +264,6 @@ public class Driver
         String validNationality    = "\"Nationality\":\"RUSSIAN\"";
         String validUnitType       = "\"Unit Type\":\"Guards\"";
         String validIdentity       = "\"Identity\":\"A\"";
-        String validStatus         = "\"Status\":1";
         String validMovement       = "\"Movement\":4";
         String validPortageCap     = "\"Portage Capacity\":3";
         String validPortageLevel   = "\"Portage Level\":0";
@@ -311,7 +275,6 @@ public class Driver
         String validCanSelfRally   = "\"Can Self Rally \\?\":false";
         String validPortageValue   = "\"Portage Value\":10";
         String validBPV            = "\"Basic Point Value\":12";
-        String validELR            = "\"Experience Level Rating\":4";
         String validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
         String validHasMaxELR      = "\"Has Maximum ELR \\?\":false";
         String validClassification = "\"Classification\":\"ELITE\"";
@@ -363,13 +326,6 @@ public class Driver
            deserializedSquadJSON.replaceAll(validIdentity,
                                             validIdentity.replaceAll("\"A\"",
                                                                      "null"))},
-
-          {"Updating a Squad with an invalid (negative) status",
-           deserializedSquadJSON.replaceAll(validStatus,
-                                            validStatus.replaceAll("1","-2"))},
-          {"Updating a Squad with an invalid (non-integer) status",
-           deserializedSquadJSON.replaceAll(validStatus,
-                                            validStatus.replaceAll("1","null"))},
 
          // Mobile
 
@@ -454,13 +410,6 @@ public class Driver
           {"Updating a Squad with an invalid (non-integer) basic point value",
            deserializedSquadJSON.replaceAll(validBPV,
                                             validBPV.replaceAll("12","null"))},
-
-          {"Updating a Squad with a different experience level rating",
-           deserializedSquadJSON.replaceAll(validELR,
-                                            validELR.replaceAll("4","3"))},
-          {"Updating a Squad with an invalid (non-integer) experience level rating",
-           deserializedSquadJSON.replaceAll(validELR,
-                                            validELR.replaceAll("4","null"))},
 
           {"Updating a Squad with a different infantry type",
            deserializedSquadJSON.replaceAll(validInfantryType,
@@ -571,16 +520,13 @@ public class Driver
         }
 
         // Verify that all of the values for the Squad instance that can be
-        // changed using the fromJSON() method (Identity, Status, and Portage
-        // Level) work as expected.
+        // changed using the fromJSON() method (Identity and Portage Level)
+        // work as expected.
 
         deserializedSquadJSON =
             deserializedSquadJSON.replaceAll(validIdentity,
                                              validIdentity.replaceAll("\"A\"",
                                                                       "\"B\""));
-        deserializedSquadJSON =
-            deserializedSquadJSON.replaceAll(validStatus,
-                                             validStatus.replaceAll("1","0"));
         deserializedSquadJSON =
             deserializedSquadJSON.replaceAll(validPortageLevel,
                                              validPortageLevel.replaceAll("0","2"));
@@ -599,33 +545,31 @@ public class Driver
         Unit[] UnitList = new Unit[4];
 
         UnitList[0] = new Leader(Nationality.Nationalities.RUSSIAN,
-                                 UnitType.InfantryTypes.COMMISSAR,9,9,3,0);
+                                 UnitType.InfantryTypes.COMMISSAR,9,9,0);
 
         ((Leader)UnitList[0]).setIdentity("Commissar Ryzhiy");
 
         UnitList[1] = new Squad(Nationality.Nationalities.RUSSIAN,
                                 UnitType.InfantryTypes.GUARDS,
-                                6,2,8,8,false,12,3,false,
+                                6,2,8,8,false,12,false,
                                 Classification.Classifications.ELITE,
                                 true,true,0);
 
         UnitList[2] = new Squad(Nationality.Nationalities.RUSSIAN,
                                 UnitType.InfantryTypes.NONE,
-                                4,4,7,7,false,7,3,false,
+                                4,4,7,7,false,7,false,
                                 Classification.Classifications.FIRST_LINE,
                                 false,false,0);
 
         UnitList[3] = new Squad(Nationality.Nationalities.RUSSIAN,
                                 UnitType.InfantryTypes.NONE,
-                                4,2,6,5,false,4,3,false,
+                                4,2,6,5,false,4,false,
                                 Classification.Classifications.CONSCRIPT,
                                 false,false,0);
 
         ((Squad)UnitList[1]).setIdentity("X");
         ((Squad)UnitList[2]).setIdentity("Y");
-        ((Squad)UnitList[2]).setStatus(Status.States.BROKEN);
         ((Squad)UnitList[3]).setIdentity("Z");
-        ((Squad)UnitList[3]).setStatus(Status.States.DESPERATE);
 
         System.out.println("Displaying Unit array with a Leader & 3 Squads");
 
@@ -644,8 +588,7 @@ public class Driver
                 System.out.println("\n" + leaderObject.description() +
                                    "\n" + leaderObject.identity() +
                                    "\n" + leaderObject.unitType() +
-                                   "\n" + leaderObject.movement() +
-                                   "\n" + leaderObject.status());
+                                   "\n" + leaderObject.movement());
             }
 
             if (Description.Descriptions.SQUAD == UnitList[i].description())
@@ -655,8 +598,7 @@ public class Driver
                 System.out.println("\n" + squadObject.description() +
                                    "\n" + squadObject.identity() +
                                    "\n" + squadObject.unitType() +
-                                   "\n" + squadObject.movement() +
-                                   "\n" + squadObject.status());
+                                   "\n" + squadObject.movement());
             }
         }
 
@@ -664,7 +606,7 @@ public class Driver
 
         squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                 UnitType.InfantryTypes.NONE,
-                                4,6,7,7,false,10,3,false,
+                                4,6,7,7,false,10,false,
                                 Classification.Classifications.FIRST_LINE,
                                 true,false,0);
 
@@ -702,7 +644,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.BRITISH,
                                     UnitType.InfantryTypes.ENGINEERS,
-                                    4,6,7,7,false,10,3,false,
+                                    4,6,7,7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -720,7 +662,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.RUSSIAN,
                                     UnitType.InfantryTypes.COMMISSAR,
-                                    4,4,7,7,false,10,3,false,
+                                    4,4,7,7,false,10,false,
                                     Classification.Classifications.GREEN,
                                     true,false,0);
         }
@@ -738,7 +680,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    -1,6,7,7,false,10,3,false,
+                                    -1,6,7,7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -754,7 +696,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    11,6,7,7,false,10,3,false,
+                                    11,6,7,7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -772,7 +714,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,-255,7,7,false,10,3,false,
+                                    4,-255,7,7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -790,7 +732,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,-1,7,false,10,3,false,
+                                    4,6,-1,7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -808,7 +750,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,11,7,false,10,3,false,
+                                    4,6,11,7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -826,7 +768,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,7,-7,false,10,3,false,
+                                    4,6,7,-7,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -844,7 +786,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,7,17,false,10,3,false,
+                                    4,6,7,17,false,10,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -862,43 +804,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,7,7,false,-1,3,false,
-                                    Classification.Classifications.FIRST_LINE,
-                                    true,false,0);
-        }
-
-        catch (IllegalArgumentException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Invalid Experience Level Rating (Minimum)
-
-        System.out.println("\nInvalid (less than zero) Experience Level Rating (ELR):\n");
-
-        try
-        {
-            squadObject = new Squad(Nationality.Nationalities.GERMAN,
-                                    UnitType.InfantryTypes.NONE,
-                                    4,6,7,7,false,10,-1,false,
-                                    Classification.Classifications.FIRST_LINE,
-                                    true,false,0);
-        }
-
-        catch (IllegalArgumentException e)
-        {
-            System.out.println("Caught: " + e);
-        }
-
-        // Invalid Experience Level Rating (Maximum)
-
-        System.out.println("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
-
-        try
-        {
-            squadObject = new Squad(Nationality.Nationalities.GERMAN,
-                                    UnitType.InfantryTypes.NONE,
-                                    4,6,7,7,false,10,6,false,
+                                    4,6,7,7,false,-1,false,
                                     Classification.Classifications.FIRST_LINE,
                                     true,false,0);
         }
@@ -916,7 +822,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.ITALIAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,7,7,false,10,3,false,
+                                    4,6,7,7,false,10,false,
                                     Classification.Classifications.SS,
                                     true,false,0);
         }
@@ -934,7 +840,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.PARTISAN,
                                     UnitType.InfantryTypes.NONE,
-                                    3,3,7,6,false,6,3,false,
+                                    3,3,7,6,false,6,false,
                                     Classification.Classifications.ELITE,
                                     false,false,0);
         }
@@ -952,7 +858,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,7,7,false,10,3,false,
+                                    4,6,7,7,false,10,false,
                                     Classification.Classifications.SECOND_LINE,
                                     true,false,-4);
         }
@@ -970,7 +876,7 @@ public class Driver
         {
             squadObject = new Squad(Nationality.Nationalities.GERMAN,
                                     UnitType.InfantryTypes.NONE,
-                                    4,6,7,7,false,10,3,false,
+                                    4,6,7,7,false,10,false,
                                     Classification.Classifications.SECOND_LINE,
                                     true,false,4);
         }
@@ -995,7 +901,7 @@ public class Driver
         {
             leaderObject = new Leader(Nationality.Nationalities.BRITISH,
                                       UnitType.InfantryTypes.CANADIAN,
-                                      10,10,5,-4);
+                                      10,10,-4);
         }
 
         catch (IllegalArgumentException e)
@@ -1011,7 +917,7 @@ public class Driver
         {
             leaderObject = new Leader(Nationality.Nationalities.BRITISH,
                                       UnitType.InfantryTypes.CANADIAN,
-                                      10,10,5,4);
+                                      10,10,4);
         }
 
         catch (IllegalArgumentException e)

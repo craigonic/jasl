@@ -21,8 +21,8 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Squad counter.
  *
- * @version 5.0
- * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 6.0
+ * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Squad.html">Source code</A>
  */
 
@@ -104,9 +104,6 @@ public final class Squad extends Personnel implements SprayingFire
 	 * @param basicPointValue the point "value" of the squad for the
 	 * purpose of determining battlefield integrity and for design your own
 	 * (DYO) scenarios. Example - <B>15</B>
-	 * @param experienceLevelRating a value used for determining when a
-	 * squad should be replaced with a lower quality squad or half squad(s).
-	 * Example - <B>5</B>
 	 * @param hasMaximumELR indicates if the squad inherently has the
 	 * maximum experience level rating. Example - <B>true</B>
 	 * @param classification the quality of the squad. Example - <B><A HREF="Classification.html#_FIRST_LINE_">FIRST_LINE</A></B>
@@ -123,18 +120,17 @@ public final class Squad extends Personnel implements SprayingFire
 	public Squad(Nationalities nationality,InfantryTypes unitType,
 	             int firepower,int normalRange,int morale,int brokenMorale,
 	             boolean canSelfRally,int basicPointValue,
-	             int experienceLevelRating,boolean hasMaximumELR,
-	             Classifications classification,boolean canAssaultFire,
-	             boolean canSprayFire,int smokePlacementExponent)
+	             boolean hasMaximumELR,Classifications classification,
+	             boolean canAssaultFire,boolean canSprayFire,
+	             int smokePlacementExponent)
 	{
-		// Pass the first 11 arguments to the superclass constructor.
+		// Pass the first 10 arguments to the superclass constructor.
 		// If any exceptions are thrown, assume that they will be caught
 		// and handled by the program creating the object.
 
 		super(Descriptions.SQUAD,nationality,unitType,firepower,
 		      normalRange,morale,brokenMorale,canSelfRally,
-		      basicPointValue,experienceLevelRating,hasMaximumELR,
-		      classification);
+		      basicPointValue,hasMaximumELR,classification);
 
 		// Check the value of each remaining argument and copy the value
 		// to the local copy of the corresponding variable if an

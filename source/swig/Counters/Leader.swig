@@ -36,8 +36,7 @@ class Leader
 
         Leader(::jasl::counters::Nationality$Nationalities* nationality,
                ::jasl::counters::UnitType$InfantryTypes* unitType,
-               int morale,int brokenMorale,int experienceLevelRating,
-               int modifier);
+               int morale,int brokenMorale,int modifier);
 
         // Method declarations. See the indicated class documentation for more
         // details on the operation of each one.
@@ -54,12 +53,9 @@ class Leader
 
         ::java::lang::String* identity();
         Nationalities*        nationality();
-        ::java::util::List*   status();
         ::java::lang::String* unitType();
 
-        bool                  clearStatus(::jasl::counters::Status$States*);
         void                  setIdentity(::java::lang::String*);
-        bool                  setStatus(::jasl::counters::Status$States*);
 
         // <A HREF="../../jasl/counters/Mobile.html">Mobile</A>.
 
@@ -74,16 +70,12 @@ class Leader
         int                   basicPointValue();
         int                   brokenMorale();
         bool                  canSelfRally();
-        int                   experienceLevelRating();
         ::java::lang::String* firepower();
         int                   firepowerEquivalent();
         InfantryTypes*        infantryType();
         int                   morale();
         int                   normalRange();
         int                   portageValue();
-
-        bool                  check(int);
-        bool                  restore(bool,int);
 
         // Leader.
 

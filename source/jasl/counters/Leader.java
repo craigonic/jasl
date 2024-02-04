@@ -22,8 +22,8 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Leader counter.
  *
- * @version 6.0
- * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 7.0
+ * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
 
@@ -73,8 +73,6 @@ public final class Leader extends Infantry implements Leadership
 	 * Example - <B>8</B>
 	 * @param brokenMorale the morale level of the leader when it is
 	 * broken. Example - <B>9</B>
-	 * @param experienceLevelRating a value used for determining when a
-	 * leader should be replaced with a lower quality leader. Example - <B>4</B>
 	 * @param modifier the dice roll modifier (DRM) of the leader.
 	 * Example - <B>-1</B>
 	 *
@@ -82,10 +80,9 @@ public final class Leader extends Infantry implements Leadership
 	 */
 
 	public Leader(Nationalities nationality,InfantryTypes unitType,
-	              int morale,int brokenMorale,int experienceLevelRating,
-	              int modifier)
+	              int morale,int brokenMorale,int modifier)
 	{
-		// Pass the first 5 arguments to the superclass constructor.
+		// Pass the first 4 arguments to the superclass constructor.
 		// Note that several variables have been set with symbolic
 		// constants. These are defined at the beginning of this class
 		// and its superclasses. If any exceptions are thrown, assume
@@ -94,8 +91,7 @@ public final class Leader extends Infantry implements Leadership
 
 		super(Descriptions.LEADER,nationality,unitType,
 		      MOVEMENT_ALLOWANCE,PORTAGE_CAPACITY,MIN_FIREPOWER,
-		      MIN_RANGE,morale,brokenMorale,true,PORTAGE_VALUE,0,
-		      experienceLevelRating);
+		      MIN_RANGE,morale,brokenMorale,true,PORTAGE_VALUE,0);
 
 		// Check the value of the remaining argument and copy the value
 		// to the local copy of the variable if an exception is not

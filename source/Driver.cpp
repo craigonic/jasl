@@ -18,7 +18,6 @@
 #include "jasl/counters/Mobile.h"
 
 #include <java/lang/Throwable.h>
-#include <java/util/List.h>
 
 #include <assert.h>
 #include <stdio.h>
@@ -63,22 +62,14 @@ int main(int argc, char *argv[])
         Nationalities*   nationality    = Nationalities::valueOf(cc2js("GERMAN"));
         InfantryTypes*   unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         Classifications* classification = Classifications::valueOf(cc2js("FIRST_LINE"));
-        States*          brokenState    = States::valueOf(cc2js("BROKEN"));
-        States*          desperateState = States::valueOf(cc2js("DESPERATE"));
 
         // Create an instance of a German Leader.
 
-        Leader* germanLeader = new Leader(nationality,unitType,9,9,4,-1);
+        Leader* germanLeader = new Leader(nationality,unitType,9,9,-1);
 
         assert(germanLeader);
 
-        germanLeader->setStatus(brokenState);
         germanLeader->setPortageLevel(2);
-
-        // (Silently) verify that the status that was just set is not
-        // (successfully) set again (i.e. it worked the first time).
-
-        assert(!germanLeader->setStatus(brokenState));
 
         // Display all of the entered values for this instance using the
         // toText() method.
@@ -183,14 +174,6 @@ int main(int argc, char *argv[])
             printExceptionMessage(t);
         }
 
-        // Retrieve the leader's status and then use the value to restore to
-        // "normal".
-
-        ::java::util::List* statusList =
-            static_cast<Leader*>(deserializedLeader)->status();
-
-        static_cast<Leader*>(deserializedLeader)->clearStatus(static_cast<States*>(statusList->get(0)));
-
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
 
@@ -216,15 +199,13 @@ int main(int argc, char *argv[])
         classification = Classifications::valueOf(cc2js("ELITE"));
 
         Squad* russianSquad = new Squad(nationality,unitType,
-                                        6,2,8,8,false,12,4,false,
+                                        6,2,8,8,false,12,false,
                                         classification,true,true,0);
 
         // Display all of the entered values for this instance using the
         // toText() method.
 
         assert(russianSquad);
-
-        russianSquad->setStatus(desperateState);
 
         printf("\nSquad.toText() output:\n\n");
         printJavaString(russianSquad->toText());
@@ -292,23 +273,6 @@ int main(int argc, char *argv[])
         {
             printExceptionMessage(t);
         }
-
-        // (Silently) verify that if a Unit is subject to desperation morale,
-        // it's broken status can't be (underhandedly) removed.
-
-        assert(!(static_cast<Squad*>(deserializedSquad)->clearStatus(brokenState)));
-
-        // Retrieve the squad's status and then use the value to "reduce" it to
-        // "broken".
-
-        statusList = static_cast<Squad*>(deserializedSquad)->status();
-
-        static_cast<Squad*>(deserializedSquad)->clearStatus(static_cast<States*>(statusList->get(0)));
-
-        // (Silently) verify that the status that was just cleared is not
-        // (successfully) cleared again (i.e. it worked the first time).
-
-        assert(!static_cast<Squad*>(deserializedSquad)->clearStatus(static_cast<States*>(statusList->get(0))));
 
         // Display all of the entered values for the deserialized instance using
         // the toText() method.
@@ -465,31 +429,6 @@ int main(int argc, char *argv[])
             modifiedSquadJSON.replace(identityPosition,validIdentityLength,
                                       validIdentity.replace(identityValuePosition,
                                                             3,"null"));
-        fromJsonSquadTestStrings.push_back(testStringPair);
-
-        modifiedSquadJSON = deserializedSquadJSON;
-
-        std::string validStatus = "\"Status\":1";
-        size_t validStatusLength = validStatus.length();
-        size_t statusPosition = deserializedSquadJSON.find(validStatus);
-        size_t statusValuePosition = validStatus.find(":") + 1;
-
-        testStringPair.first =
-            "Updating a Squad with an invalid (negative) status";
-        testStringPair.second =
-            modifiedSquadJSON.replace(statusPosition,validStatusLength,
-                                      validStatus.replace(statusValuePosition,
-                                                          1,"-2"));
-        fromJsonSquadTestStrings.push_back(testStringPair);
-
-        modifiedSquadJSON = deserializedSquadJSON;
-
-        testStringPair.first =
-            "Updating a Squad with an invalid (non-integer) status";
-        testStringPair.second =
-            modifiedSquadJSON.replace(statusPosition,validStatusLength,
-                                      validStatus.replace(statusValuePosition,
-                                                          1,"null"));
         fromJsonSquadTestStrings.push_back(testStringPair);
 
         modifiedSquadJSON = deserializedSquadJSON;
@@ -805,29 +744,6 @@ int main(int argc, char *argv[])
 
         modifiedSquadJSON = deserializedSquadJSON;
 
-        std::string validELR = "\"Experience Level Rating\":4";
-        size_t validELRLength = validELR.length();
-        size_t elrPosition = deserializedSquadJSON.find(validELR);
-        size_t elrValuePosition = validELR.find(":") + 1;
-
-        testStringPair.first =
-            "Updating a Squad with a different experience level rating";
-        testStringPair.second =
-            modifiedSquadJSON.replace(elrPosition,validELRLength,
-                                      validELR.replace(elrValuePosition,1,"3"));
-        fromJsonSquadTestStrings.push_back(testStringPair);
-
-        modifiedSquadJSON = deserializedSquadJSON;
-
-        testStringPair.first =
-            "Updating a Squad with an invalid (non-integer) experience level rating";
-        testStringPair.second =
-            modifiedSquadJSON.replace(elrPosition,validELRLength,
-                                      validELR.replace(elrValuePosition,1,"null"));
-        fromJsonSquadTestStrings.push_back(testStringPair);
-
-        modifiedSquadJSON = deserializedSquadJSON;
-
         std::string validInfantryType = "\"Infantry Type\":\"GUARDS\"";
         size_t validInfantryTypeLength = validInfantryType.length();
         size_t infantryTypePosition =
@@ -1065,19 +981,15 @@ int main(int argc, char *argv[])
         }
 
         // Verify that all of the values for the Squad instance that can be
-        // changed using the fromJSON() method (Identity, Status, and Portage
-        // Level) work as expected.
+        // changed using the fromJSON() method (Identity and Portage Level)
+        // work as expected.
 
         validIdentity     = "\"Identity\":\"A\"";
-        validStatus       = "\"Status\":1";
         validPortageLevel = "\"Portage Level\":0";
 
         modifiedSquadJSON.replace(identityPosition,validIdentityLength,
                                   validIdentity.replace(identityValuePosition,
                                                         3,"\"B\""));
-        modifiedSquadJSON.replace(statusPosition,validStatusLength,
-                                  validStatus.replace(statusValuePosition,
-                                                      1,"0"));
         modifiedSquadJSON.replace(portageLevelPosition,
                                   validPortageLevelLength,
                                   validPortageLevel.replace(portageLevelValuePosition,
@@ -1113,32 +1025,30 @@ int main(int argc, char *argv[])
         nationality    = Nationalities::valueOf(cc2js("RUSSIAN"));
         unitType       = InfantryTypes::valueOf(cc2js("COMMISSAR"));
 
-        UnitList[0] = new Leader(nationality,unitType,9,9,3,0);
+        UnitList[0] = new Leader(nationality,unitType,9,9,0);
 
         ((Leader*)UnitList[0])->setIdentity(cc2js("Commissar Ryzhiy"));
 
         unitType       = InfantryTypes::valueOf(cc2js("GUARDS"));
         classification = Classifications::valueOf(cc2js("ELITE"));
 
-        UnitList[1] = new Squad(nationality,unitType,6,2,8,8,false,12,3,false,
+        UnitList[1] = new Squad(nationality,unitType,6,2,8,8,false,12,false,
                                 classification,true,true,0);
 
         unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
-        UnitList[2] = new Squad(nationality,unitType,4,4,7,7,false,7,3,false,
+        UnitList[2] = new Squad(nationality,unitType,4,4,7,7,false,7,false,
                                 classification,false,false,0);
 
         classification = Classifications::valueOf(cc2js("CONSCRIPT"));
 
-        UnitList[3] = new Squad(nationality,unitType,4,2,6,5,false,4,3,false,
+        UnitList[3] = new Squad(nationality,unitType,4,2,6,5,false,4,false,
                                 classification,false,false,0);
 
         ((Squad*)UnitList[1])->setIdentity(cc2js("X"));
         ((Squad*)UnitList[2])->setIdentity(cc2js("Y"));
-        ((Squad*)UnitList[2])->setStatus(brokenState);
         ((Squad*)UnitList[3])->setIdentity(cc2js("Z"));
-        ((Squad*)UnitList[3])->setStatus(desperateState);
 
         printf("Displaying Unit array with a Leader & 3 Squads\n");
 
@@ -1156,7 +1066,6 @@ int main(int argc, char *argv[])
             printJavaString(((Mobile*)UnitList[i])->identity());
             printJavaString(((Mobile*)UnitList[i])->unitType());
             printf("%d\n",((Mobile*)UnitList[i])->movement());
-            printJavaString(((Mobile*)UnitList[i])->status()->toString());
         }
 
         // If it was generated the old fashioned way (see above) delete the
@@ -1172,7 +1081,7 @@ int main(int argc, char *argv[])
         unitType       = InfantryTypes::valueOf(cc2js("NONE"));
         classification = Classifications::valueOf(cc2js("FIRST_LINE"));
 
-        Squad* squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+        Squad* squad = new Squad(nationality,unitType,4,6,7,7,false,10,false,
                                  classification,true,false,0);
 
         printf("\nTesting Exception handling for Squad update methods:\n");
@@ -1210,7 +1119,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1229,7 +1138,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,4,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,4,7,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1248,7 +1157,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,-1,6,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,-1,6,7,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1261,7 +1170,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,11,6,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,11,6,7,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1276,7 +1185,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,-255,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,-255,7,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1291,7 +1200,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,-1,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,-1,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1306,7 +1215,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,11,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,11,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1321,7 +1230,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,-7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,7,-7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1336,7 +1245,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,17,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,7,17,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1351,37 +1260,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,-1,3,false,
-                              classification,true,false,0);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
-
-        // Invalid Experience Level Rating (Minimum)
-
-        printf("\nInvalid (less than zero) Experience Level Rating (ELR):\n");
-
-        try
-        {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,10,-1,false,
-                              classification,true,false,0);
-        }
-
-        catch (jthrowable t)
-        {
-            printExceptionMessage(t);
-        }
-
-        // Invalid Experience Level Rating (Maximum)
-
-        printf("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
-
-        try
-        {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,10,6,false,
+            squad = new Squad(nationality,unitType,4,6,7,7,false,-1,false,
                               classification,true,false,0);
         }
 
@@ -1399,7 +1278,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,false,
                               classification,true,false,0);
         }
 
@@ -1417,7 +1296,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,3,3,7,6,false,6,3,false,
+            squad = new Squad(nationality,unitType,3,3,7,6,false,6,false,
                               classification,false,false,0);
         }
 
@@ -1435,7 +1314,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,false,
                               classification,true,false,-4);
         }
 
@@ -1450,7 +1329,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            squad = new Squad(nationality,unitType,4,6,7,7,false,10,3,false,
+            squad = new Squad(nationality,unitType,4,6,7,7,false,10,false,
                               classification,true,false,4);
         }
 
@@ -1477,7 +1356,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Grandpa = new Leader(nationality,unitType,10,10,5,-4);
+            Grandpa = new Leader(nationality,unitType,10,10,-4);
         }
 
         catch (jthrowable t)
@@ -1491,7 +1370,7 @@ int main(int argc, char *argv[])
 
         try
         {
-            Grandpa = new Leader(nationality,unitType,10,10,5,4);
+            Grandpa = new Leader(nationality,unitType,10,10,4);
         }
 
         catch (jthrowable t)

@@ -36,25 +36,12 @@ my $description = Counters::Descriptions::valueOf(CniWrapper::cc2js("LEADER"));
 my $nationality = Counters::Nationalities::valueOf(CniWrapper::cc2js("AMERICAN"));
 my $unitType = Counters::InfantryTypes::valueOf(CniWrapper::cc2js("NONE"));
 my $classification = Counters::Classifications::valueOf(CniWrapper::cc2js("GREEN"));
-my $brokenState = Counters::States::valueOf(CniWrapper::cc2js("BROKEN"));
-my $desperateState = Counters::States::valueOf(CniWrapper::cc2js("DESPERATE"));
 
 # Create an instance of a German Leader.
 
 my $germanLeader = new Counters::Leader($Counters::Nationalities_GERMAN,
-                                        $Counters::InfantryTypes_NONE,
-                                        9,9,4,-1);
-
-$germanLeader->setStatus($brokenState);
+                                        $Counters::InfantryTypes_NONE,9,9,-1);
 $germanLeader->setPortageLevel(2);
-
-# (Silently) verify that the status that was just set is not (successfully) set
-# again (i.e. it worked the first time).
-
-if ($germanLeader->setStatus($brokenState))
-{
-    die "Status changed when existing state specified again!";
-}
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -81,10 +68,6 @@ printf("Leader.toString() output:\n\n%s\n",
 #printf("\tnationality() - name: %s\tlabel: %s\n",
 #       CniWrapper::js2cc($germanLeader->nationality()->name()),
 #       CniWrapper::js2cc($germanLeader->nationality()->toString()));
-#my @statusList = @{$germanLeader->status()};
-#printf("\tstatus() - name: %s label: %s\n",
-#       CniWrapper::js2cc($statusList[0]->name()),
-#       CniWrapper::js2cc($statusList[0]->toString()));
 #printf("\tunitType(): %s\n",
 #       CniWrapper::js2cc($germanLeader->unitType()));
 
@@ -95,8 +78,6 @@ printf("Leader.toString() output:\n\n%s\n",
 #printf("\tbasicPointValue(): %d\n",$germanLeader->basicPointValue());
 #printf("\tbrokenMorale(): %d\n",$germanLeader->brokenMorale());
 #printf("\tcanSelfRally(): %d\n",$germanLeader->canSelfRally());
-#printf("\texperienceLevelRating(): %d\n",
-#       $germanLeader->experienceLevelRating());
 #printf("\tfirepower(): %s\n",
 #       CniWrapper::js2cc($germanLeader->firepower()));
 #printf("\tfirepowerEquivalent(): %d\n",$germanLeader->firepowerEquivalent());
@@ -182,12 +163,6 @@ $status = eval
 
 printException($@) if (!defined($status)); # Not expected.
 
-# Retrieve the leader's status and then use the value to restore to "normal".
-
-my @statusList = @{$deserializedLeader->status()};
-
-$deserializedLeader->clearStatus($statusList[0]);
-
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
@@ -210,10 +185,8 @@ printf("(Deserialized) Leader.toJSON() output:\n\n%s\n\n",
 
 my $russianSquad = new Counters::Squad($Counters::Nationalities::RUSSIAN,
                                        $Counters::InfantryTypes::GUARDS,
-                                       6,2,8,8,0,12,4,0,
+                                       6,2,8,8,0,12,0,
                                        $Counters::Classifications::ELITE,1,1,0);
-
-$russianSquad->setStatus($desperateState);
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -240,10 +213,6 @@ printf("Squad.toString() output:\n\n%s\n\n",
 #printf("\tnationality() - name: %s\tlabel: %s\n",
 #       CniWrapper::js2cc($russianSquad->nationality()->name()),
 #       CniWrapper::js2cc($russianSquad->nationality()->toString()));
-#my @statusList = @{$russianSquad->status()};
-#printf("\tstatus() - name: %s label: %s\n",
-#       CniWrapper::js2cc($statusList[0]->name()),
-#       CniWrapper::js2cc($statusList[0]->toString()));
 #printf("\tunitType(): %s\n",
 #       CniWrapper::js2cc($russianSquad->unitType()));
 
@@ -254,8 +223,6 @@ printf("Squad.toString() output:\n\n%s\n\n",
 #printf("\tbasicPointValue(): %d\n",$russianSquad->basicPointValue());
 #printf("\tbrokenMorale(): %d\n",$russianSquad->brokenMorale());
 #printf("\tcanSelfRally(): %d\n",$russianSquad->canSelfRally());
-#printf("\texperienceLevelRating(): %d\n",
-#       $russianSquad->experienceLevelRating());
 #printf("\tfirepower(): %s\n",
 #       CniWrapper::js2cc($russianSquad->firepower()));
 #printf("\tfirepowerEquivalent(): %d\n",$russianSquad->firepowerEquivalent());
@@ -322,28 +289,6 @@ $status = eval
 
 printException($@) if (!defined($status)); # Not expected.
 
-# (Silently) verify that if a Unit is subject to desperation morale, it's broken
-# status can't be (underhandedly) removed.
-
-if ($deserializedSquad->clearStatus($brokenState))
-{
-    die "Broken status cleared when subject to desperation morale!";
-}
-
-# Retrieve the squad's status and then use the value to "reduce" it to "broken".
-
-@statusList = @{$deserializedSquad->status()};
-
-$deserializedSquad->clearStatus($statusList[0]);
-
-# (Silently) verify that the status that was just cleared is not (successfully)
-# cleared again (i.e. it worked the first time).
-
-if ($deserializedSquad->clearStatus($statusList[0]))
-{
-    die "Status cleared when previous state specified again!";
-}
-
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
@@ -373,7 +318,6 @@ my $validDescription    = "\"Description\":\"SQUAD\"";
 my $validNationality    = "\"Nationality\":\"RUSSIAN\"";
 my $validUnitType       = "\"Unit Type\":\"Guards\"";
 my $validIdentity       = "\"Identity\":\"A\"";
-my $validStatus         = "\"Status\":1";
 my $validMovement       = "\"Movement\":4";
 my $validPortageCap     = "\"Portage Capacity\":3";
 my $validPortageLevel   = "\"Portage Level\":0";
@@ -385,7 +329,6 @@ my $validBrokenMorale   = "\"Broken Morale\":8";
 my $validCanSelfRally   = "\"Can Self Rally \\?\":false";
 my $validPortageValue   = "\"Portage Value\":10";
 my $validBPV            = "\"Basic Point Value\":12";
-my $validELR            = "\"Experience Level Rating\":4";
 my $validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
 my $validHasMaxELR      = "\"Has Maximum ELR \\?\":false";
 my $validClassification = "\"Classification\":\"ELITE\"";
@@ -416,11 +359,6 @@ my $validSPE            = "\"Smoke Placement Exponent\":0";
 
 (my $invalidIdentity = $deserializedSquadJSON) =~
     s/$validIdentity/"Identity":null/;
-
-(my $negativeStatus = $deserializedSquadJSON) =~
-    s/$validStatus/"Status":-2/;
-(my $invalidStatus = $deserializedSquadJSON) =~
-    s/$validStatus/"Status":null/;
 
 # Mobile
 
@@ -481,11 +419,6 @@ my $validSPE            = "\"Smoke Placement Exponent\":0";
 (my $invalidBPV = $deserializedSquadJSON) =~
     s/$validBPV/"Basic Point Value":null/;
 
-(my $differentELR = $deserializedSquadJSON) =~
-    s/$validELR/"Experience Level Rating":3/;
-(my $invalidELR = $deserializedSquadJSON) =~
-    s/$validELR/"Experience Level Rating":null/;
-
 (my $differentInfantryType = $deserializedSquadJSON) =~
     s/$validInfantryType/"Infantry Type":"NONE"/;
 (my $wrongCaseInfantryType = $deserializedSquadJSON) =~
@@ -543,8 +476,6 @@ my @fromJsonSquadTestStrings =
   ["Updating a Squad with a different unit type",$differentUnitType],
   ["Updating a Squad with an invalid (non-string) unit type",$invalidUnitType],
   ["Updating a Squad with an invalid (non-string) identity",$invalidIdentity],
-  ["Updating a Squad with an invalid (negative) status",$negativeStatus],
-  ["Updating a Squad with an invalid (non-integer) status",$invalidStatus],
 
  # Mobile
 
@@ -573,8 +504,6 @@ my @fromJsonSquadTestStrings =
   ["Updating a Squad with an invalid (non-integer) portage value",$invalidPortageValue],
   ["Updating a Squad with a different basic point value",$differentBPV],
   ["Updating a Squad with an invalid (non-integer) basic point value",$invalidBPV],
-  ["Updating a Squad with a different experience level rating",$differentELR],
-  ["Updating a Squad with an invalid (non-integer) experience level rating",$invalidELR],
   ["Updating a Squad with a different infantry type",$differentInfantryType],
   ["Updating a Squad with an invalid (wrong case) infantry type",$wrongCaseInfantryType],
   ["Updating a Squad with an invalid (non-string) infantry type",$invalidInfantryType],
@@ -645,10 +574,9 @@ for my $row (0..$#fromJsonLeaderTestStrings)
 }
 
 # Verify that all of the values for the Squad instance that can be changed using
-# the fromJSON() method (Identity, Status, and Portage Level) work as expected.
+# the fromJSON() method (Identity and Portage Level) work as expected.
 
 $deserializedSquadJSON =~ s/$validIdentity/"Identity":"B"/;
-$deserializedSquadJSON =~ s/$validStatus/"Status":0/;
 $deserializedSquadJSON =~ s/$validPortageLevel/"Portage Level":2/;
 
 $deserializedSquad->fromJSON(CniWrapper::cc2js($deserializedSquadJSON));
@@ -666,7 +594,7 @@ my @unitList = ();
 $nationality    = $Counters::Nationalities::RUSSIAN;
 $unitType       = $Counters::InfantryTypes::COMMISSAR;
 
-push @unitList,new Counters::Leader($nationality,$unitType,9,9,3,0);
+push @unitList,new Counters::Leader($nationality,$unitType,9,9,0);
 
 $unitList[0]->setIdentity(CniWrapper::cc2js("Commissar Ryzhiy"));
 
@@ -674,24 +602,22 @@ $unitType       = $Counters::InfantryTypes::GUARDS;
 $classification = $Counters::Classifications::ELITE;
 
 push @unitList,new Counters::Squad($nationality,$unitType,
-                                   6,2,8,8,0,12,3,0,$classification,1,1,0);
+                                   6,2,8,8,0,12,0,$classification,1,1,0);
 
 $unitType       = $Counters::InfantryTypes::NONE;
 $classification = $Counters::Classifications::FIRST_LINE;
 
 push @unitList,new Counters::Squad($nationality,$unitType,
-                                   4,4,7,7,0,7,3,0,$classification,0,0,0);
+                                   4,4,7,7,0,7,0,$classification,0,0,0);
 
 $classification = $Counters::Classifications::CONSCRIPT;
 
 push @unitList,new Counters::Squad($nationality,$unitType,
-                                   4,2,6,5,0,4,3,0,$classification,0,0,0);
+                                   4,2,6,5,0,4,0,$classification,0,0,0);
 
 $unitList[1]->setIdentity(CniWrapper::cc2js("X"));
 $unitList[2]->setIdentity(CniWrapper::cc2js("Y"));
-$unitList[2]->setStatus($brokenState);
 $unitList[3]->setIdentity(CniWrapper::cc2js("Z"));
-$unitList[3]->setStatus($desperateState);
 
 printf("\nDisplaying Unit array with a Leader & 3 Squads\n");
 
@@ -699,25 +625,14 @@ my $unitIndex = 0;
 
 foreach my $unit (@unitList)
 {
-    my @statusList   = @{$unit->status()};
-    my $statusString = "";
-
-    # Note that this would not be a good solution if the list was expected to
-    # contain more than one entry, but it works here for testing purposes.
-
-    foreach (@statusList)
-    {
-        $statusString = CniWrapper::js2cc($_->toString());
-    }
-
     printf("\nUnitList[%d]:\t%s\n",
            $unitIndex++,CniWrapper::js2cc($unit->toString()));
 
-    printf("\n%s\n%s\n%s\n%d\n[%s]\n",
+    printf("\n%s\n%s\n%s\n%d\n",
            CniWrapper::js2cc($unit->description()->toString()),
            CniWrapper::js2cc($unit->identity()),
            CniWrapper::js2cc($unit->unitType()),
-           $unit->movement(),$statusString);
+           $unit->movement());
 }
 
 # Create an instance of a German Squad (that throws some exceptions).
@@ -727,7 +642,7 @@ printf("\nTesting Exception handling for Squad update methods:\n");
 $nationality    = $Counters::Nationalities::GERMAN;
 $unitType       = $Counters::InfantryTypes::NONE;
 
-my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+my $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,0,
                                 $classification,1,0,0);
 
 # Null Identity (no error, just clears the existing one).
@@ -761,7 +676,7 @@ printf("\nIncompatible nationality and unitType arguments:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -777,7 +692,7 @@ printf("\nIncompatible description and unitType arguments:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,4,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,4,7,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -793,7 +708,7 @@ printf("\nInvalid (less than 0) firepower argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,-1,6,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,-1,6,7,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -803,7 +718,7 @@ printf("\nInvalid (greater than maximum) firepower argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,11,6,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,11,6,7,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -815,7 +730,7 @@ printf("\nInvalid (less than 0) normal range argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,-255,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,-255,7,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -827,7 +742,7 @@ printf("\nInvalid (less than 0) morale argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,-1,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,-1,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -839,7 +754,7 @@ printf("\nInvalid (greater than maximum) morale argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,11,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,11,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -851,7 +766,7 @@ printf("\nInvalid (less than 0) broken morale argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,-7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,-7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -863,7 +778,7 @@ printf("\nInvalid (greater than maximum) broken morale argument:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,17,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,17,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -875,31 +790,7 @@ printf("\nInvalid (less than zero) Basic Point Value (BPV):\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,-1,3,0,
-                                 $classification,1,0,0);
-};
-
-printException($@) if (!defined($status));
-
-# Invalid Experience Level Rating (Minimum)
-
-printf("\nInvalid (less than zero) Experience Level Rating (ELR):\n");
-
-$status = eval
-{
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,-1,0,
-                                 $classification,1,0,0);
-};
-
-printException($@) if (!defined($status));
-
-# Invalid Experience Level Rating (Maximum)
-
-printf("\nInvalid (greater than maximum) Experience Level Rating (ELR):\n");
-
-$status = eval
-{
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,6,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,-1,0,
                                  $classification,1,0,0);
 };
 
@@ -914,7 +805,7 @@ printf("\nIncompatible classification argument (nationality mismatch):\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,0,
                                  $classification,1,0,0);
 };
 
@@ -929,7 +820,7 @@ printf("\nIncompatible classification argument (invalid setting):\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,3,3,7,6,0,6,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,3,3,7,6,0,6,0,
                                  $classification,0,0,0);
 };
 
@@ -944,7 +835,7 @@ printf("\nInvalid (less than zero) Smoke Placement Exponent:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,0,
                                  $classification,1,0,-4);
 };
 
@@ -956,7 +847,7 @@ printf("\nInvalid (greater than maximum) Smoke Placement Exponent:\n");
 
 $status = eval
 {
-    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,3,0,
+    $squad = new Counters::Squad($nationality,$unitType,4,6,7,7,0,10,0,
                                  $classification,1,0,4);
 };
 
@@ -977,7 +868,7 @@ printf("\nInvalid (less than minimum) modifier argument:\n");
 
 $status = eval
 {
-    my $leader = new Counters::Leader($nationality,$unitType,10,10,5,-4);
+    my $leader = new Counters::Leader($nationality,$unitType,10,10,-4);
 };
 
 printException($@) if (!defined($status));
@@ -988,7 +879,7 @@ printf("\nInvalid (greater than maximum) modifier argument:\n");
 
 $status = eval
 {
-    my $leader = new Counters::Leader($nationality,$unitType,10,10,5,4);
+    my $leader = new Counters::Leader($nationality,$unitType,10,10,4);
 };
 
 printException($@) if (!defined($status));

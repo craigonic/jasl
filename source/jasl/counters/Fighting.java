@@ -13,10 +13,6 @@
 
 package jasl.counters;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,16 +21,15 @@ import jasl.utilities.Messages;
 
 /**
  * This class is used to define the basic characteristics of a combat unit
- * (nationality, status, etc). It is intended strictly as a superclass, not to
+ * (nationality, identity, etc). It is intended strictly as a superclass, not to
  * be instantiated directly.
  *
- * @version 7.0
- * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 8.0
+ * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Fighting.html">Source code</A>
  */
 
-abstract class Fighting extends Unit implements Identity, Nationality,
-                                                Status, UnitType
+abstract class Fighting extends Unit implements Identity, Nationality, UnitType
 {
 	// Symbolic constants
 
@@ -76,13 +71,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 
 	private String _identity = "";
 
-	// This variable contains the current status of the derived object of
-	// this class. The status values are defined in the <A HREF="Status.html">Status.States</A> enum.
-	// This value is used as a bit-field with the state values corresponding
-	// to the individual bits.
-
-	private int _status;
-
 	// Constructor
 
 	// During the instantiation of derived concrete classes the arguments
@@ -113,11 +101,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 		}
 
 		_unitType = unitType;
-
-		// Set the initial status to the default. This value will be set
-		// more specifically through the use of the setStatus() method.
-
-		_status = States.NORMAL.value();
 	}
 
 	// Public access methods
@@ -175,16 +158,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
 		                                              false,true));
 
-		// Status
-
-		returnString.append(Messages.formatTextString(STATUS_LABEL,
-		                                              FIRST_COLUMN_LABEL_WIDTH,
-		                                              true,false));
-
-		returnString.append(Messages.formatTextString(status().toString(),
-		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
-		                                              false,true));
-
 		// Return the completed string to calling program.
 
 		return returnString.toString();
@@ -226,9 +199,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
 		                    JsonOutput.buildJSONPair(IDENTITY_LABEL,identity()) +
-		                    JSON_OBJECT_SEPARATOR);
-		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(STATUS_LABEL,_status) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -286,42 +256,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 	public final String identity()
 	{
 		return _identity;
-	}
-
-	/**
-	 * Return the current status of a unit.
-	 * <P>
-	 * In cases, where states are related (e.g. one state is a prerequisite
-	 * for the other), only the "worst" state will be included. For example,
-	 * if an infantry Unit is broken, and becomes subject to desperation
-	 * morale, only the latter will be included in the list.
-	 *
-	 * @return an <B>unmodifiable</B> <CODE>List</CODE> of States describing the unit status. If
-	 * the current state is NORMAL, the returned list will be empty.
-	 *
-	 * @see #clearStatus
-	 * @see #setStatus
-	 */
-
-	public final List<States> status()
-	{
-		ArrayList<States> statesList = new ArrayList<States>();
-
-		for (States state : States.values())
-		{
-			if ((_status & state.value()) > 0)
-			{
-				if ((States.BROKEN == state) &&
-				    ((_status & States.DESPERATE.value()) > 0))
-				{
-					continue;
-				}
-
-				statesList.add(state);
-			}
-		}
-
-		return Collections.unmodifiableList(statesList);
 	}
 
 	// Update methods
@@ -387,22 +321,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 
 			setIdentity(identity);
 
-			int status = jsonObject.getInt(STATUS_LABEL);
-
-			if (status < 0)
-			{
-				exceptionDetails =
-					JsonData.FROM_JSON_NOT_VALID_PREFIX +
-					status +
-					JsonData.FROM_JSON_FOR_SEPARATOR +
-					STATUS_LABEL;
-			}
-
-			else
-			{
-				_status = status;
-			}
-
 			if (!exceptionDetails.isEmpty())
 			{
 				throw new IllegalArgumentException(Messages.buildErrorMessage(CLASS_NAME,
@@ -446,59 +364,6 @@ abstract class Fighting extends Unit implements Identity, Nationality,
 	{
 		_identity = ((null == newIdentity) || (newIdentity.isEmpty())) ?
 		            "" : newIdentity;
-	}
-
-	/**
-	 * Change the status of a unit.
-	 *
-	 * @param state the state to be cleared or removed.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
-	 * a result of calling this method.
-	 *
-	 * @see #status
-	 */
-
-	public final boolean clearStatus(States state)
-	{
-		if ((_status & state.value()) > 0)
-		{
-			if ((States.BROKEN == state) &&
-			    ((_status & States.DESPERATE.value()) > 0))
-			{
-				return false;
-			}
-
-			_status &= ~state.value();
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Change the status of a unit.
-	 *
-	 * @param state the state to be set or applied.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
-	 * a result of calling this method.
-	 *
-	 * @see #status
-	 */
-
-	public final boolean setStatus(States state)
-	{
-		if (0 == (_status & state.value()))
-		{
-			_status ^= state.value();
-
-			if (States.DESPERATE == state) setStatus(States.BROKEN);
-
-			return true;
-		}
-
-		return false;
 	}
 
 	// Other methods

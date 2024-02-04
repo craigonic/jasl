@@ -37,7 +37,7 @@ class Squad
         Squad(::jasl::counters::Nationality$Nationalities* nationality,
               ::jasl::counters::UnitType$InfantryTypes* unitType,int firepower,
               int normalRange,int morale,int brokenMorale,bool canSelfRally,
-              int basicPointValue,int experienceLevelRating,bool hasMaximumELR,
+              int basicPointValue,bool hasMaximumELR,
               ::jasl::counters::Classification$Classifications* classification,
               bool canAssaultFire,bool canSprayFire,int smokePlacementExponent);
 
@@ -56,12 +56,9 @@ class Squad
 
         ::java::lang::String* identity();
         Nationalities*        nationality();
-        ::java::util::List*   status();
         ::java::lang::String* unitType();
 
-        bool                  clearStatus(::jasl::counters::Status$States*);
         void                  setIdentity(::java::lang::String*);
-        bool                  setStatus(::jasl::counters::Status$States*);
 
         // <A HREF="../../jasl/counters/Mobile.html">Mobile</A>.
 
@@ -76,16 +73,12 @@ class Squad
         int                   basicPointValue();
         int                   brokenMorale();
         bool                  canSelfRally();
-        int                   experienceLevelRating();
         ::java::lang::String* firepower();
         int                   firepowerEquivalent();
         InfantryTypes*        infantryType();
         int                   morale();
         int                   normalRange();
         int                   portageValue();
-
-        bool                  check(int);
-        bool                  restore(bool,int);
 
         // <A HREF="../../jasl/counters/Personnel.html">Personnel</A>.
 

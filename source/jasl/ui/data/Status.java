@@ -1,7 +1,7 @@
 // ************************************************************************** //
-// Status.java - This interface is part of the <B>counters</B> package, which        //
+// Status.java - This interface is part of the <B>ui.data</B> package, which         //
 //               contains the class definitions and implementations for       //
-//               objects used to represent the virtual playing pieces in      //
+//               objects used to store and manage the state of an instance of //
 //               jASL.                                                        //
 //                                                                            //
 //               NOTE: This program is based on Advanced Squad Leader, which  //
@@ -11,19 +11,24 @@
 // Written By: Craig R. Campbell  -  November 2011                            //
 // ************************************************************************** //
 
-package jasl.counters;
+package jasl.ui.data;
 
 import java.util.List;
 
 /**
  * This interface is used to define the public constants, using an enum, and
- * required methods associated with the status of a <A HREF="Unit.html">Unit</A>. The methods are
- * intended for operation on an integer member variable within the implementing
- * class.
+ * required methods associated with the status of a <A HREF="../../counters/Unit.html">Unit</A>.
+ * A <U>Unit</U> primarily defines attributes so its state is managed through a <A HREF="Stack.html">Stack</A>.
+ * Note that in this case a "Stack" refers to the management of a single unit,
+ * not a group of units. This is reflected in this documentation by the use of
+ * "unit" instead of "stack".
  *
- * @version 3.0
- * @author Copyright (C) 2011-2017 Craig R. Campbell (craigonic@gmail.com)
- * @see <A HREF="../../../source/jasl/counters/Status.html">Source code</A>
+ * The methods are intended for operation on a 64 bit integer member variable
+ * within the implementing class.
+ *
+ * @version 3.1
+ * @author Copyright (C) 2011-2024 Craig R. Campbell (craigonic@gmail.com)
+ * @see <A HREF="../../../../source/jasl/ui/data/Status.html">Source code</A>
  */
 
 public interface Status
@@ -31,7 +36,7 @@ public interface Status
 	// Symbolic constants
 
 	// This constant is provided primarily for use in displaying the status
-	// of a Unit using an object's toText() method.
+	// of a unit using an implementing class's toText() method.
 
 	/**
 	 * Provides a label for a unit's status : <B>Status</B>
@@ -57,7 +62,7 @@ public interface Status
 		// The following items typically reflect the state of a counter
 		// when it is inverted.
 
-		// <A HREF="Infantry.html">Infantry</A> specific states.
+		// <A HREF="../../counters/Infantry.html">Infantry</A> specific states.
 
 		/** <A NAME="_BROKEN_"></A>
 		 * Indicates that the status of a unit is <B>Broken</B>.
@@ -67,6 +72,10 @@ public interface Status
 
 		/** <A NAME="_DESPERATE_"></A>
 		 * Indicates that the status of a unit is <B>Desperate</B>.
+		 *
+		 * Note that this status is associated directly with BROKEN
+		 * (i.e., it is expected that a DESPERATE unit is also BROKEN).
+		 * This is to be enforced through the method implementations.
 		 */
 
 		DESPERATE("Desperate",0x00000002);
@@ -78,13 +87,13 @@ public interface Status
 		private final String _label;
 
 		// The value associated with the enum constant. This value
-		// should represent a single bit in a 32-bit integer.
+		// should represent a single bit in a 64-bit integer.
 
-		private final int _value;
+		private final long _value;
 
 		// Constructor
 
-		States(String label,int value)
+		States(String label,long value)
 		{
 			_label = label;
 			_value = value;
@@ -95,7 +104,7 @@ public interface Status
 		/**
 		 * Returns the label associated with the enum constant.
 		 *
-		 * @return the <CODE>String</CODE> associated with the enum element.
+		 * @return the <CODE>String</CODE> associated with the constant.
 		 */
 
 		public final String toString()
@@ -106,10 +115,10 @@ public interface Status
 		/**
 		 * Returns the value associated with the enum constant.
 		 *
-		 * @return the <CODE>int</CODE> (bit mask) associated with the enum element.
+		 * @return the <CODE>long</CODE> (bit mask) associated with the constant.
 		 */
 
-		public final int value()
+		public final long value()
 		{
 			return _value;
 		}

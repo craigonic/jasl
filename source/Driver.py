@@ -39,20 +39,12 @@ description    = Descriptions_valueOf(cc2js("LEADER"))
 nationality    = Nationalities_valueOf(cc2js("GERMAN"))
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
 classification = Classifications_valueOf(cc2js("ELITE"))
-brokenState    = States_valueOf(cc2js("BROKEN"))
-desperateState = States_valueOf(cc2js("DESPERATE"))
 
 # Create an instance of a German Leader.
 
-germanLeader = Leader(nationality,unitType,9,9,4,-1)
+germanLeader = Leader(nationality,unitType,9,9,-1)
 
-germanLeader.setStatus(brokenState)
 germanLeader.setPortageLevel(2)
-
-# (Silently) verify that the status that was just set is not (successfully) set
-# again (i.e. it worked the first time).
-
-assert(False == germanLeader.setStatus(brokenState))
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -72,8 +64,6 @@ print("Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString()))
 
 #print("\tidentity(): %s"              % js2cc(germanLeader.identity()))
 #print("\tnationality() - name: %s\tlabel: %s" % (js2cc(germanLeader.nationality().name()),js2cc(germanLeader.nationality().toString())))
-#statusList = germanLeader.status()
-#print("\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString())))
 #print("\tunitType(): %s"              % js2cc(germanLeader.unitType()))
 
 #print("\tmovement(): %d"              % germanLeader.movement())
@@ -83,8 +73,6 @@ print("Leader.toString() output:\n\n%s\n" % js2cc(germanLeader.toString()))
 #print("\tbasicPointValue(): %d"       % germanLeader.basicPointValue())
 #print("\tbrokenMorale(): %d"          % germanLeader.brokenMorale())
 #print("\tcanSelfRally(): %d"          % germanLeader.canSelfRally())
-#print("\texperienceLevelRating(): %d" % germanLeader.experienceLevelRating())
-#print("\tfirepower(): %s"             % js2cc(germanLeader.firepower()))
 #print("\tfirepowerEquivalent(): %d"   % germanLeader.firepowerEquivalent())
 #print("\tinfantryType() - name: %s\tlabel: %s" % (js2cc(germanLeader.infantryType().name()),js2cc(germanLeader.infantryType().toString())))
 #print("\tmorale(): %d"                % germanLeader.morale())
@@ -142,12 +130,6 @@ try:
 except ValueError as detail: # Not expected.
     printException(detail)
 
-# Retrieve the leader's status and then use the value to restore to "normal".
-
-statusList = deserializedLeader.status()
-
-deserializedLeader.clearStatus(statusList[0])
-
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
@@ -168,10 +150,8 @@ print("(Deserialized) Leader.toJSON() output:\n\n%s\n" % js2cc(deserializedLeade
 nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
 unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
 
-russianSquad = Squad(nationality,unitType,6,2,8,8,False,12,4,False,
+russianSquad = Squad(nationality,unitType,6,2,8,8,False,12,False,
                      classification,True,True,0)
-
-russianSquad.setStatus(desperateState)
 
 # Display all of the entered values for this instance using the toText() method.
 
@@ -191,8 +171,6 @@ print("Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString()))
 
 #print("\tidentity(): %s"               % js2cc(russianSquad.identity()))
 #print("\tnationality() - name: %s\tlabel: %s" % (js2cc(russianSquad.nationality().name()),js2cc(russianSquad.nationality().toString())))
-#statusList = russianSquad.status()
-#print("\tstatus() - name: %s\tlabel: %s" % (js2cc(statusList[0].name()),js2cc(statusList[0].toString())))
 #print("\tunitType(): %s"               % js2cc(russianSquad.unitType()))
 
 #print("\tmovement(): %d"               % russianSquad.movement())
@@ -202,7 +180,6 @@ print("Squad.toString() output:\n\n%s\n" % js2cc(russianSquad.toString()))
 #print("\tbasicPointValue(): %d"        % russianSquad.basicPointValue())
 #print("\tbrokenMorale(): %d"           % russianSquad.brokenMorale())
 #print("\tcanSelfRally(): %d"           % russianSquad.canSelfRally())
-#print("\texperienceLevelRating(): %d"  % russianSquad.experienceLevelRating())
 #print("\tfirepower(): %s"              % js2cc(russianSquad.firepower()))
 #print("\tfirepowerEquivalent(): %d"    % russianSquad.firepowerEquivalent())
 #print("\tinfantryType() - name: %s\tlabel: %s" % (js2cc(russianSquad.infantryType().name()),js2cc(russianSquad.infantryType().toString())))
@@ -247,22 +224,6 @@ try:
 except ValueError as detail: # Not expected.
     printException(detail)
 
-# (Silently) verify that if a Unit is subject to desperation morale, it's broken
-# status can't be (underhandedly) removed.
-
-assert(False == deserializedSquad.clearStatus(brokenState))
-
-# Retrieve the squad's status and then use the value to "reduce" it to "broken".
-
-statusList = deserializedSquad.status()
-
-deserializedSquad.clearStatus(statusList[0])
-
-# (Silently) verify that the status that was just cleared is not (successfully)
-# cleared again (i.e. it worked the first time).
-
-assert(False == deserializedSquad.clearStatus(statusList[0]))
-
 # Display all of the entered values for the deserialized instance using the
 # toText() method.
 
@@ -289,7 +250,6 @@ validDescription    = "\"Description\":\"SQUAD\"";
 validNationality    = "\"Nationality\":\"RUSSIAN\"";
 validUnitType       = "\"Unit Type\":\"Guards\"";
 validIdentity       = "\"Identity\":\"A\"";
-validStatus         = "\"Status\":1";
 validMovement       = "\"Movement\":4";
 validPortageCap     = "\"Portage Capacity\":3";
 validPortageLevel   = "\"Portage Level\":0";
@@ -301,7 +261,6 @@ validBrokenMorale   = "\"Broken Morale\":8";
 validCanSelfRally   = "\"Can Self Rally ?\":false";
 validPortageValue   = "\"Portage Value\":10";
 validBPV            = "\"Basic Point Value\":12";
-validELR            = "\"Experience Level Rating\":4";
 validInfantryType   = "\"Infantry Type\":\"GUARDS\"";
 validHasMaxELR      = "\"Has Maximum ELR ?\":false";
 validClassification = "\"Classification\":\"ELITE\"";
@@ -347,12 +306,6 @@ fromJsonSquadTestStrings = [
   ["Updating a Squad with an invalid (non-string) identity",
    deserializedSquadJSON.replace(validIdentity,
                                  validIdentity.replace("\"A\"","null"))],
-
-  ["Updating a Squad with an invalid (negative) status",
-   deserializedSquadJSON.replace(validStatus,validStatus.replace("1","-2"))],
-  ["Updating a Squad with an invalid (non-integer) status",
-   deserializedSquadJSON.replace(validStatus,validStatus.replace("1","null"))],
-
  # Mobile
 
   ["Updating a Squad with a different movement value",
@@ -426,11 +379,6 @@ fromJsonSquadTestStrings = [
    deserializedSquadJSON.replace(validBPV,validBPV.replace("12","52"))],
   ["Updating a Squad with an invalid (non-integer) basic point value",
    deserializedSquadJSON.replace(validBPV,validBPV.replace("12","null"))],
-
-  ["Updating a Squad with a different experience level rating",
-   deserializedSquadJSON.replace(validELR,validELR.replace("4","3"))],
-  ["Updating a Squad with an invalid (non-integer) experience level rating",
-   deserializedSquadJSON.replace(validELR,validELR.replace("4","null"))],
 
   ["Updating a Squad with a different infantry type",
    deserializedSquadJSON.replace(validInfantryType,
@@ -521,13 +469,11 @@ for row in range(len(fromJsonLeaderTestStrings)):
         printException(detail)
 
 # Verify that all of the values for the Squad instance that can be changed using
-# the fromJSON() method (Identity, Status, and Portage Level) work as expected.
+# the fromJSON() method (Identity and Portage Level) work as expected.
 
 deserializedSquadJSON = deserializedSquadJSON.replace(validIdentity,
                                                       validIdentity.replace("\"A\"",
                                                                             "\"B\""))
-deserializedSquadJSON = deserializedSquadJSON.replace(validStatus,
-                                                      validStatus.replace("1","0"))
 deserializedSquadJSON = deserializedSquadJSON.replace(validPortageLevel,
                                                       validPortageLevel.replace("0","2"))
 
@@ -545,46 +491,35 @@ unitList = []
 nationality    = Nationalities_valueOf(cc2js("RUSSIAN"))
 unitType       = InfantryTypes_valueOf(cc2js("COMMISSAR"))
 
-unitList.append(Leader(nationality,unitType,9,9,3,0))
+unitList.append(Leader(nationality,unitType,9,9,0))
 
 unitList[0].setIdentity(cc2js("Commissar Ryzhiy"))
 
 unitType       = InfantryTypes_valueOf(cc2js("GUARDS"))
 classification = Classifications_valueOf(cc2js("ELITE"))
 
-unitList.append(Squad(nationality,unitType,6,2,8,8,False,12,3,False,
+unitList.append(Squad(nationality,unitType,6,2,8,8,False,12,False,
                       classification,True,True,0))
 
 unitType       = InfantryTypes_valueOf(cc2js("NONE"))
 classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 
-unitList.append(Squad(nationality,unitType,4,4,7,7,False,7,3,False,
+unitList.append(Squad(nationality,unitType,4,4,7,7,False,7,False,
                       classification,False,False,0))
 
 classification = Classifications_valueOf(cc2js("CONSCRIPT"))
 
-unitList.append(Squad(nationality,unitType,4,2,6,5,False,4,3,False,
+unitList.append(Squad(nationality,unitType,4,2,6,5,False,4,False,
                       classification,False,False,0))
 
 unitList[1].setIdentity(cc2js("X"))
 unitList[2].setIdentity(cc2js("Y"))
-unitList[2].setStatus(brokenState)
 unitList[3].setIdentity(cc2js("Z"))
-unitList[3].setStatus(desperateState)
 
 print("Displaying Unit array with a Leader & 3 Squads")
 
 for unitIndex in iter(range(4)):
     unit = unitList[unitIndex]
-
-    statusList   = unit.status()
-    statusString = ""
-
-    # Note that this would not be a good solution if the list was expected to
-    # contain more than one entry, but it works here for testing purposes.
-
-    for status in statusList:
-        statusString = js2cc(status.toString())
 
     print("\nUnitList[%d]:\t%s" % (unitIndex,js2cc(unit.toString())))
 
@@ -592,7 +527,6 @@ for unitIndex in iter(range(4)):
     print("%s"   % js2cc(unit.identity()))
     print("%s"   % js2cc(unit.unitType()))
     print("%d"   % unit.movement())
-    print("[%s]" % statusString)
 
 # Create an instance of a German Squad (that throws some exceptions).
 
@@ -601,7 +535,7 @@ print("\nTesting Exception handling for Squad update methods:")
 nationality = Nationalities_valueOf(cc2js("GERMAN"))
 unitType    = InfantryTypes_valueOf(cc2js("NONE"))
 
-squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,True,
+squad = Squad(nationality,unitType,4,6,7,7,False,10,False,classification,True,
               False,0)
 
 # Null Identity (no error, just clears the existing one).
@@ -631,7 +565,7 @@ unitType    = InfantryTypes_valueOf(cc2js("ENGINEERS"))
 print("\nIncompatible nationality and unitType arguments:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -645,7 +579,7 @@ classification = Classifications_valueOf(cc2js("GREEN"))
 print("\nIncompatible description and unitType arguments:")
 
 try:
-    squad = Squad(nationality,unitType,4,4,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,4,7,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -659,7 +593,7 @@ classification = Classifications_valueOf(cc2js("FIRST_LINE"))
 print("\nInvalid (less than 0) firepower argument:")
 
 try:
-    squad = Squad(nationality,unitType,-1,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,-1,6,7,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -667,7 +601,7 @@ except ValueError as detail:
 print("\nInvalid (greater than maximum) firepower argument:")
 
 try:
-    squad = Squad(nationality,unitType,11,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,11,6,7,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -677,7 +611,7 @@ except ValueError as detail:
 print("\nInvalid (less than 0) normal range argument:")
 
 try:
-    squad = Squad(nationality,unitType,4,-255,7,7,False,10,3,False,
+    squad = Squad(nationality,unitType,4,-255,7,7,False,10,False,
                   classification,True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -687,7 +621,7 @@ except ValueError as detail:
 print("\nInvalid (less than 0) morale argument:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,-1,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,-1,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -697,7 +631,7 @@ except ValueError as detail:
 print("\nInvalid (greater than maximum) morale argument:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,11,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,11,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -707,7 +641,7 @@ except ValueError as detail:
 print("\nInvalid (less than 0) broken morale argument:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,-7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,-7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -717,7 +651,7 @@ except ValueError as detail:
 print("\nInvalid (greater than maximum) broken morale argument:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,17,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,17,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -727,27 +661,7 @@ except ValueError as detail:
 print("\nInvalid (less than zero) Basic Point Value (BPV):")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,-1,3,False,classification,
-                  True,False,0)
-except ValueError as detail:
-    printException(detail)
-
-# Invalid Experience Level Rating (Minimum)
-
-print("\nInvalid (less than zero) Experience Level Rating (ELR):")
-
-try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,-1,False,classification,
-                  True,False,0)
-except ValueError as detail:
-    printException(detail)
-
-# Invalid Experience Level Rating (Maximum)
-
-print("\nInvalid (greater than maximum) Experience Level Rating (ELR):")
-
-try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,6,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,-1,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -760,7 +674,7 @@ classification = Classifications_valueOf(cc2js("SS"))
 print("\nIncompatible classification argument (nationality mismatch):")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,False,classification,
                   True,False,0)
 except ValueError as detail:
     printException(detail)
@@ -773,7 +687,7 @@ classification = Classifications_valueOf(cc2js("ELITE"))
 print("\nIncompatible classification argument (invalid setting):")
 
 try:
-    squad = Squad(nationality,unitType,3,3,7,6,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,3,3,7,6,False,10,False,classification,
                   False,False,0)
 except ValueError as detail:
     printException(detail)
@@ -786,7 +700,7 @@ classification = Classifications_valueOf(cc2js("SECOND_LINE"))
 print("\nInvalid (less than zero) Smoke Placement Exponent:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,6,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,6,False,classification,
                   True,False,-4)
 except ValueError as detail:
     printException(detail)
@@ -796,7 +710,7 @@ except ValueError as detail:
 print("\nInvalid (greater than maximum) Smoke Placement Exponent:")
 
 try:
-    squad = Squad(nationality,unitType,4,6,7,7,False,10,3,False,classification,
+    squad = Squad(nationality,unitType,4,6,7,7,False,10,False,classification,
                   True,False,4)
 except ValueError as detail:
     printException(detail)
@@ -815,7 +729,7 @@ unitType    = InfantryTypes_valueOf(cc2js("CANADIAN"))
 print("\nInvalid (less than minimum) modifier argument:")
 
 try:
-    leader = Leader(nationality,unitType,10,10,5,-4)
+    leader = Leader(nationality,unitType,10,10,-4)
 except ValueError as detail:
     printException(detail)
 
@@ -824,7 +738,7 @@ except ValueError as detail:
 print("\nInvalid (greater than maximum) modifier argument:")
 
 try:
-    leader = Leader(nationality,unitType,10,10,5,4)
+    leader = Leader(nationality,unitType,10,10,4)
 except ValueError as detail:
     printException(detail)
 

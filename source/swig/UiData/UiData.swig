@@ -17,6 +17,8 @@
 
 %{
 #include "jasl/cni/jaslWrapper.h"
+
+#include <java/util/List.h>
 %}
 
 // This file allows the text from a Java exception to be included in a message
@@ -30,8 +32,50 @@
 // Enums.
 
 %include Sides.swig  // <A HREF="Sides.swig.html">Sides</A>
+%include States.swig // <A HREF="States.swig.html">States</A>
 
 // Classes.
+
+// The following typemaps are applied in the interface files listed below where
+// a States enum is used.
+
+%typemap(in) ::jasl::ui::data::Status$States*
+{
+    if (!SWIG_IsOK(SWIG_ConvertPtr($input,(void**)&$1,$descriptor(States*),0)))
+    {
+        SWIG_exception_fail(SWIG_TypeError,
+                            "in method '$symname', expecting type $descriptor(States*)");
+    }
+}
+
+%typemap(out) ::java::util::List*
+{
+#if defined(SWIGPERL)
+    AV*  statusArray = newAV();
+
+    for (int i = 0;i < $1->size();++i)
+    {
+        SV* svp = sv_newmortal();
+
+        SWIG_MakePtr(svp,$1->get(i),SWIGTYPE_p_States,0);
+
+        av_push(statusArray,svp);
+    }
+
+    $result = newRV_inc((SV*)statusArray);
+    sv_2mortal($result);
+    argvi++;
+#elif defined(SWIGPYTHON)
+    $result = PyList_New($1->size());
+
+    for (int i = 0;i < $1->size();++i)
+    {
+        PyObject* pyObject = SWIG_NewPointerObj($1->get(i),SWIGTYPE_p_States,0);
+
+        PyList_SetItem($result,i,pyObject);
+    }
+#endif
+}
 
 %include Game.swig   // <A HREF="Game.swig.html">Game</A>
 %include Player.swig // <A HREF="Player.swig.html">Player</A>

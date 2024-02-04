@@ -1,13 +1,13 @@
 // ************************************************************************** //
 // States.swig - This file is an interface description for <A HREF="http://www.swig.org/">SWIG</A>. It is used   //
 //               to generate shared libraries that link to the library        //
-//               created for the <A HREF="../../jasl/counters/counters.html">package</A> containing this enum. These          //
+//               created for the <A HREF="../../jasl/ui/data/data.html">package</A> containing this enum. These          //
 //               libraries, along with the other files that are generated,    //
 //               allow objects of this type to be accessed from the supported //
 //               scripting languages (<A HREF="http://www.perl.org/">Perl</A> and <A HREF="http://www.python.org/">Python</A>).                       //
 //                                                                            //
-//               NOTE: This file is intended for use in the <A HREF="Counters.swig.html">Counters</A>          //
-//                     interface file, not to build standalone libraries.     //
+//               NOTE: This file is intended for use in the <A HREF="UiData.swig.html">UiData</A> interface  //
+//                     file, not to build standalone libraries.               //
 //                                                                            //
 // Written By: Craig R. Campbell  -  February 2014                            //
 // ************************************************************************** //
@@ -31,7 +31,7 @@
 %}
 #endif
 
-// The public interface of the <A HREF="../../jasl/counters/Status.html">States</A> enum.
+// The public interface of the <A HREF="../../jasl/ui/data/Status.html">States</A> enum.
 
 class States
 {

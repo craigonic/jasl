@@ -1,11 +1,10 @@
-Sat 21 Oct 2023 09:51:32 PM PDT
+Sun 26 Nov 2023 09:37:22 PM PST
 
 Leader.toText() output:
 
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
 Identity          :                                                             
-Status            : [Broken]                                                    
 Movement          : 6                
 Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
@@ -13,7 +12,7 @@ Normal Range      : 0
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
-Basic Point Value : 0                Experience Level Rating : 4                
+Basic Point Value : 0                
 Infantry Type     : NONE                                                        
 Modifier          : -1               
 
@@ -38,7 +37,6 @@ Caught: java.io.FileNotFoundException: /tmp/NonExistentFile (No such file or dir
 Description       : Leader           
 Nationality       : German           Unit Type               :                  
 Identity          : Col. Klink                                                  
-Status            : []                                                          
 Movement          : 6                
 Portage Capacity  : 1                Portage Level           : 2                
 Firepower         : 0                Firepower Equivalent    : 0                
@@ -46,7 +44,7 @@ Normal Range      : 0
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
-Basic Point Value : 0                Experience Level Rating : 4                
+Basic Point Value : 0                
 Infantry Type     : NONE                                                        
 Modifier          : -1               
 
@@ -62,7 +60,6 @@ Modifier          : -1
   "Nationality":"GERMAN",
   "Unit Type":"",
   "Identity":"Col. Klink",
-  "Status":0,
    "Movement":6,
    "Portage Capacity":1,
    "Portage Level":2,
@@ -74,7 +71,6 @@ Modifier          : -1
     "Can Self Rally ?":true,
     "Portage Value":0,
     "Basic Point Value":0,
-    "Experience Level Rating":4,
     "Infantry Type":"NONE",
      "Modifier":-1
 }
@@ -84,7 +80,6 @@ Squad.toText() output:
 Description       : Squad            
 Nationality       : Russian          Unit Type               : Guards           
 Identity          :                                                             
-Status            : [Desperate]                                                 
 Movement          : 4                
 Portage Capacity  : 3                Portage Level           : 0                
 Firepower         : 6                Firepower Equivalent    : 6                
@@ -92,7 +87,7 @@ Normal Range      : 2
 Morale            : 8                Broken Morale           : 8                
 Can Self Rally ?  : No               
 Portage Value     : 10               
-Basic Point Value : 12               Experience Level Rating : 4                
+Basic Point Value : 12               
 Infantry Type     : GUARDS                                                      
 Has Maximum ELR ? : No               Classification          : Elite            
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
@@ -115,7 +110,6 @@ Caught: java.lang.IllegalArgumentException: Serialization(deserializeFromByteArr
 Description       : Squad            
 Nationality       : Russian          Unit Type               : Guards           
 Identity          : A                                                           
-Status            : [Broken]                                                    
 Movement          : 4                
 Portage Capacity  : 3                Portage Level           : 0                
 Firepower         : 6                Firepower Equivalent    : 6                
@@ -123,7 +117,7 @@ Normal Range      : 2
 Morale            : 8                Broken Morale           : 8                
 Can Self Rally ?  : No               
 Portage Value     : 10               
-Basic Point Value : 12               Experience Level Rating : 4                
+Basic Point Value : 12               
 Infantry Type     : GUARDS                                                      
 Has Maximum ELR ? : No               Classification          : Elite            
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
@@ -141,7 +135,6 @@ Smoke Placement Ex: 0
   "Nationality":"RUSSIAN",
   "Unit Type":"Guards",
   "Identity":"A",
-  "Status":1,
    "Movement":4,
    "Portage Capacity":3,
    "Portage Level":0,
@@ -153,7 +146,6 @@ Smoke Placement Ex: 0
     "Can Self Rally ?":false,
     "Portage Value":10,
     "Basic Point Value":12,
-    "Experience Level Rating":4,
     "Infantry Type":"GUARDS",
      "Has Maximum ELR ?":false,
      "Classification":"ELITE",
@@ -207,14 +199,6 @@ Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Unit Type"] is 
 Updating a Squad with an invalid (non-string) identity:
 
 Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Identity"] is not a string (class org.json.JSONObject$Null : null).
-
-Updating a Squad with an invalid (negative) status:
-
-Caught: java.lang.IllegalArgumentException: Fighting(fromJSON) - Invalid value (-2) for Status
-
-Updating a Squad with an invalid (non-integer) status:
-
-Caught: org.json.JSONException: Fighting(fromJSON) - JSONObject["Status"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different movement value:
 
@@ -304,14 +288,6 @@ Updating a Squad with an invalid (non-integer) basic point value:
 
 Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Basic Point Value"] is not a int (class org.json.JSONObject$Null : null).
 
-Updating a Squad with a different experience level rating:
-
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (3) for Experience Level Rating
-
-Updating a Squad with an invalid (non-integer) experience level rating:
-
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Experience Level Rating"] is not a int (class org.json.JSONObject$Null : null).
-
 Updating a Squad with a different infantry type:
 
 Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (NONE) for Infantry Type
@@ -384,7 +360,6 @@ Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not
   "Nationality":"RUSSIAN",
   "Unit Type":"Guards",
   "Identity":"B",
-  "Status":0,
    "Movement":4,
    "Portage Capacity":3,
    "Portage Level":2,
@@ -396,7 +371,6 @@ Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not
     "Can Self Rally ?":false,
     "Portage Value":10,
     "Basic Point Value":12,
-    "Experience Level Rating":4,
     "Infantry Type":"GUARDS",
      "Has Maximum ELR ?":false,
      "Classification":"ELITE",
@@ -415,7 +389,6 @@ Leader
 Commissar Ryzhiy
 Commissar
 6
-[]
 
 UnitList[1]:	6-2-8 Squad (X)
 
@@ -423,7 +396,6 @@ Squad
 X
 Guards
 4
-[]
 
 UnitList[2]:	4-4-7 Squad (Y)
 
@@ -431,7 +403,6 @@ Squad
 Y
 
 4
-[Broken]
 
 UnitList[3]:	4-2-6 Squad (Z)
 
@@ -439,7 +410,6 @@ Squad
 Z
 
 3
-[Desperate]
 
 Testing Exception handling for Squad update methods:
 
@@ -488,14 +458,6 @@ Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argu
 Invalid (less than zero) Basic Point Value (BPV):
 
 Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
-
-Invalid (less than zero) Experience Level Rating (ELR):
-
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
-
-Invalid (greater than maximum) Experience Level Rating (ELR):
-
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 6
 
 Incompatible classification argument (nationality mismatch):
 

@@ -24,14 +24,13 @@ import jasl.utilities.Messages;
  * infantry units. It is intended strictly as a superclass, not to be
  * instantiated directly.
  *
- * @version 6.0
- * @author Copyright (C) 1998-2017 Craig R. Campbell (craigonic@gmail.com)
+ * @version 7.0
+ * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Infantry.html">Source code</A>
  */
 
 abstract class Infantry extends Mobile implements Firepower, Morale,
-                                                  Portability, BasicPointValue,
-                                                  ExperienceLevelRating
+                                                  Portability, BasicPointValue
 {
 	// Symbolic constants
 
@@ -101,11 +100,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 
 	private int _basicPointValue;
 
-	// This variable stores the experience level rating of the unit this
-	// object represents. This is used in unit substitution and replacement.
-
-	private int _experienceLevelRating;
-
 	// This variable stores a more specific type, designation, nationality,
 	// etc. for the unit this object represents. The text equivalent of this
 	// value is passed to the superclass constructor.
@@ -122,8 +116,7 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 	                   InfantryTypes unitType,int movement,
 	                   int portageCapacity,int firepower,int normalRange,
 	                   int morale,int brokenMorale,boolean canSelfRally,
-	                   int portageValue,int basicPointValue,
-	                   int experienceLevelRating)
+	                   int portageValue,int basicPointValue)
 	{
 		// Pass the first 5 arguments to the superclass constructor. If
 		// any exceptions are thrown, assume that they will be caught
@@ -238,17 +231,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 
 		_basicPointValue = basicPointValue;
 
-		// Experience Level Rating
-
-		if ((experienceLevelRating < MIN_ELR) ||
-		    (experienceLevelRating > MAX_ELR))
-		{
-			throw new IllegalArgumentException(invalidArgumentError +
-			                                   experienceLevelRating);
-		}
-
-		_experienceLevelRating = experienceLevelRating;
-
 		// Infantry Type
 
 		_infantryType = unitType;
@@ -357,16 +339,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 
 		returnString.append(Messages.formatTextString(Integer.toString(basicPointValue()),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
-		                                              false,false));
-
-		// Experience Level Rating
-
-		returnString.append(Messages.formatTextString(ELR_LABEL,
-		                                              THIRD_COLUMN_LABEL_WIDTH,
-		                                              true,false));
-
-		returnString.append(Messages.formatTextString(Integer.toString(experienceLevelRating()),
-		                                              FOURTH_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
 		// Infantry Type
@@ -437,9 +409,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 		                    JsonOutput.buildJSONPair(BPV_LABEL,basicPointValue()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(ELR_LABEL,experienceLevelRating()) +
-		                    JSON_OBJECT_SEPARATOR);
-		returnString.append(INDENT +
 		                    JsonOutput.buildJSONPair(INFANTRY_TYPE_LABEL,infantryType().name()) +
 		                    JSON_OBJECT_SEPARATOR);
 
@@ -488,8 +457,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 	 * Return the morale level of a unit when it is in its normal state.
 	 *
 	 * @return an <CODE>int</CODE> specifying the normal morale level of the unit.
-	 *
-	 * @see Status.States#NORMAL
 	 */
 
 	public final int morale()
@@ -501,8 +468,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 	 * Return the morale level of a unit when it is in the broken state.
 	 *
 	 * @return an <CODE>int</CODE> specifying the broken morale level of the unit.
-	 *
-	 * @see Status.States#BROKEN
 	 */
 
 	public final int brokenMorale()
@@ -552,19 +517,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 	public final int basicPointValue()
 	{
 		return _basicPointValue;
-	}
-
-	/**
-	 * Return the experience level rating of a unit.
-	 * <P>
-	 * This is a value between the <A HREF="ExperienceLevelRating.html#_MIN_ELR_">minimum</A> and <A HREF="ExperienceLevelRating.html#_MAX_ELR_">maximum</A>, inclusive.
-	 *
-	 * @return an <CODE>int</CODE> specifying the experience level rating for the unit.
-	 */
-
-	public final int experienceLevelRating()
-	{
-		return _experienceLevelRating;
 	}
 
 	/**
@@ -712,18 +664,6 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 					BPV_LABEL;
 			}
 
-			int experienceLevelRating =
-				jsonObject.getInt(ELR_LABEL);
-
-			if (experienceLevelRating != _experienceLevelRating)
-			{
-				exceptionDetails =
-					JsonData.FROM_JSON_NON_MATCH_PREFIX +
-					experienceLevelRating +
-					JsonData.FROM_JSON_FOR_SEPARATOR +
-					ELR_LABEL;
-			}
-
 			InfantryTypes infantryType =
 				InfantryTypes.valueOf(jsonObject.getString(INFANTRY_TYPE_LABEL));
 
@@ -762,63 +702,5 @@ abstract class Infantry extends Mobile implements Firepower, Morale,
 			                                                   JsonData.FROM_JSON_METHOD_NAME,
 			                                                   exception.getMessage()));
 		}
-	}
-
-	/**
-	 * Perform a morale or task check on a unit.
-	 *
-	 * @param modifier the applicable dice roll modifier (DRM) for the check.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
-	 * a result of calling this method.
-	 *
-	 * @see Leadership
-	 * @see Status
-	 */
-
-	public final boolean check(int modifier)
-	{
-		return false;
-	}
-
-	/**
-	 * Attempt to restore a unit's status to normal.
-	 *
-	 * @param leaderPresent indicates if a leader is present, which may
-	 * determine if a restoration attempt can be made or not. Note that the
-	 * leader is considered "present" only when in the normal (unbroken)
-	 * state.
-	 * @param modifier the applicable dice roll modifier for the attempt.
-	 * This includes leadership DRM as well as other factors.
-	 *
-	 * @return a <CODE>boolean</CODE> indicating if the status of the unit was changed as
-	 * a result of calling this method.
-	 *
-	 * @see Leader
-	 * @see Status
-	 */
-
-	public final boolean restore(boolean leaderPresent,int modifier)
-	{
-		// Verify that the "unit" actually needs to be rallied.
-
-		if ((status().contains(States.BROKEN)) ||
-		    (status().contains(States.DESPERATE)))
-		{
-			// If the unit is capable of self-rallying (leaders and
-			// some elite units) or a <B>unbroken</B> leader is present in
-			// the same space, make the rally attempt.
-
-			if (_canSelfRally || leaderPresent)
-			{
-				return true;
-			}
-		}
-
-		// Unless determined otherwise above, the "unit" automatically
-		// fails.
-
-		return false;
 	}
 }

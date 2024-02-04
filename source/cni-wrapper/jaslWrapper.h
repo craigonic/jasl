@@ -14,7 +14,6 @@
 #include "jasl/counters/Description$Descriptions.h"
 #include "jasl/counters/Nationality$Nationalities.h"
 #include "jasl/counters/UnitType$InfantryTypes.h"
-#include "jasl/counters/Status$States.h"
 
 #include "jasl/counters/Unit.h"
 #include "jasl/counters/Leader.h"
@@ -23,6 +22,7 @@
 #include "jasl/ui/data/Game.h"
 #include "jasl/ui/data/Player.h"
 #include "jasl/ui/data/Side$Sides.h"
+#include "jasl/ui/data/Status$States.h"
 
 #include "jasl/utilities/Dice.h"
 #include "jasl/utilities/Serialization.h"
@@ -56,13 +56,6 @@ typedef jasl::counters::Nationality$Nationalities Nationalities;
  */
 
 typedef jasl::counters::UnitType$InfantryTypes InfantryTypes;
-
-/**
- * \typedef jasl::counters::Status$States States
- * \brief Shorthand declaration for the <A HREF="../../source/jasl/counters/Status.html">States</A> enum.
- */
-
-typedef jasl::counters::Status$States States;
 
 /**
  * \typedef jasl::counters::Unit Unit
@@ -107,6 +100,13 @@ typedef jasl::ui::data::Player Player;
  */
 
 typedef jasl::ui::data::Side$Sides Sides;
+
+/**
+ * \typedef jasl::ui::data::Status$States States
+ * \brief Shorthand declaration for the <A HREF="../../source/jasl/ui/data/Status.html">States</A> enum.
+ */
+
+typedef jasl::ui::data::Status$States States;
 
 // Utilities
 
