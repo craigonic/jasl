@@ -2,7 +2,7 @@
  * \file JaslEnums.cpp
  *
  * This file defines a proxy intended to mirror some of the behavior of the
- * <A HREF="https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/lang/Enum.html">Enum</A>s in the <A HREF="../../../jasl/jasl.html">jasl</A> packages, which are implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, for use in C++
+ * Enums in the <A HREF="../../../jasl/jasl.html">jasl</A> packages, which are implemented in Java, for use in C++
  * programs.
  *
  * Written By: Craig R. Campbell  -  January 2019
@@ -13,93 +13,69 @@
 #include "jasl/jni/JniWrapper.h"
 
 #include <assert.h>
-#include <type_traits>
-
-/// @cond DEVELOPER
-// Initialize static member variables.
-
-struct JaslEnumInterface::JaslEnumData JaslEnumInterface::descriptionsEnumData =
-	{"Description$Descriptions",nullptr,nullptr,nullptr,nullptr,nullptr};
-
-struct JaslEnumInterface::JaslEnumData* JaslEnumInterface::currentEnumData = nullptr;
-/// @endcond
 
 // toClass: Return the Java Enum class reference associated with the specified
 //          enum type.
 
-template <typename EnumClass>
-jclass JaslEnumInterface::toClass() noexcept
+jclass JaslEnumInterface::toClass(const std::string& enumPath) noexcept
 {
-	std::string javaClassPath("jasl/counters/");
-	std::string javaEnumPath;
+	assert(!enumPath.empty());
 
-	if (std::is_same_v<EnumClass,Descriptions>)
-	{
-		currentEnumData = &descriptionsEnumData;
+	jclass enumClass = jniEnv().FindClass(enumPath.c_str());
+	assert(nullptr != enumClass);
 
-		if (descriptionsEnumData.enumClass)
-		{
-			return descriptionsEnumData.enumClass;
-		}
-
-		javaEnumPath = descriptionsEnumData.enumPath;
-	}
-
-	assert(!javaEnumPath.empty());
-
-	javaClassPath.append(javaEnumPath);
-
-	jclass javaClass =
-		jniEnv().FindClass(javaClassPath.c_str());
-	assert(nullptr != javaClass);
-
-	if (std::is_same_v<EnumClass,Descriptions>)
-	{
-		descriptionsEnumData.enumPath  = javaClassPath;
-		descriptionsEnumData.enumClass = javaClass;
-	}
-
-	return javaClass;
+	return enumClass;
 }
 
 // convertToObject: Return an instance of the specified enum type, set to the
 //                  indicated value.
 
-jobject JaslEnumInterface::convertToObject(jclass javaClass,
+jobject JaslEnumInterface::convertToObject(JaslEnumData& jaslEnumData,
                                            int enumValueIndex) noexcept
 {
-	assert(nullptr != javaClass);
-	assert(enumValueIndex >= 0);
-	assert(nullptr != currentEnumData);
+	if (nullptr == jaslEnumData.enumClass)
+	{
+		jaslEnumData.enumClass = toClass(jaslEnumData.enumPath);
 
-	if (nullptr == currentEnumData->valuesMethodID)
+		printf("enumPath: %s\n",jaslEnumData.enumPath.c_str());
+//		printf("enumClass: %p\n",jaslEnumData.enumClass);
+	}
+
+	assert(nullptr != jaslEnumData.enumClass);
+	assert(enumValueIndex >= 0);
+
+	if (nullptr == jaslEnumData.valuesMethodID)
 	{
 		std::string valuesSignature("()[L");
 
-		valuesSignature.append(currentEnumData->enumPath);
+		valuesSignature.append(jaslEnumData.enumPath);
 		valuesSignature.append(";");
 
 		printf("valuesSignature: %s\n",valuesSignature.c_str());
 
-		currentEnumData->valuesMethodID =
-			methodID(javaClass,"values",
+		jaslEnumData.valuesMethodID =
+			methodID(jaslEnumData.enumClass,"values",
 			         valuesSignature.c_str(),true);
+
+//		printf("valuesMethodID: %p\n",jaslEnumData.valuesMethodID);
 	}
 
-	assert(nullptr != currentEnumData->valuesMethodID);
+	assert(nullptr != jaslEnumData.valuesMethodID);
 
 	const jobjectArray javaObjectArray =
-		static_cast<jobjectArray>(jniEnv().CallStaticObjectMethod(javaClass,
-		                                                          currentEnumData->valuesMethodID));
+		static_cast<jobjectArray>(jniEnv().CallStaticObjectMethod(jaslEnumData.enumClass,
+		                                                          jaslEnumData.valuesMethodID));
 	assert(nullptr != javaObjectArray);
 
-	if (nullptr == currentEnumData->nameMethodID)
+	if (nullptr == jaslEnumData.nameMethodID)
 	{
-		currentEnumData->nameMethodID =
-			methodID(javaClass,"name",toStringSignature);
+		jaslEnumData.nameMethodID =
+			methodID(jaslEnumData.enumClass,"name",toStringSignature);
+
+//		printf("nameMethodID: %p\n",jaslEnumData.nameMethodID);
 	}
 
-	assert(nullptr != currentEnumData->nameMethodID);
+	assert(nullptr != jaslEnumData.nameMethodID);
 
 	jobject enumObject =
 		jniEnv().GetObjectArrayElement(javaObjectArray,
@@ -108,69 +84,70 @@ jobject JaslEnumInterface::convertToObject(jclass javaClass,
 
 	const jstring javaString =
 		static_cast<jstring>(jniEnv().CallObjectMethod(enumObject,
-		                                               currentEnumData->nameMethodID));
+		                                               jaslEnumData.nameMethodID));
 	assert(nullptr != javaString);
 
-	if (nullptr == currentEnumData->valueOfMethodID)
+	if (nullptr == jaslEnumData.valueOfMethodID)
 	{
 		std::string valueOfSignature("(Ljava/lang/String;)L");
 
-		valueOfSignature.append(currentEnumData->enumPath);
+		valueOfSignature.append(jaslEnumData.enumPath);
 		valueOfSignature.append(";");
 
 		printf("valueOfSignature: %s\n",valueOfSignature.c_str());
 
-		currentEnumData->valueOfMethodID =
-			methodID(javaClass,"valueOf",
+		jaslEnumData.valueOfMethodID =
+			methodID(jaslEnumData.enumClass,"valueOf",
 			         valueOfSignature.c_str(),true);
+
+//		printf("valueOfMethodID: %p\n",jaslEnumData.valueOfMethodID);
 	}
 
-	assert(nullptr != currentEnumData->valueOfMethodID);
+	assert(nullptr != jaslEnumData.valueOfMethodID);
 
 	jobject returnObject =
-		jniEnv().CallStaticObjectMethod(javaClass,
-		                                currentEnumData->valueOfMethodID,
+		jniEnv().CallStaticObjectMethod(jaslEnumData.enumClass,
+		                                jaslEnumData.valueOfMethodID,
 		                                javaString);
 	jniEnv().DeleteLocalRef(javaString);
-
-	printf("enumPath: %s\tenumClass: %p\n",
-	       currentEnumData->enumPath.c_str(),currentEnumData->enumClass);
-	printf("valuesMethodID: %p\tnameMethodID: %p\n",
-	       currentEnumData->valuesMethodID,currentEnumData->nameMethodID);
-	printf("valueOfMethodID: %p\ttoStringMethodID: %p\n",
-	       currentEnumData->valueOfMethodID, currentEnumData->toStringMethodID);
 
 	return returnObject;
 }
 
 // convertToString: Return the label associated with the specifed enum value.
 
-std::string JaslEnumInterface::convertToString(jclass javaClass,
+std::string JaslEnumInterface::convertToString(JaslEnumData& jaslEnumData,
                                                int enumValueIndex) noexcept
 {
-	assert(nullptr != javaClass);
-	assert(enumValueIndex >= 0);
-	assert(nullptr != currentEnumData);
-
-	if (nullptr == currentEnumData->toStringMethodID)
+	if (nullptr == jaslEnumData.enumClass)
 	{
-		currentEnumData->toStringMethodID =
-			methodID(javaClass,"toString",toStringSignature);
+		jaslEnumData.enumClass = toClass(jaslEnumData.enumPath);
+
+		printf("enumPath: %s\n",jaslEnumData.enumPath.c_str());
+//		printf("enumClass: %p\n",jaslEnumData.enumClass);
 	}
 
-	assert(nullptr != currentEnumData->toStringMethodID);
+	assert(nullptr != jaslEnumData.enumClass);
+	assert(enumValueIndex >= 0);
 
-	jobject enumObject = convertToObject(javaClass,enumValueIndex);
+	if (nullptr == jaslEnumData.toStringMethodID)
+	{
+		jaslEnumData.toStringMethodID =
+			methodID(jaslEnumData.enumClass,"toString",
+			         toStringSignature);
+
+//		printf("toStringMethodID: %p\n",jaslEnumData.toStringMethodID);
+	}
+
+	assert(nullptr != jaslEnumData.toStringMethodID);
+
+	jobject enumObject = convertToObject(jaslEnumData,enumValueIndex);
 	assert(nullptr != enumObject);
 
-	std::string returnString(toString(currentEnumData->toStringMethodID,enumObject));
+	std::string returnString(toString(jaslEnumData.toStringMethodID,
+	                                  enumObject));
 
 	jniEnv().DeleteLocalRef(enumObject);
 
 	return returnString;
 }
-
-// The following declarations are necessary in order for link succcessfully.
-// See <A HREF="https://isocpp.org/wiki/faq/templates#templates-defn-vs-decl">here</A> for details.
-
-template jclass JaslEnumInterface::toClass<Descriptions>();
