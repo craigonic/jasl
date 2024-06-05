@@ -92,7 +92,7 @@ static const std::string descriptionsEnumPath =
 
 Descriptions Unit::description() const noexcept
 {
-	if (nullptr == unitObject) return Descriptions::SQUAD;
+	if (nullptr == unitObject) return Descriptions::Squad;
 
 	if (nullptr == _descriptionMethodID)
 	{

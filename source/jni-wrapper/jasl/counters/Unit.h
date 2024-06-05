@@ -2,13 +2,14 @@
  * \file Unit.h
  *
  * This file declares a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
+ * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in Java.
  *
  * Written By: Craig R. Campbell  -  January 2010
  */
 
 #pragma once
 
+#include "Description.h"
 #include "JaslEnums.h"
 
 #include <jni.h>
@@ -19,14 +20,14 @@
  * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface) wrapper.
  *
  * This class is used to provide access to its namesake, which is implemented
- * in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
+ * in Java, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
  * provides a JVM to execute the library code, as well as string conversion and
  * other helper methods.
  *
  * Note that all interactions with the JVM are expected to work, so in the event
  * of failure, the program will assert.
  *
- * @version 0.4
+ * @version 0.5
  * @author Copyright (C) 2010-2019 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../source/jni-wrapper/jasl/counters/Unit.h.html">Source code</A>
  */
@@ -36,7 +37,7 @@ class Unit
 	public:
 
 		// The returned string from each of the "to" methods is a copy
-		// of a Java <A HREF="https://docs.oracle.com/en/java/javase/12/docs/api/java.base/java/lang/String.html">String</A>, converted to the indicated type using the
+		// of a Java String, converted to the indicated type using the
 		// <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function.
 
 		/**

@@ -11,13 +11,27 @@
 // Written By: Craig R. Campbell  -  August 2015                              //
 // ************************************************************************** //
 
+#include "jasl/jni/counters/Description.h"
 #include "jasl/jni/utilities/Dice.h"
 
 #include <assert.h>
 #include <memory>
 
-int main(int argc,char* argv[])
+int main()
 {
+    // Test the Descriptions enum.
+
+    printf("\nTesting conversion operations of the Descriptions enum:\n\n");
+
+    printf("toString(Descriptions::Crew) == %s\n",
+           toString(Descriptions::Crew).c_str());
+    printf("toString(Descriptions::HalfSquad) == %s\n",
+           toString(Descriptions::HalfSquad).c_str());
+    printf("toString(Descriptions::Leader) == %s\n",
+           toString(Descriptions::Leader).c_str());
+    printf("toString(Descriptions::Squad) == %s\n",
+           toString(Descriptions::Squad).c_str());
+
     // Test the Dice class.
 
     printf("\nTesting the execution of the Dice class:\n\n");
