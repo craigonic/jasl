@@ -21,7 +21,6 @@
  *
  * @version 0.1
  * @author Copyright (C) 2024 Craig R. Campbell (craigonic@gmail.com)
- * @see <A HREF="../../../source/jni-wrapper/jasl/counters/Description.h.html">Source code</A>
  */
 
 enum class Descriptions : int

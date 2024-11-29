@@ -27,7 +27,7 @@ include $(JASL_BASE)/util/jasl.make
 
 ENUMS      := Description.cpp
 
-CPP_FILES  := JaslEnums.cpp Unit.cpp $(ENUMS)
+CPP_FILES  := Unit.cpp $(ENUMS)
 
 HDR_FILES  := ${CPP_FILES:.cpp=.h}
 OBJ_FILES  := ${CPP_FILES:.cpp=.o}

@@ -9,10 +9,11 @@
 
 #include "Description.h"
 
-#include "JaslEnums.h"
+#include "jasl/jni/JniEnum.h"
 
-static struct JaslEnumInterface::JaslEnumData descriptionsEnumData =
-	{"jasl/counters/Description$Descriptions",nullptr,nullptr,nullptr,nullptr,nullptr};
+static struct JniEnumInterface::JniEnumData descriptionsEnumData =
+	{"jasl/counters/Description$Descriptions", \
+	 nullptr,nullptr,nullptr,nullptr,nullptr};
 
 // The returned string for the following method is a copy of a Java String,
 // converted to the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function.
@@ -21,8 +22,8 @@ static struct JaslEnumInterface::JaslEnumData descriptionsEnumData =
 
 std::string toString(Descriptions description) noexcept
 {
-	return JaslEnumInterface::convertToString(descriptionsEnumData,
-	                                          static_cast<int>(description));
+	return JniEnumInterface::convertToString(descriptionsEnumData,
+	                                         static_cast<int>(description));
 }
 
 // toObject: Return an instance of a (Java) Description.Descriptions object,
@@ -30,6 +31,6 @@ std::string toString(Descriptions description) noexcept
 
 jobject toObject(Descriptions description) noexcept
 {
-	return JaslEnumInterface::convertToObject(descriptionsEnumData,
-	                                          static_cast<int>(description));
+	return JniEnumInterface::convertToObject(descriptionsEnumData,
+	                                         static_cast<int>(description));
 }
