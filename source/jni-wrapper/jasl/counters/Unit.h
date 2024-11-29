@@ -10,7 +10,7 @@
 #pragma once
 
 #include "Description.h"
-#include "JaslEnums.h"
+#include "jasl/jni/JniEnum.h"
 
 #include <jni.h>
 
@@ -28,8 +28,7 @@
  * of failure, the program will assert.
  *
  * @version 0.5
- * @author Copyright (C) 2010-2019 Craig R. Campbell (craigonic@gmail.com)
- * @see <A HREF="../../source/jni-wrapper/jasl/counters/Unit.h.html">Source code</A>
+ * @author Copyright (C) 2010-2024 Craig R. Campbell (craigonic@gmail.com)
  */
 
 class Unit

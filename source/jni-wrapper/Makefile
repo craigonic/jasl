@@ -26,19 +26,15 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source and object files in/of/for this
 # library.
 
-JNI_WRAPPER_SRC        := JniWrapper.cpp
-JNI_WRAPPER_HDR        := ${JNI_WRAPPER_SRC:.cpp=.h}
-JNI_WRAPPER_OBJ        := ${JNI_WRAPPER_SRC:.cpp=.o}
+JNI_WRAPPER_SRC     := JniWrapper.cpp
+JNI_WRAPPER_HDR     := ${JNI_WRAPPER_SRC:.cpp=.h}
+JNI_WRAPPER_OBJ     := ${JNI_WRAPPER_SRC:.cpp=.o}
 
-#JASL_ERROR_MESSAGE_SRC := JaslErrorMessage.cpp
-#JASL_ERROR_MESSAGE_HDR := ${JASL_ERROR_MESSAGE_SRC:.cpp=.h}
-#JASL_ERROR_MESSAGE_OBJ := ${JASL_ERROR_MESSAGE_SRC:.cpp=.o}
+JNI_ENUM_SRC        := JniEnum.cpp
+JNI_ENUM_HDR        := ${JNI_ENUM_SRC:.cpp=.h}
+JNI_ENUM_OBJ        := ${JNI_ENUM_SRC:.cpp=.o}
 
-# This header file is not part of the library. It provides typedef declarations
-# to simplify access to classes in the jasl libraries through programs that use
-# it.
-
-CPP_FILES := $(JNI_WRAPPER_SRC) # $(JASL_ERROR_MESSAGE_SRC)
+CPP_FILES := $(JNI_WRAPPER_SRC) $(JNI_ENUM_SRC)
 
 HDR_FILES := ${CPP_FILES:.cpp=.h}
 OBJ_FILES := ${CPP_FILES:.cpp=.o}
@@ -50,9 +46,9 @@ $(JNI_WRAPPER_OBJ): $(JNI_WRAPPER_HDR) $(JNI_WRAPPER_SRC)
 	$(JNI_BUILD_CMD) -c $(JNI_WRAPPER_SRC) \
 	                 -o $(OBJ_SUB_DIRECTORY)/$(JNI_WRAPPER_OBJ)
 
-#$(JASL_ERROR_MESSAGE_OBJ): $(JASL_ERROR_MESSAGE_HDR) $(JASL_ERROR_MESSAGE_SRC)
-#	$(GCC_COMPILE_CMD) $(JASL_ERROR_MESSAGE_SRC) \
-#	                   -o $(OBJ_SUB_DIRECTORY)/$(JASL_ERROR_MESSAGE_OBJ)
+$(JNI_ENUM_OBJ): $(JNI_ENUM_HDR) $(JNI_ENUM_SRC)
+	$(JNI_BUILD_CMD) -c $(JNI_ENUM_SRC) \
+	                 -o $(OBJ_SUB_DIRECTORY)/$(JNI_ENUM_OBJ)
 
 # Build all of the object (.o) files.
 
@@ -71,7 +67,7 @@ hdr: $(HDR_FILES)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(JNI_WRAPPER_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).3
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).4
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output
