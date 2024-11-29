@@ -14,9 +14,7 @@
 
 // Constructor.
 
-JniWrapper::JniWrapper() :
-	_javaVirtualMachine(nullptr),
-	_jniNativeInterface(nullptr)
+JniWrapper::JniWrapper()
 {
 	// This (re-formatted) code was copied from <A HREF="https://www.codeproject.com/Articles/993067/Calling-Java-from-Cplusplus-with-JNI">here</A>.
 
@@ -32,11 +30,9 @@ JniWrapper::JniWrapper() :
 	jvmInitArgs.options = jvmOptions.get();
 	jvmInitArgs.ignoreUnrecognized = false;
 
-	const jint returnCode =
-		JNI_CreateJavaVM(&_javaVirtualMachine,
-		                 (void**)&_jniNativeInterface,&jvmInitArgs);
-
-	assert(returnCode == JNI_OK);
+	assert(JNI_CreateJavaVM(&_javaVirtualMachine,
+	                        (void**)&_jniNativeInterface,
+	                        &jvmInitArgs) == JNI_OK);
 }
 
 // Destructor.
@@ -86,6 +82,21 @@ std::string JniWrapper::stringToStdString(jstring javaString) const noexcept
 jstring JniWrapper::stdStringToString(const std::string& stdString) const noexcept
 {
 	return _jniNativeInterface->NewStringUTF(stdString.c_str());
+}
+
+// classPathToClassObj: Return the Java Class object associated with the
+//                      specified class path.
+//
+// This method is (intended to be) accessed using the toClass() function.
+
+jclass JniWrapper::classPathToClassObj(const std::string& classPath) const noexcept
+{
+	assert(!classPath.empty());
+
+	jclass classObj = _jniNativeInterface->FindClass(classPath.c_str());
+	assert(nullptr != classObj);
+
+	return classObj;
 }
 
 // returnStringResult: Return the result of a call to the indicated method in
