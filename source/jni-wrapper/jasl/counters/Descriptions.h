@@ -1,5 +1,5 @@
 /**
- * \file Description.h
+ * \file Descriptions.h
  *
  * This file declares a proxy intended to mirror the elements found in the
  * <A HREF="../../../jasl/counters/Description.html">Descriptions</A> Enum, which is implemented in Java, for use in C++ programs.
@@ -13,13 +13,16 @@
 
 #include <string>
 
+namespace jasl {
+namespace counters {
+
 /**
  * \brief <A HREF="../../../jasl/counters/Description.html">Descriptions</A> enum JNI (Java Native Interface) proxy.
  *
  * This enum provides a subset of the functionality of its namesake, which is
  * implemented in Java.
  *
- * @version 0.1
+ * @version 0.2
  * @author Copyright (C) 2024 Craig R. Campbell (craigonic@gmail.com)
  */
 
@@ -41,8 +44,18 @@ enum class Descriptions : int
 std::string toString(Descriptions description) noexcept;
 
 /**
+ * \brief Return the Descriptions element corresponding to the value of the
+ * specified Java Enum object.
+ */
+
+Descriptions fromObject(const jobject enumObject) noexcept;
+
+/**
  * \brief Return an instance of a (Java) Description.Descriptions object, based
  * on the specified value.
  */
 
 jobject toObject(Descriptions description) noexcept;
+
+} // namespace counters
+} // namespace jasl
