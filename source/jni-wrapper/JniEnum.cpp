@@ -189,3 +189,44 @@ std::string JniEnumInterface::convertToString(JniEnumData& jniEnumData,
 
 	return returnString;
 }
+
+int JniEnumInterface::enumValueIndex(JniEnumData& jniEnumData,
+                                     const jobject enumObject) noexcept
+{
+	// If it is not already set, retrieve a reference to the Java Class
+	// object associated with the class path. This will be used in the
+	// subsequent calls to retrieve method IDs.
+
+	if (nullptr == jniEnumData.enumClass)
+	{
+		jclass localReference = toClass(jniEnumData.enumPath);
+		jniEnumData.enumClass =
+			static_cast<jclass>(jniEnv().NewGlobalRef(localReference));
+		jniEnv().DeleteLocalRef(localReference); // Necessary?
+
+		printf("enumPath: %s\n",jniEnumData.enumPath.c_str());
+//		printf("enumClass: %p\n",jniEnumData.enumClass);
+	}
+
+	assert(nullptr != jniEnumData.enumClass);
+	assert(nullptr != enumObject);
+
+	// If it is not already set, retrieve a reference to the ordinal()
+	// method of the Enum.
+
+	if (nullptr == jniEnumData.ordinalMethodID)
+	{
+		jniEnumData.ordinalMethodID =
+			methodID(jniEnumData.enumClass,"ordinal","()I");
+
+//		printf("ordinalMethodID: %p\n",jniEnumData.ordinalMethodID);
+	}
+
+	assert(nullptr != jniEnumData.ordinalMethodID);
+
+	// Use the ordinal() method reference to retrieve the index of the
+	// specified Enum object.
+
+	return jniEnv().CallIntMethod(enumObject,
+	                              jniEnumData.ordinalMethodID);
+}

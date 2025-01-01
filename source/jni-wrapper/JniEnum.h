@@ -22,7 +22,7 @@
  * execute the library code, as well as string conversion and other helper
  * methods.
  *
- * @version 0.4
+ * @version 0.5
  * @author Copyright (C) 2018-2024 Craig R. Campbell (craigonic@gmail.com)
  */
 
@@ -35,7 +35,7 @@ struct JniEnumInterface final
 	 * that uses this interface. It is initialized in the implementation
 	 * file, with the enumPath being set to match the class path of the
 	 * Enum. The other entries are set the first time that the instance is
-	 * passed to one of the "convertTo" functions.
+	 * passed to one of the "convertTo" functions or enumValueIndex().
 	 */
 
 	struct JniEnumData final
@@ -52,6 +52,8 @@ struct JniEnumInterface final
 		jmethodID   valueOfMethodID  = nullptr; // ""
 		/// A reference to the toString() method of the Enum.
 		jmethodID   toStringMethodID = nullptr; // convertToString()
+		/// A reference to the ordinal() method of the Enum.
+		jmethodID   ordinalMethodID  = nullptr; // enumValueIndex()
 	};
 
 	/**
@@ -76,4 +78,16 @@ struct JniEnumInterface final
 
 	static std::string convertToString(JniEnumData& jniEnumData,
 	                                   int enumValueIndex) noexcept;
+
+	/**
+	 * Return the index corresponding to the value of the specified Enum
+	 * object.
+	 *
+	 * The Enum type is designated by the enumPath element of the
+	 * jniEnumData parameter. On the initial call the ordinal "method ID"
+	 * element of the JniEnumData parameter will also be set.
+	 */
+
+	static int enumValueIndex(JniEnumData& jniEnumData,
+	                          const jobject enumObject) noexcept;
 };
