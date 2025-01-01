@@ -1,0 +1,15 @@
+Go to jasl/source:
+
+    (cd $JASL_BASE/source; export ANDROID_SOURCE_VERSION="-source 1.7"; export ANDROID_TARGET_VERSION="-target 1.7"; export JAVA_HOME=/opt/jdk-17.0.1)
+
+Build JNI apps:
+
+    (cd $JASL_BASE/source; make build_cxx_dynamic build_cxx_static)
+
+Run Driver_cxx_dynamic:
+
+    (cd $JASL_BASE/bin; /bin/sh -c "LD_LIBRARY_PATH=/home/craig/jasl/lib/jasl:/opt/jdk-17.0.1/lib/server ./Driver_cxx_dynamic")
+
+Run Driver_cxx_static:
+
+    (cd $JASL_BASE/bin; /bin/sh -c "LD_LIBRARY_PATH=/home/craig/jasl/lib/jasl:/opt/jdk-17.0.1/lib/server ./Driver_cxx_static")
