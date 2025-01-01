@@ -11,11 +11,14 @@
 // Written By: Craig R. Campbell  -  August 2015                              //
 // ************************************************************************** //
 
-#include "jasl/jni/counters/Description.h"
+#include "jasl/jni/counters/Descriptions.h"
 #include "jasl/jni/utilities/Dice.h"
 
 #include <assert.h>
 #include <memory>
+
+using namespace jasl::counters;
+using namespace jasl::utilities;
 
 int main()
 {
@@ -32,6 +35,15 @@ int main()
     printf("toString(Descriptions::Squad) == %s\n",
            toString(Descriptions::Squad).c_str());
 
+    const auto crewObject = toObject(Descriptions::Crew);
+    assert(fromObject(crewObject) == Descriptions::Crew);
+    const auto halfSquadObject = toObject(Descriptions::HalfSquad);
+    assert(fromObject(halfSquadObject) == Descriptions::HalfSquad);
+    const auto leaderObject = toObject(Descriptions::Leader);
+    assert(fromObject(leaderObject) == Descriptions::Leader);
+    const auto squadObject = toObject(Descriptions::Squad);
+    assert(fromObject(squadObject) == Descriptions::Squad);
+
     // Test the Dice class.
 
     printf("\nTesting the execution of the Dice class:\n\n");
@@ -42,10 +54,11 @@ int main()
 
         assert(nullptr != theDice);
 
-//      printf("White: %d Colored: %d Combined: %2d\n",
+//      printf("White: %d Colored: %d Combined: %2d Subsequent: %d\n",
 //             theDice->whiteDieValue(),
 //             theDice->coloredDieValue(),
-//             theDice->combinedResult());
+//             theDice->combinedResult(),
+//             theDice->subsequentDieValue());
 
         printf("%s\n",theDice->toText().c_str());
     }
