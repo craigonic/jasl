@@ -4,31 +4,31 @@
  * This file declares a "wrapper" class intended to simplify access for C/C++
  * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in Java.
  *
- * Written By: Craig R. Campbell  -  January 2010
+ * Written By: Craig R. Campbell  -  January 2018
  */
 
 #pragma once
 
-#include "Description.h"
-#include "jasl/jni/JniEnum.h"
+#include "Descriptions.h"
 
 #include <jni.h>
 
 #include <string>
 
+namespace jasl {
+namespace counters {
+
 /**
  * \brief <A HREF="../../../jasl/counters/Unit.html">Unit</A> class <A HREF="https://docs.oracle.com/javase/8/docs/technotes/guides/jni/">JNI</A> (Java Native Interface) wrapper.
  *
  * This class is used to provide access to its namesake, which is implemented
- * in Java, from a C++ program. This is done through the <A HREF="../../JniWrapper.h.html">JniWrapper</A>, which
- * provides a JVM to execute the library code, as well as string conversion and
- * other helper methods.
+ * in Java, from a C++ program.
  *
  * Note that all interactions with the JVM are expected to work, so in the event
  * of failure, the program will assert.
  *
- * @version 0.5
- * @author Copyright (C) 2010-2024 Craig R. Campbell (craigonic@gmail.com)
+ * @version 0.6
+ * @author Copyright (C) 2018-2024 Craig R. Campbell (craigonic@gmail.com)
  */
 
 class Unit
@@ -73,7 +73,7 @@ class Unit
 		 * \brief Return the <A HREF="../../../jasl/counters/Description.html">description</A> of this Unit.
 		 *
 		 * The returned item is an enum representing its Java
-		 * counterpart. See <A HREF="JaslEnums.h.html">here</A> for details.
+		 * counterpart.
 		 */
 
 		Descriptions description() const noexcept;
@@ -144,6 +144,8 @@ class Unit
 		static jmethodID _toStringMethodID;
 		static jmethodID _toJSONMethodID;
 		static jmethodID _descriptionMethodID;
-		static jmethodID _descriptionOrdinalMethodID;
 		static jmethodID _fromJSONMethodID;
 };
+
+} // namespace counters
+} // namespace jasl

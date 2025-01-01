@@ -3,7 +3,7 @@
 #            the counters package of the jASL program. It also installs the    #
 #            header files and generates the documentation.                     #
 #                                                                              #
-# Written By: Craig R. Campbell  -  August 2011                                #
+# Written By: Craig R. Campbell  -  August 2018                                #
 #                                                                              #
 ################################################################################
 
@@ -25,7 +25,7 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and header files in/of/for
 # this package.
 
-ENUMS      := Description.cpp
+ENUMS      := Descriptions.cpp
 
 CPP_FILES  := Unit.cpp $(ENUMS)
 
@@ -53,7 +53,7 @@ hdr: $(HDR_FILES)
 DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(JNI_COUNTERS_BASE_LIB_NAME).so
 DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
 DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).3
+DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).4
 
 # Using the .o files, build either a static or dynamic library file, or both,
 # along with the necessary links, and install it/them in the library output

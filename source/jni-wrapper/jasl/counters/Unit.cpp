@@ -4,7 +4,7 @@
  * This file defines a "wrapper" class intended to simplify access for C/C++
  * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
  *
- * Written By: Craig R. Campbell  -  January 2010
+ * Written By: Craig R. Campbell  -  January 2018
  */
 
 #include "Unit.h"
@@ -13,6 +13,8 @@
 
 #include <assert.h>
 
+using namespace jasl::counters;
+
 // Initialize static member variables.
 
 //jmethodID Unit::_constructorID              = nullptr;
@@ -20,7 +22,6 @@ jmethodID Unit::_toTextMethodID             = nullptr;
 jmethodID Unit::_toStringMethodID           = nullptr;
 jmethodID Unit::_toJSONMethodID             = nullptr;
 jmethodID Unit::_descriptionMethodID        = nullptr;
-jmethodID Unit::_descriptionOrdinalMethodID = nullptr;
 jmethodID Unit::_fromJSONMethodID           = nullptr;
 
 // toText: Return a text representation of the attributes and current state of
@@ -92,7 +93,7 @@ static const std::string descriptionsEnumPath =
 
 Descriptions Unit::description() const noexcept
 {
-	if (nullptr == unitObject) return Descriptions::Squad;
+	assert (nullptr != unitObject);
 
 	if (nullptr == _descriptionMethodID)
 	{
@@ -111,20 +112,7 @@ Descriptions Unit::description() const noexcept
 		                                              _descriptionMethodID));
 	assert(nullptr != enumObject);
 
-	if (nullptr == _descriptionOrdinalMethodID)
-	{
-		jclass enumClass =
-			jniEnv().FindClass(descriptionsEnumPath.c_str());
-		assert(nullptr != enumClass);
-
-		_descriptionOrdinalMethodID =
-			methodID(enumClass,"ordinal","()I");
-	}
-
-	assert(nullptr != _descriptionOrdinalMethodID);
-
-	return static_cast<Descriptions>(jniEnv().CallIntMethod(enumObject,
-	                                                        _descriptionOrdinalMethodID));
+	return fromObject(enumObject);
 }
 
 // fromJSON: Update an instance of this class to reflect the settings within the
@@ -143,7 +131,7 @@ void Unit::fromJSON(const std::string& jsonData)
 
 	assert(nullptr != _fromJSONMethodID);
 
-	// TODO: Handle exception.
+	// \todo Handle exception.
 
 	jniEnv().CallObjectMethod(unitObject,_fromJSONMethodID,ss2js(jsonData));
 }
