@@ -68,7 +68,7 @@ NUM_PROC_THREADS       = 1
 EXTRACT_ALL            = YES
 EXTRACT_PRIVATE        = NO
 EXTRACT_PRIV_VIRTUAL   = NO
-EXTRACT_PACKAGE        = NO
+EXTRACT_PACKAGE        = YES
 EXTRACT_STATIC         = YES
 EXTRACT_LOCAL_CLASSES  = YES
 EXTRACT_LOCAL_METHODS  = NO
@@ -80,7 +80,7 @@ HIDE_FRIEND_COMPOUNDS  = NO
 HIDE_IN_BODY_DOCS      = NO
 INTERNAL_DOCS          = NO
 CASE_SENSE_NAMES       = YES
-HIDE_SCOPE_NAMES       = NO
+HIDE_SCOPE_NAMES       = YES
 HIDE_COMPOUND_REFERENCE= NO
 SHOW_HEADERFILE        = YES
 SHOW_INCLUDE_FILES     = YES
@@ -88,8 +88,8 @@ SHOW_GROUPED_MEMB_INC  = NO
 FORCE_LOCAL_INCLUDES   = NO
 INLINE_INFO            = YES
 SORT_MEMBER_DOCS       = YES
-SORT_BRIEF_DOCS        = YES
-SORT_MEMBERS_CTORS_1ST = YES
+SORT_BRIEF_DOCS        = NO
+SORT_MEMBERS_CTORS_1ST = NO
 SORT_GROUP_NAMES       = NO
 SORT_BY_SCOPE_NAME     = NO
 STRICT_PROTO_MATCHING  = NO
@@ -123,10 +123,9 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 INPUT                  = .
 INPUT_ENCODING         = UTF-8
-FILE_PATTERNS          = *.h \
-                         *.cpp
+FILE_PATTERNS          = *.h
 RECURSIVE              = YES
-EXCLUDE                =
+EXCLUDE                = jasl/counters/private
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        =
@@ -290,7 +289,7 @@ PERLMOD_MAKEVAR_PREFIX =
 #---------------------------------------------------------------------------
 # Configuration options related to the preprocessor
 #---------------------------------------------------------------------------
-ENABLE_PREPROCESSING   = NO
+ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = NO
 EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES
@@ -302,8 +301,8 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration options related to external references
 #---------------------------------------------------------------------------
-TAGFILES               = ../../share/jasl/doc/doxygen/doxytags.jasl=../../doxygen/html
-GENERATE_TAGFILE       =
+TAGFILES               =
+GENERATE_TAGFILE       = NO
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = NO
 EXTERNAL_PAGES         = YES
