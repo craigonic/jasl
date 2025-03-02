@@ -1,7 +1,7 @@
 ################################################################################
-# Makefile - This make parameter file is used to build JNI wrapper library for #
-#            the counters package of the jASL program. It also installs the    #
-#            header files and generates the documentation.                     #
+# Makefile - This make parameter file is used to install the JNI wrapper       #
+#            headers for the counters package of the jASL program. It also     #
+#            generates the documentation.                                      #
 #                                                                              #
 # Written By: Craig R. Campbell  -  August 2018                                #
 #                                                                              #
@@ -22,24 +22,25 @@ default : libs
 
 include $(JASL_BASE)/util/jasl.make
 
-# Define variables to represent the source, object, and header files in/of/for
-# this package.
-
-ENUMS      := Descriptions.cpp
-
-CPP_FILES  := Unit.cpp $(ENUMS)
-
-HDR_FILES  := ${CPP_FILES:.cpp=.h}
-OBJ_FILES  := ${CPP_FILES:.cpp=.o}
-SRC_FILES  := $(HDR_FILES) $(CPP_FILES)
-
-# Build all of the individual object files.
-
-%.o: %.cpp
-	$(JNI_BUILD_CMD) -I$(INCLUDE_PATH) -c $^ -o $(OBJ_SUB_DIRECTORY)/$@
+# "Pass through" targets that will be executed in the Makefile in the private
+# sub-directory. These may be called directly or from the Makefile in the parent
+# directory.
 
 .PHONY : obj
-obj: obj_sub_directory $(OBJ_FILES)
+.PHONY : libs
+.PHONY : clean
+.PHONY : clean_libs
+.PHONY : dynamic_lib
+.PHONY : static_lib
+.PHONY : clean_dynamic_lib
+.PHONY : clean_static_lib
+obj libs clean clean_libs dynamic_lib static_lib clean_dynamic_lib clean_static_lib:
+	$(MAKE) -C private $@
+
+# Define variables to represent the public header files in/of/for this package.
+
+ENUMS      := Descriptions.h
+HDR_FILES  := Unit.h $(ENUMS) 
 
 # Install the header (.h) files in the appropriate include directory.
 
@@ -48,57 +49,11 @@ hdr: $(HDR_FILES)
 	$(INSTALL_DIR) $(JNI_COUNTERS_HDR_PATH)
 	$(INSTALL_STD_FILE) $(HDR_FILES) $(JNI_COUNTERS_HDR_PATH)
 
-# Define variables used to represent the dynamic and static libraries.
-
-DYNAMIC_LIB_NO_VERSION_LINKNAME    := $(LIB_PREFIX)$(JNI_COUNTERS_BASE_LIB_NAME).so
-DYNAMIC_LIB_MAJOR_VERSION_LINKNAME := $(DYNAMIC_LIB_NO_VERSION_LINKNAME).0
-DYNAMIC_LIB_MINOR_VERSION_LINKNAME := $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME).0
-DYNAMIC_LIB_FILENAME               := $(DYNAMIC_LIB_MINOR_VERSION_LINKNAME).4
-
-# Using the .o files, build either a static or dynamic library file, or both,
-# along with the necessary links, and install it/them in the library output
-# directory.
-
-JNI_COUNTERS_OBJ_FILES := $(OBJ_SUB_DIRECTORY)/*.o
-
-.PHONY : libs
-libs: dynamic_lib static_lib clean
-
-.PHONY : dynamic_lib
-dynamic_lib: lib_directory obj
-	$(JNI_LIB_BUILD_CMD) $(LIB_PATH)/$(DYNAMIC_LIB_FILENAME) $(JNI_COUNTERS_OBJ_FILES)
-	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_MAJOR_VERSION_LINKNAME))
-	@(cd $(LIB_PATH); $(LN) $(DYNAMIC_LIB_FILENAME) $(DYNAMIC_LIB_NO_VERSION_LINKNAME))
-
-.PHONY : static_lib
-static_lib: lib_directory obj
-	$(AR) $(JNI_COUNTERS_STATIC_LIB_PATH) $(JNI_COUNTERS_OBJ_FILES)
-
-# Remove the .obj sub-directory and its contents.
-
-.PHONY : clean
-clean:
-	$(RM_RECURSIVE) $(OBJ_SUB_DIRECTORY)
-
-# Remove the include output directory and its contents.
+# Remove the include output directory for the header files and its contents.
 
 .PHONY : clean_hdr
 clean_hdr:
 	$(RM_RECURSIVE) $(JNI_COUNTERS_HDR_PATH)
-
-# Remove all of the dynamic and/or static library files and links from the
-# library output directory.
-
-.PHONY : clean_libs
-clean_libs: clean_dynamic_lib clean_static_lib
-
-.PHONY : clean_dynamic_lib
-clean_dynamic_lib:
-	$(RM) $(LIB_PATH)/$(DYNAMIC_LIB_NO_VERSION_LINKNAME)*
-
-.PHONY : clean_static_lib
-clean_static_lib:
-	$(RM) $(JNI_COUNTERS_STATIC_LIB_PATH)
 
 # Create HTML versions of the source files. Each file is converted using the
 # source-highlight program, which generates an "image" of the file with syntax
@@ -111,7 +66,10 @@ JNI_COUNTERS_DOCS_PATH := $(SRC_DOCS_PATH)/$(JNI_DIRECTORY)/$(COUNTERS_PKG_PATH)
 docs_all:
 	@$(INSTALL_DIR) $(JNI_COUNTERS_DOCS_PATH)
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(JNI_COUNTERS_DOCS_PATH)/$(MAKEFILE).html
-	@for i in $(SRC_FILES) ; do \
+
+	$(MAKE) -C private $@
+
+	@for i in $(HDR_FILES) ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(JNI_COUNTERS_DOCS_PATH)/$$i.html ;\
 		if [ -d $(JNI_DOXYGEN_DOC_PATH)/html ]; then \
 			(cd $(JNI_DOXYGEN_DOC_PATH)/html;$(LN) ../../source/$(JNI_DIRECTORY)/$(COUNTERS_PKG_PATH)/$$i.html) ;\
@@ -123,6 +81,7 @@ docs_all:
 
 .PHONY : clean_docs
 clean_docs:
+	$(MAKE) -C private $@
 	@$(RM) $(JNI_COUNTERS_DOCS_PATH)/$(HTLS_HEADER_FILE)
 
 .PHONY : docs

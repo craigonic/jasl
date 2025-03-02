@@ -70,9 +70,9 @@ class Unit
 		std::string toJSON() const noexcept;
 
 		/**
-		 * \brief Return the <A HREF="../../../jasl/counters/Description.html">description</A> of this Unit.
+		 * \brief Return the <A HREF="Descriptions.h.html">description</A> of this Unit.
 		 *
-		 * The returned item is an enum representing its Java
+		 * The returned item is an enum value corresponding to its Java
 		 * counterpart.
 		 */
 

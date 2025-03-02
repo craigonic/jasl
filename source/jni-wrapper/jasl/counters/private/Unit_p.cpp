@@ -1,15 +1,16 @@
 /**
- * \file Unit.cpp
+ * \file Unit_p.cpp
  *
  * This file defines a "wrapper" class intended to simplify access for C/C++
- * programs to the <A HREF="../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
+ * programs to the <A HREF="../../../../jasl/counters/Unit.html">Unit</A> class, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>.
  *
  * Written By: Craig R. Campbell  -  January 2018
  */
 
-#include "Unit.h"
+#include "../Unit.h"
 
 #include "jasl/jni/JniWrapper.h"
+#include "Descriptions_p.h"
 
 #include <assert.h>
 
@@ -86,11 +87,6 @@ std::string Unit::toJSON() const noexcept
 
 // description: Return the description of this Unit.
 
-/// @cond DEVELOPER
-static const std::string descriptionsEnumPath =
-	"jasl/counters/Description$Descriptions";
-/// @endcond
-
 Descriptions Unit::description() const noexcept
 {
 	assert (nullptr != unitObject);
@@ -98,7 +94,7 @@ Descriptions Unit::description() const noexcept
 	if (nullptr == _descriptionMethodID)
 	{
 		std::string descriptionSignature =
-			"()[L" + descriptionsEnumPath + ";";
+			std::string("()[L") + descriptionsEnumPath + ";";
 
 		_descriptionMethodID =
 			methodID(unitClass,"description",
@@ -112,7 +108,7 @@ Descriptions Unit::description() const noexcept
 		                                              _descriptionMethodID));
 	assert(nullptr != enumObject);
 
-	return fromObject(enumObject);
+	return fromDescriptionsObject(enumObject);
 }
 
 // fromJSON: Update an instance of this class to reflect the settings within the

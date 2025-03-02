@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include <jni.h>
-
 #include <string>
 
 namespace jasl {
@@ -22,8 +20,8 @@ namespace counters {
  * This enum provides a subset of the functionality of its namesake, which is
  * implemented in Java.
  *
- * @version 0.2
- * @author Copyright (C) 2024 Craig R. Campbell (craigonic@gmail.com)
+ * @version 0.3
+ * @author Copyright (C) 2024-2025 Craig R. Campbell (craigonic@gmail.com)
  */
 
 enum class Descriptions : int
@@ -34,28 +32,11 @@ enum class Descriptions : int
 	Squad
 };
 
-// The returned string for the following method is a copy of a Java String,
-// converted to the indicated type using the <A HREF="../../JniWrapper.h.html#_JS2SS_">js2ss</A>() function.
-
 /**
  * \brief Return the label associated with the specifed enum value.
  */
 
 std::string toString(Descriptions description) noexcept;
-
-/**
- * \brief Return the Descriptions element corresponding to the value of the
- * specified Java Enum object.
- */
-
-Descriptions fromObject(const jobject enumObject) noexcept;
-
-/**
- * \brief Return an instance of a (Java) Description.Descriptions object, based
- * on the specified value.
- */
-
-jobject toObject(Descriptions description) noexcept;
 
 } // namespace counters
 } // namespace jasl
