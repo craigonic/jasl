@@ -231,6 +231,11 @@ JNI_LIB_BUILD_CMD            := $(JNI_GCC_COMPILER) $(GCJ_OPTIMIZE) -shared -o
 
 JNI_LD_LIB_PATH              := LD_LIBRARY_PATH=$(LIB_PATH):$(JNI_LIBRARY_PATH)
 
+# The name of the sub-directory in each JNI source directory where the unit test
+# executable files are placed.
+
+JNI_UNIT_TEST_SUB_DIRECTORY  := .bin
+
 # counters package.
 
 COUNTERS_PKG_NAME            := counters
@@ -309,6 +314,19 @@ UI_DATA_STATIC_LIB_PATH       := $(LIB_PATH)/$(UI_DATA_STATIC_LIB_NAME)
 
 ALL_PACKAGES                  := $(COUNTERS_PKG_PATH) $(UTILITIES_PKG_PATH) \
                                  $(UI_DATA_PKG_PATH)
+
+# Google Test package.
+
+3RD_PARTY_DIRECTORY_PATH      := ${JASL_BASE}/3rdParty
+
+GOOGLE_TEST_PKG_PATH          := $(3RD_PARTY_DIRECTORY_PATH)/googletest/googletest
+GOOGLE_TEST_BUILD_PATH        := $(3RD_PARTY_DIRECTORY_PATH)/build
+
+GOOGLE_TEST_INCLUDE_PATH      := $(GOOGLE_TEST_PKG_PATH)/include
+GOOGLE_TEST_LIB_PATH          := $(GOOGLE_TEST_BUILD_PATH)/lib
+
+GOOGLE_TEST_LIB_GTEST_MAIN    := $(GOOGLE_TEST_LIB_PATH)/libgtest_main.a
+GOOGLE_TEST_LIB_GTEST         := $(GOOGLE_TEST_LIB_PATH)/libgtest.a
 
 # org "package" (really just a parent directory for external packages?)
 
@@ -389,6 +407,10 @@ lib_directory:
 .PHONY : obj_sub_directory
 obj_sub_directory:
 	$(INSTALL_DIR) $(OBJ_SUB_DIRECTORY)
+
+.PHONY : bin_sub_directory
+bin_sub_directory:
+	$(INSTALL_DIR) $(JNI_UNIT_TEST_SUB_DIRECTORY)
 
 ## Build variables used in generating wrapper libraries with SWIG.
 
