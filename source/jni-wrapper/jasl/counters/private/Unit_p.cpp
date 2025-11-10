@@ -7,10 +7,10 @@
  * Written By: Craig R. Campbell  -  January 2018
  */
 
-#include "../Unit.h"
+#include "counters/Unit.h"
 
-#include "jasl/jni/JniWrapper.h"
 #include "Descriptions_p.h"
+#include "JniWrapper.h"
 
 #include <assert.h>
 

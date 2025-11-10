@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../Descriptions.h"
+#include "counters/Descriptions.h"
 
 #include <jni.h>
 

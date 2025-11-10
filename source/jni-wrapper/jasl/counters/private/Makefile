@@ -36,7 +36,7 @@ SRC_FILES         := $(HDR_FILES) $(CPP_FILES)
 # Build all of the individual object files.
 
 %.o: %.cpp
-	$(JNI_BUILD_CMD) -I$(INCLUDE_PATH) -c $^ -o $(OBJ_SUB_DIRECTORY)/$@
+	$(JNI_BUILD_CMD) -I$(JNI_HDR_PATH) -c $^ -o $(OBJ_SUB_DIRECTORY)/$@
 
 .PHONY : obj
 obj: obj_sub_directory $(OBJ_FILES)

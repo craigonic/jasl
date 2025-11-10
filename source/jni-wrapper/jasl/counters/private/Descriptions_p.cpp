@@ -9,7 +9,7 @@
 
 #include "Descriptions_p.h"
 
-#include "jasl/jni/JniEnum.h"
+#include "JniEnum.h"
 
 using namespace jasl::counters;
 

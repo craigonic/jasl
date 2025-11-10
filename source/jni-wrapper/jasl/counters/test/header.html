@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<TITLE>test</TITLE>
+</HEAD>
+<H1>jni-jasl-counters (test)</H1>
+<HR>
+<H2>Building the unit tests</H2>
+The purpose of each target defined in the <A HREF=Makefile.html>Makefile</A> for
+this directory is listed below. The files are written to or removed from the
+following output directory:
+<UL>
+<LI>Executable files - <B>.bin</B>
+</UL>
+Note that some of the targets are also referenced by the
+<A HREF=../Makefile.html>Makefile</A> in the parent directory during
+recursive cleans and builds.
+<UL>
+<LI><I>none</I> or <TT>test</TT> - compiles all the source files using
+<TT><A HREF=http://gcc.gnu.org/>gcc</A></TT>,
+placing the executable files in the directory noted above.
+<P>
+<LI><TT>clean</TT> - removes the directory noted above that contains the
+executable files.
+<P>
+<LI><TT>docs</TT> - generates an HTML version of each source file and the
+<U>Makefile</U> using
+<TT><A HREF=http://www.gnu.org/software/src-highlite/source-highlight.html#Top>source-highlight</A></TT>,
+placing the output files in
+<B><I>$JASL_BASE</I>/share/jasl/doc/source/jni-wrapper/jasl/counters/<A HREF=index.html>test</A></B>.
+This file, <B>test.html</B>, is also generated, and includes links to all
+of the HTML files.
+</UL>
+<HR>
+<A HREF="http://www.vim.org/"><img src="../../../../vim.png" align="right" BORDER=0></A>

@@ -21,7 +21,7 @@ JniWrapper::JniWrapper()
 	std::unique_ptr<JavaVMOption[]> jvmOptions =
 		std::make_unique<JavaVMOption[]>(1);
 
-	jvmOptions[0].optionString = const_cast<char*>("-Djava.class.path=.");
+	jvmOptions[0].optionString = const_cast<char*>("-Djava.class.path=/home/craig/jasl/bin");
 
 	JavaVMInitArgs jvmInitArgs;
 

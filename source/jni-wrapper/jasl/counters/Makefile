@@ -28,7 +28,6 @@ include $(JASL_BASE)/util/jasl.make
 
 .PHONY : obj
 .PHONY : libs
-.PHONY : clean
 .PHONY : clean_libs
 .PHONY : dynamic_lib
 .PHONY : static_lib
@@ -36,6 +35,11 @@ include $(JASL_BASE)/util/jasl.make
 .PHONY : clean_static_lib
 obj libs clean clean_libs dynamic_lib static_lib clean_dynamic_lib clean_static_lib:
 	$(MAKE) -C private $@
+
+.PHONY : clean
+clean:
+	$(MAKE) -C private $@
+	$(MAKE) -C test $@
 
 # Define variables to represent the public header files in/of/for this package.
 
@@ -68,6 +72,7 @@ docs_all:
 	@$(MAKE2HTML) --title="$(MAKEFILE)" --input=$(MAKEFILE) > $(JNI_COUNTERS_DOCS_PATH)/$(MAKEFILE).html
 
 	$(MAKE) -C private $@
+	$(MAKE) -C test $@
 
 	@for i in $(HDR_FILES) ; do \
 		$(CAT) $$i | $(CPP2HTML) --title="$$i" | $(SED_CONV_CMD) > $(JNI_COUNTERS_DOCS_PATH)/$$i.html ;\
