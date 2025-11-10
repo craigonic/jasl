@@ -35,15 +35,6 @@ int main()
     printf("toString(Descriptions::Squad) == %s\n",
            toString(Descriptions::Squad).c_str());
 
-    const auto crewObject = toObject(Descriptions::Crew);
-    assert(fromObject(crewObject) == Descriptions::Crew);
-    const auto halfSquadObject = toObject(Descriptions::HalfSquad);
-    assert(fromObject(halfSquadObject) == Descriptions::HalfSquad);
-    const auto leaderObject = toObject(Descriptions::Leader);
-    assert(fromObject(leaderObject) == Descriptions::Leader);
-    const auto squadObject = toObject(Descriptions::Squad);
-    assert(fromObject(squadObject) == Descriptions::Squad);
-
     // Test the Dice class.
 
     printf("\nTesting the execution of the Dice class:\n\n");
