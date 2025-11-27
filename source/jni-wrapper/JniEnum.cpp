@@ -13,10 +13,7 @@
 
 #include <assert.h>
 
-// convertToObject: Return an instance of the specifed Enum element.
-
-jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
-                                          int enumValueIndex) noexcept
+static void setEnumClass(JniEnumInterface::JniEnumData& jniEnumData)
 {
 	// If it is not already set, retrieve a reference to the Java Class
 	// object associated with the class path. This will be used in the
@@ -34,8 +31,10 @@ jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
 	}
 
 	assert(nullptr != jniEnumData.enumClass);
-	assert(enumValueIndex >= 0);
+}
 
+static void setValuesMethodID(JniEnumInterface::JniEnumData& jniEnumData)
+{
 	// If it is not already set, retrieve a reference to the values() method
 	// of the Enum.
 
@@ -56,7 +55,11 @@ jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
 	}
 
 	assert(nullptr != jniEnumData.valuesMethodID);
+}
 
+static jobject enumObjectAtIndex(const JniEnumInterface::JniEnumData& jniEnumData,
+                                 int enumValueIndex)
+{
 	// Use the Class reference and the values() method reference to retrieve
 	// a list of all of the elements of the Enum. The items will be in the
 	// order that they were declared.
@@ -65,6 +68,27 @@ jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
 		static_cast<jobjectArray>(jniEnv().CallStaticObjectMethod(jniEnumData.enumClass,
 		                                                          jniEnumData.valuesMethodID));
 	assert(nullptr != javaObjectArray);
+
+	// Return a reference to the Enum element at the specified index.
+
+	return jniEnv().GetObjectArrayElement(javaObjectArray,enumValueIndex);
+}
+
+// convertToObject: Return an instance of the specifed Enum element.
+
+jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
+                                          int enumValueIndex) noexcept
+{
+	setEnumClass(jniEnumData);
+
+	assert(enumValueIndex >= 0);
+
+	setValuesMethodID(jniEnumData);
+
+	// Retrieve a reference to the Enum element at the specified index.
+
+	const jobject enumObject = enumObjectAtIndex(jniEnumData,enumValueIndex);
+	assert(nullptr != enumObject);
 
 	// If it is not already set, retrieve a reference to the name() method
 	// of the Enum.
@@ -78,13 +102,6 @@ jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
 	}
 
 	assert(nullptr != jniEnumData.nameMethodID);
-
-	// Retrieve a reference to the Enum element at the specified index.
-
-	jobject enumObject =
-		jniEnv().GetObjectArrayElement(javaObjectArray,
-		                               enumValueIndex);
-	assert(nullptr != enumObject);
 
 	// Use the name() method reference to retrieve the identifier of the
 	// selected list object.
@@ -118,10 +135,6 @@ jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
 	// Use the Class reference and the valueOf() method reference, with the
 	// element name retrieved above, to retrieve a new instance of the Enum
 	// with the specified value.
-	//
-	// Alternatively? the entry from the array generated above could be
-	// returned, but that may either keep the whole array around or the
-	// reference would be destroyed when the array is garbage collected.
 
 	jobject returnObject =
 		jniEnv().CallStaticObjectMethod(jniEnumData.enumClass,
@@ -138,22 +151,8 @@ jobject JniEnumInterface::convertToObject(JniEnumData& jniEnumData,
 std::string JniEnumInterface::convertToString(JniEnumData& jniEnumData,
                                               int enumValueIndex) noexcept
 {
-	// If it is not already set, retrieve a reference to the Java Class
-	// object associated with the class path. This will be used in the
-	// subsequent calls to retrieve method IDs.
+	setEnumClass(jniEnumData);
 
-	if (nullptr == jniEnumData.enumClass)
-	{
-		jclass localReference = toClass(jniEnumData.enumPath);
-		jniEnumData.enumClass =
-			static_cast<jclass>(jniEnv().NewGlobalRef(localReference));
-		jniEnv().DeleteLocalRef(localReference); // Necessary?
-
-		printf("enumPath: %s\n",jniEnumData.enumPath.c_str());
-//		printf("enumClass: %p\n",jniEnumData.enumClass);
-	}
-
-	assert(nullptr != jniEnumData.enumClass);
 	assert(enumValueIndex >= 0);
 
 	// If it is not already set, retrieve a reference to the toString()
@@ -170,13 +169,11 @@ std::string JniEnumInterface::convertToString(JniEnumData& jniEnumData,
 
 	assert(nullptr != jniEnumData.toStringMethodID);
 
-	// Retrieve a new Enum instance with the specified value.
-	//
-	// \todo For the purposes of this function only the values() method is
-	//       necessary. Code within all? of the "if (NULL) {}" blocks in
-	//       file should be moved to separate (static?) functions.
+	setValuesMethodID(jniEnumData);
 
-	jobject enumObject = convertToObject(jniEnumData,enumValueIndex);
+	// Retrieve a reference to the Enum element at the specified index.
+
+	const jobject enumObject = enumObjectAtIndex(jniEnumData,enumValueIndex);
 	assert(nullptr != enumObject);
 
 	// Use the toString() method reference to retrieve the "friendly" name
@@ -193,22 +190,8 @@ std::string JniEnumInterface::convertToString(JniEnumData& jniEnumData,
 int JniEnumInterface::enumValueIndex(JniEnumData& jniEnumData,
                                      const jobject enumObject) noexcept
 {
-	// If it is not already set, retrieve a reference to the Java Class
-	// object associated with the class path. This will be used in the
-	// subsequent calls to retrieve method IDs.
+	setEnumClass(jniEnumData);
 
-	if (nullptr == jniEnumData.enumClass)
-	{
-		jclass localReference = toClass(jniEnumData.enumPath);
-		jniEnumData.enumClass =
-			static_cast<jclass>(jniEnv().NewGlobalRef(localReference));
-		jniEnv().DeleteLocalRef(localReference); // Necessary?
-
-		printf("enumPath: %s\n",jniEnumData.enumPath.c_str());
-//		printf("enumClass: %p\n",jniEnumData.enumClass);
-	}
-
-	assert(nullptr != jniEnumData.enumClass);
 	assert(nullptr != enumObject);
 
 	// If it is not already set, retrieve a reference to the ordinal()
