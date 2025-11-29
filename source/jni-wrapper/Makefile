@@ -148,3 +148,12 @@ docs: docs_all clean_docs
 doxygen: docs_directory
 	@$(RM_RECURSIVE) $(JNI_DOXYGEN_DOC_PATH)
 	@$(DOXYGEN) $(JNI_DOXYGEN_DEF_FILE)
+
+## Miscellaneous ###############################################################
+
+# Create an index of all of the language objects in the source code. This is
+# used to enable and simplify source code navigation from most text editors.
+
+.PHONY : ctags
+ctags:
+	@$(CTAGS_BUILD_CMD) --languages=+C++
