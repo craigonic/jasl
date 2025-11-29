@@ -12,6 +12,7 @@
 // ************************************************************************** //
 
 #include "jasl/jni/counters/Descriptions.h"
+#include "jasl/jni/counters/Nationalities.h"
 #include "jasl/jni/utilities/Dice.h"
 
 #include <assert.h>
@@ -34,6 +35,31 @@ int main()
            toString(Descriptions::Leader).c_str());
     printf("toString(Descriptions::Squad) == %s\n",
            toString(Descriptions::Squad).c_str());
+
+    printf("\nTesting conversion operations of the Nationalities enum:\n\n");
+
+    printf("toString(Nationalities::AlliedMinor) == %s\n",
+           toString(Nationalities::AlliedMinor).c_str());
+    printf("toString(Nationalities::American) == %s\n",
+           toString(Nationalities::American).c_str());
+    printf("toString(Nationalities::AxisMinor) == %s\n",
+           toString(Nationalities::AxisMinor).c_str());
+    printf("toString(Nationalities::British) == %s\n",
+           toString(Nationalities::British).c_str());
+    printf("toString(Nationalities::Finnish) == %s\n",
+           toString(Nationalities::Finnish).c_str());
+    printf("toString(Nationalities::French) == %s\n",
+           toString(Nationalities::French).c_str());
+    printf("toString(Nationalities::German) == %s\n",
+           toString(Nationalities::German).c_str());
+    printf("toString(Nationalities::Italian) == %s\n",
+           toString(Nationalities::Italian).c_str());
+    printf("toString(Nationalities::Japanese) == %s\n",
+           toString(Nationalities::Japanese).c_str());
+    printf("toString(Nationalities::Partisan) == %s\n",
+           toString(Nationalities::Partisan).c_str());
+    printf("toString(Nationalities::Russian) == %s\n",
+           toString(Nationalities::Russian).c_str());
 
     // Test the Dice class.
 

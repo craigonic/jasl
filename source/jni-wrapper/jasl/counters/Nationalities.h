@@ -1,39 +1,49 @@
 /**
  * \file Nationalities.h
  *
- * This file declares a proxy intended to mirror the values found in the
- * <A HREF="../../../jasl/counters/Nationality.html">Nationalities</A> enum, which is implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A>, for use in C/C++ programs.
+ * This file declares a proxy intended to mirror the elements found in the
+ * <A HREF="../../../jasl/counters/Nationality.html">Nationalities</A> Enum, which is implemented in Java, for use in C++ programs.
  *
- * Written By: Craig R. Campbell  -  April 2015
+ * Written By: Craig R. Campbell  -  November 2025
  */
 
-#ifndef CNI_NATIONALITIES_H
-#define CNI_NATIONALITIES_H
+#pragma once
+
+#include <string>
+
+namespace jasl {
+namespace counters {
 
 /**
- * \brief <A HREF="../../../jasl/counters/Nationality.html">Nationalities</A> enum <A HREF="http://gcc.gnu.org/onlinedocs/gcc-6.4.0/gcj/About-CNI.html#About-CNI">CNI</A> (Compiled Native Interface) proxy.
+ * \brief <A HREF="../../../jasl/counters/Nationality.html">Nationalities</A> enum JNI (Java Native Interface) proxy.
  *
  * This enum provides a subset of the functionality of its namesake, which is
- * implemented in <A HREF="http://www.oracle.com/technetwork/java/index.html">Java</A> and compiled into a library with <A HREF="http://gcc.gnu.org/wiki/GCJ/">GCJ</A>.
+ * implemented in Java.
  *
  * @version 0.1
- * @author Copyright (C) 2015 Craig R. Campbell (craigonic@gmail.com)
- * @see <A HREF="../../../source/cni-wrapper/jasl/counters/Nationalities.h.html">Source code</A>
+ * @author Copyright (C) 2025 Craig R. Campbell (craigonic@gmail.com)
  */
 
-typedef enum
+enum class Nationalities : int
 {
-	ALLIED_MINOR,
-	AMERICAN,
-	AXIS_MINOR,
-	BRITISH,
-	FINNISH,
-	FRENCH,
-	GERMAN,
-	ITALIAN,
-	JAPANESE,
-	PARTISAN,
-	RUSSIAN
-} Nationalities;
+	AlliedMinor,
+	American,
+	AxisMinor,
+	British,
+	Finnish,
+	French,
+	German,
+	Italian,
+	Japanese,
+	Partisan,
+	Russian
+};
 
-#endif // CNI_NATIONALITIES_H
+/**
+ * \brief Return the label associated with the specifed enum value.
+ */
+
+std::string toString(Nationalities nationality) noexcept;
+
+} // namespace counters
+} // namespace jasl
