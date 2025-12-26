@@ -25,7 +25,7 @@ include $(JASL_BASE)/util/jasl.make
 # Define variables to represent the source, object, and header files in/of/for
 # this package.
 
-ENUM_FILES        := Descriptions_p.cpp Nationalities_p.cpp
+ENUM_FILES        := Descriptions_p.cpp InfantryTypes_p.cpp Nationalities_p.cpp
 
 CPP_FILES         := $(ENUM_FILES) Unit_p.cpp
 

@@ -12,6 +12,7 @@
 // ************************************************************************** //
 
 #include "jasl/jni/counters/Descriptions.h"
+#include "jasl/jni/counters/InfantryTypes.h"
 #include "jasl/jni/counters/Nationalities.h"
 #include "jasl/jni/utilities/Dice.h"
 
@@ -35,6 +36,35 @@ int main()
            toString(Descriptions::Leader).c_str());
     printf("toString(Descriptions::Squad) == %s\n",
            toString(Descriptions::Squad).c_str());
+
+    printf("\nTesting conversion operations of the InfantryTypes enum:\n\n");
+
+    printf("toString(InfantryTypes::None) == \"%s\"\n",
+           toString(InfantryTypes::None).c_str());
+    printf("toString(InfantryTypes::Paratroops) == %s\n",
+           toString(InfantryTypes::Paratroops).c_str());
+    printf("toString(InfantryTypes::Airborne) == %s\n",
+           toString(InfantryTypes::Airborne).c_str());
+    printf("toString(InfantryTypes::Anzac) == %s\n",
+           toString(InfantryTypes::Anzac).c_str());
+    printf("toString(InfantryTypes::Canadian) == %s\n",
+           toString(InfantryTypes::Canadian).c_str());
+    printf("toString(InfantryTypes::FreeFrench) == %s\n",
+           toString(InfantryTypes::FreeFrench).c_str());
+    printf("toString(InfantryTypes::FreePolish) == %s\n",
+           toString(InfantryTypes::FreePolish).c_str());
+    printf("toString(InfantryTypes::Guardsmen) == %s\n",
+           toString(InfantryTypes::Guardsmen).c_str());
+    printf("toString(InfantryTypes::Gurkha) == %s\n",
+           toString(InfantryTypes::Gurkha).c_str());
+    printf("toString(InfantryTypes::Sissi) == %s\n",
+           toString(InfantryTypes::Sissi).c_str());
+    printf("toString(InfantryTypes::Engineers) == %s\n",
+           toString(InfantryTypes::Engineers).c_str());
+    printf("toString(InfantryTypes::Commissar) == %s\n",
+           toString(InfantryTypes::Commissar).c_str());
+    printf("toString(InfantryTypes::Guards) == %s\n",
+           toString(InfantryTypes::Guards).c_str());
 
     printf("\nTesting conversion operations of the Nationalities enum:\n\n");
 

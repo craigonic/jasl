@@ -43,8 +43,8 @@ clean:
 
 # Define variables to represent the public header files in/of/for this package.
 
-ENUMS      := Descriptions.h Nationalities.h
-HDR_FILES  := Unit.h $(ENUMS) 
+ENUMS      := Descriptions.h InfantryTypes.h Nationalities.h
+HDR_FILES  := Unit.h $(ENUMS)
 
 # Install the header (.h) files in the appropriate include directory.
 
