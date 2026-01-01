@@ -40,7 +40,7 @@ InfantryTypes jasl::counters::fromInfantryTypesObject(const jobject enumObject) 
 }
 
 // toObject: Return an instance of a (Java) UnitType.InfantryTypes object, based
-//           based on the specified value.
+//           on the specified value.
 
 jobject jasl::counters::toObject(InfantryTypes infantryType) noexcept
 {

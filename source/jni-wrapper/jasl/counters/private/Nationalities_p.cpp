@@ -28,9 +28,9 @@ std::string jasl::counters::toString(Nationalities nationality) noexcept
 	                                         static_cast<int>(nationality));
 }
 
-// fromNationalitiesObject: Return the Nationalities element corresponding to the
-//                          value of the specified Java Enum object (i.e., an
-//                          instance of Nationality.Nationalities).
+// fromNationalitiesObject: Return the Nationalities element corresponding to
+//                          the value of the specified Java Enum object (i.e.,
+//                          an instance of Nationality.Nationalities).
 
 Nationalities jasl::counters::fromNationalitiesObject(const jobject enumObject) noexcept
 {
