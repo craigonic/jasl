@@ -33,7 +33,7 @@ include $(JASL_BASE)/util/jasl.make
 .PHONY : static_lib
 .PHONY : clean_dynamic_lib
 .PHONY : clean_static_lib
-obj libs clean clean_libs dynamic_lib static_lib clean_dynamic_lib clean_static_lib:
+obj libs clean_libs dynamic_lib static_lib clean_dynamic_lib clean_static_lib:
 	$(MAKE) -C private $@
 
 .PHONY : clean
@@ -43,7 +43,7 @@ clean:
 
 # Define variables to represent the public header files in/of/for this package.
 
-ENUMS      := Descriptions.h InfantryTypes.h Nationalities.h
+ENUMS      := Classifications.h Descriptions.h InfantryTypes.h Nationalities.h
 HDR_FILES  := Unit.h $(ENUMS)
 
 # Install the header (.h) files in the appropriate include directory.

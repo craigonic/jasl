@@ -11,6 +11,7 @@
 // Written By: Craig R. Campbell  -  August 2015                              //
 // ************************************************************************** //
 
+#include "jasl/jni/counters/Classifications.h"
 #include "jasl/jni/counters/Descriptions.h"
 #include "jasl/jni/counters/InfantryTypes.h"
 #include "jasl/jni/counters/Nationalities.h"
@@ -24,7 +25,24 @@ using namespace jasl::utilities;
 
 int main()
 {
-    // Test the Descriptions enum.
+    // Test the counters enums.
+
+    printf("\nTesting conversion operations of the Classifications enum:\n\n");
+
+    printf("toString(Classifications::SS) == %s\n",
+           toString(Classifications::SS).c_str());
+    printf("toString(Classifications::Elite) == %s\n",
+           toString(Classifications::Elite).c_str());
+    printf("toString(Classifications::FirstLine) == %s\n",
+           toString(Classifications::FirstLine).c_str());
+    printf("toString(Classifications::SecondLine) == %s\n",
+           toString(Classifications::SecondLine).c_str());
+    printf("toString(Classifications::Green) == %s\n",
+           toString(Classifications::Green).c_str());
+    printf("toString(Classifications::Conscript) == %s\n",
+           toString(Classifications::Conscript).c_str());
+    printf("toString(Classifications::None) == \"%s\"\n",
+           toString(Classifications::None).c_str());
 
     printf("\nTesting conversion operations of the Descriptions enum:\n\n");
 

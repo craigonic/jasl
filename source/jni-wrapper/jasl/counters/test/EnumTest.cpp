@@ -1,3 +1,4 @@
+#include "../private/Classifications_p.h"
 #include "../private/Descriptions_p.h"
 #include "../private/InfantryTypes_p.h"
 #include "../private/Nationalities_p.h"
@@ -5,6 +6,37 @@
 #include "gtest/gtest.h"
 
 using namespace jasl::counters;
+
+TEST(EnumTest, Classifications)
+{
+    EXPECT_EQ(toString(Classifications::SS).compare("SS"),0);
+    const auto ssObject = toObject(Classifications::SS);
+    EXPECT_EQ(fromClassificationsObject(ssObject),Classifications::SS);
+
+    EXPECT_EQ(toString(Classifications::Elite).compare("Elite"),0);
+    const auto eliteObject = toObject(Classifications::Elite);
+    EXPECT_EQ(fromClassificationsObject(eliteObject),Classifications::Elite);
+
+    EXPECT_EQ(toString(Classifications::FirstLine).compare("1st Line"),0);
+    const auto firstLineObject = toObject(Classifications::FirstLine);
+    EXPECT_EQ(fromClassificationsObject(firstLineObject),Classifications::FirstLine);
+
+    EXPECT_EQ(toString(Classifications::SecondLine).compare("2nd Line"),0);
+    const auto secondLineObject = toObject(Classifications::SecondLine);
+    EXPECT_EQ(fromClassificationsObject(secondLineObject),Classifications::SecondLine);
+
+    EXPECT_EQ(toString(Classifications::Green).compare("Green"),0);
+    const auto greenObject = toObject(Classifications::Green);
+    EXPECT_EQ(fromClassificationsObject(greenObject),Classifications::Green);
+
+    EXPECT_EQ(toString(Classifications::Conscript).compare("Conscript"),0);
+    const auto conscriptObject = toObject(Classifications::Conscript);
+    EXPECT_EQ(fromClassificationsObject(conscriptObject),Classifications::Conscript);
+
+    EXPECT_EQ(toString(Classifications::None).compare(""),0);
+    const auto noneObject = toObject(Classifications::None);
+    EXPECT_EQ(fromClassificationsObject(noneObject),Classifications::None);
+}
 
 TEST(EnumTest, Descriptions)
 {
