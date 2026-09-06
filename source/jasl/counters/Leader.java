@@ -27,7 +27,7 @@ import jasl.utilities.Messages;
  * @see <A HREF="../../../source/jasl/counters/Leader.html">Source code</A>
  */
 
-public final class Leader extends Infantry implements Leadership
+public final class Leader extends Personnel implements Leadership
 {
 	// Symbolic constants
 
@@ -91,7 +91,7 @@ public final class Leader extends Infantry implements Leadership
 
 		super(Descriptions.LEADER,nationality,unitType,
 		      MOVEMENT_ALLOWANCE,PORTAGE_CAPACITY,MIN_FIREPOWER,
-		      MIN_RANGE,morale,brokenMorale,true,PORTAGE_VALUE,0);
+		      MIN_RANGE,morale,brokenMorale,true,PORTAGE_VALUE);
 
 		// Check the value of the remaining argument and copy the value
 		// to the local copy of the variable if an exception is not

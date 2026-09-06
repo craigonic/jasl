@@ -21,30 +21,31 @@ import jasl.utilities.Messages;
 
 /**
  * This class is used to define the characteristics which are common to all
- * infantry units that represent more than one combat soldier. In the board
- * game, these units are referred to as multi-man counters (MMC). This class is
- * intended strictly as a superclass, not to be instantiated directly.
+ * infantry units. It is intended strictly as a superclass, not to be
+ * instantiated directly.
  *
- * @version 8.0
- * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
+ * @version 9.0
+ * @author Copyright (C) 1998-2026 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Personnel.html">Source code</A>
  */
 
-abstract class Personnel extends Infantry implements MaximumELR, Classification
+abstract class Personnel extends Mobile implements Firepower, Morale,
+                                                   Portability
 {
 	// Symbolic constants
 
-	// These constants are used in the constructor to pass the correct value
-	// of a Personnel unit (multi-man counter) for each attribute. Other
-	// types of <A HREF="Unit.html">Unit</A>s may allow the calling program to set these values, but
-	// they are the same for all MMCs. The movement allowance is reduced by
-	// one if the unit is inexperienced (green or conscript) AND a leader is
-	// not present. Since this reduction is based on situation, it is
-	// (obviously) not applied in this class.
+	/**
+	 * Provides a label for an Infantry unit's more precise nationality,
+	 * type, or capability : <B>Infantry Type</B>
+	 */
 
-	private static final int MOVEMENT_ALLOWANCE = 4;
-	private static final int PORTAGE_CAPACITY = 3;
-	private static final int PORTAGE_VALUE = 10;
+	public static final String INFANTRY_TYPE_LABEL = "Infantry Type";
+
+	// Maximum valid firepower (equivalent) value : <B>8</B>
+	//
+	// This item (obviously) applies to Infantry units only.
+
+	private static final int MAX_FIREPOWER = 8;
 
 	// This constant is used as part of the error messages (see below) that
 	// are generated when an exception is thrown.
@@ -60,18 +61,44 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 
 	// Private data members
 
-	// This variable is used to indicate that the unit that this object
-	// represents is automatically given the maximum ELR. This flag affects
-	// how the unit is replaced/reduced. It is indicated on the physical
-	// counter by an underscored morale value.
+	// This variable stores the firepower of the unit that this object
+	// represents. Note that it is specified to the constructor as
+	// firepower, but this item (which has the matching type, both to the
+	// constructor and for application in the IFT) is used to store it.
 
-	private boolean _hasMaximumELR;
+	private int _firepowerEquivalent;
 
-	// The purpose of the classification variable is to describe the
-	// experience level of the object that it represents. It applies only to
-	// squads and half-squads.
+	// This variable stores the normal range of the unit that this object
+	// represents.
 
-	private Classifications _classification;
+	private int _normalRange;
+
+	// This variable contains the normal morale value of the derived object
+	// of this class.
+
+	private int _morale;
+
+	// This variable contains the morale value of the derived object of this
+	// class when it is "broken".
+
+	private int _brokenMorale;
+
+	// This variable indicates whether or not it is possible for the derived
+	// object of this class to "self rally". It is applied during the
+	// execution of the restore() method.
+
+	private boolean _canSelfRally;
+
+	// This variable contains the number of portage points associated with a
+	// derived object of this class (how much it costs to carry the unit).
+
+	private int _portageValue;
+
+	// This variable stores a more specific type, designation, nationality,
+	// etc. for the unit this object represents. The text equivalent of this
+	// value is passed to the superclass constructor.
+
+	private InfantryTypes _infantryType;
 
 	// Constructor
 
@@ -80,45 +107,117 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 	// type being created.
 
 	protected Personnel(Descriptions description,Nationalities nationality,
-	                    InfantryTypes unitType,int firepower,
-	                    int normalRange,int morale,int brokenMorale,
-	                    boolean canSelfRally,int basicPointValue,
-	                    boolean hasMaximumELR,
-	                    Classifications classification)
+	                    InfantryTypes unitType,int movement,
+	                    int portageCapacity,int firepower,int normalRange,
+	                    int morale,int brokenMorale,boolean canSelfRally,
+	                    int portageValue)
 	{
-		// Pass the first 9 arguments to the superclass constructor.
-		// Note that one or more variables has been set with symbolic
-		// constants. These are defined at the beginning of this class
-		// and its superclasses. If any exceptions are thrown, assume
-		// that they will be caught and handled by the program creating
-		// the object.
+		// Pass the first 5 arguments to the superclass constructor. If
+		// any exceptions are thrown, assume that they will be caught
+		// and handled by the program creating the object.
 
-		super(description,nationality,unitType,MOVEMENT_ALLOWANCE,
-		      PORTAGE_CAPACITY,firepower,normalRange,morale,
-		      brokenMorale,canSelfRally,PORTAGE_VALUE,basicPointValue);
+		super(description,nationality,unitType.toString(),movement,
+		      portageCapacity);
+
+		// Since the unitType is ultimately stored as a string in a
+		// parent class, check the specified value against any of the
+		// other arguments that determine if it is valid or not.
+
+		if (((unitType == InfantryTypes.PARATROOPS) &&
+		     (nationality != Nationalities.AMERICAN)) ||
+		    (((unitType == InfantryTypes.AIRBORNE)    ||
+		      (unitType == InfantryTypes.ANZAC)       ||
+		      (unitType == InfantryTypes.CANADIAN)    ||
+		      (unitType == InfantryTypes.FREE_FRENCH) ||
+		      (unitType == InfantryTypes.FREE_POLISH) ||
+		      (unitType == InfantryTypes.GUARDSMEN)   ||
+		      (unitType == InfantryTypes.GURKHA))     &&
+		     (nationality != Nationalities.BRITISH))  ||
+		    ((unitType == InfantryTypes.SISSI) &&
+		     (nationality != Nationalities.FINNISH))  ||
+		    ((unitType == InfantryTypes.ENGINEERS) &&
+		     (nationality != Nationalities.GERMAN))   ||
+		    (((unitType == InfantryTypes.COMMISSAR) ||
+		      (unitType == InfantryTypes.GUARDS)) &&
+		     (nationality != Nationalities.RUSSIAN)))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   nationality.toString() +
+			                                   Messages.AND_SEPARATOR +
+			                                   unitType.toString());
+		}
+
+		if ((unitType == InfantryTypes.COMMISSAR) &&
+		    (description != Descriptions.LEADER))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   description.toString() +
+			                                   Messages.AND_SEPARATOR +
+			                                   unitType.toString());
+		}
 
 		// Check the value of each remaining argument and copy the value
 		// to the local copy of the corresponding variable if an
 		// exception is not found.
 
-		// Maximum ELR flag
+		// Firepower
 
-		_hasMaximumELR = hasMaximumELR;
-
-		// Classification
-
-		if (((classification == Classifications.SS)    &&
-		     (nationality    != Nationalities.GERMAN)) ||
-		    ((classification != Classifications.NONE)  &&
-		     (nationality    == Nationalities.PARTISAN)))
+		if ((firepower < MIN_FIREPOWER) || (firepower > MAX_FIREPOWER))
 		{
 			throw new IllegalArgumentException(invalidArgumentError +
-			                                   nationality.toString() +
-			                                   Messages.AND_SEPARATOR +
-			                                   classification.toString());
+			                                   firepower);
 		}
 
-		_classification = classification;
+		_firepowerEquivalent = firepower;
+
+		// Normal Range
+
+		if (normalRange < MIN_RANGE)
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   normalRange);
+		}
+
+		_normalRange = normalRange;
+
+		// Morale
+
+		if ((morale < MIN_MORALE) || (morale > MAX_MORALE))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   morale);
+		}
+
+		_morale = morale;
+
+		// Broken Morale
+
+		if ((brokenMorale < MIN_MORALE) || (brokenMorale > MAX_MORALE))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   brokenMorale);
+		}
+
+		_brokenMorale = brokenMorale;
+
+		// Self Rally Capability
+
+		_canSelfRally = canSelfRally;
+
+		// Portage Value
+
+		if ((portageValue < MIN_PORTAGE_VALUE) ||
+		    (portageValue > MAX_PORTAGE_VALUE))
+		{
+			throw new IllegalArgumentException(invalidArgumentError +
+			                                   portageValue);
+		}
+
+		_portageValue = portageValue;
+
+		// Infantry Type
+
+		_infantryType = unitType;
 	}
 
 	// Public access methods
@@ -146,58 +245,84 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 		// Add the information describing the data stored in this class
 		// instance.
 
-		// Maximum ELR flag
+		// Firepower
 
-		returnString.append(Messages.formatTextString(HAS_MAXIMUM_ELR_LABEL,
+		returnString.append(Messages.formatTextString(FIREPOWER_LABEL,
 		                                              FIRST_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(Messages.getChoiceLabel(hasMaximumELR()),
+		returnString.append(Messages.formatTextString(firepower(),
 		                                              SECOND_COLUMN_VALUE_WIDTH,
 		                                              false,false));
 
-		// Classification
+		// Firepower Equivalent
 
-		returnString.append(Messages.formatTextString(Classification.CLASSIFICATION_LABEL,
+		returnString.append(Messages.formatTextString(FIREPOWER_EQUIV_LABEL,
 		                                              THIRD_COLUMN_LABEL_WIDTH,
 		                                              true,false));
 
-		returnString.append(Messages.formatTextString(classification().toString(),
+		returnString.append(Messages.formatTextString(Integer.toString(firepowerEquivalent()),
 		                                              FOURTH_COLUMN_VALUE_WIDTH,
 		                                              false,true));
 
-		// Return the completed string to calling program.
+		// Normal Range
 
-		return returnString.toString();
-	}
+		returnString.append(Messages.formatTextString(NORMAL_RANGE_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
 
-	/**
-	 * Return an abbreviated description, including attributes, of a unit.
-	 * <P>
-	 * The text includes the firepower, range, morale, and counter type. If
-	 * an identity is set, it will also be included, shown in parentheses.
-	 *
-	 * @return a <CODE>String</CODE> specifying a simple description of the unit.
-	 */
+		returnString.append(Messages.formatTextString(Integer.toString(normalRange()),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,true));
 
-	public final String toString()
-	{
-		// Create a buffer to store the string to be returned,
-		// initializing it with the basic attributes of the unit.
+		// Morale
 
-		StringBuffer returnString =
-			new StringBuffer(firepower() + "-" +
-			                 Integer.toString(normalRange()) + "-" +
-			                 Integer.toString(morale()));
+		returnString.append(Messages.formatTextString(MORALE_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
 
-		// Add the counter type.
+		returnString.append(Messages.formatTextString(Integer.toString(morale()),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,false));
 
-		returnString.append(" " + description());
+		// Broken Morale
 
-		// If the identity has been set, add it to the end of the
-		// string, in parentheses.
+		returnString.append(Messages.formatTextString(BROKEN_MORALE_LABEL,
+		                                              THIRD_COLUMN_LABEL_WIDTH,
+		                                              true,false));
 
-		appendIdentity(returnString);
+		returnString.append(Messages.formatTextString(Integer.toString(brokenMorale()),
+		                                              FOURTH_COLUMN_VALUE_WIDTH,
+		                                              false,true));
+
+		// Self Rally Capability
+
+		returnString.append(Messages.formatTextString(CAN_SELF_RALLY_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(Messages.getChoiceLabel(canSelfRally()),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,true));
+
+		// Portage Value
+
+		returnString.append(Messages.formatTextString(PORTAGE_VALUE_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(Integer.toString(portageValue()),
+		                                              SECOND_COLUMN_VALUE_WIDTH,
+		                                              false,true));
+		// Infantry Type
+
+		returnString.append(Messages.formatTextString(INFANTRY_TYPE_LABEL,
+		                                              FIRST_COLUMN_LABEL_WIDTH,
+		                                              true,false));
+
+		returnString.append(Messages.formatTextString(infantryType().name(),
+		                                              80 - FIRST_COLUMN_LABEL_WIDTH,
+		                                              false,true));
 
 		// Return the completed string to calling program.
 
@@ -230,13 +355,31 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 		// Add the information describing the data stored in this class
 		// instance.
 
-		String INDENT = "     ";
+		String INDENT = "    ";
 
 		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(HAS_MAXIMUM_ELR_LABEL,hasMaximumELR()) +
+		                    JsonOutput.buildJSONPair(FIREPOWER_LABEL,firepower()) +
 		                    JSON_OBJECT_SEPARATOR);
 		returnString.append(INDENT +
-		                    JsonOutput.buildJSONPair(CLASSIFICATION_LABEL,classification().name()) +
+		                    JsonOutput.buildJSONPair(FIREPOWER_EQUIV_LABEL,firepowerEquivalent()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    JsonOutput.buildJSONPair(NORMAL_RANGE_LABEL,normalRange()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    JsonOutput.buildJSONPair(MORALE_LABEL,morale()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    JsonOutput.buildJSONPair(BROKEN_MORALE_LABEL,brokenMorale()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    JsonOutput.buildJSONPair(CAN_SELF_RALLY_LABEL,canSelfRally()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    JsonOutput.buildJSONPair(PORTAGE_VALUE_LABEL,portageValue()) +
+		                    JSON_OBJECT_SEPARATOR);
+		returnString.append(INDENT +
+		                    JsonOutput.buildJSONPair(INFANTRY_TYPE_LABEL,infantryType().name()) +
 		                    JSON_OBJECT_SEPARATOR);
 
 		// Return the completed string to calling program.
@@ -245,62 +388,107 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 	}
 
 	/**
-	 * Return the number of movement factors or points available to a unit
-	 * before it begins to move.
-	 * <P>
-	 * This value does not include the effect, if any, of the current
-	 * portage level of the unit. This method reduces the movement allowance
-	 * available by 1 for green and conscript units. Note that it should be
-	 * restored (elsewhere) for the former if a leader is present.
+	 * Return the firepower designation for a unit.
 	 *
-	 * @return an <CODE>int</CODE> specifying the movement capability of the
-	 * unit in factors or points.
+	 * @return a <CODE>String</CODE> specifying the unit's firepower designation.
 	 */
 
-	public final int movement()
+	public final String firepower()
 	{
-		int movementAllowance = super.movement();
-
-		if ((Classifications.GREEN     == _classification) ||
-		    (Classifications.CONSCRIPT == _classification))
-		{
-			movementAllowance--;
-		}
-
-		return movementAllowance;
+		return Integer.toString(_firepowerEquivalent);
 	}
 
 	/**
-	 * Indicate if a unit inherently has the maximum experience level
-	 * rating.
+	 * Return the firepower equivalent for a unit.
+	 *
+	 * @return an <CODE>int</CODE> specifying the unit's firepower equivalent.
+	 *
+	 * @see Firepower#firepowerEquivalent
+	 */
+
+	public final int firepowerEquivalent()
+	{
+		return _firepowerEquivalent;
+	}
+
+	/**
+	 * Return the maximum range that a unit may fire its weapon(s) at full
+	 * effect.
+	 *
+	 * @return an <CODE>int</CODE> specifying the normal range of the unit's weapon(s).
+	 */
+
+	public final int normalRange()
+	{
+		return _normalRange;
+	}
+
+	/**
+	 * Return the morale level of a unit when it is in its normal state.
+	 *
+	 * @return an <CODE>int</CODE> specifying the normal morale level of the unit.
+	 */
+
+	public final int morale()
+	{
+		return _morale;
+	}
+
+	/**
+	 * Return the morale level of a unit when it is in the broken state.
+	 *
+	 * @return an <CODE>int</CODE> specifying the broken morale level of the unit.Infantry
+	 */
+
+	public final int brokenMorale()
+	{
+		return _brokenMorale;
+	}
+
+	/**
+	 * Return if a unit has the ability to rally without the presence of a
+	 * leader.
 	 * <P>
-	 * This is used to determine how a unit is replaced. It is indicated on
-	 * the physical counter by an underscored morale value.
+	 * This is indicated on the back of the physical counter by a square
+	 * around the broken morale value.
 	 *
 	 * @return a <CODE>boolean</CODE> indicating if the unit has this attribute.
+	 *
+	 * @see Leader
 	 */
 
-	public final boolean hasMaximumELR()
+	public final boolean canSelfRally()
 	{
-		return _hasMaximumELR;
+		return _canSelfRally;
 	}
 
 	/**
-	 * Return the classification of a unit.
+	 * Return the portage value of a unit.
 	 * <P>
-	 * This is indicated on the front of the physical counter by an
-	 * alphanumeric character in the upper right corner.
-	 * <P>
-	 * Use the toString() method of the enum to retrieve the label
-	 * associated with the value (e.g. "Elite" for ELITE). The name() method
-	 * returns its text representation (e.g. "ELITE").
+	 * This is a measure of the "cost" to another unit to carry it.
 	 *
-	 * @return a <CODE>Classifications</CODE> value specifying the unit classification.
+	 * @return an <CODE>int</CODE> specifying the portage value of the unit.
 	 */
 
-	public final Classifications classification()
+	public final int portageValue()
 	{
-		return _classification;
+		return _portageValue;
+	}
+
+	/**
+	 * Return the formal / specific type of a unit.
+	 * <P>
+	 * Use the toString() method of the enum to retrieve the label
+	 * associated with the value (e.g. "Canadian" for CANADIAN). The name()
+	 * method returns its text representation (e.g. "CANADIAN").
+	 *
+	 * @return an <CODE>InfantryTypes</CODE> value specifying the more specific type,
+	 * designation, nationality, etc. for the unit.
+	 */
+
+	public final InfantryTypes infantryType()
+	{
+		return _infantryType;
 	}
 
 	// Update methods
@@ -339,28 +527,98 @@ abstract class Personnel extends Infantry implements MaximumELR, Classification
 		{
 			JSONObject jsonObject = new JSONObject(jsonData);
 
-			boolean hasMaximumELR =
-				jsonObject.getBoolean(HAS_MAXIMUM_ELR_LABEL);
+			String firepower =
+				jsonObject.getString(FIREPOWER_LABEL);
 
-			if (hasMaximumELR != _hasMaximumELR)
+			if (!firepower.equals(firepower()))
 			{
 				exceptionDetails =
 					JsonData.FROM_JSON_NON_MATCH_PREFIX +
-					Messages.getTruthLabel(hasMaximumELR).toLowerCase() +
+					firepower +
 					JsonData.FROM_JSON_FOR_SEPARATOR +
-					HAS_MAXIMUM_ELR_LABEL;
+					FIREPOWER_LABEL;
 			}
 
-			Classifications classification =
-				Classifications.valueOf(jsonObject.getString(CLASSIFICATION_LABEL));
+			int firepowerEquivalent =
+				jsonObject.getInt(FIREPOWER_EQUIV_LABEL);
 
-			if (classification != _classification)
+			if (firepowerEquivalent != _firepowerEquivalent)
 			{
 				exceptionDetails =
 					JsonData.FROM_JSON_NON_MATCH_PREFIX +
-					classification.name() +
+					firepowerEquivalent +
 					JsonData.FROM_JSON_FOR_SEPARATOR +
-					CLASSIFICATION_LABEL;
+					FIREPOWER_EQUIV_LABEL;
+			}
+
+			int normalRange = jsonObject.getInt(NORMAL_RANGE_LABEL);
+
+			if (normalRange != _normalRange)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					normalRange +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					NORMAL_RANGE_LABEL;
+			}
+
+			int morale = jsonObject.getInt(MORALE_LABEL);
+
+			if (morale != _morale)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					morale +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					MORALE_LABEL;
+			}
+
+			int brokenMorale =
+				jsonObject.getInt(BROKEN_MORALE_LABEL);
+
+			if (brokenMorale != _brokenMorale)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					brokenMorale +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					BROKEN_MORALE_LABEL;
+			}
+
+			boolean canSelfRally =
+				jsonObject.getBoolean(CAN_SELF_RALLY_LABEL);
+
+			if (canSelfRally != _canSelfRally)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					Messages.getTruthLabel(canSelfRally).toLowerCase() +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					CAN_SELF_RALLY_LABEL;
+			}
+
+			int portageValue =
+				jsonObject.getInt(PORTAGE_VALUE_LABEL);
+
+			if (portageValue != _portageValue)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					portageValue +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					PORTAGE_VALUE_LABEL;
+			}
+
+			InfantryTypes infantryType =
+				InfantryTypes.valueOf(jsonObject.getString(INFANTRY_TYPE_LABEL));
+
+			if (infantryType != _infantryType)
+			{
+				exceptionDetails =
+					JsonData.FROM_JSON_NON_MATCH_PREFIX +
+					infantryType.name() +
+					JsonData.FROM_JSON_FOR_SEPARATOR +
+					INFANTRY_TYPE_LABEL;
 			}
 
 			if (!exceptionDetails.isEmpty())

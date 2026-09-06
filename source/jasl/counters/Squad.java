@@ -21,12 +21,12 @@ import jasl.utilities.Messages;
 /**
  * This class is used to represent a Squad counter.
  *
- * @version 6.0
- * @author Copyright (C) 1998-2024 Craig R. Campbell (craigonic@gmail.com)
+ * @version 7.0
+ * @author Copyright (C) 1998-2026 Craig R. Campbell (craigonic@gmail.com)
  * @see <A HREF="../../../source/jasl/counters/Squad.html">Source code</A>
  */
 
-public final class Squad extends Personnel implements SprayingFire
+public final class Squad extends Infantry implements SprayingFire
 {
 	// Symbolic constants
 

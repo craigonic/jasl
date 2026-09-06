@@ -1,4 +1,4 @@
-Sun 26 Nov 2023 09:37:22 PM PST
+Sat Jan 10 09:48:56 PM PST 2026
 
 Leader.toText() output:
 
@@ -12,7 +12,6 @@ Normal Range      : 0
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
-Basic Point Value : 0                
 Infantry Type     : NONE                                                        
 Modifier          : -1               
 
@@ -44,7 +43,6 @@ Normal Range      : 0
 Morale            : 9                Broken Morale           : 9                
 Can Self Rally ?  : Yes              
 Portage Value     : 0                
-Basic Point Value : 0                
 Infantry Type     : NONE                                                        
 Modifier          : -1               
 
@@ -70,7 +68,6 @@ Modifier          : -1
     "Broken Morale":9,
     "Can Self Rally ?":true,
     "Portage Value":0,
-    "Basic Point Value":0,
     "Infantry Type":"NONE",
      "Modifier":-1
 }
@@ -87,9 +84,9 @@ Normal Range      : 2
 Morale            : 8                Broken Morale           : 8                
 Can Self Rally ?  : No               
 Portage Value     : 10               
-Basic Point Value : 12               
 Infantry Type     : GUARDS                                                      
 Has Maximum ELR ? : No               Classification          : Elite            
+Basic Point Value : 12               
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
 Smoke Placement Ex: 0                
 
@@ -117,9 +114,9 @@ Normal Range      : 2
 Morale            : 8                Broken Morale           : 8                
 Can Self Rally ?  : No               
 Portage Value     : 10               
-Basic Point Value : 12               
 Infantry Type     : GUARDS                                                      
 Has Maximum ELR ? : No               Classification          : Elite            
+Basic Point Value : 12               
 Can Assault Fire ?: Yes              Can Spray Fire ?        : Yes              
 Smoke Placement Ex: 0                
 
@@ -145,10 +142,10 @@ Smoke Placement Ex: 0
     "Broken Morale":8,
     "Can Self Rally ?":false,
     "Portage Value":10,
-    "Basic Point Value":12,
     "Infantry Type":"GUARDS",
      "Has Maximum ELR ?":false,
      "Classification":"ELITE",
+     "Basic Point Value":12,
       "Can Assault Fire ?":true,
       "Can Spray Fire ?":true,
       "Smoke Placement Exponent":0
@@ -226,59 +223,59 @@ Caught: org.json.JSONException: Mobile(fromJSON) - JSONObject["Portage Level"] i
 
 Updating a Squad with a different firepower value:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (4) for Firepower
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (4) for Firepower
 
 Updating a Squad with an invalid (non-string) firepower value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower"] is not a string (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Firepower"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different firepower equivalent value:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (4) for Firepower Equivalent
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (4) for Firepower Equivalent
 
 Updating a Squad with an invalid (non-integer) firepower equivalent value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Firepower Equivalent"] is not a int (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Firepower Equivalent"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different normal range value:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (4) for Normal Range
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (4) for Normal Range
 
 Updating a Squad with an invalid (non-integer) normal range value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Normal Range"] is not a int (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Normal Range"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different morale value:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (7) for Morale
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (7) for Morale
 
 Updating a Squad with an invalid (non-integer) morale value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Morale"] is not a int (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Morale"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different broken morale value:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (7) for Broken Morale
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (7) for Broken Morale
 
 Updating a Squad with an invalid (non-integer) broken morale value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Broken Morale"] is not a int (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Broken Morale"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different can self rally setting:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (true) for Can Self Rally ?
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (true) for Can Self Rally ?
 
 Updating a Squad with an invalid (non-boolean) can self rally setting:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Can Self Rally ?"] is not a Boolean (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Can Self Rally ?"] is not a Boolean (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different portage value:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (9) for Portage Value
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (9) for Portage Value
 
 Updating a Squad with an invalid (non-integer) portage value:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Portage Value"] is not a int (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Portage Value"] is not a int (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different basic point value:
 
@@ -290,35 +287,35 @@ Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Basic Point Val
 
 Updating a Squad with a different infantry type:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (NONE) for Infantry Type
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (NONE) for Infantry Type
 
 Updating a Squad with an invalid (wrong case) infantry type:
 
-Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - No enum constant jasl.counters.UnitType.InfantryTypes.Guards
+Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - No enum constant jasl.counters.UnitType.InfantryTypes.Guards
 
 Updating a Squad with an invalid (non-string) infantry type:
 
-Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Infantry Type"] is not a string (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Infantry Type"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different has maximum ELR setting:
 
-Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (true) for Has Maximum ELR ?
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (true) for Has Maximum ELR ?
 
 Updating a Squad with an invalid (non-boolean) has maximum ELR setting:
 
-Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Has Maximum ELR ?"] is not a Boolean (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Has Maximum ELR ?"] is not a Boolean (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different classification:
 
-Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - Non-matching value (FIRST_LINE) for Classification
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - Non-matching value (FIRST_LINE) for Classification
 
 Updating a Squad with an invalid (wrong case) classification:
 
-Caught: java.lang.IllegalArgumentException: Personnel(fromJSON) - No enum constant jasl.counters.Classification.Classifications.Elite
+Caught: java.lang.IllegalArgumentException: Infantry(fromJSON) - No enum constant jasl.counters.Classification.Classifications.Elite
 
 Updating a Squad with an invalid (non-string) classification:
 
-Caught: org.json.JSONException: Personnel(fromJSON) - JSONObject["Classification"] is not a string (class org.json.JSONObject$Null : null).
+Caught: org.json.JSONException: Infantry(fromJSON) - JSONObject["Classification"] is not a string (class org.json.JSONObject$Null : null).
 
 Updating a Squad with a different can assault fire setting:
 
@@ -370,10 +367,10 @@ Caught: org.json.JSONException: Leader(fromJSON) - JSONObject["Modifier"] is not
     "Broken Morale":8,
     "Can Self Rally ?":false,
     "Portage Value":10,
-    "Basic Point Value":12,
     "Infantry Type":"GUARDS",
      "Has Maximum ELR ?":false,
      "Classification":"ELITE",
+     "Basic Point Value":12,
       "Can Assault Fire ?":true,
       "Can Spray Fire ?":true,
       "Smoke Placement Exponent":0
@@ -421,39 +418,39 @@ Testing Exception handling during Squad creation:
 
 Incompatible nationality and unitType arguments:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : British and Engineers
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : British and Engineers
 
 Incompatible description and unitType arguments:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : Squad and Commissar
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Squad and Commissar
 
 Invalid (less than 0) firepower argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : -1
 
 Invalid (greater than maximum) firepower argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : 11
 
 Invalid (less than 0) normal range argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -255
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : -255
 
 Invalid (less than 0) morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -1
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : -1
 
 Invalid (greater than maximum) morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 11
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : 11
 
 Invalid (less than 0) broken morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : -7
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : -7
 
 Invalid (greater than maximum) broken morale argument:
 
-Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : 17
+Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : 17
 
 Invalid (less than zero) Basic Point Value (BPV):
 
@@ -461,11 +458,11 @@ Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argu
 
 Incompatible classification argument (nationality mismatch):
 
-Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Italian and SS
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : Italian and SS
 
 Incompatible classification argument (invalid setting):
 
-Caught: java.lang.IllegalArgumentException: Personnel(constructor) - Invalid argument(s) received : Partisan and Elite
+Caught: java.lang.IllegalArgumentException: Infantry(constructor) - Invalid argument(s) received : Partisan and Elite
 
 Invalid (less than zero) Smoke Placement Exponent:
 
